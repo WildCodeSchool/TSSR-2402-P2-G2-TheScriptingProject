@@ -1,5 +1,4 @@
-bash
-
+```bash
 #!/bin/bash
 
 
@@ -90,3 +89,4 @@ bash
         # INFORMATION 1 : Ports ouverts             
         # INFORMATION 2 : Statut du pare-feu            
         
+```
