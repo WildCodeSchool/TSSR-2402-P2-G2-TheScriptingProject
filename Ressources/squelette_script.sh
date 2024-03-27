@@ -1,5 +1,5 @@
-1
-```bash
+bash
+
 #!/bin/bash
 
 
