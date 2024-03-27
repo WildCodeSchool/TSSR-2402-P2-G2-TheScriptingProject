@@ -88,4 +88,6 @@
         # INFORMATION 1 : Ports ouverts             
         # INFORMATION 2 : Statut du pare-feu            
         
-```
+   # CHOIX 4 : Recherche information
+        # INFORMATION 1 : recherche des event dans log_evt.log pour un user            
+        # INFORMATION 2 : recherche des event dans log_evt.log pour un ordinateur     
