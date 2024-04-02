@@ -1,6 +1,7 @@
 #!/bin/bash
 
 
+
 # Fonction pour afficher le menu
 
 show_menu_computer() 
@@ -165,6 +166,8 @@ else
 
 	sleep 2s
 
+	clear
+
 return
 
 fi	
@@ -283,9 +286,257 @@ else
 
 	sleep 2s
 
+	clear
+
 return
 
 fi	
+
+}
+
+
+
+#Fonction vérouillage
+
+lock()
+
+{
+
+read -p "Confirmez-vous le vérouillage de la session de la machine distante ? [O pour valider] " conf_lock
+
+
+
+if [ $conf_lock = O ]	
+
+then
+
+	echo "La session de la machine distante a été vérouillée"
+
+	sudo systemctl suspend
+
+	clear
+
+	return
+
+else
+
+	echo "Mauvais choix - Retour au menu précédent"
+
+	sleep 2s
+
+	clear
+
+	return
+
+fi
+
+}
+
+
+
+#Fonction Màj
+
+update()
+
+{
+
+read -p "Confirmez-vous la mise-à-jour du système de la machine distante ? [O pour valider] " conf_update
+
+
+
+if [ $conf_update = O ]
+
+then
+
+	clear
+
+	sudo apt update && sudo apt upgrade -y
+
+	echo "La mise-à-jour du système de la machine distante a été effectuée"
+
+	sleep 2s
+
+	return
+
+else
+
+	clear
+
+	echo "Mauvais choix - Retour au menu précédent"
+
+	sleep 2s
+
+	return
+
+fi
+
+}
+
+
+
+#Fonction "Création de dossier"
+
+create_directory() 
+
+{
+
+
+
+    read -p "Confirmez-vous la création d'un dossier ? [O pour valider] " conf_create_directory
+
+
+
+    if [ $conf_create_directory = O ]
+
+    then
+
+        clear
+
+        read -p "Quel est le nom du dossier à créer ? " name_directory
+
+
+
+        if [ -z $name_directory ]
+
+        then
+
+            echo "Vous n'avez pas indiqué de nom de dossier, retour au menu précédent"
+
+            return
+
+        fi
+
+
+
+        read -p "Quel est le chemin de destination de votre dossier (Si pas de chemin indiqué, chemin courant utilisé) : " path_directory
+
+
+
+        if [ -z $path_directory ]
+
+        then
+
+            mkdir "$name_directory"
+
+            echo "Le dossier $name_directory a été créé à l'emplacement actuel"
+
+            sleep 2s
+
+            return
+
+            
+
+        else
+
+            mkdir -p "$path_directory/$name_directory"
+
+            echo "Le dossier $name_directory a été créé à l'emplacement $path_directory"
+
+            sleep 2s
+
+            return
+
+        fi
+
+
+
+    else
+
+        echo "Mauvais choix - Retour au menu précédent"
+
+        sleep 2s
+
+        clear
+
+        return
+
+    fi
+
+}
+
+
+
+#Fonction "Suppréssion de dossier"
+
+remove_directory() 
+
+{
+
+
+
+    read -p "Confirmez-vous la suppression d'un dossier ? [O pour valider] " conf_remove_directory
+
+
+
+    if [ $conf_remove_directory = O ]
+
+    then
+
+        clear
+
+        read -p "Quel est le nom du dossier à supprimer ? " name_directory_2
+
+
+
+        if [ -z $name_directory_2 ]
+
+        then
+
+            echo "Vous n'avez pas indiqué de nom de dossier, retour au menu précédent"
+
+            return
+
+        fi
+
+
+
+        read -p "Quel est le chemin de votre dossier : " path_directory_2
+
+
+
+        if [ -d $path_directory_2/$name_directory_2 ]
+
+        then
+
+            read -p " Le dossier suivant $path_directory_2/$name_directory_2 sera supprimé, confirmez-vous ? [O pour valider] " conf_remove_directory_2
+
+            if [ $conf_remove_directory_2 = O ]
+
+            then
+
+                sudo rm -r $path_directory_2/$name_directory_2
+
+                echo "Le dossier suivant $path_directory_2/$name_directory_2 a été supprimé"
+
+                sleep 2s
+
+                return
+
+            else
+
+                echo "Mauvais choix - Retour au menu précédent"
+
+                sleep 2s
+
+                clear
+
+                return
+
+            fi
+
+        else
+
+            echo "Le dossier $path_directory_2/$name_directory_2 n'existe pas - Retour au menu précédent."
+
+            sleep 2s
+
+            clear
+
+            return
+
+        fi
+
+    fi
 
 }
 
@@ -301,7 +552,7 @@ do
 
     # Demande du choix action
 
-    read -p "Veuillez faire votre choix action en donnant le numéro souhaité : " choix
+    read -p "Faites votre choix parmi la sélection ci-dessus : " choix
 
 
 
@@ -323,7 +574,39 @@ do
 
     ;;
 
-    	
+    
+
+    3)
+
+    	lock
+
+    ;;
+
+    
+
+    4)
+
+    	update
+
+    ;;
+
+    
+
+    5)
+
+    	create_directory
+
+    ;;
+
+    			
+
+    6)
+
+    	remove_directory
+
+    ;;
+
+    			
 
     esac	
 
