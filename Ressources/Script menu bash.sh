@@ -1,5 +1,3 @@
-
-```bash
 #----------------------------------------------#
 #-------- Fonction Menu Principal--------------#
 #----------------------------------------------#
@@ -663,5 +661,3 @@ Menu_Principal
 echo "<Date>-<Heure>-<Utilisateur>-********EndScript********" >> event.log  
 # Fin de script
 exit 0
-
-````
