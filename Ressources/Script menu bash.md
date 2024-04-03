@@ -10,9 +10,9 @@ Menu_Principal()
         # Effacer l'écran
         clear
         # Demande de premier choix ACTION / INFORMAITON ou QUITTER
-	    echo "=================================================="
-	    echo '                Menu Principal                    '
-	    echo "=================================================="	
+	echo "=================================================="
+	echo '                Menu Principal                    '
+	echo "=================================================="	
         echo "Bonjour, voici les choix possibles :"
         echo " "
         echo "[1] Menu ACTION sur Utilisateur ou POSTE DISTANT"
@@ -62,8 +62,8 @@ Menu_Action()
         clear
 	# Demande choix ACTION UTILISATEUR / ACTION POSTE DISTANT / retour menu principal
         echo "=================================================="
-	    echo '                 Menu "Action"                    '
-	    echo "=================================================="	
+	echo '                 Menu "Action"                    '
+	echo "=================================================="	
         echo "Voici les choix possibles :"
         echo " "
         echo "[1] ACTION sur UTILISATEUR "
@@ -109,8 +109,8 @@ Menu_Information()
         clear
 	# Demande choix INFORMATION UTILISATEUR / ACTION POSTE DISTANT / retour menu principal
         echo "=================================================="
-	    echo '            Menu "INFORMATION"                    '
-	    echo "=================================================="	
+	echo '            Menu "INFORMATION"                    '
+	echo "=================================================="	
         echo "Voici les choix possibles :"
         echo " "
         echo "[1] INFORMATION sur UTILISATEUR"
