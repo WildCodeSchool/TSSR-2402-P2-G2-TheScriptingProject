@@ -22,10 +22,9 @@ afficher_menu() {
     echo ""
 }
 
-# Fonctions Informations
-
-info_connexion() {
-
+# Fonctions Informations dernière connexion
+info_connexion() 
+{
     # Demande quel utilisateur
     echo ""
     echo "Date de dernière connexion"
@@ -45,8 +44,9 @@ info_connexion() {
     fi
 }
 
-info_modification() {
-
+# Fonctions Informations dernière modification de mot de passe
+info_modification() 
+{
     # Demande quel utilisateur
     echo ""
     echo "Date de dernière modification du mdp"
@@ -66,10 +66,13 @@ info_modification() {
 
 }
 
+# Fonctions liste de session ouverte
 #liste_sessions(){}
 
+# Fonctions droit dossiers
 #droits_dossier(){}
 
+# Fonctions droit fichier
 #droits_fichier(){}
 
 # Boucle principale pour afficher le menu et traiter les options
