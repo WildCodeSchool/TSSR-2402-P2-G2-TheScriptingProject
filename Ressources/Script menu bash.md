@@ -1,18 +1,21 @@
 
 ```bash
+
+
 #----------------------------------------------#
 #-------- Fonction Menu Principal--------------#
 #----------------------------------------------#
 
+# Fonction menu principal
 Menu_Principal()
 {
     while true ; do
         # Effacer l'écran
         clear
         # Demande de premier choix ACTION / INFORMAITON ou QUITTER
-	echo "=================================================="
-	echo '                Menu Principal                    '
-	echo "=================================================="	
+	    echo "=================================================="
+	    echo '                Menu Principal                    '
+	    echo "=================================================="	
         echo "Bonjour, voici les choix possibles :"
         echo " "
         echo "[1] Menu ACTION sur Utilisateur ou POSTE DISTANT"
@@ -55,6 +58,7 @@ Menu_Principal()
     done
 }
 
+# Fonction menu Action
 Menu_Action() 
 {
     while true; do
@@ -62,14 +66,14 @@ Menu_Action()
         clear
 	# Demande choix ACTION UTILISATEUR / ACTION POSTE DISTANT / retour menu principal
         echo "=================================================="
-	echo '                 Menu "Action"                    '
-	echo "=================================================="	
+	    echo '                 Menu "Action"                    '
+	    echo "=================================================="	
         echo "Voici les choix possibles :"
         echo " "
         echo "[1] ACTION sur UTILISATEUR "
         echo "[2] ACTION POSTE DISTANT "
 	echo " "    
-        echo "[X] Retour menu précédent "
+        echo "[X] Retour menu principal "
         echo " "    
         read -p "Veuillez faire un choix en donnant le numéro souhaité : " choixMenuAction
         case $choixMenuAction in
@@ -87,7 +91,7 @@ Menu_Action()
                 ;;
             X)
                 echo " "    
-                echo "Retour au menu précédent"  && sleep 2s
+                echo "Retour au menu principal"  && sleep 2s
                 echo "retour menu principal" >> event.log
                 return
                 ;;        
@@ -102,6 +106,7 @@ Menu_Action()
     done
 }
 
+# Fonction menu Information
 Menu_Information() 
 {
     while true; do
@@ -109,14 +114,14 @@ Menu_Information()
         clear
 	# Demande choix INFORMATION UTILISATEUR / ACTION POSTE DISTANT / retour menu principal
         echo "=================================================="
-	echo '            Menu "INFORMATION"                    '
-	echo "=================================================="	
+	    echo '            Menu "INFORMATION"                    '
+	    echo "=================================================="	
         echo "Voici les choix possibles :"
         echo " "
         echo "[1] INFORMATION sur UTILISATEUR"
         echo "[2] INFORMATION POSTE DISTANT"
         echo " "    
-        echo "[X] Retour menu précédent "
+        echo "[X] Retour menu principal "
         echo " "    
         read -p "Veuillez faire un choix en donnant le numéro souhaité: " choixMenuInformation
         case $choixMenuInformation in
@@ -132,7 +137,7 @@ Menu_Information()
                 ;;
             X)
                 echo " "    
-                echo "Retour au menu précédent"  && sleep 2s
+                echo "Retour au menu principal"  && sleep 2s
                 echo "Retour menu principal" >> event.log
                 return
                 ;;        
@@ -150,37 +155,35 @@ Menu_Information()
 #----------------------------------------------#
 #-------- Fonction Menu Action   --------------#
 #----------------------------------------------#
-# Fonction pour afficher le menu
-Menu_Action_Ordinateur() 
+
+
+# Fonction menu Action Utilisateur
+Menu_Action_Utilisateur() 
 {
     while true; do
         # Effacer l'écran
         clear
-        # Demande choix INFORMATION UTILISATEUR / ACTION POSTE DISTANT / retour menu principal
+        #Demande choix ACTION UTILISATEUR / retour menu précédent / retour menu principal
         echo "=================================================="
-        echo '        Menu "Action Machine Distante"            '
+        echo '             Menu "Action utilisateur"           '
         echo "=================================================="
-        echo "[1]  Arrêt"
-        echo "[2]  Redémarrage"
-        echo "[3]  Vérouillage"
-        echo "[4]  MàJ du système"
-        echo "[5]  Création de repertoire"
-        echo "[6]  Suppression de repertoire"
-        echo "[7]  Prise de main à distance"
-        echo "[8]  Activation du pare-feu"
-        echo "[9]  Désactivation du pare-feu"
-        echo "[10] Règles du parefeu"
-        echo "[11] Installation d'un logiciel"
-        echo "[12] Désinstallation d'un logiciel"
-        echo "[13] Exécution d'un script sur la machine distante"
+        echo "Voici les choix possibles :"
         echo ""
-        echo "[X]  Retour au menu précédent"
+        echo "[1] Création de compte utilisateur local"
+        echo "[2] Changement de mot de passe"
+        echo "[3] Suppression de compte utilisateur local"
+        echo "[4] Désactivation de compte utilisateur local"
+        echo "[5] Ajout à un groupe d'administration"
+        echo "[6] Ajout à un groupe local"
+        echo "[7] Sortie d'un groupe local"
+        echo ""
+        echo "[0]. Retour au menu précédent"
+        echo "[X]. Retour au menu principal"
         echo ""
         # Demande du choix action
-        echo " "    
-        read -p "Veuillez faire votre choix en donnant le numéro souhaité : " choix_Menu_Action_User
-
-        case $choix_Menu_Action_User in
+        read -p "Veuillez faire votre choix action en donnant le numéro souhaité:" choixMenuActionUser    
+        # Traitement de l'action choisie
+        case $choixMenuActionUser in
             1)        
                 echo " "    
                 echo "Vous avez choisit création de compte utilsiateur" && sleep 2s
@@ -229,19 +232,124 @@ Menu_Action_Ordinateur()
                 echo "retour menu précédent choisit" >> event.log
                 return
                 ;;
+            0)
+                echo " "    
+                echo "Retour au menu précédent" && sleep 2s
+                echo "retour menu précédent choisit" >> event.log
+                return
+                ;;
             X)
                 echo " "    
                 echo "Retour au menu principal" && sleep 2s
                 echo "retour menu principal choisit" >> event.log
-                return
+                Menu_Principal
                 ;;
             *)
                 echo "Option invalide. Veuillez choisir une option valide."
                 read -p "Appuyez sur Entrée pour continuer..."
                 ;;
-            esac
+        esac
     done
 }
+
+# Fonction pour afficher le menu action Ordinateur
+Menu_Action_Ordinateur() 
+{
+    while true; do
+        # Effacer l'écran1
+        clear
+        # Demande choix INFORMATION UTILISATEUR / ACTION POSTE DISTANT / retour menu principal
+        echo "=================================================="
+        echo '        Menu "Action Machine Distante"            '
+        echo "=================================================="
+        echo "Voici les choix possibles :"
+        echo ""        
+        echo "[1]  Arrêt"
+        echo "[2]  Redémarrage"
+        echo "[3]  Vérouillage"
+        echo "[4]  MàJ du système"
+        echo "[5]  Création de repertoire"
+        echo "[6]  Suppression de repertoire"
+        echo "[7]  Prise de main à distance"
+        echo "[8]  Activation du pare-feu"
+        echo "[9]  Désactivation du pare-feu"
+        echo "[10] Règles du parefeu"
+        echo "[11] Installation d'un logiciel"
+        echo "[12] Désinstallation d'un logiciel"
+        echo "[13] Exécution d'un script sur la machine distante"
+        echo ""
+        echo "[0]  Retour au menu précédent"
+        echo "[X]  Retour au menu principal"
+        echo ""
+         # Demande du choix action
+        read -p "Veuillez faire votre choix action en donnant le numéro souhaité:" choixMenuActionOrdinateur    
+        # Traitement de l'action choisie
+        case $choixMenuActionOrdinateur in   
+            1)
+                echo " "    
+                echo "Vous avez choisit l'arrêt de la machine distante" && sleep 2s
+                echo "Arrêt choisit" >> event.log
+                shutdown
+            ;;
+            
+            2)
+                echo " "    
+                echo "Vous avez choisit le rédemarrage de la machine distante" && sleep 2s
+                echo "Redémarrage choisit" >> event.log
+                reboot
+            ;;
+            
+            3)
+                echo " "    
+                echo "Vous avez choisit le vérrouillage de la machine distante" && sleep 2s
+                echo "Vérrouillage machine distante choisit" >> event.log
+                lock
+            ;;
+            
+            4)
+                echo " "    
+                echo "Vous avez choisit la mise à jour de la machine distante" && sleep 2s
+                echo "Mise à jour choisit" >> event.log
+                update
+            ;;
+            
+            5)
+                echo " "    
+                echo "Vous avez choisit de créér un répertoire sur la machine distante" && sleep 2s
+                echo "Création de répertoire choisit" >> event.log
+                create_directory
+            ;;
+                        
+            6)
+                echo " "    
+                echo "Vous avez choisit de supprimer un répertoire sur la machine distante" && sleep 2s
+                echo "Suppression de répertoire choisit" >> event.log
+                remove_directory
+            ;;
+            0)
+                echo " "    
+                echo "Retour au menu précédent" && sleep 2s
+                echo "retour menu précédent choisit" >> event.log
+                return
+                ;;
+            X)
+                echo " "    
+                echo "Retour au menu principal" && sleep 2s
+                echo "retour menu principal choisit" >> event.log
+                Menu_Principal
+                ;;
+            *)
+                echo "Option invalide. Veuillez choisir une option valide."
+                read -p "Appuyez sur Entrée pour continuer..."
+                ;;
+        esac	
+    done
+}
+
+#----------------------------------------------#
+#-------- Fonction Menu Information------------#
+#----------------------------------------------#
+
 
 #----------------------------------------------#
 #--------Fonction Action Utilisateur-----------#
@@ -262,8 +370,12 @@ Menu_Action_Ordinateur()
 #-----Fonction Information Ordinateur----------#
 #----------------------------------------------#
 
+
+
+
 # Début enregistrement evennement
 echo "<Date>-<Heure>-<Utilisateur>-********StartScript********" >> event.log  
+
 
 
 #appel foncton MENU1 
@@ -273,6 +385,11 @@ Menu_Principal
 echo "<Date>-<Heure>-<Utilisateur>-********EndScript********" >> event.log  
 # Fin de script
 exit 0
+
+
+
+
+
 
 
 
