@@ -39,14 +39,14 @@ if [ $conf_shutdown = O ]
 	
 then
 		clear
-		echo " [1] Arrêt instantané de la machine "
-		echo " [2] Arrêt planifié de la machine avec message d'avertissement " 
-		echo " [3] Arrêt planifié de la machine sans message d'avertissement "
-		echo " [*] Revenir au menu précédent "
+		echo " [1] Arrêt instantané de la machine"
+		echo " [2] Arrêt planifié de la machine avec message d'avertissement" 
+		echo " [3] Arrêt planifié de la machine sans message d'avertissement"
+		echo " [*] Revenir au menu précédent"
 		
 		while true
 		do
-		read -p "Choisissez comment vous souhaitez procéder : " conf_message_s
+		read -p "Faites votre choix parmi la sélection ci-dessus : " conf_message_s
 		case $conf_message_s in
 				
 			1) 
@@ -59,9 +59,9 @@ then
 			echo "Arrêt planifié en cours"
 			sleep 1s
 			read -p "Indiquer l'heure de l'arrêt [hh:mm] " timer_s1
-			ssh $nom_distant@$ip_distante notify-send "Arrêt_prévu_à_$timer_s1"
+			ssh $nom_distant@$ip_distante notify-send "Extinction_prévue_à_$timer_s1 Pensez_à_sauvegarder_votre_travail"
 			echo "Message d'avertissement envoyé"
-			sleep 2s
+			sleep 1s
 			ssh $nom_distant@$ip_distante sudo -S shutdown $timer_s1
 			echo "Arrêt planifié pour $timer_s1"
 			sleep 3s
@@ -72,7 +72,7 @@ then
 			echo "Arrêt planifié en cours"
 			read -p "Indiquer l'heure de l'arrêt [hh:mm] " timer_s2
 			ssh $nom_distant@$ip_distante sudo -S shutdown $timer_s2
-			sleep 2s
+			sleep 3s
 			return
 			;;
 			
@@ -100,10 +100,10 @@ if [ $conf_reboot = O ]
 	
 then
 		clear
-		echo " [1] Redémarrage instantané de la machine "
-		echo " [2] Redémarrage planifié de la machine avec message d'avertissement " 
-		echo " [3] Redémarrage planifié de la machine sans message d'avertissement "
-		echo " [*] Revenir au menu précédent "
+		echo " [1] Redémarrage instantané de la machine"
+		echo " [2] Redémarrage planifié de la machine avec message d'avertissement" 
+		echo " [3] Redémarrage planifié de la machine sans message d'avertissement"
+		echo " [*] Revenir au menu précédent"
 		
 		while true
 		do
@@ -112,27 +112,27 @@ then
 				
 			1) 
 			echo "Redémarrage instantanné en cours"
-			sudo shutdown -S -r now
+			ssh $nom_distant@$ip_distante sudo -S shutdown -r now
 			return
 			;;
 			
 			2) 
 			echo "Redémarrage planifié en cours"
 			sleep 1s
-			read -p "Indiquer l'heure du redémarrage [hh:mm] " timer_s2
-			notify-send "Redémarrage_prévu_pour_$timer_s2"
+			read -p "Indiquer l'heure du redémarrage [hh:mm] " timer_r1
+			ssh $nom_distant@$ip_distante notify-send "Redémarrage_prévu_pour_$timer_r1 Pensez_à_sauvegarder_votre_travail"
 			echo "Message d'avertissement envoyé"
-			sleep 2s
-			sudo shutdown -S -r $timer_s2
+			sleep 1s
+			ssh $nom_distant@$ip_distante sudo -S shutdown -r $timer_r1
 			sleep 3s
 			return
 			;;
 			
 			3) 
 			echo "Redémarrage planifié en cours"
-			read -p "Indiquer l'heure de l'arrêt [hh:mm] " timer_s2
-			sudo shutdown -S -r $timer_s2
-			sleep 2s
+			read -p "Indiquer l'heure de l'arrêt [hh:mm] " timer_r2
+			ssh $nom_distant@$ip_distante sudo -S shutdown -r $timer_r2
+			sleep 3s
 			return
 			;;
 			
@@ -145,7 +145,7 @@ then
 		done	
 else
 	echo "Mauvais choix - Retour au menu précédent"
-	sleep 2s
+	sleep 1s
 	clear
 return
 fi	
@@ -165,7 +165,7 @@ then
 	return
 else
 	echo "Mauvais choix - Retour au menu précédent"
-	sleep 2s
+	sleep 1s
 	clear
 	return
 fi
@@ -186,7 +186,7 @@ then
 else
 	clear
 	echo "Mauvais choix - Retour au menu précédent"
-	sleep 2s
+	sleep 1s
 	return
 fi
 }
@@ -205,6 +205,7 @@ create_directory()
         if [ -z $name_directory ]
         then
             echo "Vous n'avez pas indiqué de nom de dossier, retour au menu précédent"
+            sleep 1s
             return
         fi
 
@@ -214,9 +215,9 @@ create_directory()
         then
     		if ssh $nom_distant@$ip_distante "[ -d \"$name_directory\" ]"
     		then
-        		echo "Le dossier existe déjà."
+        		echo "Le dossier existe déja"
         		echo "Retour au menu précédent"
-        		sleep 2s
+        		sleep 1s
         		return
     		else
         		echo "Le dossier n'existe pas."
@@ -227,12 +228,12 @@ create_directory()
 	else
     		if ssh $nom_distant@$ip_distante "[ -d \"$path_directory/$name_directory\" ]"
     		then
-        		echo "Le dossier existe déjà."
+        		echo "Le dossier existe déjà"
         		echo "Retour au menu précédent"
-        		sleep 2s
+        		sleep 1s
         		return
     		else
-        		echo "Le dossier n'existe pas."
+        		echo "Le dossier n'existe pas"
         		ssh $nom_distant@$ip_distante mkdir -p "$path_directory/$name_directory"
         		echo "Le dossier $name_directory a été créé à l'emplacement $path_directory"
         		sleep 2s
@@ -242,7 +243,7 @@ create_directory()
 
     else
         echo "Opération annulée - Retour au menu précédent"
-        sleep 2s
+        sleep 1s
         clear
         return
     fi
@@ -278,12 +279,12 @@ remove_directory()
                 return
             else
                 echo "Opération annulée - Retour au menu précédent"
-                sleep 2s
+                sleep 1s
                 clear
                 return
             fi
         else
-            echo "Le dossier $path_directory_2/$name_directory_2 n'existe pas - Retour au menu précédent."
+            echo "Le dossier $path_directory_2/$name_directory_2 n'existe pas - Retour au menu précédent"
             sleep 2s
             clear
             return
@@ -298,12 +299,12 @@ remote_control()
 	
 		if [ $conf_remote = O ]
 		then
-			echo "Accès à la commande de la machine distante : "
+			echo "Accès à la commande de la machine distante :"
 			sleep 2s
 			ssh $nom_distant@$ip_distante	
 		else
 			echo "Opération annulée - Retour au menu précédent"
-			sleep 2s
+			sleep 1s
 			return		
 		fi	
 }
@@ -317,11 +318,11 @@ firewall_on()
 		ssh $nom_distant@$ip_distante sudo -S ufw enable
 		ssh $nom_distant@$ip_distante sudo -S ufw status | cat
 		echo "Le pare-feu de la machine distante a été activé"
-		sleep 3s
+		sleep 2s
 		return
 	else
 		echo "Opération annulée - Retour au menu précédent"
-		sleep 2s
+		sleep 1s
 		return	
 	fi	
 }
@@ -336,13 +337,112 @@ firewall_off()
 		ssh $nom_distant@$ip_distante sudo -S ufw disable
 		ssh $nom_distant@$ip_distante sudo -S ufw status | cat
 		echo "Le pare-feu de la machine distante a été désactivé"
-		sleep 3s
+		sleep 2s
 		return
 	else
 		echo "Opération annulée - Retour au menu précédent"
-		sleep 2s
+		sleep 1s
 		return	
 	fi	
+}
+
+firewall_rules()
+{
+	read -p "Confirmez-vous l'accès à la modification des régles du pare-feu ? [O Pour valider] : " conf_fw_rules
+	
+	if [ $conf_fw_rules = O ]	 
+	then
+		clear
+		echo " [1] Affichage de l'état actuel des règles du pare-feu"
+		echo " [2] Ouverture d'un port (UDP et TCP)"
+		echo " [3] Fermeture d'un port (UDP et TCP)"
+		echo " [4] Activer la journalisation"
+		echo " [5] Désactiver la journalisation"
+		echo " [6] Réinitialiser le pare-feu"
+		echo " [*] Revenir au menu précédent"
+		
+		while true
+		do
+		read -p "Faites votre choix parmi la sélection ci-dessus : " conf_message_fw
+		case $conf_message_fw in
+				
+			1) 
+			echo "Affichage de l'état actuel des règles du pare-feu"
+			ssh $nom_distant@$ip_distante sudo -S ufw status verbose
+			;;
+			
+			2) 
+			echo "Ouverture d'un port"
+			sleep 2s
+			read -p "Indiquer le n° du port à ouvrir : " port_1
+			echo "Ouverture du port $port_1"
+			sleep 2s
+			ssh $nom_distant@$ip_distante sudo -S ufw allow $port_1
+			echo "$port_1 ouvert"
+			sleep 2s
+			;;
+			
+			3) 
+			echo "Fermeture d'un port"
+			sleep 2s
+			read -p "Indiquer le n° du port à fermer : " port_2
+			echo "Fermeture du port $port_2"
+			sleep 2s
+			ssh $nom_distant@$ip_distante sudo -S ufw allow $port_2
+			echo "$port_2 fermé"
+			sleep 2s
+			;;
+			
+			4)
+			echo "Activation de la journalisation"
+			sleep 2s
+			ssh $nom_distant@$ip_distante sudo -S ufw logging on
+			echo "Journalisation activée"
+			sleep 2s
+			;;
+			
+			5)
+			echo "Désactivation de la journalisation"
+			sleep 2s
+			ssh $nom_distant@$ip_distante sudo -S ufw logging off
+			echo "Journalisation désactivée"
+			sleep 2s
+			;;
+			
+			6)
+			echo "Réinitialisation du pare-feu"
+			echo "ATTENTION, cette commande peut compromettre la connexion à distance"
+			read -p "Souhaitez-vous tout de même continuer ? [O pour valider] : " conf_reset_fw
+			
+				if [ $conf_reset_fw = O ]
+				
+				then 	
+					sleep 1s
+					$nom_distant@$ip_distante sudo -S ufw reset
+					echo "Le pare-feu a été réinitialisé"
+					sleep 2s
+					return
+				else
+					echo "Opération annulée - Retour au menu précédent"
+					sleep 1s
+				fi
+					;;
+				
+				
+			*) 
+			echo "Retour au menu précédent"
+			sleep 1s
+			return
+			;;
+		esac
+		done	
+else
+	echo "Mauvais choix - Retour au menu précédent"
+	sleep 1s
+	clear
+return
+fi	
+
 }
 
 
@@ -397,6 +497,15 @@ do
     
     9)
     	firewall_off
-    			
+    ;;	
+    	
+    10)
+    	firewall_rules
+    ;;	
+    	
+    	
+    	
+    	
+    				
     esac	
 done    	
