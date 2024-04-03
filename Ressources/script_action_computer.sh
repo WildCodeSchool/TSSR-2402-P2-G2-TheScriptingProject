@@ -7,10 +7,10 @@ show_menu_computer()
     clear
     # Affichage actions
     echo "=================================================="
-    echo '        Menu "Action Machine Distante" :          '
+    echo '         Menu "Action Machine Distante"           '
     echo "=================================================="
     echo ""
-    echo " Machine distante : $nom_distant@$ip_distante"
+    echo "Machine distante : $nom_distant@$ip_distante"
     echo ""
     echo "[1]  Arrêt"
     echo "[2]  Redémarrage"
@@ -179,7 +179,7 @@ read -p "Confirmez-vous la mise-à-jour du système de la machine distante ? [O 
 if [ $conf_update = O ]
 then
 	clear
-	ssh $nom_distant@$ip_distante sudo apt update && sudo apt upgrade -y
+	ssh $nom_distant@$ip_distante sudo -S apt update && sudo -S apt upgrade -y
 	echo "La mise-à-jour du système de la machine distante a été effectuée"
 	sleep 2s
 	return
@@ -435,15 +435,135 @@ firewall_rules()
 			return
 			;;
 		esac
-		done	
-else
-	echo "Mauvais choix - Retour au menu précédent"
-	sleep 1s
-	clear
-return
-fi	
+		done
+	fi	
+}
+
+install_app()
+
+{
+
+	read -p "Confirmez-vous l'accès à l'installation de logiciels ? [O Pour valider] : " conf_install
+	if [ $conf_install = O ]	 
+	then
+		clear
+		echo " [1] Installation via APT"
+		echo " [2] Installation via SNAP"
+		echo " [*] Revenir au menu précédent"
+		
+		while true
+		do
+		read -p "Faites votre choix parmi la sélection ci-dessus : " conf_message_install
+		case $conf_message_install in
+		
+			1)
+			read -p "Quel logiciel souhaitez-vous installer via APT : " apt_install
+			echo "Vous avez choisi d'installer le logiciel $apt_install"
+			sleep 1s
+			ssh $nom_distant@$ip_distante sudo -S apt install $apt_install
+			sleep 1s
+			echo "Le logiciel $apt_install a été installé"
+			sleep 2s
+			return
+			;;		
+		
+			2)
+			read -p "Quel logiciel souhaitez-vous installer via SNAP : " snap_install
+			echo "Vous avez choisi d'installer le logiciel $snap_install"
+			sleep 1s
+			ssh $nom_distant@$ip_distante sudo -S snap install $snap_install
+			sleep 1s
+			echo "Le logiciel $snap_install a été installé"
+			sleep 2s
+			return	
+			;;
+			
+			*)	
+			echo "Retour au menu précédent"
+			sleep 1s
+			return
+			;;
+		esac
+		done
+fi
 
 }
+
+uninstall_app()
+
+{
+read -p "Confirmez-vous l'accès à la désinstallation de logiciels ? [O Pour valider] : " conf_uninstall
+	if [ $conf_uninstall = O ]	 
+	then
+		clear
+		echo " [1] Désinstallation via APT"
+		echo " [2] Désinstallation via SNAP"
+		echo " [*] Revenir au menu précédent"
+		
+		while true
+		do
+		read -p "Faites votre choix parmi la sélection ci-dessus : " conf_message_uninstall
+		case $conf_message_uninstall in
+		
+			1)
+			read -p "Quel logiciel souhaitez-vous désinstaller via APT : " apt_uninstall
+			echo "Vous avez choisi de désinstaller le logiciel $apt_uninstall"
+			sleep 1s
+			ssh $nom_distant@$ip_distante sudo -S apt remove $apt_uninstall
+			sleep 1s
+			echo "Le logiciel $apt_uninstall a été désinstallé"
+			sleep 2s
+			return	
+			;;		
+		
+			2)
+			read -p "Quel logiciel souhaitez-vous désinstaller via SNAP : " snap_uninstall
+			echo "Vous avez choisi de désinstaller le logiciel $snap_uninstall"
+			sleep 1s
+			ssh $nom_distant@$ip_distante sudo -S snap install $snap_uninstall
+			sleep 1s
+			echo "Le logiciel $snap_uninstall a été désinstallé"
+			sleep 2s
+			return	
+			;;		
+			
+			*)	
+			echo "Retour au menu précédent"
+			sleep 1s
+			return
+			;;
+		esac
+		done
+fi
+}
+
+
+remote_script()
+
+{
+	read -p "Confirmez-vous l'éxécution d'un script sur la machine distante ? [O pour valider ] : " conf_script
+	
+	if [ $conf_script = O ]	 
+	then
+		read -p "Quel est le nom du script ? : " name_script
+		read -p "Quel est le chemin du script ? : " path_script
+		echo "Le script $name_script va être éxécuté"
+		sleep 1s
+		ssh $nom_distant@$ip_distante cd $path_script
+		ssh $nom_distant@$ip_distante chmod +x $name_script
+		read -p "Si besoin, indiquez les arguments du script : " arg_script
+		ssh $nom_distant@$ip_distante ./$name_script $arg_script
+		sleep 4s
+		return
+	
+	else
+		echo "Opération annulée - Retour au menu précédent"
+		sleep 1s
+		return
+	fi	
+
+}
+
 
 
 #Demande d'infos sur la machine distante
@@ -503,8 +623,17 @@ do
     	firewall_rules
     ;;	
     	
-    	
-    	
+    11)
+    	install_app
+    ;;	
+    
+    12)
+    	uninstall_app
+    ;;
+    
+    13)
+    	remote_script
+    ;;	
     	
     				
     esac	
