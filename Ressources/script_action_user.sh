@@ -5,15 +5,20 @@ afficher_menu() {
     # Effacer l'écran
     clear
     # Affichage actions
-    echo "Menu action utilisateur:"
-    echo "1. Création de compte utilisateur local"
-    echo "2. Changement de mot de passe"
-    echo "3. Suppression de compte utilisateur local"
-    echo "4. Désactivation de compte utilisateur local"
-    echo "5. Ajout à un groupe d'administration"
-    echo "6. Ajout à un groupe local"
-    echo "7. Sortie d'un groupe local"
-    echo "8. Quitter"
+    echo "=================================================="
+
+    echo '        Menu Action utilisateur           '
+
+    echo "=================================================="
+    echo "[1] Création de compte utilisateur local"
+    echo "[2] Changement de mot de passe"
+    echo "[3] Suppression de compte utilisateur local"
+    echo "[4] Désactivation de compte utilisateur local"
+    echo "[5] Ajout à un groupe d'administration"
+    echo "[6] Ajout à un groupe local"
+    echo "[7] Sortie d'un groupe local"
+    echo "[X]. Retour au menu précédent"
+    echo ""
 }
 
 # 7 fonctions action
@@ -66,7 +71,7 @@ supprimer_utilisateur() {
         #Si oui -> suppresion du compte
         if [ "$confirmation" == "Oui" ]; then
             sudo deluser $user_del
-            echo "Le compte $user_del est supprimé (MF!)" && sleep 2s
+            echo "Le compte $user_del est supprimé" && sleep 2s
         else
             # Si non -> sortie du script
             echo "Supression annulée." && sleep 2s
