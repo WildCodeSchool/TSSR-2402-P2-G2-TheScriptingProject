@@ -6,7 +6,7 @@
 
 #----------------------------------------------#
 
-#------------- Fonction Menu-------------------#
+#-------- Fonction Menu Principal--------------#
 
 #----------------------------------------------#
 
@@ -166,6 +166,8 @@ Menu_Action()
 
                 echo "ACTION POSTE DISTANT chosit" >> event.log 
 
+                Menu_Action_Ordinateur
+
                 ;;
 
             X)
@@ -290,11 +292,15 @@ Menu_Information()
 
 
 
+#----------------------------------------------#
 
+#-------- Fonction Menu Action   --------------#
+
+#----------------------------------------------#
 
 # Fonction pour afficher le menu
 
-Menu_Action_Utilisateur() {
+Menu_Action_Ordinateur() {
 
     # Effacer l'écran
 
@@ -456,6 +462,8 @@ Menu_Action_Utilisateur() {
 
         echo "retour menu principal choisit" >> event.log
 
+        return
+
         ;;
 
     *)
@@ -533,14 +541,6 @@ echo "<Date>-<Heure>-<Utilisateur>-********EndScript********" >> event.log
 # Fin de script
 
 exit 0
-
-
-
-
-
-
-
-
 
 
 ````
