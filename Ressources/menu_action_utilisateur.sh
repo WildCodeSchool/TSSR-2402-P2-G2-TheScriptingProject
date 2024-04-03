@@ -23,10 +23,9 @@ afficher_menu() {
     echo ""
 }
 
-# 7 fonctions action
-créer_utilisateur() {
-    # Création de compte utilisateur local
-
+# Création de compte utilisateur local
+créer_utilisateur() 
+{
     # Demande quel utilisateur à créer
     read -p "Quel compte utilisateur souhaitez-vous céer?" newUser
 
@@ -42,16 +41,16 @@ créer_utilisateur() {
     fi
 }
 
-changer_mdp() {
-    # Changement de mot de passe
-
+# Changement de mot de passe
+changer_mdp() 
+{
     # Demande changment mot de passe -> pour quel utilisateur?
     read -p "Pour quel compte utilisateur souhaitez-vous modifier le mot de passe? " user_mdp
 
     # Est-ce que le nom existe sur le systeme ?
     if cat /etc/passwd | grep $user_mdp >/dev/null; then
         # si oui -> modifier le mot de passe
-        ssh $nom_distant@$ip_distante sudo -S passwd $user_mdp
+        ssh $nom_distant@$ip_distante sudo -S passwd user_mdp
         echo "Le mot de passe est bien modifié." && sleep 2s
     else
         # si non -> sortie du script
@@ -59,9 +58,9 @@ changer_mdp() {
     fi
 }
 
-supprimer_utilisateur() {
-    # Suppression de compte utilisateur local
-
+# Suppression de compte utilisateur local
+supprimer_utilisateur() 
+{
     # Demande quel compte utilisateur à supprimer
     read -p "Quel compte utilisateur souhaitez-vous supprimer?" user_del
 
@@ -84,9 +83,9 @@ supprimer_utilisateur() {
     fi
 }
 
-désactiver_utilisateur() {
-    # Désactivation de compte utilisateur local
-
+# Désactivation de compte utilisateur local
+désactiver_utilisateur() 
+{
     # Demande quel compte utilisateur à désactiver
     read -p "Quel compte utilisateur souhaitez-vous désactiver?" user_lock
 
@@ -115,9 +114,9 @@ désactiver_utilisateur() {
     fi
 }
 
-ajouter_groupe_admin() {
-    # Ajout à un groupe d'administration
-
+# Ajout utilisateur à un groupe d'administration
+ajouter_groupe_admin() 
+{
     # Demande quel compte utilisateur à ajouter
     read -p "Quel compte utilisateur souhaitez-vous ajouter au groupe d'administration?" user_adm
 
@@ -132,9 +131,9 @@ ajouter_groupe_admin() {
     fi
 }
 
-ajout_utilisateur_groupe() {
-    # Ajout à un groupe local
-
+# Ajout utilsiateur à un groupe local
+ajout_utilisateur_groupe() 
+{
     # Demande quel compte à ajouter au groupe local
     read -p "Quel compte utilisateur souhaitez-vous ajouter a un groupe local?" user_addgroup
 
@@ -157,9 +156,9 @@ ajout_utilisateur_groupe() {
     fi
 }
 
-supprimer_utilisateur_groupe() {
-    # Suppression compte d'un groupe local
-
+# Suppression utilisateur d'un groupe local
+supprimer_utilisateur_groupe() 
+{
     # Demande quel compte à supprimer d'un compte local
     read -p "Quel compte utilisateur souhaitez-vous supprimer d'un groupe local?" user_delgroup
 
