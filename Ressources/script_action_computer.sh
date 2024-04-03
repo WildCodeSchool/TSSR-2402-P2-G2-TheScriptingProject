@@ -9,6 +9,9 @@ show_menu_computer()
     echo "=================================================="
     echo '        Menu "Action Machine Distante" :          '
     echo "=================================================="
+    echo ""
+    echo " Machine distante : $nom_distant@$ip_distante"
+    echo ""
     echo "[1]  Arrêt"
     echo "[2]  Redémarrage"
     echo "[3]  Vérouillage"
@@ -48,7 +51,7 @@ then
 				
 			1) 
 			echo "Arrêt instantanné en cours"
-			sudo shutdown now
+			ssh $nom_distant@$ip_distante sudo -S shutdown
 			return
 			;;
 			
@@ -56,10 +59,11 @@ then
 			echo "Arrêt planifié en cours"
 			sleep 1s
 			read -p "Indiquer l'heure de l'arrêt [hh:mm] " timer_s1
-			notify-send "Arrêt de l'ordinateur prévu pour $timer_s1"
+			ssh $nom_distant@$ip_distante notify-send "Arrêt_prévu_à_$timer_s1"
 			echo "Message d'avertissement envoyé"
 			sleep 2s
-			sudo shutdown $timer_s1
+			ssh $nom_distant@$ip_distante sudo -S shutdown $timer_s1
+			echo "Arrêt planifié pour $timer_s1"
 			sleep 3s
 			return
 			;;
@@ -67,7 +71,7 @@ then
 			3) 
 			echo "Arrêt planifié en cours"
 			read -p "Indiquer l'heure de l'arrêt [hh:mm] " timer_s2
-			sudo shutdown $timer_s2
+			ssh $nom_distant@$ip_distante sudo -S shutdown $timer_s2
 			sleep 2s
 			return
 			;;
@@ -108,7 +112,7 @@ then
 				
 			1) 
 			echo "Redémarrage instantanné en cours"
-			sudo shutdown -r now
+			sudo shutdown -S -r now
 			return
 			;;
 			
@@ -116,10 +120,10 @@ then
 			echo "Redémarrage planifié en cours"
 			sleep 1s
 			read -p "Indiquer l'heure du redémarrage [hh:mm] " timer_s2
-			notify-send "Redémarrage de l'ordinateur prévu pour $timer_s2"
+			notify-send "Redémarrage_prévu_pour_$timer_s2"
 			echo "Message d'avertissement envoyé"
 			sleep 2s
-			sudo shutdown -r $timer_s2
+			sudo shutdown -S -r $timer_s2
 			sleep 3s
 			return
 			;;
@@ -127,7 +131,7 @@ then
 			3) 
 			echo "Redémarrage planifié en cours"
 			read -p "Indiquer l'heure de l'arrêt [hh:mm] " timer_s2
-			sudo shutdown -r $timer_s2
+			sudo shutdown -S -r $timer_s2
 			sleep 2s
 			return
 			;;
@@ -154,8 +158,9 @@ read -p "Confirmez-vous le vérouillage de la session de la machine distante ? [
 
 if [ $conf_lock = O ]	
 then
+	ssh $nom_distant@$ip_distante sudo -S skill -KILL -u $nom_distant
 	echo "La session de la machine distante a été vérouillée"
-	sudo systemctl suspend
+	sleep 2s
 	clear
 	return
 else
@@ -174,7 +179,7 @@ read -p "Confirmez-vous la mise-à-jour du système de la machine distante ? [O 
 if [ $conf_update = O ]
 then
 	clear
-	sudo apt update && sudo apt upgrade -y
+	ssh $nom_distant@$ip_distante sudo apt update && sudo apt upgrade -y
 	echo "La mise-à-jour du système de la machine distante a été effectuée"
 	sleep 2s
 	return
@@ -205,22 +210,38 @@ create_directory()
 
         read -p "Quel est le chemin de destination de votre dossier (Si pas de chemin indiqué, chemin courant utilisé) : " path_directory
 
-        if [ -z $path_directory ]
+        if ssh $nom_distant@$ip_distante [ -z "$path_directory" ]
         then
-            mkdir "$name_directory"
-            echo "Le dossier $name_directory a été créé à l'emplacement actuel"
-            sleep 2s
-            return
-            
-        else
-            mkdir -p "$path_directory/$name_directory"
-            echo "Le dossier $name_directory a été créé à l'emplacement $path_directory"
-            sleep 2s
-            return
-        fi
+    		if ssh $nom_distant@$ip_distante "[ -d \"$name_directory\" ]"
+    		then
+        		echo "Le dossier existe déjà."
+        		echo "Retour au menu précédent"
+        		sleep 2s
+        		return
+    		else
+        		echo "Le dossier n'existe pas."
+        		ssh $nom_distant@$ip_distante mkdir "$name_directory"
+        		echo "Le dossier $name_directory sera créé à l'emplacement actuel"
+        		sleep 2s
+    		fi
+	else
+    		if ssh $nom_distant@$ip_distante "[ -d \"$path_directory/$name_directory\" ]"
+    		then
+        		echo "Le dossier existe déjà."
+        		echo "Retour au menu précédent"
+        		sleep 2s
+        		return
+    		else
+        		echo "Le dossier n'existe pas."
+        		ssh $nom_distant@$ip_distante mkdir -p "$path_directory/$name_directory"
+        		echo "Le dossier $name_directory a été créé à l'emplacement $path_directory"
+        		sleep 2s
+    		fi
+	fi
+
 
     else
-        echo "Mauvais choix - Retour au menu précédent"
+        echo "Opération annulée - Retour au menu précédent"
         sleep 2s
         clear
         return
@@ -238,7 +259,7 @@ remove_directory()
         clear
         read -p "Quel est le nom du dossier à supprimer ? " name_directory_2
 
-        if [ -z $name_directory_2 ]
+        if [ -z "$name_directory_2" ]
         then
             echo "Vous n'avez pas indiqué de nom de dossier, retour au menu précédent"
             return
@@ -246,17 +267,17 @@ remove_directory()
 
         read -p "Quel est le chemin de votre dossier : " path_directory_2
 
-        if [ -d $path_directory_2/$name_directory_2 ]
+        if ssh $nom_distant@$ip_distante [ -d "$path_directory_2/$name_directory_2" ]
         then
             read -p " Le dossier suivant $path_directory_2/$name_directory_2 sera supprimé, confirmez-vous ? [O pour valider] " conf_remove_directory_2
             if [ $conf_remove_directory_2 = O ]
             then
-                sudo rm -r $path_directory_2/$name_directory_2
+                ssh $nom_distant@$ip_distante sudo -S rm -r "$path_directory_2/$name_directory_2"
                 echo "Le dossier suivant $path_directory_2/$name_directory_2 a été supprimé"
                 sleep 2s
                 return
             else
-                echo "Mauvais choix - Retour au menu précédent"
+                echo "Opération annulée - Retour au menu précédent"
                 sleep 2s
                 clear
                 return
@@ -270,6 +291,69 @@ remove_directory()
     fi
 }
 
+remote_control()
+{
+	echo "Cette action vous sortira de ce script et vous donnera accès à la commande de la machine distante $nom_distant@$ip_distante"
+	read -p "Confirmez-vous ? [O pour valider] : " conf_remote
+	
+		if [ $conf_remote = O ]
+		then
+			echo "Accès à la commande de la machine distante : "
+			sleep 2s
+			ssh $nom_distant@$ip_distante	
+		else
+			echo "Opération annulée - Retour au menu précédent"
+			sleep 2s
+			return		
+		fi	
+}
+
+firewall_on()
+{
+	read -p "Confirmez-vous l'activation du pare-feu sur la machine distante ? [O pour valider ] : " conf_fw_on
+	
+	if [ $conf_fw_on = O ]
+	then 
+		ssh $nom_distant@$ip_distante sudo -S ufw enable
+		ssh $nom_distant@$ip_distante sudo -S ufw status | cat
+		echo "Le pare-feu de la machine distante a été activé"
+		sleep 3s
+		return
+	else
+		echo "Opération annulée - Retour au menu précédent"
+		sleep 2s
+		return	
+	fi	
+}
+
+firewall_off()
+
+{
+	read -p "Confirmez-vous la désactivation du pare-feu sur la machine distante ? [O pour valider ] : " conf_fw_off
+	
+	if [ $conf_fw_off = O ]
+	then 
+		ssh $nom_distant@$ip_distante sudo -S ufw disable
+		ssh $nom_distant@$ip_distante sudo -S ufw status | cat
+		echo "Le pare-feu de la machine distante a été désactivé"
+		sleep 3s
+		return
+	else
+		echo "Opération annulée - Retour au menu précédent"
+		sleep 2s
+		return	
+	fi	
+}
+
+
+#Demande d'infos sur la machine distante
+    echo "=================================================="
+    echo "        Informations Machine Distante             "
+    echo "=================================================="
+	echo ""
+	read -p "Veuillez entrer le nom de la machine distante : " nom_distant
+	read -p "Veuillez entrer l'adresse IP de la machine distante : " ip_distante
+	
 while true
 do
     # Affiche le menu
@@ -302,6 +386,17 @@ do
     6)
     	remove_directory
     ;;
+    
+    7)
+    	remote_control
+    ;;
+    
+    8)
+    	firewall_on	
+    ;;
+    
+    9)
+    	firewall_off
     			
     esac	
 done    	
