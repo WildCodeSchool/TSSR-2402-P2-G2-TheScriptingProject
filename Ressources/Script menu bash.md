@@ -1,268 +1,548 @@
 
 ```bash
-echo "<Date>-<Heure>-<Utilisateur>-********StartScript********" >> event.log  
 
-MENU1()
+
+
+
+#----------------------------------------------#
+
+#------------- Fonction Menu-------------------#
+
+#----------------------------------------------#
+
+
+
+Menu_Principal()
 
 {
 
-	while true ; do
+    while true ; do
 
-	clear
+        clear
 
-    #Demande de première action ACTION ou Information
+        # Demande de premier choix ACTION /  INFORMAITON ou QUITTER
 
-        echo "Bonjour, voici les choix possible :"
+	echo "=================================================="
 
-        echo " "
+	echo '                Menu Principal                    '
 
-        echo "Tapez 1 pour ACTION sur Utilisateur ou POSTE DISTANT"
+	echo "=================================================="	
 
-        echo " "
-
-    # renvoie vers MENU ACTION 
-
-        echo "Tapez 2 pour INFORMATION sur Utilisateur ou POSTE DISTANT"
+        echo "Bonjour, voici les choix possibles :"
 
         echo " "
 
-    # renvoie vers MENU INFORMATION
+        echo "[1] Menu ACTION sur Utilisateur ou POSTE DISTANT"
 
-        echo "Tapez 3 pour quitter l'assitant "
+        echo "[2] Menu INFORMATION sur Utilisateur ou POSTE DISTANT"
+
+        echo " "    
+
+        echo "[X] Arreter le script "
 
         echo " "
 
-        read -p "Quelle est votre choix " choixMenu1
+        read -p "Veuillez faire un choix en donnant le numéro souhaité : " choixMenuPrincipal
 
+        case $choixMenuPrincipal in
 
+            1) 
 
-        case $choixMenu1 in
+            # Envoie vers MENU ACTION
 
-            
+                echo " "    
 
-            1) echo "Vous avez choisit ACTION" && sleep 2s
+                echo "Vous avez choisit ACTION" && sleep 2s
 
-               echo "ACTION a été chosit" >> event.log        
+                echo "ACTION a été chosit" >> event.log        
 
-                MENU2 ;;
+                Menu_Action 
 
-            2) echo "Vous avez choisit INFORMATION" && sleep 2s
+                ;;
 
-               echo "INFORMATION a été chosit" >> event.log                     
+            2) 
 
-            	MENU3 ;;
+            # Envoie vers MENU INFORMAITON
 
-            3) echo "J'espère que j'ai pu vous aider, à bientôt" && sleep 2s
+                echo " "    
 
-               echo "Demande de sortie" >> event.log        
+                echo "Vous avez choisit INFORMATION" && sleep 2s
 
-            
+                echo "INFORMATION a été chosit" >> event.log                     
 
-		echo "<Date>-<Heure>-<Utilisateur>-********EndScript********" >> event.log  
+                Menu_Information 
 
-               exit 0 ;;
+                ;;
 
-            *) echo "Commande inconnu, Veuillez recommencer" && sleep 2s              
+            X)
 
-		echo "erreur de commande" >> event.log ;;        
+            # Arrêt script 
+
+                echo " "    
+
+                echo "J'espère que j'ai pu vous aider, à bientôt" && sleep 2s
+
+                echo "Demande de sortie" >> event.log        
+
+                exit 0 
+
+                ;;
+
+            *)
+
+            # Erreur de commande   
+
+                echo " "    
+
+                echo "Commande inconnu, Veuillez recommencer" 
+
+                echo " "    
+
+                read -p "Appuyez sur Entrée pour continuer..." && sleep 2s
+
+                echo "erreur de commande" >> event.log
+
+                ;;        
 
         esac
 
-        done
-
-    
+    done
 
 }
 
 
 
-MENU2() 
+Menu_Action() 
 
 {
 
- while true ; do
+    while true; do
 
- 	clear
+        clear
 
-    #Navigation si ACTION sur USER ou PC
+        #Navigation si ACTION sur USER ou PC
 
-    echo "Bonjour, voici les choix possible :"
+        echo "=================================================="
 
-    echo " "
+	echo '                 Menu "Action"                    '
 
-    echo "Tapez 1 pour ACTION sur Utilisateur"
+	echo "=================================================="	
 
-    echo " "   
+        echo "Voici les choix possibles :"
 
-    echo "Tapez 2 pour ACTION POSTE DISTANT"
+        echo " "
 
-    echo " "
+        echo "[1] ACTION sur UTILISATEUR "
 
-    echo "Tapez 3 ou tout autre caractère pour revenir en arrière "
+        echo "[2] ACTION POSTE DISTANT "
+
+	echo " "    
+
+        echo "[X] Retour menu précédent "
+
+        echo " "    
+
+        read -p "Veuillez faire un choix en donnant le numéro souhaité : " choixMenuAction
+
+        case $choixMenuAction in
+
+            1)
+
+                echo " "    
+
+                echo "Vous avez choisit ACTION UTILISATEUR" && sleep 2s
+
+                echo "ACTION USER chosit" >> event.log
+
+                Menu_Action_Utilisateur
+
+                ;;
+
+            2)
+
+                echo " "    
+
+                echo "Vous avez choisit ACTION POSTE DISTANT"  && sleep 2s
+
+                echo "ACTION POSTE DISTANT chosit" >> event.log 
+
+                ;;
+
+            X)
+
+                echo " "    
+
+                echo "Retour au menu précédent"  && sleep 2s
+
+                echo "retour menu principal" >> event.log
+
+                return
+
+                ;;        
+
+            *)
+
+                echo " "    
+
+                echo "Commande inconnu, Veuillez recommencer" 
+
+                echo " "    
+
+                read -p "Appuyez sur Entrée pour continuer..." && sleep 2s
+
+                echo "erreur de commande" >> event.log
+
+                ;;
+
+        esac
+
+    done
+
+}
+
+
+
+Menu_Information() 
+
+{
+
+    while true; do
+
+        clear
+
+        #Navigation si INFORMATION sur USER ou PC
+
+        echo "=================================================="
+
+	echo '            Menu "INFORMATION"                    '
+
+	echo "=================================================="	
+
+        echo "Voici les choix possibles :"
+
+        echo " "
+
+        echo "[1] INFORMATION sur UTILISATEUR"
+
+        echo "[2] INFORMATION POSTE DISTANT"
+
+        echo " "    
+
+        echo "[X] Retour menu précédent "
+
+        echo " "    
+
+        read -p "Veuillez faire un choix en donnant le numéro souhaité: " choixMenuInformation
+
+        case $choixMenuInformation in
+
+            1) 
+
+                echo " "    
+
+                echo "Vous avez choisit INFORMATION utilsiateur" && sleep 2s
+
+                echo "ACTION INFORMATION user chosit" >> event.log
+
+                ;;
+
+            2)
+
+                echo " "    
+
+                echo "Vous avez choisit INFORMATION POSTE DISTANT" && sleep 2s
+
+                echo "ACTION INFORMATION computer chosit" >> event.log
+
+                ;;
+
+            X)
+
+                echo " "    
+
+                echo "Retour au menu précédent"  && sleep 2s
+
+                echo "Retour menu principal" >> event.log
+
+                return
+
+                ;;        
+
+            *)
+
+                echo " "    
+
+                echo "Commande inconnu, Veuillez recommencer" 
+
+                echo " "    
+
+                read -p "Appuyez sur Entrée pour continuer..." && sleep 2s
+
+                echo "erreur de commande" >> event.log
+
+                ;;
+
+        esac
+
+    done
+
+}
+
+
+
+
+
+# Fonction pour afficher le menu
+
+Menu_Action_Utilisateur() {
+
+    # Effacer l'écran
+
+    clear
+
+    # Affichage actions
+
+    echo "=================================================="
+
+    echo '        Menu "Action Machine Distante"            '
+
+    echo "=================================================="
+
+    echo "[1]  Arrêt"
+
+    echo "[2]  Redémarrage"
+
+    echo "[3]  Vérouillage"
+
+    echo "[4]  MàJ du système"
+
+    echo "[5]  Création de repertoire"
+
+    echo "[6]  Suppression de repertoire"
+
+    echo "[7]  Prise de main à distance"
+
+    echo "[8]  Activation du pare-feu"
+
+    echo "[9]  Désactivation du pare-feu"
+
+    echo "[10] Règles du parefeu"
+
+    echo "[11] Installation d'un logiciel"
+
+    echo "[12] Désinstallation d'un logiciel"
+
+    echo "[13] Exécution d'un script sur la machine distante"
+
+    echo ""
+
+    echo "[X]  Retour au menu précédent"
+
+
+
+    echo ""
+
+    # Demande du choix action
 
     echo " "    
 
-    read -p "Quelle est votre choix " choixMenu2
+    read -p "Veuillez faire votre choix en donnant le numéro souhaité : " choix_Menu_Action_User
 
 
 
-    case $choixMenu2 in
+    case $choix_Menu_Action_User in
 
-        1) echo "Vous avez choisit ACTION utilsiateur" && sleep 2s
+    1)        
 
-        echo "ACTION USER chosit" >> event.log ;;
+        echo " "    
 
-        2) echo "Vous avez choisit ACTION POSTE DISTANT"  && sleep 2s
+        echo "Vous avez choisit création de compte utilsiateur" && sleep 2s
 
-        echo "ACTION POSTE DISTANT chosit" >> event.log ;;
+        echo "Création utilisateur chosit" >> event.log
 
-        3) echo "Retour au menu précédent"  && sleep 2s
+        créer_utilisateur
 
-        MENU1
+        ;;
 
-	echo "retour menu 1" >> event.log;;        
+    2)
 
-        *) echo "Commande inconnu, Veuillez recommencer" && sleep 2s
+        echo " "    
 
-  	echo "erreur de commande" >> event.log ;;
+        echo "Vous avez choisit changement de mot de passe" && sleep 2s
+
+        echo "changement de mot de passe chosit" >> event.log
+
+        changer_mdp
+
+        ;;
+
+    3)
+
+        echo " "    
+
+        echo "Vous avez choisit suppression de compte utilisateur" && sleep 2s
+
+        echo "Suppression de compte utilisateur chosit" >> event.log
+
+        supprimer_utilisateur
+
+        ;;
+
+    4)
+
+        echo " "    
+
+        echo "Vous avez choisit désactivation de compte utilisateur" && sleep 2s
+
+        echo "Désactivation de compte utilisateur chosit" >> event.log
+
+        désactiver_utilisateur
+
+        ;;
+
+    5)
+
+        echo " "    
+
+        echo "Vous avez choisit ajjout à groupe d'administration" && sleep 2s
+
+        echo "Ajjout à groupe d'administration chosit" >> event.log
+
+        ajouter_groupe_admin
+
+        ;;
+
+    6)
+
+        echo " "    
+
+        echo "Vous avez choisit ajjout à groupe local" && sleep 2s
+
+        echo "Ajjout à groupe loScal chosit" >> event.log
+
+        ajout_utilisateur_groupe
+
+        ;;
+
+    7)
+
+        echo " "    
+
+        echo "Vous avez choisit Sortie d'un groupe local" && sleep 2s
+
+        echo "Sortie d'un groupe local chosit" >> event.log
+
+        supprimer_utilisateur_groupe
+
+        ;;
+
+    8)    
+
+        echo " "    
+
+        echo "Retour au menu précédent" && sleep 2s
+
+        echo "retour menu précédent choisit" >> event.log
+
+        return
+
+        ;;
+
+    X)
+
+        echo " "    
+
+        echo "Retour au menu principal" && sleep 2s
+
+        echo "retour menu principal choisit" >> event.log
+
+        ;;
+
+    *)
+
+        echo "Option invalide. Veuillez choisir une option valide."
+
+        read -p "Appuyez sur Entrée pour continuer..."
+
+        ;;
 
     esac
 
- done
-
-}
-
-
-
-MENU3() 
-
-{
-
-while true ; do
-
-	clear
-
-    #Navigation si INFORMATION sur USER ou PC
-
-    echo "Bonjour, voici les choix possible :"
-
-    echo " "    
-
-    echo "Tapez 1 pour INFORMATION sur Utilisateur"
-
-    echo " "    
-
-    echo "Tapez 2 pour INFORMATION POSTE DISTANT"
-
-    echo " "    
-
-    echo "Tapez 3 ou tout autre caractère pour revenir en arrière "
-
-    echo " "    
-
-    read -p "Quelle est votre choix " choixMenu3
-
-        case $choixMenu3 in
-
-        1) echo "Vous avez choisit INFORMATION utilsiateur" && sleep 2s
-
-        echo "ACTION INFORMATION user chosit" >> event.log;;
-
-        2) echo "Vous avez choisit INFORMATION POSTE DISTANT" && sleep 2s
-
-        echo "ACTION INFORMATION computer chosit" >> event.log;;
-
-        3) echo "Retour au menu précédent" && sleep 2s
-
-        MENU1
-
-	echo "retour menu 1" >> event.log;;        
-
-        *) echo "Commande inconnu, Veuillez recommencer" && sleep 2s
-
-        echo "erreur de commande" >> event.log ;;
-
-        esac
-
-done
-
-}
-
-Adduser () {
-
-    # afficher question "donner un nom d'utilisateur" 
-
-    read -p "Veuiller donner un nom d'utilisateur :" utilisateur
-
-    # est-ce que le nom existe sur le systeme ?
-
-    if cat /etc/passwd | grep $utilisateur > /dev/null
-
-    then
-
-        # => si oui (le nom existe) => on sort du script + message
-
-        echo "l'utilisateur existe déjà"&& sleep 2s
-
-        echo "RETOUR MENU2"
-
-        MENU2
-
-     else
-
-        # si non => on continue
-
-        # creation du nom donné plus haut pour créer l'utilisateur
-
-        # verification de la creation du compte
-
-        #if sudo useradd $utilisateur
-
-        sudo useradd $utilisateur > /dev/null
-
-        if cat /etc/passwd | grep $utilisateur > /dev/null
-
-        then
-
-            # attribution de droits et/ou de groupe
-
-            # RAZ mot de passe
-
-            # si utilisateur crée => message
-
-            #read -p "mot de passe ?" motDePasse
-
-            #passwd -u $utilisateur $motDePasse
-
-            echo "Compte $utilisateur crée"&& sleep 2s
-
-	echo "RETOUR MENU2"
-
-        else
-
-            # sortie d'erreur + message "creation utilisateur impossible"
-
-            echo "compte $utilisateur non-crée"&& sleep 2s
-
-	    echo "RETOUR MENU2"
-
-            MENU2
-
-        fi
-
-    fi
-
 
 
 }
+
+
+
+#----------------------------------------------#
+
+#--------Fonction Action Utilisateur-----------#
+
+#----------------------------------------------#
+
+
+
+
+
+#----------------------------------------------#
+
+#--------Fonction Action Ordinateur------------#
+
+#----------------------------------------------#
+
+
+
+
+
+#----------------------------------------------#
+
+#-----Fonction Information Utilisateur---------#
+
+#----------------------------------------------#
+
+
+
+
+
+#----------------------------------------------#
+
+#-----Fonction Information Ordinateur----------#
+
+#----------------------------------------------#
+
+
+
+# Début enregistrement evennement
+
+echo "<Date>-<Heure>-<Utilisateur>-********StartScript********" >> event.log  
+
+
 
 
 
 #appel foncton MENU1 
 
-MENU1
+Menu_Principal
+
+
+
+# Fin enregistrement evennement
 
 echo "<Date>-<Heure>-<Utilisateur>-********EndScript********" >> event.log  
+
+# Fin de script
+
+exit 0
+
+
+
+
+
+
+
+
+
+
 ````
 
 
