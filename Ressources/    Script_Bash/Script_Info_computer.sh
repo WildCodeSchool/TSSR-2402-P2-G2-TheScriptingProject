@@ -1,240 +1,660 @@
 #!/bin/bash
 
+
+
 # Fonction pour afficher le menu
 
+
+
 show_menu_computer() 
+
 {
+
     # Effacer l'écran
+
     clear
-    # Affichage actions
+
+
+
+    # Affichage des actions
+
     echo "=================================================="
+
     echo '        Menu "Information Machine Distante" :          '
+
     echo "=================================================="
+
     echo "[1]  Version de l'OS"
-    echo "[2]  Nombre d'interface"
-    echo "[3]  Adresse IP de chaque interface"
-    echo "[4]  Adresse Mac"
-    echo "[5]  Liste des applications/paquets installées"
+
+    echo "[2]  Nombre d'interfaces"
+
+    echo "[3]  Adresses IP de chaque interface"
+
+    echo "[4]  Adresses MAC"
+
+    echo "[5]  Liste des applications/paquets installés"
+
     echo "[6]  Liste des utilisateurs locaux"
-    echo "[7]  Type de CPU, nombre de coeurs, etc."
-    echo "[8]  Mémoire RAM totale et Utilisation"
-    echo "[9] Utilisation du disque"
+
+    echo "[7]  Type de CPU, nombre de cœurs, etc."
+
+    echo "[8]  Mémoire RAM totale et utilisation"
+
+    echo "[9]  Utilisation du disque"
+
     echo "[10] Utilisation du processeur"
-    echo "[11] Liste des ports ouverts"
-    echo "[12] Statut du pare-feu"
+
+    echo "[11] Statut du pare-feu et liste des ports ouverts"
+
     echo ""
+
     echo "[X]  Retour au menu précédent"
+
     echo ""
- }
+
+}
+
+
 
 # Fonction pour avoir la version de l'OS
+
+
+
 GetOs()
+
 {
-    read -p "Voulez vous voir la version de l'OS? [O pour valider] " ConfOS
-if [ $ConfOS = O ]; then
-            clear
-            lsb_release -a
-            sleep 5s
+
+    clear
+
+    read -p "Voulez-vous voir la version de l'OS? [O pour valider] " ConfOS
+
+    if [ "$ConfOS" = "O" ]; then
+
+        clear
+
+        ssh $nom_distant@$ip_distante lsb_release -a 
+
+        ssh $nom_distant@$ip_distante lsb_release -a >> /home/wilder/Documents/info-CLILIN01-$(date +%Y-%m-%d).txt
+
+        echo ""
+
+        echo "Les données sont enregistrées dans le fichier info-CLILIN01-$(date +%Y-%m-%d).txt" && sleep 5s
+
         return
-else
-	        clear
-	        echo "Mauvais choix - Retour au menu précédent"
-	        sleep 2s
+
+    else
+
+        clear
+
+        echo "Mauvais choix - Retour au menu précédent"
+
+        sleep 2s
+
         return
-fi   
+
+    fi   
+
 }
 
-# Fontion pour avoir le nombre d'interface
+
+
+# Fonction pour avoir le nombre d'interfaces
+
+
+
 NbrCarte()
+
 {
-    read -p "voulez vous voir le nombre d'interface present sur cette machine? [O pour valider]" NbrI
-if [ $NbrI = O ]; then
-            clear
-            echo "voici la liste des interface presente sur cette machine !: "
-            ifconfig -a | grep UP | cut -d : -f1
-            sleep 5s
-        return
-else
-	        clear
-	        echo "Mauvais choix - Retour au menu précédent"
-	        sleep 2s
-        return
-fi
+
+    clear
+
+    read -p "Voulez-vous voir le nombre d'interfaces présentes sur cette machine? [O pour valider]" NbrI
+
+
+
+    if [ "$NbrI" = "O" ]; then
+
+
+
+        clear
+
+
+
+        echo "Voici la liste des interfaces présentes sur cette machine :" 
+
+
+
+        ssh $nom_distant@$ip_distante ifconfig -a | grep UP | cut -d : -f1
+
+
+
+        echo "liste des cartes" >> /home/wilder/Documents/info-CLILIN01-$(date +%Y-%m-%d).txt
+
+
+
+        ssh $nom_distant@$ip_distante ifconfig -a | grep UP | cut -d : -f1 >> /home/wilder/Documents/info-CLILIN01-$(date +%Y-%m-%d).txt
+
+
+
+        echo ""
+
+
+
+        echo "Les données sont enregistrées dans le fichier info-CLILIN01-$(date +%Y-%m-%d).txt" && sleep 5s
+
+            
+
+    fi
+
 }
 
-# Fonction pour Adresse IP de chaque interface
-IpEach()
+
+
+#Fonction demande adresse IP
+
+
+
+IPdemande()
+
 {
-    read -p "Voulez vous voir les adresses IP ? [O pour valider]" AIp
-if [ $AIp = O ]; then 
-            clear
-            echo "Voici les adresses Ip pour toutes les cartes monter: "
-            $ ifconfig |  grep inet | head -n4
-            sleep 5s
-        return
-else
-	        clear
-	        echo "Mauvais choix - Retour au menu précédent"
-	        sleep 2s
-        return
-fi        
+
+    clear
+
+    read -p "Quelle carte choisissez-vous ? " CartIp
+
+
+
+   ssh $nom_distant@$ip_distante echo "$CartIp" && ifconfig "$CartIp" | awk ' /inet /{print $2, $3 ,$4, $5, $6}'
+
+
+
+    echo "l'adresse ip de la carte "$CartIp" est :" >> /home/wilder/Documents/info-CLILIN01-$(date +%Y-%m-%d).txt
+
+
+
+    ssh $nom_distant@$ip_distanteifconfig "$CartIp" | awk ' /inet /{print $2, $3 ,$4, $5, $6}' >> /home/wilder/Documents/info-CLILIN01-$(date +%Y-%m-%d).txt
+
+
+
+    echo ""
+
+
+
+    echo "Les données sont enregistrées dans le fichier info-CLILIN01-$(date +%Y-%m-%d).txt" && sleep 5s    
+
 }
 
-# Fonction pour avoir l'adresse Mac de chaque carte
-MacAdr()
+
+
+#Fonction demande adresse Mac
+
+
+
+MACdemande()
+
 {
-    read -p "Voulez vous voir les adresses mac ? [O pour valider]" MacA
-if [ $MacA = O ]; then 
-         clear
-         echo " Voici les adresses mac pour toutes les cartes monter: "
-         ip l | awk '/link\/ether/ {print $2}'
-         sleep 5s
-        return
-else
-	        clear
-	        echo "Mauvais choix - Retour au menu précédent"
-	        sleep 2s
-        return
-fi        
+
+    clear
+
+    read -p "Quelle carte choisissez-vous ? " CartMac
+
+
+
+    ssh $nom_distant@$ip_distante echo "$CartMac" && ifconfig "$CartMac" | awk '/ether / {print $2}'
+
+
+
+    ssh $nom_distant@$ip_distante echo "l'adresse mac de la carte "$CartMac" est:" >> /home/wilder/Documents/info-CLILIN01-$(date +%Y-%m-%d).txt
+
+
+
+    ifconfig "$CartMac" | awk '/ether / {print $2}' >> /home/wilder/Documents/info-CLILIN01-$(date +%Y-%m-%d).txt
+
+
+
+    echo ""
+
+
+
+    echo "Les données sont enregistrées dans le fichier info-CLILIN01-$(date +%Y-%m-%d).txt" && sleep 5s
+
 }
 
-# Fonction qu'est qui est installé?
+
+
+# Fonction qu'est-ce qui est installé?
+
+
+
 Application()
+
 {
-    read -p "voulez vous la liste des application et paquet installer? [O pour valider]" app
-if [ $app = O ]; then
-         clear
-         echo " Voici la liste des application et paquet present sur cette machine:  "
-         ls /usr/share/applications | awk -F '.desktop' ' { print $1}'
-        sleep 5s
-    return
-else
-            clear
-            echo "Mauvais choix - Retour au menu précédent"
-            sleep 2s
+
+    clear 
+
+    read -p "Voulez-vous la liste des applications et paquets installés? [O pour valider]" app
+
+
+
+    if [ "$app" = "O" ]; then
+
+        clear
+
+        echo " Voici la liste des applications et paquets présents sur cette machine : "
+
+        ssh $nom_distant@$ip_distante ls /usr/share/applications | awk -F '.desktop' ' { print $1}' 
+
+        echo "liste des applications :" >> /home/wilder/Documents/info-CLILIN01-$(date +%Y-%m-%d).txt
+
+        ssh $nom_distant@$ip_distante ls /usr/share/applications | awk -F '.desktop' ' { print $1}' >> /home/wilder/Documents/info-CLILIN01-$(date +%Y-%m-%d).txt
+
+        echo ""
+
+        echo "Les données sont enregistrées dans le fichier info-CLILIN01-$(date +%Y-%m-%d).txt" && sleep 5s
+
         return
-fi
+
+    else
+
+        clear
+
+        echo "Mauvais choix - Retour au menu précédent"
+
+        sleep 2s
+
+        return
+
+    fi
+
 }
+
+
 
 # Fonction liste des utilisateurs locaux
+
+
+
 Userlist()
+
 {
-    read -p "Voulez vous voir la liste ds utilisateur locaux ? [O pour valider]" ListU
-if [ $ListU = O ]; then 
-         clear
-         echo " Voici la liste ds utilisateur locaux:  "
-         cut -d: -f1 /etc/passwd
-         sleep 5s
+
+    clear
+
+
+
+    read -p "Voulez-vous voir la liste des utilisateurs locaux ? [O pour valider]" ListU
+
+
+
+    if [ "$ListU" = "O" ]; then 
+
+
+
+        clear
+
+
+
+        echo " Voici la liste des utilisateurs locaux :"
+
+
+
+        ssh $nom_distant@$ip_distante cut -d: -f1 /etc/passwd 
+
+        echo "liste des utilisateurs :" >> /home/wilder/Documents/info-CLILIN01-$(date +%Y-%m-%d).txt
+
+        ssh $nom_distant@$ip_distante cut -d: -f1 /etc/passwd  >> /home/wilder/Documents/info-CLILIN01-$(date +%Y-%m-%d).txt
+
+        echo ""
+
+        echo "Les données sont enregistrées dans le fichier info-CLILIN01-$(date +%Y-%m-%d).txt" && sleep 5s
+
+
+
         return
-else
-	        clear
-	        echo "Mauvais choix - Retour au menu précédent"
-	        sleep 2s
+
+
+
+    else
+
+
+
+        clear
+
+
+
+        echo "Mauvais choix - Retour au menu précédent"
+
+
+
+        sleep 2s
+
+
+
         return
-fi        
+
+
+
+    fi        
+
 }
 
-# Fontion Type de CPU, nombre de coeurs, etc.
+
+
+# Fonction Type de CPU, nombre de cœurs, etc.
+
+
 
 GetCpu()
+
 {
-    read -p "Voulez vous voir les details du cpu ? [O pour valider]" Gcpu
-if [ $Gcpu = O ]; then 
-         clear
-         echo " Voici le details du cpu de la machine: "
-         lscpu | head -n15
-         sleep 5s
+
+    clear
+
+    read -p "Voulez-vous voir les détails du CPU ? [O pour valider]" Gcpu
+
+    if [ "$Gcpu" = "O" ]; then 
+
+        clear
+
+        echo " Voici les détails du CPU de la machine :"
+
+        ssh $nom_distant@$ip_distante lscpu | head -n15 
+
+        echo "Détail du CPU :" >> /home/wilder/Documents/info-CLILIN01-$(date +%Y-%m-%d).txt
+
+        ssh $nom_distant@$ip_distante lscpu | head -n15 >> /home/wilder/Documents/info-CLILIN01-$(date +%Y-%m-%d).txt
+
+        echo ""
+
+        echo "Les données sont enregistrées dans le fichier info-CLILIN01-$(date +%Y-%m-%d).txt" && sleep 5s
+
         return
-else
-	        clear
-	        echo "Mauvais choix - Retour au menu précédent"
-	        sleep 2s
+
+    else
+
+        clear
+
+        echo "Mauvais choix - Retour au menu précédent"
+
+        sleep 2s
+
         return
-fi        
+
+    fi        
+
 }
 
-# Fonction memoire ram et utilisation
+
+
+# Fonction mémoire RAM et utilisation
+
+
+
 RamInfo()
+
 {
 
-    read -p "Voulez vous voir les details de la RAM ? [O pour valider]" RamInf
-if [ $RamInf = O ]; then 
-         clear
-         echo " Voici le details de la RAM sur cette machine: "
-         free -m | head -n2
-         sleep 5s
+    clear
+
+    read -p "Voulez-vous voir les détails de la RAM ? [O pour valider]" RamInf
+
+    if [ "$RamInf" = "O" ]; then 
+
+        clear
+
+        echo " Voici les détails de la RAM sur cette machine :"
+
+        ssh $nom_distant@$ip_distante free -m | head -n2 
+
+        echo "Détail de la RAM :" >> /home/wilder/Documents/info-CLILIN01-$(date +%Y-%m-%d).txt
+
+        ssh $nom_distant@$ip_distante free -m | head -n2 >> /home/wilder/Documents/info-CLILIN01-$(date +%Y-%m-%d).txt
+
+        echo ""
+
+        echo "Les données sont enregistrées dans le fichier info-CLILIN01-$(date +%Y-%m-%d).txt" && sleep 5s
+
         return
-else
-	        clear
-	        echo "Mauvais choix - Retour au menu précédent"
-	        sleep 2s
+
+
+
+    else
+
+        clear
+
+        echo "Mauvais choix - Retour au menu précédent"
+
+        sleep 2s
+
         return
-fi        
+
+    fi        
+
 }
+
+
 
 # Fonction Utilisation du disque
+
+
+
 DiskInfo()
+
 {
 
-    read -p "Voulez vous voir les details du/des disques? [O pour valider]" DiskInf
-if [ $DiskInf = O ]; then 
-         clear
-         echo " Voici les details du/des disques de cette machine:  "
-         df -h
-         sleep 5s
-        return
-else
-	        clear
-	        echo "Mauvais choix - Retour au menu précédent"
-	        sleep 2s
-        return
-fi        
-}
-# Fonction Utilisation du processeur
-ProcesseurInfo()
-{
-    read -p "Voulez vous voir les details du processeur? [O pour valider]" ProcesseurInf
-if [ $ProcesseurInf = O ]; then 
-         clear
-         echo " Voici les details du processeur de cette machine: "
-         mpstat
-         sleep 5s
-        return
-else
+    clear 
+
+    read -p "Voulez-vous voir les détails du/des disques ? [O pour valider]" DiskInf
+
+    if [ "$DiskInf" = "O" ]; then 
+
         clear
+
+        echo " Voici les détails du/des disques de cette machine :"
+
+        ssh $nom_distant@$ip_distante df -h 
+
+        echo "Détail des disques :" >> /home/wilder/Documents/info-CLILIN01-$(date +%Y-%m-%d).txt
+
+        ssh $nom_distant@$ip_distante df -h >> /home/wilder/Documents/info-CLILIN01-$(date +%Y-%m-%d).txt
+
+        echo ""
+
+        echo "Les données sont enregistrées dans le fichier info-CLILIN01-$(date +%Y-%m-%d).txt" && sleep 5s
+
+        return
+
+    else
+
+        clear
+
         echo "Mauvais choix - Retour au menu précédent"
+
         sleep 2s
+
         return
-fi        
+
+    fi        
+
 }
 
-# Fontion Statut du pare-feu et liste des ports ouverts
-StatusPare_feu()
+
+
+# Fonction Utilisation du processeur
+
+
+
+ProcesseurInfo()
+
 {
-    read -p "Voulez vous voir les information lie au pare-feu ? [O pour valider]" FireW
-if [ $FireW = O ]; then 
-         clear
-         echo " Voici les details du pare-feu de cette machine: "
-         sudo ufw status 
-         sleep 5s
+
+    clear
+
+    read -p "Voulez-vous voir les détails du processeur ? [O pour valider]" ProcesseurInf
+
+    if [ "$ProcesseurInf" = "O" ]; then 
+
+        clear
+
+        echo " Voici les détails du processeur de cette machine :"
+
+        ssh $nom_distant@$ip_distante mpstat 
+
+        echo "les détails du processeur :" >> /home/wilder/Documents/info-CLILIN01-$(date +%Y-%m-%d).txt
+
+        ssh $nom_distant@$ip_distante mpstat >> /home/wilder/Documents/info-CLILIN01-$(date +%Y-%m-%d).txt
+
+        echo ""
+
+        echo "Les données sont enregistrées dans le fichier info-CLILIN01-$(date +%Y-%m-%d).txt" && sleep 5s
+
         return
-else
-	        clear
-	        echo "Mauvais choix - Retour au menu précédent"
-	        sleep 2s
+
+    else
+
+        clear
+
+        echo "Mauvais choix - Retour au menu précédent"
+
+        sleep 2s
+
         return
-fi        
+
+    fi        
+
 }
 
-show_menu_computer
-GetOs
-NbrCarte
-IpEach
-MacAdr
-Application
-Userlist
-GetCpu
-RamInfo
-DiskInfo
-ProcesseurInfo
-StatusPare_feu
+
+
+# Fonction Statut du pare-feu et liste des ports ouverts
+
+
+
+StatusPare_feu()
+
+{
+
+    clear
+
+    read -p "Voulez-vous voir les informations liées au pare-feu ? [O pour valider]" FireW
+
+    if [ "$FireW" = "O" ]; then
+
+        clear
+
+        echo " Voici les détails du pare-feu de cette machine :"
+
+        ssh $nom_distant@$ip_distante sudo ufw status 
+
+        ssh $nom_distant@$ip_distante sudo ufw status >> /home/wilder/Documents/info-CLILIN01-$(date +%Y-%m-%d).txt
+
+        echo ""
+
+        echo "Les données sont enregistrées dans le fichier info-CLILIN01-$(date +%Y-%m-%d).txt" && sleep 5s
+
+        return
+
+    else
+
+        clear
+
+        echo "Mauvais choix - Retour au menu précédent"
+
+        sleep 2s
+
+        return
+
+    fi        
+
+}
+
+
+
+while true ;do
+
+    # on affiche le menu
+
+    show_menu_computer 
+
+
+
+    # on demande de faire un choix
+
+    read -p "Faites votre choix parmi la sélection ci-dessus : " choix 
+
+
+
+    # Liste des choix 
+
+    case $choix in 
+
+    1)
+
+        GetOs
+
+        ;;
+
+    2)
+
+        NbrCarte
+
+        ;;  
+
+    3)
+
+        IPdemande
+
+        ;;
+
+    4)
+
+        MACdemande
+
+        ;;
+
+    5)
+
+        Application
+
+        ;;
+
+    6)
+
+        Userlist
+
+        ;;
+
+    7)
+
+        GetCpu
+
+        ;;
+
+    8)
+
+        RamInfo
+
+        ;;
+
+    9)
+
+        DiskInfo
+
+        ;;
+
+    10)
+
+        ProcesseurInfo
+
+        ;;
+
+    11)
+
+        StatusPare_feu
+
+        ;;
+
+    esac
+
+done
+
