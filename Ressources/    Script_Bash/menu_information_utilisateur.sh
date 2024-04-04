@@ -12,6 +12,9 @@ afficher_menu() {
     echo '        Menu Information utilisateur           '
 
     echo "=================================================="
+    echo ""
+    echo "Machine distante : $nom_distant@$ip_distante"
+    echo ""
     echo "[1] Date de dernière connexion d'un utilisateur"
     echo "[2] Date de dernière modification du mot de passe"
     echo "[3] Liste des sessions ouvertes par l'utilisateur"
@@ -143,6 +146,22 @@ droits_fichier()
         echo "L'utilisateur $user_inf n'existe pas" && sleep 2s
     fi
 }
+
+
+
+# Affichage du menu "Informations Machine Distante"
+    echo "=================================================="
+    echo "        Informations utilisateur                  "
+    echo "=================================================="
+	echo ""
+# Demande du nom d'utilisateur de la machine distante
+	read -p "Veuillez entrer le nom d'utilisateur de la machine distante : " nom_distant
+# Demande de l'adresse IP de la machine distante
+	read -p "Veuillez entrer l'adresse IP de la machine distante : " ip_distante
+	echo ""
+	
+
+
 
 # Boucle principale pour afficher le menu et traiter les options
 while true; do
