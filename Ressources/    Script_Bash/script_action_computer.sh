@@ -551,10 +551,10 @@ remote_script()
 
 
 
-# Affichage du menu "Informations Machine Distante"
+# Demande d'infos sur la machine distante
     echo "=================================================="
-    echo "        Informations Machine Distante             "
-    echo "=================================================="
+    echo "        Initialisation script pour connexion      "
+   	echo "=================================================="
 	echo ""
 # Demande du nom d'utilisateur de la machine distante
 	read -p "Veuillez entrer le nom d'utilisateur de la machine distante : " nom_distant
