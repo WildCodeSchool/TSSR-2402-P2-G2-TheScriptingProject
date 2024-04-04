@@ -648,9 +648,12 @@ Menu_Information_Ordinateur ()
     	echo "        Initialisation script pour connexion      "
    	echo "=================================================="
 	echo ""
-	read -p "Veuillez entrer le nom de la machine distante : " nom_distant
+# Demande du nom d'utilisateur de la machine distante
+	read -p "Veuillez entrer le nom d'utilisateur de la machine distante : " nom_distant
+# Demande de l'adresse IP de la machine distante
 	read -p "Veuillez entrer l'adresse IP de la machine distante : " ip_distante
-	read -p "Veuillez vous identifiez : " Operateur
+# Demande d'identification    
+    	read -p "Veuillez vous identifiez : " Operateur
 
 # Début enregistrement evennement
 echo $(date +%Y%m%d-%H%M%S)"-$Operateur-********StartScript********" >>  /var/log/log_evt.log    
