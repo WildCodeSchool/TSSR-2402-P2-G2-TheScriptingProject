@@ -552,8 +552,8 @@ remote_script()
 
 
 # Demande d'infos sur la machine distante
-    echo "=================================================="
-    echo "        Initialisation script pour connexion      "
+    	echo "=================================================="
+    	echo "        Initialisation script pour connexion      "
    	echo "=================================================="
 	echo ""
 # Demande du nom d'utilisateur de la machine distante
