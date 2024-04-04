@@ -26,17 +26,16 @@ afficher_menu() {
 # Création de compte utilisateur local
 créer_utilisateur() 
 {
-    # Demande quel utilisateur à créer
+# Demande quel utilisateur à créer
     read -p "Quel compte utilisateur souhaitez-vous céer?" newUser
-
-    # Vérification si l'utilisateur existe
+# Vérification si l'utilisateur existe
     if ssh $nom_distant@$ip_distante cat /etc/passwd | grep $newUser >/dev/null; then
-        #Si oui -> sortie du script
+     #Si oui -> sortie du script
         echo "L'utilisateur existe déjà." && sleep 2s
     else
-        #Création de l'utilsateur
+    #Création de l'utilsateur
         ssh $nom_distant@$ip_distante sudo -S useradd $newUser >/dev/null
-        #Confirmation de la création
+     #Confirmation de la création
         echo "Compte $newUser créé." && sleep 2s
     fi
 }
@@ -49,11 +48,11 @@ changer_mdp()
 
     # Est-ce que le nom existe sur le systeme ?
     if ssh $nom_distant@$ip_distante cat /etc/passwd | grep $user_mdp >/dev/null; then
-        # si oui -> modifier le mot de passe
+    # si oui -> modifier le mot de passe
         ssh $nom_distant@$ip_distante sudo -S passwd user_mdp
         echo "Le mot de passe est bien modifié." && sleep 2s
     else
-        # si non -> sortie du script
+     # si non -> sortie du script
         echo "L'utilisateur $user_mpd n'existe pas" && sleep 2s
     fi
 }
@@ -61,24 +60,23 @@ changer_mdp()
 # Suppression de compte utilisateur local
 supprimer_utilisateur() 
 {
-    # Demande quel compte utilisateur à supprimer
+# Demande quel compte utilisateur à supprimer
     read -p "Quel compte utilisateur souhaitez-vous supprimer?" user_del
-
-    # Vérification si l'utilisateur existe
+# Vérification si l'utilisateur existe
     if ssh $nom_distant@$ip_distante cat /etc/passwd | grep $user_del >/dev/null; then
-        # Si oui -> demande de confirmation
+    # Si oui -> demande de confirmation
         echo "Voulez-vous vraiment supprimer le compte $user_del ? (Oui/Non)"
         read confirmation
-        #Si oui -> suppresion du compte
+    #Si oui -> suppresion du compte
         if [ "$confirmation" == "Oui" ]; then
             ssh $nom_distant@$ip_distante sudo -S deluser $user_del
             echo "Le compte $user_del est supprimé" && sleep 2s
         else
-            # Si non -> sortie du script
+     # Si non -> sortie du script
             echo "Supression annulée." && sleep 2s
         fi
     else
-        # Si le compte n'existe pas
+    # Si le compte n'existe pas
         echo "Le compte utilisateur n'existe pas." && sleep 2s
     fi
 }
@@ -86,18 +84,18 @@ supprimer_utilisateur()
 # Désactivation de compte utilisateur local
 désactiver_utilisateur() 
 {
-    # Demande quel compte utilisateur à désactiver
+# Demande quel compte utilisateur à désactiver
     read -p "Quel compte utilisateur souhaitez-vous désactiver?" user_lock
 
-    # Vérification si l'utilisateur existe
+# Vérification si l'utilisateur existe
     if ssh $nom_distant@$ip_distante cat /etc/passwd | grep $user_lock >/dev/null; then
-        # Si l'utilisateur existe -> demande de confirmation
+    # Si l'utilisateur existe -> demande de confirmation
         echo "Voulez-vous vraiment désactiver le compte $user_lock? (Oui/Non)"
         read confirmation
-        # Si oui -> désactivation du compte
+    # Si oui -> désactivation du compte
         if [ "$confirmation" == "Oui" ]; then
             ssh $nom_distant@$ip_distante sudo -S usermod -L $user_lock
-            # Vérification de la désactivation du compte
+        # Vérification de la désactivation du compte
             if ssh $nom_distant@$ip_distante sudo -S cat /etc/shadow | grep $user_lock | grep ! >/dev/null; then
                 echo "L'utilisateur $user_lock est désactivé" && sleep 2s
                 sudo cat /etc/shadow | grep $user_lock | grep !
@@ -105,11 +103,11 @@ désactiver_utilisateur()
                 echo "L'utilisateur est toujours activé." && sleep 2s
             fi
         else
-            # Si non -> sortie du script
+        # Si non -> sortie du script
             echo "Supression annulée." && sleep 2s
         fi
     else
-        # Si l'utilisateur n'existe pas
+    # Si l'utilisateur n'existe pas
         echo "L'utilisateur $user_mpd n'existe pas." && sleep 2s
     fi
 }
@@ -117,16 +115,16 @@ désactiver_utilisateur()
 # Ajout utilisateur à un groupe d'administration
 ajouter_groupe_admin() 
 {
-    # Demande quel compte utilisateur à ajouter
+# Demande quel compte utilisateur à ajouter
     read -p "Quel compte utilisateur souhaitez-vous ajouter au groupe d'administration?" user_adm
 
-    # Vérification si l'utilisateur existe
+# Vérification si l'utilisateur existe
     if ssh $nom_distant@$ip_distante /etc/passwd | grep $user_adm >/dev/null; then
-        # Si l'utilisateur existe -> ajout au compte sudo
+    # Si l'utilisateur existe -> ajout au compte sudo
         ssh $nom_distant@$ip_distante sudo -S usermod -aG sudo $user_adm
         echo "Le compte $user_adm est ajouté au groupe sudo." && sleep 2s
     else
-        # Si non sortie du script
+    # Si non sortie du script
         echo "Le compte utilisateur n'existe pas." && sleep 2s
     fi
 }
@@ -134,24 +132,23 @@ ajouter_groupe_admin()
 # Ajout utilsiateur à un groupe local
 ajout_utilisateur_groupe() 
 {
-    # Demande quel compte à ajouter au groupe local
+# Demande quel compte à ajouter au groupe local
     read -p "Quel compte utilisateur souhaitez-vous ajouter a un groupe local?" user_addgroup
-
-    # Vérification si l'utilisateur existe
+# Vérification si l'utilisateur existe
     if ssh $nom_distant@$ip_distante cat /etc/passwd | grep $user_addgroup >/dev/null; then
-        # Si l'utilisateur existe -> demande quel groupe?
+    # Si l'utilisateur existe -> demande quel groupe?
         read -p "A quel groupe souhaiter-vous ajouter l'utilisateur $user_addgroup?" choix_add_group
         if ssh $nom_distant@$ip_distante cat /etc/group | grep $choix_add_group >/dev/null; then
             ssh $nom_distant@$ip_distante sudo -S usermod -aG $choix_add_group $user_addgroup
             echo "Le compte $user_addgroup est ajouté au groupe $choix_add_group." && sleep 2s
-            # Affichage des groupes de cet utilisateur (pour vérification)
+         # Affichage des groupes de cet utilisateur (pour vérification)
             echo "Affichage des groupes de l'utilisateur $user_addgroup : "
             ssh $nom_distant@$ip_distante groups $user_addgroup && sleep 2s
         else
             echo "Le groupe n'existe pas." && sleep 2s
         fi
     else
-        # Si non sortie du script
+    # Si non sortie du script
         echo "Le compte utilisateur n'existe pas." && sleep 2s
     fi
 }
@@ -159,41 +156,39 @@ ajout_utilisateur_groupe()
 # Suppression utilisateur d'un groupe local
 supprimer_utilisateur_groupe() 
 {
-    # Demande quel compte à supprimer d'un compte local
+# Demande quel compte à supprimer d'un compte local
     read -p "Quel compte utilisateur souhaitez-vous supprimer d'un groupe local?" user_delgroup
 
-    # Vérification si l'utilisateur existe
+# Vérification si l'utilisateur existe
     if ssh $nom_distant@$ip_distante cat /etc/passwd | grep $user_delgroup >/dev/null; then
-        # Si l'utilisateur existe -> demande quel groupe?
+    # Si l'utilisateur existe -> demande quel groupe?
         read -p "De quel groupe souhaitez-vous supprimer l'utilisateur $user_delgroup?" choix_del_group
         if ssh $nom_distant@$ip_distante cat /etc/group | grep $choix_del_group >/dev/null; then
             ssh $nom_distant@$ip_distante sudo -S  deluser $user_delgroup $choix_del_group
             echo "L'utilisateur $user_delgroup est supprimé du groupe $choix_del_group." && sleep 2s
-            # Affichage des groupes de cet utilisateur (pour vérification)
+        # Affichage des groupes de cet utilisateur (pour vérification)
             echo "Affichage des groupes de l'utilisateur $user_delgroup : "
             ssh $nom_distant@$ip_distante groups $user_delgroup && sleep 2s
         else
             echo "Le groupe n'existe pas." && sleep 2s
         fi
     else
-        # Si non sortie du script
+    # Si non sortie du script
         echo "Le compte utilisateur n'existe pas." && sleep 2s
     fi
 }
 
-
-
-#Demande d'infos sur la machine distante
+# Demande d'infos sur la machine distante
     echo "=================================================="
     echo "        Initialisation script pour connexion      "
     echo "=================================================="
 	echo ""
 	read -p "Veuillez entrer le nom de la machine distante : " nom_distant
-	read -p "Veuillez entrer l'adresse IP de la machine distante : "
+	read -p "Veuillez entrer l'adresse IP de la machine distante : " ip_distante
 
 
 
-# Boucle principale pour afficher le menu et traiter les options
+#  Boucle principale pour afficher le menu et traiter les options
 while true; do
     # Affiche le menu
     afficher_menu
