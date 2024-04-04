@@ -52,7 +52,7 @@ changer_mdp()
     # Est-ce que le nom existe sur le systeme ?
     if ssh $nom_distant@$ip_distante cat /etc/passwd | grep $user_mdp >/dev/null; then
     # si oui -> modifier le mot de passe
-        ssh $nom_distant@$ip_distante sudo -S passwd user_mdp
+        ssh $nom_distant@$ip_distante sudo -S passwd $user_mdp
         echo "Le mot de passe est bien modifié." && sleep 2s
     else
      # si non -> sortie du script
