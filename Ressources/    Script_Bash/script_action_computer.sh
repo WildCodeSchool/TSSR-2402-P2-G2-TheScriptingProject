@@ -271,8 +271,8 @@ remove_directory()
 }
 # Fonction "Prise de main à distance"
 remote_control()
-# Demande de confirmation + Avertissement concernant la sortie du script dès l'éxécution de cette fonction
 {
+# Demande de confirmation + Avertissement concernant la sortie du script dès l'éxécution de cette fonction
 	echo "ATTENTION : Cette commande vous sortira momentanément du script"
 	read -p "Confirmez-vous ? [O pour valider] : " conf_remote
 	# Si confirmation OK, exécution de la commande "Prise de main à distance" + Sortie du script
@@ -290,8 +290,9 @@ remote_control()
 
 # Fonction "Activation du pare-feu"
 firewall_on()
-# Demande de confirmation + Avertissement
+
 {
+# Demande de confirmation + Avertissement
 	echo "ATTENTION : Cette commande peut impacter l'éxécution du script"
 	read -p "Confirmez-vous l'activation du pare-feu sur la machine distante ? [O pour valider ] : " conf_fw_on
 # Si confirmation OK, éxécution de la commande "Activation du pare-feu"	
@@ -311,8 +312,8 @@ firewall_on()
 
 # Fonction "Désactivation du pare-feu"
 firewall_off()
-# Demande de confirmation + Avertissement
 {
+# Demande de confirmation + Avertissement
 	echo "ATTENTION : Cette commande peut impacter la vulnérabilité de la machine distante"
 	read -p "Confirmez-vous la désactivation du pare-feu sur la machine distante ? [O pour valider ] : " conf_fw_off
 # Si confirmation OK, éxécution de la commande "Désactivation du pare-feu	
@@ -332,8 +333,8 @@ firewall_off()
 
 # Fonction "Règles du pare-feu"
 firewall_rules()
-# Demande de confirmation + Avertissement
 {
+# Demande de confirmation + Avertissement concernant la sortie du script dès l'éxécution de cette fonction
 	echo "ATTENTION : Les commandes suivantes sont reservées à un public averti"
 	read -p "Confirmez-vous l'accès à la modification des régles du pare-feu ? [O Pour valider] : " conf_fw_rules
 # Si confirmation OK, affichage du sous-menu de la fonction "Règles du pare-feu
@@ -422,52 +423,52 @@ firewall_rules()
 # Fonction "Installation Application"
 install_app()
 {
-	# Demande de confirmation
-		read -p "Confirmez-vous l'accès à l'installation de logiciels ? [O Pour valider] : " conf_install
-	# Si confirmation OK, affichage du sous-menu de la fonction "Installation Application"
-		if [ $conf_install = O ] ;then
-			echo " [1] Installation via APT"
-			echo " [2] Installation via SNAP"
-			echo " [*] Revenir au menu précédent"
-			while true ; do
-				read -p "Faites votre choix parmi la sélection ci-dessus : " conf_message_install
-				case $conf_message_install in
-				# Exécution de la commande "Installation via APT"		
-					1)
-						read -p "Quel logiciel souhaitez-vous installer via APT : " apt_install
-						echo "Vous avez choisi d'installer le logiciel $apt_install"
-						sleep 1s
-						ssh $nom_distant@$ip_distante sudo -S apt install $apt_install
-						sleep 1s
-						echo "Le logiciel $apt_install a été installé"
-						sleep 2s
-						return
-						;;		
-				# Exécution de la commande "Installation via SNAP"
-					2)
-						read -p "Quel logiciel souhaitez-vous installer via SNAP : " snap_install
-						echo "Vous avez choisi d'installer le logiciel $snap_install"
-						sleep 1s
-						ssh $nom_distant@$ip_distante sudo -S snap install $snap_install
-						sleep 1s
-						echo "Le logiciel $snap_install a été installé"
-						sleep 2s
-						return	
-						;;
-				# Si autre/mauvais choix, sortie de la fonction "Installation Application"
-					*)	
-						echo "Retour au menu précédent"
-						sleep 1s
-						return
-						;;
-				esac
-			done
+# Demande de confirmation
+    read -p "Confirmez-vous l'accès à l'installation de logiciels ? [O Pour valider] : " conf_install
+# Si confirmation OK, affichage du sous-menu de la fonction "Installation Application"
+    if [ $conf_install = O ] ;then
+        echo " [1] Installation via APT"
+        echo " [2] Installation via SNAP"
+        echo " [*] Revenir au menu précédent"
+        while true ; do
+            read -p "Faites votre choix parmi la sélection ci-dessus : " conf_message_install
+            case $conf_message_install in
+            # Exécution de la commande "Installation via APT"		
+                1)
+                    read -p "Quel logiciel souhaitez-vous installer via APT : " apt_install
+                    echo "Vous avez choisi d'installer le logiciel $apt_install"
+                    sleep 1s
+                    ssh $nom_distant@$ip_distante sudo -S apt install $apt_install
+                    sleep 1s
+                    echo "Le logiciel $apt_install a été installé"
+                    sleep 2s
+                    return
+                    ;;		
+            # Exécution de la commande "Installation via SNAP"
+                2)
+                    read -p "Quel logiciel souhaitez-vous installer via SNAP : " snap_install
+                    echo "Vous avez choisi d'installer le logiciel $snap_install"
+                    sleep 1s
+                    ssh $nom_distant@$ip_distante sudo -S snap install $snap_install
+                    sleep 1s
+                    echo "Le logiciel $snap_install a été installé"
+                    sleep 2s
+                    return	
+                    ;;
+            # Si autre/mauvais choix, sortie de la fonction "Installation Application"
+                *)	
+                    echo "Retour au menu précédent"
+                    sleep 1s
+                    return
+                    ;;
+            esac
+        done
 	fi
 }
 # Fonction "Désinstallation Application"
 uninstall_app()
-# Demande de confirmation
 {
+# Demande de confirmation    
 	read -p "Confirmez-vous l'accès à la désinstallation de logiciels ? [O Pour valider] : " conf_uninstall
 	# Si confirmation OK, affichage du sous-menu de la fonction "Installation Application"
 		if [ $conf_uninstall = O ]; then
@@ -511,8 +512,8 @@ uninstall_app()
 }
 # Fonction "Script à distance"
 remote_script()
-# Demande de confirmation
 {
+# Demande de confirmation
 	read -p "Confirmez-vous l'éxécution d'un script sur la machine distante ? [O pour valider ] : " conf_script
 # Si confirmation OK, éxécution de la commande "Script à distance""	
 	if [ $conf_script = O ] ;then
