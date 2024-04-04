@@ -30,7 +30,7 @@ créer_utilisateur()
     read -p "Quel compte utilisateur souhaitez-vous céer?" newUser
 
     # Vérification si l'utilisateur existe
-    if cat /etc/passwd | grep $newUser >/dev/null; then
+    if ssh $nom_distant@$ip_distante cat /etc/passwd | grep $newUser >/dev/null; then
         #Si oui -> sortie du script
         echo "L'utilisateur existe déjà." && sleep 2s
     else
@@ -48,7 +48,7 @@ changer_mdp()
     read -p "Pour quel compte utilisateur souhaitez-vous modifier le mot de passe? " user_mdp
 
     # Est-ce que le nom existe sur le systeme ?
-    if cat /etc/passwd | grep $user_mdp >/dev/null; then
+    if ssh $nom_distant@$ip_distante cat /etc/passwd | grep $user_mdp >/dev/null; then
         # si oui -> modifier le mot de passe
         ssh $nom_distant@$ip_distante sudo -S passwd user_mdp
         echo "Le mot de passe est bien modifié." && sleep 2s
@@ -65,7 +65,7 @@ supprimer_utilisateur()
     read -p "Quel compte utilisateur souhaitez-vous supprimer?" user_del
 
     # Vérification si l'utilisateur existe
-    if cat /etc/passwd | grep $user_del >/dev/null; then
+    if ssh $nom_distant@$ip_distante cat /etc/passwd | grep $user_del >/dev/null; then
         # Si oui -> demande de confirmation
         echo "Voulez-vous vraiment supprimer le compte $user_del ? (Oui/Non)"
         read confirmation
@@ -90,7 +90,7 @@ désactiver_utilisateur()
     read -p "Quel compte utilisateur souhaitez-vous désactiver?" user_lock
 
     # Vérification si l'utilisateur existe
-    if cat /etc/passwd | grep $user_lock >/dev/null; then
+    if ssh $nom_distant@$ip_distante cat /etc/passwd | grep $user_lock >/dev/null; then
         # Si l'utilisateur existe -> demande de confirmation
         echo "Voulez-vous vraiment désactiver le compte $user_lock? (Oui/Non)"
         read confirmation
@@ -98,7 +98,7 @@ désactiver_utilisateur()
         if [ "$confirmation" == "Oui" ]; then
             ssh $nom_distant@$ip_distante sudo -S usermod -L $user_lock
             # Vérification de la désactivation du compte
-            if sudo cat /etc/shadow | grep $user_lock | grep ! >/dev/null; then
+            if ssh $nom_distant@$ip_distante sudo -S cat /etc/shadow | grep $user_lock | grep ! >/dev/null; then
                 echo "L'utilisateur $user_lock est désactivé" && sleep 2s
                 sudo cat /etc/shadow | grep $user_lock | grep !
             else
@@ -121,7 +121,7 @@ ajouter_groupe_admin()
     read -p "Quel compte utilisateur souhaitez-vous ajouter au groupe d'administration?" user_adm
 
     # Vérification si l'utilisateur existe
-    if cat /etc/passwd | grep $user_adm >/dev/null; then
+    if ssh $nom_distant@$ip_distante /etc/passwd | grep $user_adm >/dev/null; then
         # Si l'utilisateur existe -> ajout au compte sudo
         ssh $nom_distant@$ip_distante sudo -S usermod -aG sudo $user_adm
         echo "Le compte $user_adm est ajouté au groupe sudo." && sleep 2s
@@ -138,15 +138,15 @@ ajout_utilisateur_groupe()
     read -p "Quel compte utilisateur souhaitez-vous ajouter a un groupe local?" user_addgroup
 
     # Vérification si l'utilisateur existe
-    if cat /etc/passwd | grep $user_addgroup >/dev/null; then
+    if ssh $nom_distant@$ip_distante cat /etc/passwd | grep $user_addgroup >/dev/null; then
         # Si l'utilisateur existe -> demande quel groupe?
         read -p "A quel groupe souhaiter-vous ajouter l'utilisateur $user_addgroup?" choix_add_group
-        if cat /etc/group | grep $choix_add_group >/dev/null; then
+        if ssh $nom_distant@$ip_distante cat /etc/group | grep $choix_add_group >/dev/null; then
             ssh $nom_distant@$ip_distante sudo -S usermod -aG $choix_add_group $user_addgroup
             echo "Le compte $user_addgroup est ajouté au groupe $choix_add_group." && sleep 2s
             # Affichage des groupes de cet utilisateur (pour vérification)
             echo "Affichage des groupes de l'utilisateur $user_addgroup : "
-            groups $user_addgroup && sleep 2s
+            ssh $nom_distant@$ip_distante groups $user_addgroup && sleep 2s
         else
             echo "Le groupe n'existe pas." && sleep 2s
         fi
@@ -163,15 +163,15 @@ supprimer_utilisateur_groupe()
     read -p "Quel compte utilisateur souhaitez-vous supprimer d'un groupe local?" user_delgroup
 
     # Vérification si l'utilisateur existe
-    if cat /etc/passwd | grep $user_delgroup >/dev/null; then
+    if ssh $nom_distant@$ip_distante cat /etc/passwd | grep $user_delgroup >/dev/null; then
         # Si l'utilisateur existe -> demande quel groupe?
         read -p "De quel groupe souhaitez-vous supprimer l'utilisateur $user_delgroup?" choix_del_group
-        if cat /etc/group | grep $choix_del_group >/dev/null; then
+        if ssh $nom_distant@$ip_distante cat /etc/group | grep $choix_del_group >/dev/null; then
             ssh $nom_distant@$ip_distante sudo -S  deluser $user_delgroup $choix_del_group
             echo "L'utilisateur $user_delgroup est supprimé du groupe $choix_del_group." && sleep 2s
             # Affichage des groupes de cet utilisateur (pour vérification)
             echo "Affichage des groupes de l'utilisateur $user_delgroup : "
-            groups $user_delgroup && sleep 2s
+            ssh $nom_distant@$ip_distante groups $user_delgroup && sleep 2s
         else
             echo "Le groupe n'existe pas." && sleep 2s
         fi
@@ -180,6 +180,7 @@ supprimer_utilisateur_groupe()
         echo "Le compte utilisateur n'existe pas." && sleep 2s
     fi
 }
+
 
 
 #Demande d'infos sur la machine distante
