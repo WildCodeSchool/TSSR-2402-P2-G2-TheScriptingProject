@@ -654,7 +654,6 @@ Menu_Information_Ordinateur ()
 
 ############## DEBUT FONCTION ######################
 
-
 # Création de compte utilisateur local
 créer_utilisateur() 
 {
@@ -681,7 +680,7 @@ changer_mdp()
     # Est-ce que le nom existe sur le systeme ?
     if ssh $nom_distant@$ip_distante cat /etc/passwd | grep $user_mdp >/dev/null; then
     # si oui -> modifier le mot de passe
-        ssh $nom_distant@$ip_distante sudo -S passwd user_mdp
+        ssh $nom_distant@$ip_distante sudo -S passwd $user_mdp
         echo "Le mot de passe est bien modifié." && sleep 2s
     else
      # si non -> sortie du script
@@ -729,8 +728,8 @@ désactiver_utilisateur()
             ssh $nom_distant@$ip_distante sudo -S usermod -L $user_lock
         # Vérification de la désactivation du compte
             if ssh $nom_distant@$ip_distante sudo -S cat /etc/shadow | grep $user_lock | grep ! >/dev/null; then
-                echo "L'utilisateur $user_lock est désactivé" && sleep 2s
-                sudo cat /etc/shadow | grep $user_lock | grep !
+               echo "L'utilisateur $user_lock est désactivé" && sleep 2s
+               ssh $nom_distant@$ip_distante sudo -S sudo cat /etc/shadow | grep $user_lock | grep ! && sleep 2s
             else
                 echo "L'utilisateur est toujours activé." && sleep 2s
             fi
@@ -751,7 +750,7 @@ ajouter_groupe_admin()
     read -p "Quel compte utilisateur souhaitez-vous ajouter au groupe d'administration?" user_adm
 
 # Vérification si l'utilisateur existe
-    if ssh $nom_distant@$ip_distante /etc/passwd | grep $user_adm >/dev/null; then
+    if ssh $nom_distant@$ip_distante cat /etc/passwd | grep $user_adm >/dev/null; then
     # Si l'utilisateur existe -> ajout au compte sudo
         ssh $nom_distant@$ip_distante sudo -S usermod -aG sudo $user_adm
         echo "Le compte $user_adm est ajouté au groupe sudo." && sleep 2s
