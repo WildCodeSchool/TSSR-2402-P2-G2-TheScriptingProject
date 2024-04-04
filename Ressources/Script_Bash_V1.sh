@@ -1,9 +1,11 @@
 ########################################################################################################
 ########################################################################################################
-# Script Bash pour maintenance et information sur Poste Distant Linux
-# Version 0.5 
+# Script Bash pour maintenance et information sur Poste Distant Linux 
+# Version 0.6
 # Réalisé en collaboration par Anais Lenglet, Bruno Serna, Grégory Dubois, Patrick Baggiolini et Thomas Scotti
-# dernière mise à jour le  03 / 04 / 2024
+# dernière mise à jour le  04 / 04 / 2024 -- ajout log event -- Fonction action ordinateur 
+# Fonction action utilisaterur -- Fonction information ordinateur
+# 03 / 04 / 2024 Création script
 ########################################################################################################
 ########################################################################################################
 
@@ -18,9 +20,9 @@
 Menu_Principal()
 {
     while true ; do
-        # Effacer l'écran
+    # Effacer l'écran
         clear
-        # Demande de premier choix ACTION / INFORMAITON ou QUITTER
+    # Demande de premier choix ACTION / INFORMAITON ou QUITTER
 	    echo "=================================================="
 	    echo '                Menu Principal                    '
 	    echo "=================================================="	
@@ -38,23 +40,24 @@ Menu_Principal()
         case $choixMenuPrincipal in
             1) 
             # Envoie vers MENU ACTION
-                echo " "    
+            	echo " "    
                 echo "Vous avez choisit ACTION" && sleep 2s
-                echo "ACTION a été chosit" >> event.log        
+                echo $(date +%Y%m%d-%H%M%S)"-$Operateur-ACTION a été chosit"  >>  /var/log/log_evt.log        
                 Menu_Action 
                 ;;
             2) 
             # Envoie vers MENU INFORMAITON
                 echo " "    
                 echo "Vous avez choisit INFORMATION" && sleep 2s
-                echo "INFORMATION a été chosit" >> event.log                     
+                echo $(date +%Y%m%d-%H%M%S)"-$Operateur-INFORMATION a été chosit" >>  /var/log/log_evt.log                     
                 Menu_Information 
                 ;;
             X)
             # Arrêt script 
                 echo " "    
                 echo "J'espère que j'ai pu vous aider, à bientôt" && sleep 2s
-                echo "Demande de sortie" >> event.log        
+                echo $(date +%Y%m%d-%H%M%S)"-$Operateur-Sortie de Script" >>  /var/log/log_evt.log        
+                echo $(date +%Y%m%d-%H%M%S)"-$Operateur-********EndScript********" >>  /var/log/log_evt.log    
                 exit 0 
                 ;;
             *)
@@ -63,7 +66,7 @@ Menu_Principal()
                 echo "Commande inconnu, Veuillez recommencer" 
                 echo " "    
                 read -p "Appuyez sur Entrée pour continuer..." && sleep 2s
-                echo "erreur de commande" >> event.log
+                echo $(date +%Y%m%d-%H%M%S)"-$Operateur-erreur de commande" >>  /var/log/log_evt.log
                 ;;        
         esac
     done
@@ -73,7 +76,7 @@ Menu_Principal()
 Menu_Action() 
 {
     while true; do
-        # Effacer l'écran
+    # Effacer l'écran
         clear
 	# Demande choix ACTION UTILISATEUR / ACTION POSTE DISTANT / retour menu principal
         echo "=================================================="
@@ -94,19 +97,19 @@ Menu_Action()
             1)
                 echo " "    
                 echo "Vous avez choisit ACTION UTILISATEUR" && sleep 2s
-                echo "ACTION USER chosit" >> event.log
+                echo $(date +%Y%m%d-%H%M%S)"-$Operateur-ACTION Utilisateur chosit" >>  /var/log/log_evt.log
                 Menu_Action_Utilisateur
                 ;;
             2)
                 echo " "    
                 echo "Vous avez choisit ACTION POSTE DISTANT"  && sleep 2s
-                echo "ACTION POSTE DISTANT chosit" >> event.log 
+                echo $(date +%Y%m%d-%H%M%S)"-$Operateur-ACTION Poste distant chosit" >>  /var/log/log_evt.log 
                 Menu_Action_Ordinateur
                 ;;
             X)
                 echo " "    
                 echo "Retour au menu principal"  && sleep 2s
-                echo "retour menu principal" >> event.log
+                echo $(date +%Y%m%d-%H%M%S)"-$Operateur-Retour au menu principal choisit" >>  /var/log/log_evt.log
                 return
                 ;;        
             *)
@@ -114,7 +117,7 @@ Menu_Action()
                 echo "Commande inconnu, Veuillez recommencer" 
                 echo " "    
                 read -p "Appuyez sur Entrée pour continuer..." && sleep 2s
-                echo "erreur de commande" >> event.log
+                echo $(date +%Y%m%d-%H%M%S)"-$Operateur-erreur de commande" >>  /var/log/log_evt.log
                 ;;
         esac
     done
@@ -124,7 +127,7 @@ Menu_Action()
 Menu_Information() 
 {
     while true; do
-        # Effacer l'écran
+    # Effacer l'écran
         clear
 	# Demande choix INFORMATION UTILISATEUR / ACTION POSTE DISTANT / retour menu principal
         echo "=================================================="
@@ -145,19 +148,19 @@ Menu_Information()
             1) 
                 echo " "    
                 echo "Vous avez choisit INFORMATION utilsiateur" && sleep 2s
-                echo "ACTION INFORMATION user chosit" >> event.log
+                echo $(date +%Y%m%d-%H%M%S)"-$Operateur-ACTION Information utlisateur chosit" >>  /var/log/log_evt.log
                 Menu_Information_Utilsateur
                 ;;
             2)
                 echo " "    
                 echo "Vous avez choisit INFORMATION POSTE DISTANT" && sleep 2s
-                echo "ACTION INFORMATION computer chosit" >> event.log
+                echo $(date +%Y%m%d-%H%M%S)"-$Operateur-ACTION INFORMATION poste distant chosit" >>  /var/log/log_evt.log
                 Menu_Information_Ordinateur
                 ;;
             X)
                 echo " "    
                 echo "Retour au menu principal"  && sleep 2s
-                echo "Retour menu principal" >> event.log
+                 echo $(date +%Y%m%d-%H%M%S)"-$Operateur-Retour au menu principal choisit" >>  /var/log/log_evt.log
                 return
                 ;;        
             *)
@@ -165,7 +168,7 @@ Menu_Information()
                 echo "Commande inconnu, Veuillez recommencer" 
                 echo " "    
                 read -p "Appuyez sur Entrée pour continuer..." && sleep 2s
-                echo "erreur de commande" >> event.log
+                echo $(date +%Y%m%d-%H%M%S)"-$Operateur-erreur de commande" >>  /var/log/log_evt.log
                 ;;
         esac
     done
@@ -184,9 +187,9 @@ Menu_Information()
 Menu_Action_Utilisateur() 
 {
     while true; do
-        # Effacer l'écran
+    # Effacer l'écran
         clear
-        #Demande choix ACTION UTILISATEUR / retour menu précédent / retour menu principal
+    #Demande choix ACTION UTILISATEUR / retour menu précédent / retour menu principal
         echo "=================================================="
         echo '             Menu "Action utilisateur"           '
         echo "=================================================="
@@ -206,74 +209,70 @@ Menu_Action_Utilisateur()
         echo "[0]. Retour au menu précédent"
         echo "[X]. Retour au menu principal"
         echo ""
-        # Demande du choix action
+    # Demande du choix action
         read -p "Veuillez faire votre choix action en donnant le numéro souhaité:" choixMenuActionUser    
-        # Traitement de l'action choisie
+    # Traitement de l'action choisie
         case $choixMenuActionUser in
             1)        
                 echo " "    
                 echo "Vous avez choisit création de compte utilsiateur" && sleep 2s
-                echo "Création utilisateur chosit" >> event.log
+                echo $(date +%Y%m%d-%H%M%S)"-$Operateur-Création utilisateur chosit" >>  /var/log/log_evt.log
                 créer_utilisateur
                 ;;
             2)
                 echo " "    
                 echo "Vous avez choisit changement de mot de passe" && sleep 2s
-                echo "changement de mot de passe chosit" >> event.log
+                echo $(date +%Y%m%d-%H%M%S)"-$Operateur-changement de mot de passe chosit" >>  /var/log/log_evt.log
                 changer_mdp
                 ;;
             3)
                 echo " "    
                 echo "Vous avez choisit suppression de compte utilisateur" && sleep 2s
-                echo "Suppression de compte utilisateur chosit" >> event.log
+                echo $(date +%Y%m%d-%H%M%S)"-$Operateur-Suppression de compte utilisateur chosit" >>  /var/log/log_evt.log
                 supprimer_utilisateur
                 ;;
             4)
                 echo " "    
                 echo "Vous avez choisit désactivation de compte utilisateur" && sleep 2s
-                echo "Désactivation de compte utilisateur chosit" >> event.log
+                echo $(date +%Y%m%d-%H%M%S)"-$Operateur-Désactivation de compte utilisateur chosit" >>  /var/log/log_evt.log
                 désactiver_utilisateur
                 ;;
             5)
                 echo " "    
                 echo "Vous avez choisit ajjout à groupe d'administration" && sleep 2s
-                echo "Ajjout à groupe d'administration chosit" >> event.log
+                echo $(date +%Y%m%d-%H%M%S)"-$Operateur-Ajjout à groupe d'administration chosit" >>  /var/log/log_evt.log
                 ajouter_groupe_admin
                 ;;
             6)
                 echo " "    
                 echo "Vous avez choisit ajjout à groupe local" && sleep 2s
-                echo "Ajjout à groupe loScal chosit" >> event.log
+                echo $(date +%Y%m%d-%H%M%S)"-$Operateur-Ajjout à groupe loScal chosit" >>  /var/log/log_evt.log
                 ajout_utilisateur_groupe
                 ;;
             7)
                 echo " "    
                 echo "Vous avez choisit Sortie d'un groupe local" && sleep 2s
-                echo "Sortie d'un groupe local chosit" >> event.log
+                echo $(date +%Y%m%d-%H%M%S)"-$Operateur-Sortie d'un groupe local chosit" >>  /var/log/log_evt.log
                 supprimer_utilisateur_groupe
-                ;;
-            8)    
-                echo " "    
-                echo "Retour au menu précédent" && sleep 2s
-                echo "retour menu précédent choisit" >> event.log
-                return
                 ;;
             0)
                 echo " "    
                 echo "Retour au menu précédent" && sleep 2s
-                echo "retour menu précédent choisit" >> event.log
+                echo $(date +%Y%m%d-%H%M%S)"-$Operateur-retour au menu précédent choisit" >>  /var/log/log_evt.log
                 return
                 ;;
             X)
                 echo " "    
                 echo "Retour au menu principal" && sleep 2s
-                echo "retour menu principal choisit" >> event.log
+                echo $(date +%Y%m%d-%H%M%S)"-$Operateur-Retour au menu principal choisit" >>  /var/log/log_evt.log
                 Menu_Principal
                 ;;
             *)
-                echo "Option invalide. Veuillez choisir une option valide."
-                read -p "Appuyez sur Entrée pour continuer..."
-                ;;
+                echo " "    
+                echo "Commande inconnu, Veuillez recommencer" 
+                echo " "    
+                read -p "Appuyez sur Entrée pour continuer..." && sleep 2s
+                echo $(date +%Y%m%d-%H%M%S)"-$Operateur-erreur de commande" >>  /var/log/log_evt.log
         esac
     done
 }
@@ -282,9 +281,9 @@ Menu_Action_Utilisateur()
 Menu_Action_Ordinateur() 
 {
     while true; do
-        # Effacer l'écran1
+    # Effacer l'écran1
         clear
-        # Demande choix INFORMATION UTILISATEUR / ACTION POSTE DISTANT / retour menu principal
+    # Demande choix INFORMATION UTILISATEUR / ACTION POSTE DISTANT / retour menu principal
         echo "=================================================="
         echo '        Menu "Action Machine Distante"            '
         echo "=================================================="
@@ -310,116 +309,118 @@ Menu_Action_Ordinateur()
         echo "[0]  Retour au menu précédent"
         echo "[X]  Retour au menu principal"
         echo ""
-         # Demande du choix action
+    # Demande du choix action
         read -p "Veuillez faire votre choix action en donnant le numéro souhaité:" choixMenuActionOrdinateur    
-        # Traitement de l'action choisie
+    # Traitement de l'action choisie
         case $choixMenuActionOrdinateur in   
             1)
                 echo " "    
                 echo "Vous avez choisit l'arrêt de la machine distante" && sleep 2s
-                echo "Arrêt choisit" >> event.log
+                echo $(date +%Y%m%d-%H%M%S)"-$Operateur-Arrêt choisit" >>  /var/log/log_evt.log
                 shutdown
                 ;;
             
             2)
                 echo " "    
                 echo "Vous avez choisit le rédemarrage de la machine distante" && sleep 2s
-                echo "Redémarrage choisit" >> event.log
+                echo $(date +%Y%m%d-%H%M%S)"-$Operateur-Redémarrage choisit" >>  /var/log/log_evt.log
                 reboot
                 ;;
             
             3)
                 echo " "    
                 echo "Vous avez choisit le vérrouillage de la machine distante" && sleep 2s
-                echo "Vérrouillage machine distante choisit" >> event.log
+                echo $(date +%Y%m%d-%H%M%S)"-$Operateur-Vérrouillage machine distante choisit" >>  /var/log/log_evt.log
                 lock
                 ;;
             
             4)
                 echo " "    
                 echo "Vous avez choisit la mise à jour de la machine distante" && sleep 2s
-                echo "Mise à jour choisit" >> event.log
+                echo $(date +%Y%m%d-%H%M%S)"-$Operateur-Mise à jour choisit" >>  /var/log/log_evt.log
                 update
                 ;;
             
             5)
                 echo " "    
                 echo "Vous avez choisit de créér un répertoire sur la machine distante" && sleep 2s
-                echo "Création de répertoire choisit" >> event.log
+                echo $(date +%Y%m%d-%H%M%S)"-$Operateur-Création de répertoire choisit" >>  /var/log/log_evt.log
                 create_directory
                 ;;
                         
             6)
                 echo " "    
                 echo "Vous avez choisit de supprimer un répertoire sur la machine distante" && sleep 2s
-                echo "Suppression de répertoire choisit" >> event.log
+                echo $(date +%Y%m%d-%H%M%S)"-$Operateur-Suppression de répertoire choisit" >>  /var/log/log_evt.log
                 remove_directory
                 ;;
 
             7)
                 echo " "    
                 echo "Vous avez choisit Prise de main à distance sur la machine distante" && sleep 2s
-                echo "Prise de main à distance choisit" >> event.log
+                echo $(date +%Y%m%d-%H%M%S)"-$Operateur-Prise de main à distance choisit" >>  /var/log/log_evt.log
                 remote_control
                 ;;
             
             8)
                 echo " "    
                 echo "Vous avez choisit Activation du pare-feu sur la machine distante" && sleep 2s
-                echo "Activation du pare-feu choisit" >> event.log
+                echo $(date +%Y%m%d-%H%M%S)"-$Operateur-Activation du pare-feu choisit" >>  /var/log/log_evt.log
                 firewall_on	
                 ;;
             
             9)
                 echo " "    
                 echo "Vous avez choisit Désactivation du pare-feu sur la machine distante" && sleep 2s
-                echo "Désactivation du pare-feu choisit" >> event.log
+                echo $(date +%Y%m%d-%H%M%S)"-$Operateur-Désactivation du pare-feu choisit" >>  /var/log/log_evt.log
                 firewall_off
                 ;;	
                 
             10)
                 echo " "    
                 echo "Vous avez choisit Règles du parefeu sur la machine distante" && sleep 2s
-                echo "Règles du parefeu choisit" >> event.log
+                echo $(date +%Y%m%d-%H%M%S)"-$Operateur-Modificaiton règles du parefeu choisit" >>  /var/log/log_evt.log
                 firewall_rules
                 ;;	
                 
             11)
                 echo " "    
                 echo "Vous avez choisit Installation d'un logiciel sur la machine distante" && sleep 2s
-                echo "Installation d'un logiciel choisit" >> event.log
+                echo $(date +%Y%m%d-%H%M%S)"-$Operateur-Installation d'un logiciel choisit" >>  /var/log/log_evt.log
                 install_app
                 ;;	
             
             12)
                 echo " "    
-                echo "Vous avez choisit Prise de main à distance sur la machine distante" && sleep 2s
-                echo "Prise de main à distance choisit" >> event.log
+                echo "Vous avez choisit Désinstallation d'un logiciel sur la machine distante" && sleep 2s
+                echo $(date +%Y%m%d-%H%M%S)"-$Operateur-Désinstallation d'un logiciel choisit" >>  /var/log/log_evt.log
                 uninstall_app
                 ;;
             
             13)
                 echo " "    
-                echo "Vous avez choisit Désinstallation d'un logiciel sur la machine distante" && sleep 2s
-                echo "Désinstallation d'un logiciel choisit" >> event.log
+                echo "Vous avez choisit Lancement d'un script depuis machine distante" && sleep 2s
+                echo $(date +%Y%m%d-%H%M%S)"-$Operateur-Lancement d'un script choisit" >>  /var/log/log_evt.log
                 remote_script
                 ;;
             0)
                 echo " "    
                 echo "Retour au menu précédent" && sleep 2s
-                echo "retour menu précédent choisit" >> event.log
+                echo $(date +%Y%m%d-%H%M%S)"-$Operateur-retour au menu précédent choisit" >>  /var/log/log_evt.log
                 return
                 ;;
             X)
                 echo " "    
                 echo "Retour au menu principal" && sleep 2s
-                echo "retour menu principal choisit" >> event.log
+                 echo $(date +%Y%m%d-%H%M%S)"-$Operateur-Retour au menu principal choisit" >>  /var/log/log_evt.log
                 Menu_Principal
                 ;;
             *)
-                echo "Option invalide. Veuillez choisir une option valide."
-                read -p "Appuyez sur Entrée pour continuer..."
-                ;;
+                echo " "    
+                echo "Commande inconnu, Veuillez recommencer" 
+                echo " "    
+                read -p "Appuyez sur Entrée pour continuer..." && sleep 2s
+                echo $(date +%Y%m%d-%H%M%S)"-$Operateur-erreur de commande" >>  /var/log/log_evt.log
         esac	
     done
 }
@@ -437,9 +438,9 @@ Menu_Action_Ordinateur()
 Menu_Information_Utilsateur ()
 {
     while true; do
-        # Effacer l'écran
+    # Effacer l'écran
         clear
-        #Demande choix INFOMRATION UTILISATEUR / retour menu précédent / retour menu principal
+    #Demande choix INFOMRATION UTILISATEUR / retour menu précédent / retour menu principal
         echo "=================================================="
         echo '         Menu "Information utilisateur"           '
         echo "=================================================="
@@ -457,56 +458,58 @@ Menu_Information_Utilsateur ()
         echo "[0]. Retour au menu précédent"
         echo "[X]. Retour au menu principal"
         echo ""
-        # Demande du choix action
+    # Demande du choix action
         read -p "Veuillez faire votre choix action en donnant le numéro souhaité:" choixMenuInformationUser    
-        # Traitement de l'action choisie
+    # Traitement de l'action choisie
         case $choixMenuInformationUser in
             1)        
                 echo " "    
                 echo "Vous avez choisit Date dernière connexion utilisateur" && sleep 2s
-                echo "Date dernière connexion utilisateur chosit" >> event.log
-                info_connexion                
+                echo $(date +%Y%m%d-%H%M%S)"-$Operateur-Date dernière connexion utilisateur chosit" >>  /var/log/log_evt.log
+                info_connexion
                 ;;
             2)        
                 echo " "    
                 echo "Vous avez choisit Date dernière modificaiton mot de passe utilisateur" && sleep 2s
-                echo "Date dernière modificaiton mot de passe utilisateur chosit" >> event.log
-                info_modification                
+                echo $(date +%Y%m%d-%H%M%S)"-$Operateur-Date dernière modificaiton mot de passe utilisateur chosit" >>  /var/log/log_evt.log
+                info_modification
                 ;;
             3)        
                 echo " "    
                 echo "Vous avez choisit Liste des session utilisateurs ouvertes" && sleep 2s
-                echo "Liste des session utilisateurs ouvertes chosit" >> event.log
-                
+                echo $(date +%Y%m%d-%H%M%S)"-$Operateur-Liste des session utilisateurs ouvertes chosit" >>  /var/log/log_evt.log
+                liste_sessions
                 ;;
             4)        
                 echo " "    
                 echo "Vous avez choisit Droits/permission sur un dossier" && sleep 2s
-                echo "Droits/permission sur un dossier chosit" >> event.log
-                
+                echo $(date +%Y%m%d-%H%M%S)"-$Operateur-Droits/permission sur un dossier chosit" >>  /var/log/log_evt.log
+                droits_dossier
                 ;;
             5)        
                 echo " "    
                 echo "Vous avez choisit Droits/permission sur un fichier" && sleep 2s
-                echo "Droits/permission sur un fichier chosit" >> event.log
-                
+                echo $(date +%Y%m%d-%H%M%S)"-$Operateur-Droits/permission sur un fichier chosit" >>  /var/log/log_evt.log
+                droits_fichier
                 ;;                
             0)
                 echo " "    
                 echo "Retour au menu précédent" && sleep 2s
-                echo "retour menu précédent choisit" >> event.log
+                echo $(date +%Y%m%d-%H%M%S)"-$Operateur-retour au menu précédent choisit" >>  /var/log/log_evt.log
                 return
                 ;;
             X)
                 echo " "    
                 echo "Retour au menu principal" && sleep 2s
-                echo "retour menu principal choisit" >> event.log
+                 echo $(date +%Y%m%d-%H%M%S)"-$Operateur-Retour au menu principal choisit" >>  /var/log/log_evt.log
                 Menu_Principal
                 ;;
             *)
-                echo "Option invalide. Veuillez choisir une option valide."
-                read -p "Appuyez sur Entrée pour continuer..."
-                ;;
+                echo " "    
+                echo "Commande inconnu, Veuillez recommencer" 
+                echo " "    
+                read -p "Appuyez sur Entrée pour continuer..." && sleep 2s
+                echo $(date +%Y%m%d-%H%M%S)"-$Operateur-erreur de commande" >>  /var/log/log_evt.log
         esac
     done
 }
@@ -517,9 +520,9 @@ Menu_Information_Ordinateur ()
 {
 
     while true; do
-        # Effacer l'écran
+    # Effacer l'écran
         clear
-        #Demande choix INFOMRATION UTILISATEUR / retour menu précédent / retour menu principal
+    #Demande choix INFOMRATION UTILISATEUR / retour menu précédent / retour menu principal
         echo "=================================================="
         echo '         Menu "Information utilisateur"           '
         echo "=================================================="
@@ -544,98 +547,100 @@ Menu_Information_Ordinateur ()
         echo "[0]. Retour au menu précédent"
         echo "[X]. Retour au menu principal"
         echo ""
-        # Demande du choix action
+    # Demande du choix action
         read -p "Veuillez faire votre choix action en donnant le numéro souhaité:" choixMenuInformationOrdinateur    
-        # Traitement de l'action choisie
+    # Traitement de l'action choisie
         case $choixMenuInformationOrdinateur in
             1)        
                 echo " "    
                 echo "Vous avez choisit version de l'OS" && sleep 2s
-                echo "Information version de l'OS chosit" >> event.log
+                echo $(date +%Y%m%d-%H%M%S)"-$Operateur-Information version de l'OS chosit" >>  /var/log/log_evt.log
                 
                 ;;
             2)        
                 echo " "    
                 echo "Vous avez choisit Nombre d'interface" && sleep 2s
-                echo "Information Nombre d'interface chosit" >> event.log
+                echo $(date +%Y%m%d-%H%M%S)"-$Operateur-Information Nombre d'interface chosit" >>  /var/log/log_evt.log
                 
                 ;;
             3)        
                 echo " "    
                 echo "Vous avez choisit Adresse IP de chaque interface" && sleep 2s
-                echo "Information Adresse IP de chaque interface chosit" >> event.log
+                echo $(date +%Y%m%d-%H%M%S)"-$Operateur-Information Adresse IP de chaque interface chosit" >>  /var/log/log_evt.log
                 
                 ;;
             4)        
                 echo " "    
                 echo "Vous avez choisit Adresse MAC de chaque interface" && sleep 2s
-                echo "Information Adresse MAC de chaque interface chosit" >> event.log
+                echo $(date +%Y%m%d-%H%M%S)"-$Operateur-Information Adresse MAC de chaque interface chosit" >>  /var/log/log_evt.log
                 
                 ;;
             5)        
                 echo " "    
                 echo "Vous avez choisit Liste des application/paquets installées" && sleep 2s
-                echo "Information Liste des application/paquets installées chosit" >> event.log
+                echo $(date +%Y%m%d-%H%M%S)"-$Operateur-Information Liste des application/paquets installées chosit" >>  /var/log/log_evt.log
                 
                 ;;               
             6)        
                 echo " "    
                 echo "Vous avez choisit Information CPU" && sleep 2s
-                echo "Information CPU chosit" >> event.log
+                echo $(date +%Y%m%d-%H%M%S)"-$Operateur-Information CPU chosit" >>  /var/log/log_evt.log
                 
                 ;;                               
             7)        
                 echo " "    
                 echo "Vous avez choisit Mémoire RAM totale" && sleep 2s
-                echo "Information Mémoire RAM totale chosit" >> event.log
+                echo $(date +%Y%m%d-%H%M%S)"-$Operateur-Information Mémoire RAM totale chosit" >>  /var/log/log_evt.log
                 
                 ;;                               
             8)        
                 echo " "    
                 echo "Vous avez choisit Utilisation de la RAM" && sleep 2s
-                echo "Information Utilisation de la RAM chosit" >> event.log
+                echo $(date +%Y%m%d-%H%M%S)"-$Operateur-Information Utilisation de la RAM chosit" >>  /var/log/log_evt.log
                 
                 ;;               
             9)        
                 echo " "    
                 echo "Vous avez choisit Utilisation du disque" && sleep 2s
-                echo "Information Utilisation du disque chosit" >> event.log
+                echo $(date +%Y%m%d-%H%M%S)"-$Operateur-Information Utilisation du disque chosit" >>  /var/log/log_evt.log
                 
                 ;;               
             10)        
                 echo " "    
                 echo "Vous avez choisit Utilisation du processeur" && sleep 2s
-                echo "Information Utilisation du processeur chosit" >> event.log
+                echo $(date +%Y%m%d-%H%M%S)"-$Operateur-Information Utilisation du processeur chosit" >>  /var/log/log_evt.log
                 
                 ;;               
             11)        
                 echo " "    
                 echo "Vous avez choisit Liste des ports ouverts" && sleep 2s
-                echo "Information Liste des ports ouverts chosit" >> event.log
+                echo $(date +%Y%m%d-%H%M%S)"-$Operateur-Information Liste des ports ouverts chosit" >>  /var/log/log_evt.log
                 
                 ;;                                                                                          
             12)        
                 echo " "    
                 echo "Vous avez choisit Staut du pare-feu" && sleep 2s
-                echo "Information Staut du pare-feu chosit" >> event.log
+                echo $(date +%Y%m%d-%H%M%S)"-$Operateur-Information Staut du pare-feu chosit" >>  /var/log/log_evt.log
                 
                 ;;                                                                                                          
             0)
                 echo " "    
                 echo "Retour au menu précédent" && sleep 2s
-                echo "retour menu précédent choisit" >> event.log
+                echo $(date +%Y%m%d-%H%M%S)"-$Operateur-retour au menu précédent choisit" >>  /var/log/log_evt.log
                 return
                 ;;
             X)
                 echo " "    
                 echo "Retour au menu principal" && sleep 2s
-                echo "retour menu principal choisit" >> event.log
+                echo $(date +%Y%m%d-%H%M%S)"-$Operateur-Retour au menu principal choisit" >>  /var/log/log_evt.log
                 Menu_Principal
                 ;;
             *)
-                echo "Option invalide. Veuillez choisir une option valide."
-                read -p "Appuyez sur Entrée pour continuer..."
-                ;;
+                echo " "    
+                echo "Commande inconnu, Veuillez recommencer" 
+                echo " "    
+                read -p "Appuyez sur Entrée pour continuer..." && sleep 2s
+                echo $(date +%Y%m%d-%H%M%S)"-$Operateur-erreur de commande" >>  /var/log/log_evt.log
         esac
     done
 }
@@ -653,17 +658,16 @@ Menu_Information_Ordinateur ()
 # Création de compte utilisateur local
 créer_utilisateur() 
 {
-    # Demande quel utilisateur à créer
+# Demande quel utilisateur à créer
     read -p "Quel compte utilisateur souhaitez-vous céer?" newUser
-
-    # Vérification si l'utilisateur existe
-    if cat /etc/passwd | grep $newUser >/dev/null; then
-        #Si oui -> sortie du script
+# Vérification si l'utilisateur existe
+    if ssh $nom_distant@$ip_distante cat /etc/passwd | grep $newUser >/dev/null; then
+     #Si oui -> sortie du script
         echo "L'utilisateur existe déjà." && sleep 2s
     else
-        #Création de l'utilsateur
+    #Création de l'utilsateur
         ssh $nom_distant@$ip_distante sudo -S useradd $newUser >/dev/null
-        #Confirmation de la création
+     #Confirmation de la création
         echo "Compte $newUser créé." && sleep 2s
     fi
 }
@@ -675,12 +679,12 @@ changer_mdp()
     read -p "Pour quel compte utilisateur souhaitez-vous modifier le mot de passe? " user_mdp
 
     # Est-ce que le nom existe sur le systeme ?
-    if cat /etc/passwd | grep $user_mdp >/dev/null; then
-        # si oui -> modifier le mot de passe
+    if ssh $nom_distant@$ip_distante cat /etc/passwd | grep $user_mdp >/dev/null; then
+    # si oui -> modifier le mot de passe
         ssh $nom_distant@$ip_distante sudo -S passwd user_mdp
         echo "Le mot de passe est bien modifié." && sleep 2s
     else
-        # si non -> sortie du script
+     # si non -> sortie du script
         echo "L'utilisateur $user_mpd n'existe pas" && sleep 2s
     fi
 }
@@ -688,24 +692,23 @@ changer_mdp()
 # Suppression de compte utilisateur local
 supprimer_utilisateur() 
 {
-    # Demande quel compte utilisateur à supprimer
+# Demande quel compte utilisateur à supprimer
     read -p "Quel compte utilisateur souhaitez-vous supprimer?" user_del
-
-    # Vérification si l'utilisateur existe
-    if cat /etc/passwd | grep $user_del >/dev/null; then
-        # Si oui -> demande de confirmation
+# Vérification si l'utilisateur existe
+    if ssh $nom_distant@$ip_distante cat /etc/passwd | grep $user_del >/dev/null; then
+    # Si oui -> demande de confirmation
         echo "Voulez-vous vraiment supprimer le compte $user_del ? (Oui/Non)"
         read confirmation
-        #Si oui -> suppresion du compte
+    #Si oui -> suppresion du compte
         if [ "$confirmation" == "Oui" ]; then
             ssh $nom_distant@$ip_distante sudo -S deluser $user_del
             echo "Le compte $user_del est supprimé" && sleep 2s
         else
-            # Si non -> sortie du script
+     # Si non -> sortie du script
             echo "Supression annulée." && sleep 2s
         fi
     else
-        # Si le compte n'existe pas
+    # Si le compte n'existe pas
         echo "Le compte utilisateur n'existe pas." && sleep 2s
     fi
 }
@@ -713,30 +716,30 @@ supprimer_utilisateur()
 # Désactivation de compte utilisateur local
 désactiver_utilisateur() 
 {
-    # Demande quel compte utilisateur à désactiver
+# Demande quel compte utilisateur à désactiver
     read -p "Quel compte utilisateur souhaitez-vous désactiver?" user_lock
 
-    # Vérification si l'utilisateur existe
-    if cat /etc/passwd | grep $user_lock >/dev/null; then
-        # Si l'utilisateur existe -> demande de confirmation
+# Vérification si l'utilisateur existe
+    if ssh $nom_distant@$ip_distante cat /etc/passwd | grep $user_lock >/dev/null; then
+    # Si l'utilisateur existe -> demande de confirmation
         echo "Voulez-vous vraiment désactiver le compte $user_lock? (Oui/Non)"
         read confirmation
-        # Si oui -> désactivation du compte
+    # Si oui -> désactivation du compte
         if [ "$confirmation" == "Oui" ]; then
             ssh $nom_distant@$ip_distante sudo -S usermod -L $user_lock
-            # Vérification de la désactivation du compte
-            if sudo cat /etc/shadow | grep $user_lock | grep ! >/dev/null; then
+        # Vérification de la désactivation du compte
+            if ssh $nom_distant@$ip_distante sudo -S cat /etc/shadow | grep $user_lock | grep ! >/dev/null; then
                 echo "L'utilisateur $user_lock est désactivé" && sleep 2s
                 sudo cat /etc/shadow | grep $user_lock | grep !
             else
                 echo "L'utilisateur est toujours activé." && sleep 2s
             fi
         else
-            # Si non -> sortie du script
+        # Si non -> sortie du script
             echo "Supression annulée." && sleep 2s
         fi
     else
-        # Si l'utilisateur n'existe pas
+    # Si l'utilisateur n'existe pas
         echo "L'utilisateur $user_mpd n'existe pas." && sleep 2s
     fi
 }
@@ -744,16 +747,16 @@ désactiver_utilisateur()
 # Ajout utilisateur à un groupe d'administration
 ajouter_groupe_admin() 
 {
-    # Demande quel compte utilisateur à ajouter
+# Demande quel compte utilisateur à ajouter
     read -p "Quel compte utilisateur souhaitez-vous ajouter au groupe d'administration?" user_adm
 
-    # Vérification si l'utilisateur existe
-    if cat /etc/passwd | grep $user_adm >/dev/null; then
-        # Si l'utilisateur existe -> ajout au compte sudo
+# Vérification si l'utilisateur existe
+    if ssh $nom_distant@$ip_distante /etc/passwd | grep $user_adm >/dev/null; then
+    # Si l'utilisateur existe -> ajout au compte sudo
         ssh $nom_distant@$ip_distante sudo -S usermod -aG sudo $user_adm
         echo "Le compte $user_adm est ajouté au groupe sudo." && sleep 2s
     else
-        # Si non sortie du script
+    # Si non sortie du script
         echo "Le compte utilisateur n'existe pas." && sleep 2s
     fi
 }
@@ -761,24 +764,23 @@ ajouter_groupe_admin()
 # Ajout utilsiateur à un groupe local
 ajout_utilisateur_groupe() 
 {
-    # Demande quel compte à ajouter au groupe local
+# Demande quel compte à ajouter au groupe local
     read -p "Quel compte utilisateur souhaitez-vous ajouter a un groupe local?" user_addgroup
-
-    # Vérification si l'utilisateur existe
-    if cat /etc/passwd | grep $user_addgroup >/dev/null; then
-        # Si l'utilisateur existe -> demande quel groupe?
+# Vérification si l'utilisateur existe
+    if ssh $nom_distant@$ip_distante cat /etc/passwd | grep $user_addgroup >/dev/null; then
+    # Si l'utilisateur existe -> demande quel groupe?
         read -p "A quel groupe souhaiter-vous ajouter l'utilisateur $user_addgroup?" choix_add_group
-        if cat /etc/group | grep $choix_add_group >/dev/null; then
+        if ssh $nom_distant@$ip_distante cat /etc/group | grep $choix_add_group >/dev/null; then
             ssh $nom_distant@$ip_distante sudo -S usermod -aG $choix_add_group $user_addgroup
             echo "Le compte $user_addgroup est ajouté au groupe $choix_add_group." && sleep 2s
-            # Affichage des groupes de cet utilisateur (pour vérification)
+         # Affichage des groupes de cet utilisateur (pour vérification)
             echo "Affichage des groupes de l'utilisateur $user_addgroup : "
-            groups $user_addgroup && sleep 2s
+            ssh $nom_distant@$ip_distante groups $user_addgroup && sleep 2s
         else
             echo "Le groupe n'existe pas." && sleep 2s
         fi
     else
-        # Si non sortie du script
+    # Si non sortie du script
         echo "Le compte utilisateur n'existe pas." && sleep 2s
     fi
 }
@@ -786,24 +788,24 @@ ajout_utilisateur_groupe()
 # Suppression utilisateur d'un groupe local
 supprimer_utilisateur_groupe() 
 {
-    # Demande quel compte à supprimer d'un compte local
+# Demande quel compte à supprimer d'un compte local
     read -p "Quel compte utilisateur souhaitez-vous supprimer d'un groupe local?" user_delgroup
 
-    # Vérification si l'utilisateur existe
-    if cat /etc/passwd | grep $user_delgroup >/dev/null; then
-        # Si l'utilisateur existe -> demande quel groupe?
+# Vérification si l'utilisateur existe
+    if ssh $nom_distant@$ip_distante cat /etc/passwd | grep $user_delgroup >/dev/null; then
+    # Si l'utilisateur existe -> demande quel groupe?
         read -p "De quel groupe souhaitez-vous supprimer l'utilisateur $user_delgroup?" choix_del_group
-        if cat /etc/group | grep $choix_del_group >/dev/null; then
+        if ssh $nom_distant@$ip_distante cat /etc/group | grep $choix_del_group >/dev/null; then
             ssh $nom_distant@$ip_distante sudo -S  deluser $user_delgroup $choix_del_group
             echo "L'utilisateur $user_delgroup est supprimé du groupe $choix_del_group." && sleep 2s
-            # Affichage des groupes de cet utilisateur (pour vérification)
+        # Affichage des groupes de cet utilisateur (pour vérification)
             echo "Affichage des groupes de l'utilisateur $user_delgroup : "
-            groups $user_delgroup && sleep 2s
+            ssh $nom_distant@$ip_distante groups $user_delgroup && sleep 2s
         else
             echo "Le groupe n'existe pas." && sleep 2s
         fi
     else
-        # Si non sortie du script
+    # Si non sortie du script
         echo "Le compte utilisateur n'existe pas." && sleep 2s
     fi
 }
@@ -817,279 +819,257 @@ supprimer_utilisateur_groupe()
 
 ############## DEBUT FONCTION ######################
 
-#Fonction arrêt
+# Fonction "Arrêt"
 shutdown()
 {
-read -p "Confirmez-vous l'arrêt de la machine distante ? [O pour valider] " conf_shutdown
-
-if [ $conf_shutdown = O ]
-	
-then
-		clear
+# Demande de confrmation
+	read -p "Confirmez-vous l'arrêt de la machine distante ? [O pour valider] " conf_shutdown
+# Si confirmation OK, affichage du sous-menu de la fonction "Arrêt"
+	if [ $conf_shutdown = O ] ;then
 		echo " [1] Arrêt instantané de la machine"
 		echo " [2] Arrêt planifié de la machine avec message d'avertissement" 
 		echo " [3] Arrêt planifié de la machine sans message d'avertissement"
 		echo " [*] Revenir au menu précédent"
-		
-		while true
-		do
-		read -p "Faites votre choix parmi la sélection ci-dessus : " conf_message_s
-		case $conf_message_s in
-				
-			1) 
-			echo "Arrêt instantanné en cours"
-			ssh $nom_distant@$ip_distante sudo -S shutdown
-			return
-			;;
-			
-			2) 
-			echo "Arrêt planifié en cours"
-			sleep 1s
-			read -p "Indiquer l'heure de l'arrêt [hh:mm] " timer_s1
-			ssh $nom_distant@$ip_distante notify-send "Extinction_prévue_à_$timer_s1 Pensez_à_sauvegarder_votre_travail"
-			echo "Message d'avertissement envoyé"
-			sleep 1s
-			ssh $nom_distant@$ip_distante sudo -S shutdown $timer_s1
-			echo "Arrêt planifié pour $timer_s1"
-			sleep 3s
-			return
-			;;
-			
-			3) 
-			echo "Arrêt planifié en cours"
-			read -p "Indiquer l'heure de l'arrêt [hh:mm] " timer_s2
-			ssh $nom_distant@$ip_distante sudo -S shutdown $timer_s2
-			sleep 3s
-			return
-			;;
-			
-			*) 
-			echo "Retour au menu précédent"
-			sleep 1s
-			return
-			;;
-		esac
-		done	
-else
-	echo "Mauvais choix - Retour au menu précédent"
-	sleep 2s
-	clear
-return
-fi	
+	# Demande de choix pour le sous-menu de la fonction "Arrêt"		
+		while true ; do
+			read -p "Faites votre choix parmi la sélection ci-dessus : " conf_message_s
+			case $conf_message_s in		
+				1) 
+					echo "Arrêt instantanné en cours"
+					ssh $nom_distant@$ip_distante sudo -S shutdown
+					return
+					;;
+				2) 
+					echo "Arrêt planifié en cours"
+					sleep 1s
+					read -p "Indiquer l'heure de l'arrêt [hh:mm] " timer_s1
+					ssh $nom_distant@$ip_distante notify-send "Extinction_prévue_à_$timer_s1 Pensez_à_sauvegarder_votre_travail"
+					echo "Message d'avertissement envoyé"
+					sleep 1s
+					ssh $nom_distant@$ip_distante sudo -S shutdown $timer_s1
+					echo "Arrêt planifié pour $timer_s1"
+					sleep 3s
+					return
+					;;				
+				3) 
+					echo "Arrêt planifié en cours"
+					read -p "Indiquer l'heure de l'arrêt [hh:mm] " timer_s2
+					ssh $nom_distant@$ip_distante sudo -S shutdown $timer_s2
+					sleep 3s
+					return
+					;;
+				*) 
+					echo "Retour au menu précédent"
+					sleep 1s
+					return
+					;;
+			esac
+		done
+# Si confirmation NOK, sortie de la fonction "Arrêt"			
+	else
+		echo "Opération annulée - Retour au menu précédent"
+		sleep 2s
+		return
+	fi	
 }
 
-#Fonction redémarrage
+# Fonction "Redémarrage"
 reboot()
 {
-read -p "Confirmez-vous l'arrêt de la machine distante ? [O pour valider] " conf_reboot
-
-if [ $conf_reboot = O ]
-	
-then
-		clear
+# Demande de confrmation
+	read -p "Confirmez-vous l'arrêt de la machine distante ? [O pour valider] " conf_reboot
+# Si confirmation OK, affichage du sous-menu de la fonction "Redémarrage"
+	if [ $conf_reboot = O ];then
 		echo " [1] Redémarrage instantané de la machine"
 		echo " [2] Redémarrage planifié de la machine avec message d'avertissement" 
 		echo " [3] Redémarrage planifié de la machine sans message d'avertissement"
 		echo " [*] Revenir au menu précédent"
-		
-		while true
-		do
-		read -p "Choisissez comment vous souhaitez procéder : " conf_message_r
-		case $conf_message_r in
-				
-			1) 
-			echo "Redémarrage instantanné en cours"
-			ssh $nom_distant@$ip_distante sudo -S shutdown -r now
-			return
-			;;
-			
-			2) 
-			echo "Redémarrage planifié en cours"
-			sleep 1s
-			read -p "Indiquer l'heure du redémarrage [hh:mm] " timer_r1
-			ssh $nom_distant@$ip_distante notify-send "Redémarrage_prévu_pour_$timer_r1 Pensez_à_sauvegarder_votre_travail"
-			echo "Message d'avertissement envoyé"
-			sleep 1s
-			ssh $nom_distant@$ip_distante sudo -S shutdown -r $timer_r1
-			sleep 3s
-			return
-			;;
-			
-			3) 
-			echo "Redémarrage planifié en cours"
-			read -p "Indiquer l'heure de l'arrêt [hh:mm] " timer_r2
-			ssh $nom_distant@$ip_distante sudo -S shutdown -r $timer_r2
-			sleep 3s
-			return
-			;;
-			
-			*) 
-			echo "Retour au menu précédent"
-			sleep 1s
-			return
-			;;
-		esac
-		done	
-else
-	echo "Mauvais choix - Retour au menu précédent"
-	sleep 1s
-	clear
-return
-fi	
+	# Demande de choix pour le sous-menu de la fonction "Redémarrage"		
+		while true ; do
+			read -p "Choisissez comment vous souhaitez procéder : " conf_message_r
+			case $conf_message_r in	
+				1) 
+					echo "Redémarrage instantanné en cours"
+					ssh $nom_distant@$ip_distante sudo -S shutdown -r now
+					return
+					;;				
+				2) 
+					echo "Redémarrage planifié en cours"
+					sleep 1s
+					read -p "Indiquer l'heure du redémarrage [hh:mm] " timer_r1
+					ssh $nom_distant@$ip_distante notify-send "Redémarrage_prévu_pour_$timer_r1 Pensez_à_sauvegarder_votre_travail"
+					echo "Message d'avertissement envoyé"
+					sleep 1s
+					ssh $nom_distant@$ip_distante sudo -S shutdown -r $timer_r1
+					sleep 3s
+					return
+					;;
+				3) 
+					echo "Redémarrage planifié en cours"
+					read -p "Indiquer l'heure de l'arrêt [hh:mm] " timer_r2
+					ssh $nom_distant@$ip_distante sudo -S shutdown -r $timer_r2
+					sleep 3s
+					return
+					;;
+				*) 
+					echo "Retour au menu précédent"
+					sleep 1s
+					return
+					;;
+			esac
+		done
+# Si confirmation NOK, sortie de la fonction "Redémarrage"			
+	else
+		echo "Opération annulée - Retour au menu précédent"
+		sleep 1s
+		return
+	fi	
 }
 
-#Fonction vérouillage
+# Fonction "Vérouillage"
 lock()
 {
-read -p "Confirmez-vous le vérouillage de la session de la machine distante ? [O pour valider] " conf_lock
-
-if [ $conf_lock = O ]	
-then
-	ssh $nom_distant@$ip_distante sudo -S skill -KILL -u $nom_distant
-	echo "La session de la machine distante a été vérouillée"
-	sleep 2s
-	clear
-	return
-else
-	echo "Mauvais choix - Retour au menu précédent"
-	sleep 1s
-	clear
-	return
-fi
+# Demande de confrmation
+	read -p "Confirmez-vous le vérouillage de la session de la machine distante ? [O pour valider] " conf_lock
+# Si confirmation OK, exécution de la commande "Vérouillage"
+	if [ $conf_lock = O ]; then
+		ssh $nom_distant@$ip_distante sudo -S skill -KILL -u $nom_distant
+		echo "La session de la machine distante a été vérouillée"
+		sleep 2s
+		return
+# Si confirmation NOK, sortie de la fonction "Vérouillage"	
+	else
+		echo "Opération annulée - Retour au menu précédent"
+		sleep 1s
+		return
+	fi
 }
 
-#Fonction Màj du système
+# Fonction MàJ
 update()
 {
-read -p "Confirmez-vous la mise-à-jour du système de la machine distante ? [O pour valider] " conf_update
-
-if [ $conf_update = O ]
-then
-	clear
-	ssh $nom_distant@$ip_distante sudo -S apt update && sudo -S apt upgrade -y
-	echo "La mise-à-jour du système de la machine distante a été effectuée"
-	sleep 2s
-	return
-else
-	clear
-	echo "Mauvais choix - Retour au menu précédent"
-	sleep 1s
-	return
-fi
+# Demande de confrmation
+	read -p "Confirmez-vous la mise-à-jour du système de la machine distante ? [O pour valider] " conf_update
+# Si confirmation OK, exécution de la commande "MàJ"
+	if [ $conf_update = O ] ; then
+		ssh $nom_distant@$ip_distante sudo -S apt update && sudo -S apt upgrade -y
+		echo "La mise-à-jour du système de la machine distante a été effectuée"
+		sleep 2s
+		return
+# Si confirmation NOK, sortie de la fonction "MàJ"	
+	else
+		echo "Opération annulée - Retour au menu précédent"
+		sleep 1s
+		return
+	fi
 }
 
-#Fonction "Création de dossier"
+# Fonction "Création Dossier"
 create_directory() 
 {
-
-    read -p "Confirmez-vous la création d'un dossier ? [O pour valider] " conf_create_directory
-
-    if [ $conf_create_directory = O ]
-    then
-        clear
-        read -p "Quel est le nom du dossier à créer ? " name_directory
-
-        if [ -z $name_directory ]
-        then
-            echo "Vous n'avez pas indiqué de nom de dossier, retour au menu précédent"
-            sleep 1s
-            return
-        fi
-
-        read -p "Quel est le chemin de destination de votre dossier (Si pas de chemin indiqué, chemin courant utilisé) : " path_directory
-
-        if ssh $nom_distant@$ip_distante [ -z "$path_directory" ]
-        then
-    		if ssh $nom_distant@$ip_distante "[ -d \"$name_directory\" ]"
-    		then
-        		echo "Le dossier existe déja"
-        		echo "Retour au menu précédent"
-        		sleep 1s
-        		return
-    		else
-        		echo "Le dossier n'existe pas."
-        		ssh $nom_distant@$ip_distante mkdir "$name_directory"
-        		echo "Le dossier $name_directory sera créé à l'emplacement actuel"
-        		sleep 2s
-    		fi
+# Demande de confrmation
+	read -p "Confirmez-vous la création d'un dossier ? [O pour valider] " conf_create_directory
+# Si confirmation OK, exécution de la commande "Création Dossier"
+	if [ $conf_create_directory = O ]; then		
+# Demande du nom du dossier à créer        
+		read -p "Quel est le nom du dossier à créer ? " name_directory
+	# Si aucun nom rentré, sortie de la fonction "Création Dossier"
+		if [ -z $name_directory ] ; then
+			echo "Vous n'avez pas indiqué de nom de dossier, retour au menu précédent"
+			sleep 1s
+			return
+		fi
+	# Demande du chemin de destination du dossier à créer
+		read -p "Quel est le chemin de destination de votre dossier (Si pas de chemin indiqué, chemin courant utilisé) : " path_directory
+		if ssh $nom_distant@$ip_distante [ -z "$path_directory" ] ;	then
+		# Si le dossier existe à l'emplacement actuel, sortie de la fonction "Création Dossier"       
+			if ssh $nom_distant@$ip_distante "[ -d \"$name_directory\" ]" ;	then
+				echo "Le dossier existe déja"
+				echo "Retour au menu précédent"
+				sleep 1s
+				return
+		# Si le dossier n'existe pas, et que le chemin n'est pas spécifié, création du dossier à l'emplacement actuel
+			else
+				echo "Le dossier n'existe pas."
+				ssh $nom_distant@$ip_distante mkdir "$name_directory"
+				echo "Le dossier $name_directory sera créé à l'emplacement actuel"
+				sleep 2s
+			fi
 	else
-    		if ssh $nom_distant@$ip_distante "[ -d \"$path_directory/$name_directory\" ]"
-    		then
-        		echo "Le dossier existe déjà"
-        		echo "Retour au menu précédent"
-        		sleep 1s
-        		return
-    		else
-        		echo "Le dossier n'existe pas"
-        		ssh $nom_distant@$ip_distante mkdir -p "$path_directory/$name_directory"
-        		echo "Le dossier $name_directory a été créé à l'emplacement $path_directory"
-        		sleep 2s
-    		fi
+		# Si le dossier existe dans l'emplacement spécifié, sortie de la fonction "Création Dossier"	
+			if ssh $nom_distant@$ip_distante "[ -d \"$path_directory/$name_directory\" ]" ;	then
+				echo "Le dossier existe déjà"
+				echo "Retour au menu précédent"
+				sleep 1s
+				return
+		# Si le dossier n'existe pas, et que le chemin est spécifié, création du dossier à cet emplacement
+			else
+				echo "Le dossier n'existe pas"
+				ssh $nom_distant@$ip_distante mkdir -p "$path_directory/$name_directory"
+				echo "Le dossier $name_directory a été créé à l'emplacement $path_directory"
+				sleep 2s
+			fi
 	fi
-
-
-    else
-        echo "Opération annulée - Retour au menu précédent"
-        sleep 1s
-        clear
-        return
-    fi
+# Si confirmation NOK, sortie de la fonction "Création Dossier"
+	else
+		echo "Opération annulée - Retour au menu précédent"
+		sleep 1s
+		return
+	fi
 }
 
-#Fonction "Suppréssion de dossier"
+# Fonction "Suppression Dossier"
 remove_directory() 
 {
-
+# Demande de confrmation
     read -p "Confirmez-vous la suppression d'un dossier ? [O pour valider] " conf_remove_directory
-
-    if [ $conf_remove_directory = O ]
-    then
-        clear
+# Si confirmation OK, exécution de la commande "Suppression Dossier"
+    if [ $conf_remove_directory = O ] ;  then
+# Demande du nom du dossier à supprimer
         read -p "Quel est le nom du dossier à supprimer ? " name_directory_2
-
-        if [ -z "$name_directory_2" ]
-        then
+	# Si aucun nom rentré, sortie de la fonction "Suppression Dossier"
+        if [ -z "$name_directory_2" ] ; then
             echo "Vous n'avez pas indiqué de nom de dossier, retour au menu précédent"
             return
         fi
-
+	# Demande du chemin de destination du dossier à supprimer
         read -p "Quel est le chemin de votre dossier : " path_directory_2
-
-        if ssh $nom_distant@$ip_distante [ -d "$path_directory_2/$name_directory_2" ]
-        then
+	# Si le dossier existe à l'emplacement spécifié, demande de confirmation de la suppression du dossier
+        if ssh $nom_distant@$ip_distante [ -d "$path_directory_2/$name_directory_2" ]; then
             read -p " Le dossier suivant $path_directory_2/$name_directory_2 sera supprimé, confirmez-vous ? [O pour valider] " conf_remove_directory_2
-            if [ $conf_remove_directory_2 = O ]
-            then
+		# Si confirmation OK, éxécution de la commande de suppression de dossier
+            if [ $conf_remove_directory_2 = O ] ;  then
                 ssh $nom_distant@$ip_distante sudo -S rm -r "$path_directory_2/$name_directory_2"
                 echo "Le dossier suivant $path_directory_2/$name_directory_2 a été supprimé"
                 sleep 2s
                 return
+		# Si confirmation NOK, sortie de la fonction "Suppression Dossier"
             else
                 echo "Opération annulée - Retour au menu précédent"
-                sleep 1s
-                clear
+                sleep 1s            
                 return
             fi
+	# Si le dossier n'existe pas à l'emplacement spécifié, sortie de la fonction "Suppression Dossier"
         else
             echo "Le dossier $path_directory_2/$name_directory_2 n'existe pas - Retour au menu précédent"
             sleep 2s
-            clear
+            
             return
         fi
     fi
 }
-
-#Fonction prise en main à distance
+# Fonction "Prise de main à distance"
 remote_control()
 {
-	echo "Cette action vous sortira de ce script et vous donnera accès à la commande de la machine distante $nom_distant@$ip_distante"
+# Demande de confirmation + Avertissement concernant la sortie du script dès l'éxécution de cette fonction
+	echo "ATTENTION : Cette commande vous sortira momentanément du script"
 	read -p "Confirmez-vous ? [O pour valider] : " conf_remote
-	
-		if [ $conf_remote = O ]
-		then
+	# Si confirmation OK, exécution de la commande "Prise de main à distance" + Sortie du script
+		if [ $conf_remote = O ] ; then
 			echo "Accès à la commande de la machine distante :"
 			sleep 2s
-			ssh $nom_distant@$ip_distante	
+			ssh $nom_distant@$ip_distante
+	# Si confirmation NOK, sortie de la fonction "Prise de main à distance"
 		else
 			echo "Opération annulée - Retour au menu précédent"
 			sleep 1s
@@ -1097,18 +1077,21 @@ remote_control()
 		fi	
 }
 
-#Fonction activation Firewall
+# Fonction "Activation du pare-feu"
 firewall_on()
+
 {
+# Demande de confirmation + Avertissement
+	echo "ATTENTION : Cette commande peut impacter l'éxécution du script"
 	read -p "Confirmez-vous l'activation du pare-feu sur la machine distante ? [O pour valider ] : " conf_fw_on
-	
-	if [ $conf_fw_on = O ]
-	then 
+# Si confirmation OK, éxécution de la commande "Activation du pare-feu"	
+	if [ $conf_fw_on = O ] ; then 
 		ssh $nom_distant@$ip_distante sudo -S ufw enable
 		ssh $nom_distant@$ip_distante sudo -S ufw status | cat
 		echo "Le pare-feu de la machine distante a été activé"
 		sleep 2s
 		return
+# Si confirmation NOK, sortie de la fonction "Activation du pare-feu"
 	else
 		echo "Opération annulée - Retour au menu précédent"
 		sleep 1s
@@ -1116,19 +1099,20 @@ firewall_on()
 	fi	
 }
 
-#Fonction désactivation Firewall
+# Fonction "Désactivation du pare-feu"
 firewall_off()
-
 {
+# Demande de confirmation + Avertissement
+	echo "ATTENTION : Cette commande peut impacter la vulnérabilité de la machine distante"
 	read -p "Confirmez-vous la désactivation du pare-feu sur la machine distante ? [O pour valider ] : " conf_fw_off
-	
-	if [ $conf_fw_off = O ]
-	then 
+# Si confirmation OK, éxécution de la commande "Désactivation du pare-feu	
+	if [ $conf_fw_off = O ] ; then 
 		ssh $nom_distant@$ip_distante sudo -S ufw disable
 		ssh $nom_distant@$ip_distante sudo -S ufw status | cat
 		echo "Le pare-feu de la machine distante a été désactivé"
 		sleep 2s
 		return
+# Si confirmation NOK, sortie de la fonction "Désactivation du pare-feu"
 	else
 		echo "Opération annulée - Retour au menu précédent"
 		sleep 1s
@@ -1136,14 +1120,14 @@ firewall_off()
 	fi	
 }
 
-#Fonction règles Firewall
+# Fonction "Règles du pare-feu"
 firewall_rules()
 {
+# Demande de confirmation + Avertissement concernant la sortie du script dès l'éxécution de cette fonction
+	echo "ATTENTION : Les commandes suivantes sont reservées à un public averti"
 	read -p "Confirmez-vous l'accès à la modification des régles du pare-feu ? [O Pour valider] : " conf_fw_rules
-	
-	if [ $conf_fw_rules = O ]	 
-	then
-		clear
+# Si confirmation OK, affichage du sous-menu de la fonction "Règles du pare-feu
+	if [ $conf_fw_rules = O ]; 	then
 		echo " [1] Affichage de l'état actuel des règles du pare-feu"
 		echo " [2] Ouverture d'un port (UDP et TCP)"
 		echo " [3] Fermeture d'un port (UDP et TCP)"
@@ -1151,204 +1135,201 @@ firewall_rules()
 		echo " [5] Désactiver la journalisation"
 		echo " [6] Réinitialiser le pare-feu"
 		echo " [*] Revenir au menu précédent"
-		
-		while true
-		do
-		read -p "Faites votre choix parmi la sélection ci-dessus : " conf_message_fw
-		case $conf_message_fw in
-				
-			1) 
-			echo "Affichage de l'état actuel des règles du pare-feu"
-			ssh $nom_distant@$ip_distante sudo -S ufw status verbose
-			;;
-			
-			2) 
-			echo "Ouverture d'un port"
-			sleep 2s
-			read -p "Indiquer le n° du port à ouvrir : " port_1
-			echo "Ouverture du port $port_1"
-			sleep 2s
-			ssh $nom_distant@$ip_distante sudo -S ufw allow $port_1
-			echo "$port_1 ouvert"
-			sleep 2s
-			;;
-			
-			3) 
-			echo "Fermeture d'un port"
-			sleep 2s
-			read -p "Indiquer le n° du port à fermer : " port_2
-			echo "Fermeture du port $port_2"
-			sleep 2s
-			ssh $nom_distant@$ip_distante sudo -S ufw allow $port_2
-			echo "$port_2 fermé"
-			sleep 2s
-			;;
-			
-			4)
-			echo "Activation de la journalisation"
-			sleep 2s
-			ssh $nom_distant@$ip_distante sudo -S ufw logging on
-			echo "Journalisation activée"
-			sleep 2s
-			;;
-			
-			5)
-			echo "Désactivation de la journalisation"
-			sleep 2s
-			ssh $nom_distant@$ip_distante sudo -S ufw logging off
-			echo "Journalisation désactivée"
-			sleep 2s
-			;;
-			
-			6)
-			echo "Réinitialisation du pare-feu"
-			echo "ATTENTION, cette commande peut compromettre la connexion à distance"
-			read -p "Souhaitez-vous tout de même continuer ? [O pour valider] : " conf_reset_fw
-			
-				if [ $conf_reset_fw = O ]
-				
-				then 	
-					sleep 1s
-					$nom_distant@$ip_distante sudo -S ufw reset
-					echo "Le pare-feu a été réinitialisé"
-					sleep 2s
-					return
-				else
-					echo "Opération annulée - Retour au menu précédent"
-					sleep 1s
-				fi
+		while true ; do
+			read -p "Faites votre choix parmi la sélection ci-dessus : " conf_message_fw
+			case $conf_message_fw in
+			# Affichage de l'état actuel du pare-feu				
+				1) 
+					echo "Affichage de l'état actuel des règles du pare-feu"
+					ssh $nom_distant@$ip_distante sudo -S ufw status verbose
+					sleep 2s			
 					;;
-				
-				
-			*) 
-			echo "Retour au menu précédent"
-			sleep 1s
-			return
-			;;
-		esac
+			# Exécution de la commande d'ouverture de port			
+				2) 
+					echo "Ouverture d'un port"
+					sleep 2s
+					read -p "Indiquer le n° du port à ouvrir : " port_1
+					echo "Ouverture du port $port_1"
+					sleep 2s
+					ssh $nom_distant@$ip_distante sudo -S ufw allow $port_1
+					echo "$port_1 ouvert"
+					sleep 2s				
+					;;
+			# Exécution de la commande de fermeture de port				
+				3) 
+					echo "Fermeture d'un port"
+					sleep 2s
+					read -p "Indiquer le n° du port à fermer : " port_2
+					echo "Fermeture du port $port_2"
+					sleep 2s
+					ssh $nom_distant@$ip_distante sudo -S ufw allow $port_2
+					echo "$port_2 fermé"
+					sleep 2s				
+					;;
+			# Exécution de la commande d'activation de la journalisation	
+				4)
+					echo "Activation de la journalisation"
+					sleep 2s
+					ssh $nom_distant@$ip_distante sudo -S ufw logging on
+					sleep 2s				
+					;;
+			# Exécution de la commande de désactivation de la journalisation	
+				5)
+					echo "Désactivation de la journalisation"
+					sleep 2s
+					ssh $nom_distant@$ip_distante sudo -S ufw logging off
+					sleep 2s
+					;;
+			# Exécution de la commande de réinitialisation du pare-feu + Avertissement
+				6)
+					echo "Réinitialisation du pare-feu"
+					echo "ATTENTION, cette commande peut compromettre la connexion à distance"
+					read -p "Souhaitez-vous tout de même continuer ? [O pour valider] : " conf_reset_fw
+				# Si confirlation OK, exécution de la commande de réinitialisation du pare-feu 
+					if [ $conf_reset_fw = O ]; then 
+						sleep 1s
+						$nom_distant@$ip_distante sudo -S ufw reset
+						echo "Le pare-feu a été réinitialisé"
+						sleep 2s
+						return
+				# Si confirmation NOK, sortie de la fonction "Règles du pare-feu"
+					else
+						echo "Opération annulée - Retour au menu précédent"
+						sleep 1s		
+					fi
+					;;
+					
+				# Si autre/mauvais choix, sortie de la fonction "Règles du pare-feu"		
+				*) 
+				echo "Retour au menu précédent"
+				sleep 1s
+				return
+				;;
+			esac
 		done
 	fi	
 }
-
-#Fonction installation d'une appllication
+# Fonction "Installation Application"
 install_app()
-
 {
-
-	read -p "Confirmez-vous l'accès à l'installation de logiciels ? [O Pour valider] : " conf_install
-	if [ $conf_install = O ]	 
-	then
-		clear
-		echo " [1] Installation via APT"
-		echo " [2] Installation via SNAP"
-		echo " [*] Revenir au menu précédent"
-		
-		while true
-		do
-		read -p "Faites votre choix parmi la sélection ci-dessus : " conf_message_install
-		case $conf_message_install in
-		
-			1)
-			read -p "Quel logiciel souhaitez-vous installer via APT : " apt_install
-			echo "Vous avez choisi d'installer le logiciel $apt_install"
-			sleep 1s
-			ssh $nom_distant@$ip_distante sudo -S apt install $apt_install
-			sleep 1s
-			echo "Le logiciel $apt_install a été installé"
-			sleep 2s
-			return
-			;;		
-		
-			2)
-			read -p "Quel logiciel souhaitez-vous installer via SNAP : " snap_install
-			echo "Vous avez choisi d'installer le logiciel $snap_install"
-			sleep 1s
-			ssh $nom_distant@$ip_distante sudo -S snap install $snap_install
-			sleep 1s
-			echo "Le logiciel $snap_install a été installé"
-			sleep 2s
-			return	
-			;;
-			
-			*)	
-			echo "Retour au menu précédent"
-			sleep 1s
-			return
-			;;
-		esac
-		done
-fi
-
+# Demande de confirmation
+    read -p "Confirmez-vous l'accès à l'installation de logiciels ? [O Pour valider] : " conf_install
+# Si confirmation OK, affichage du sous-menu de la fonction "Installation Application"
+    if [ $conf_install = O ] ;then
+        echo " [1] Installation via APT"
+        echo " [2] Installation via SNAP"
+        echo " [*] Revenir au menu précédent"
+        while true ; do
+            read -p "Faites votre choix parmi la sélection ci-dessus : " conf_message_install
+            case $conf_message_install in
+            # Exécution de la commande "Installation via APT"		
+                1)
+                    read -p "Quel logiciel souhaitez-vous installer via APT : " apt_install
+                    echo "Vous avez choisi d'installer le logiciel $apt_install"
+                    sleep 1s
+                    ssh $nom_distant@$ip_distante sudo -S apt install $apt_install
+                    sleep 1s
+                    echo "Le logiciel $apt_install a été installé"
+                    sleep 2s
+                    return
+                    ;;		
+            # Exécution de la commande "Installation via SNAP"
+                2)
+                    read -p "Quel logiciel souhaitez-vous installer via SNAP : " snap_install
+                    echo "Vous avez choisi d'installer le logiciel $snap_install"
+                    sleep 1s
+                    ssh $nom_distant@$ip_distante sudo -S snap install $snap_install
+                    sleep 1s
+                    echo "Le logiciel $snap_install a été installé"
+                    sleep 2s
+                    return	
+                    ;;
+            # Si autre/mauvais choix, sortie de la fonction "Installation Application"
+                *)	
+                    echo "Retour au menu précédent"
+                    sleep 1s
+                    return
+                    ;;
+            esac
+        done
+	fi
 }
-
-#Fonction suppression d'une appllication
+# Fonction "Désinstallation Application"
 uninstall_app()
-
 {
-read -p "Confirmez-vous l'accès à la désinstallation de logiciels ? [O Pour valider] : " conf_uninstall
-	if [ $conf_uninstall = O ]	 
-	then
-		clear
-		echo " [1] Désinstallation via APT"
-		echo " [2] Désinstallation via SNAP"
-		echo " [*] Revenir au menu précédent"
-		
-		while true
-		do
-		read -p "Faites votre choix parmi la sélection ci-dessus : " conf_message_uninstall
-		case $conf_message_uninstall in
-		
-			1)
-			read -p "Quel logiciel souhaitez-vous désinstaller via APT : " apt_uninstall
-			echo "Vous avez choisi de désinstaller le logiciel $apt_uninstall"
-			sleep 1s
-			ssh $nom_distant@$ip_distante sudo -S apt remove $apt_uninstall
-			sleep 1s
-			echo "Le logiciel $apt_uninstall a été désinstallé"
-			sleep 2s
-			return	
-			;;		
-		
-			2)
-			read -p "Quel logiciel souhaitez-vous désinstaller via SNAP : " snap_uninstall
-			echo "Vous avez choisi de désinstaller le logiciel $snap_uninstall"
-			sleep 1s
-			ssh $nom_distant@$ip_distante sudo -S snap install $snap_uninstall
-			sleep 1s
-			echo "Le logiciel $snap_uninstall a été désinstallé"
-			sleep 2s
-			return	
-			;;		
-			
-			*)	
-			echo "Retour au menu précédent"
-			sleep 1s
-			return
-			;;
-		esac
-		done
-fi
+# Demande de confirmation    
+	read -p "Confirmez-vous l'accès à la désinstallation de logiciels ? [O Pour valider] : " conf_uninstall
+	# Si confirmation OK, affichage du sous-menu de la fonction "Installation Application"
+		if [ $conf_uninstall = O ]; then
+			echo " [1] Désinstallation via APT"
+			echo " [2] Désinstallation via SNAP"
+			echo " [*] Revenir au menu précédent"
+			while true ; do
+				read -p "Faites votre choix parmi la sélection ci-dessus : " conf_message_uninstall
+				case $conf_message_uninstall in
+				# Exécution de la commande "Installation via APT"
+					1)
+						read -p "Quel logiciel souhaitez-vous désinstaller via APT : " apt_uninstall
+						echo "Vous avez choisi de désinstaller le logiciel $apt_uninstall"
+						sleep 1s
+						ssh $nom_distant@$ip_distante sudo -S apt remove $apt_uninstall
+						sleep 1s
+						echo "Le logiciel $apt_uninstall a été désinstallé"
+						sleep 2s
+						return	
+						;;		
+				# Exécution de la commande "Installation via SNAP"
+					2)
+						read -p "Quel logiciel souhaitez-vous désinstaller via SNAP : " snap_uninstall
+						echo "Vous avez choisi de désinstaller le logiciel $snap_uninstall"
+						sleep 1s
+						ssh $nom_distant@$ip_distante sudo -S snap install $snap_uninstall
+						sleep 1s
+						echo "Le logiciel $snap_uninstall a été désinstallé"
+						sleep 2s
+						return	
+						;;		
+				# Si autre/mauvais choix, sortie de la fonction "Désinstallation Application"	
+					*)	
+						echo "Retour au menu précédent"
+						sleep 1s
+						return
+						;;
+				esac
+			done
+	fi
 }
-
-#Fonction lancement d'un script
+# Fonction "Script à distance"
 remote_script()
-
 {
+# Demande de confirmation
 	read -p "Confirmez-vous l'éxécution d'un script sur la machine distante ? [O pour valider ] : " conf_script
-	
-	if [ $conf_script = O ]	 
-	then
+# Si confirmation OK, éxécution de la commande "Script à distance""	
+	if [ $conf_script = O ] ;then
+	# Demande du nom et du chemin du script à éxécuter	
 		read -p "Quel est le nom du script ? : " name_script
 		read -p "Quel est le chemin du script ? : " path_script
-		echo "Le script $name_script va être éxécuté"
-		sleep 1s
-		ssh $nom_distant@$ip_distante cd $path_script
-		ssh $nom_distant@$ip_distante chmod +x $name_script
-		read -p "Si besoin, indiquez les arguments du script : " arg_script
-		ssh $nom_distant@$ip_distante ./$name_script $arg_script
-		sleep 4s
-		return
-	
+		# Vérification de l'existence du script à l'emplacement spécifié		
+			if ssh $nom_distant@$ip_distante test -e "$path_script/$name_script" ; then
+			# Si le script existe, il va être exécuté		
+				echo "Le script $name_script existe."
+				echo "Le script $name_script va être éxécuté"
+				sleep 1s
+			# Changement des permissions du script pour le rendre exécutable				
+				ssh $nom_distant@$ip_distante chmod +x "$path_script/$name_script"
+			# Ajout des arguments du script si besoin
+				read -p "Si besoin, indiquez les arguments du script : " arg_script
+				ssh $nom_distant@$ip_distante "$path_script/$name_script" $arg_script
+				read -p "Appuyez sur Entrée pour continuer ..."
+				sleep 1s
+			else 
+		# Si le script n'existe pas, sortie de la fonction "Script à distance"
+				echo "Le script $name_script n'existe pas dans le répertoire spécifié."
+    			echo "Opération annulée - Retour au menu précédent."
+    			sleep 2s
+    			return
+    			fi	
+# Si confirmation NOK, sortie de la fonction "Script à distance"	
 	else
 		echo "Opération annulée - Retour au menu précédent"
 		sleep 1s
@@ -1356,6 +1337,7 @@ remote_script()
 	fi	
 
 }
+
 
 ############## FIN FONCTION ######################
 
@@ -1366,59 +1348,128 @@ remote_script()
 
 ############## DEBUT FONCTION ######################
 
-# Fonctions Informations dernière connexion
-
+# Fonctions Informations utilsiateur
 info_connexion() 
 {
-    # Demande quel utilisateur
+# Demande quel utilisateur
     echo ""
     echo "Date de dernière connexion"
     read -p "Tapez le nom d'utilisateur souhaité : " user_inf
 
-    # Est-ce que le nom existe sur le systeme ?
-    if cat /etc/passwd | grep $user_inf >/dev/null; then
-        # si oui -> affichage dernière connexion
-        ssh $nom_distant@$ip_distante last $user_inf | head -n 1 && sleep 2s
+# Est-ce que le nom existe sur le systeme ?
+    if ssh $nom_distant@$ip_distante cat /etc/passwd | grep $user_inf >/dev/null; then
+     # si oui -> affichage dernière connexion
+        ssh $nom_distant@$ip_distante lastlog -u $user_inf && sleep 2s
         echo "Dernière connexion : " >>/home/wilder/Documents/info-$user_inf-$(date +%Y-%m-%d).txt
-        ssh $nom_distant@$ip_distante last $user_inf | head -n 1 >>/home/wilder/Documents/info-$user_inf-$(date +%Y-%m-%d).txt
+        ssh $nom_distant@$ip_distante lastlog -u $user_inf >>/home/wilder/Documents/info-$user_inf-$(date +%Y-%m-%d).txt
         echo ""
         echo "Les données sont enregistrées dans le fichier info-$user_inf-$(date +%Y-%m-%d).txt" && sleep 3s
     else
-        # si non -> sortie du script
-        echo "L'utilisateur $user_mpd n'existe pas" && sleep 2s
+    # si non -> sortie du script
+        echo "L'utilisateur $user_inf n'existe pas" && sleep 2s
     fi
 }
 
-# Fonctions Informations dernière modification de mot de passe
+# Fonctions Informations dernière modification mot de passe
 info_modification() 
 {
-    # Demande quel utilisateur
+ # Demande quel utilisateur
     echo ""
     echo "Date de dernière modification du mdp"
     read -p "Tapez le nom d'utilisateur souhaité : " user_inf
-
-    # Est-ce que le nom existe sur le systeme ?
-    if cat /etc/passwd | grep $user_inf >/dev/null; then
-        # si oui -> affichage dernière connexion
+# Est-ce que le nom existe sur le systeme ?
+    if $nom_distant@$ip_distante cat /etc/passwd | grep $user_inf >/dev/null; then
+    # si oui -> affichage dernière connexion
         ssh $nom_distant@$ip_distante chage -l $user_inf | head -n 1 && sleep 2s
         ssh $nom_distant@$ip_distante chage -l $user_inf | head -n 1 >>/home/wilder/Documents/info-$user_inf-$(date +%Y-%m-%d).txt
         echo ""
         echo "Les données sont enregistrées dans le fichier info-$user_inf-$(date +%Y-%m-%d).txt" && sleep 3s
     else
-        # si non -> sortie du script
-        echo "L'utilisateur $user_mpd n'existe pas" && sleep 2s
+    # si non -> sortie du script
+        echo "L'utilisateur $user_inf n'existe pas" && sleep 2s
     fi
 
 }
 
-# Fonctions liste de session ouverte
-#liste_sessions(){}
+# Fonctions Informations liste session ouvertes
+liste_sessions() 
+{
+# Demande quel utilisateur
+    echo ""
+    echo "Liste des sessions ouvertes pour l'utilisateur"
+    echo ""
+    read -p "Tapez le nom d'utilisateur souhaité : " user_inf
+# Est-ce que le nom existe sur le systeme ?
+    if $nom_distant@$ip_distante cat /etc/passwd | grep $user_inf >/dev/null; then
+    # si oui -> affichage des sessions
+        ssh $nom_distant@$ip_distante w -u $user_inf && sleep 2s
+        ssh $nom_distant@$ip_distante w -u $user_inf >>/home/wilder/Documents/info-$user_inf-$(date +%Y-%m-%d).txt
+        echo ""
+        echo "Les données sont enregistrées dans le fichier info-$user_inf-$(date +%Y-%m-%d).txt" && sleep 3s
+    else
+    # si non -> sortie du script
+        echo "L'utilisateur $user_inf n'existe pas" && sleep 2s
+    fi
 
-# Fonctions droit dossiers
-#droits_dossier(){}
+}
 
-# Fonctions droit fichier
-#droits_fichier(){}
+# Fonctions Informations droit dossier
+droits_dossier() 
+{
+# Demande quel utilisateur
+    echo ""
+    echo "Visualisation des droits sur un dossier"
+    echo ""
+    read -p "Tapez le nom d'utilisateur souhaité : " user_inf
+# Est-ce que le nom existe sur le systeme ?
+    if $nom_distant@$ip_distante cat /etc/passwd | grep $user_inf >/dev/null; then
+    # si oui -> demande quel dossier à verifier
+        read -p "Sur quel dossier souhaitez-vous vérifier les droits ? (spécifier chemin du dossier)" dossier_a
+        if $nom_distant@$ip_distante [ -d $dossier_a ]; then
+    # affichage des droits
+            ssh $nom_distant@$ip_distante ls -ld $dossier_a/ && sleep 2s
+            ssh $nom_distant@$ip_distante ls -ld $dossier_a/ >>/home/wilder/Documents/info-$user_inf-$(date +%Y-%m-%d).txt
+            echo ""
+            echo "Les données sont enregistrées dans le fichier info-$user_inf-$(date +%Y-%m-%d).txt" && sleep 3s
+        else
+        # si non -> sortie du script
+            echo "Le dossier $dossier_a n'existe pas" && sleep 2s
+        fi
+    else
+    # si non -> sortie du script
+        echo "L'utilisateur $user_inf n'existe pas" && sleep 2s
+    fi
+}
+
+# Fonctions Informations droit fichier
+droits_fichier() 
+{
+# Demande quel utilisateur
+    echo ""
+    echo "Visualisation des droits sur un fichier"
+    echo ""
+    read -p "Tapez le nom d'utilisateur souhaité : " user_inf
+# Est-ce que le nom existe sur le systeme ?
+    if $nom_distant@$ip_distante cat /etc/passwd | grep $user_inf >/dev/null; then
+    # si oui -> demande quel dossier à verifier
+        read -p "Sur quel fichier souhaitez-vous vérifier les droits ?
+(spécifier chemin du fichier)" fichier_a
+        if $nom_distant@$ip_distante [ -f $fichier_a ]; then
+        # affichage des droits
+            ssh $nom_distant@$ip_distante ls -l $fichier_a && sleep 2s
+            ssh $nom_distant@$ip_distante ls -l $fichier_a >>/home/wilder/Documents/info-$user_inf-$(date +%Y-%m-%d).txt
+            echo ""
+            echo "Les données sont enregistrées dans le fichier info-$user_inf-$(date +%Y-%m-%d).txt" && sleep 3s
+        else
+        # si non -> sortie du script
+            echo "Le fichier $fichier_a n'existe pas" && sleep 2s
+        fi
+    else
+    # si non -> sortie du script
+        echo "L'utilisateur $user_inf n'existe pas" && sleep 2s
+    fi
+}
+
 
 ############## FIN FONCTION ######################
 
@@ -1437,23 +1488,26 @@ info_modification()
 ####################################################
 
 
-# Début enregistrement evennement
-echo "<Date>-<Heure>-<Utilisateur>-********StartScript********" >> event.log  
-
-# Demande d'infos sur la machine distante avant connexion
-    echo "=================================================="
+#Demande d'infos sur la machine distante
+	echo "=================================================="
     echo "        Initialisation script pour connexion      "
-    echo "=================================================="
+   	echo "=================================================="
 	echo ""
-	read -p "Veuillez entrer le nom de la machine distante : " nom_distant
-	read -p "Veuillez entrer l'adresse IP de la machine distante : "
+# Demande du nom d'utilisateur de la machine distante
+	read -p "Veuillez entrer le nom d'utilisateur de la machine distante : " nom_distant
+# Demande de l'adresse IP de la machine distante
+	read -p "Veuillez entrer l'adresse IP de la machine distante : " ip_distante
+# Demande d'identification    
+    read -p "Veuillez vous identifiez : " Operateur
 
+# Début enregistrement evennement
+echo $(date +%Y%m%d-%H%M%S)"-$Operateur-********StartScript********" >>  /var/log/log_evt.log    
 
-# Appel Fonction principal
+#appel Fonction Principal 
 Menu_Principal
 
 # Fin enregistrement evennement
-echo "<Date>-<Heure>-<Utilisateur>-********EndScript********" >> event.log  
+echo $(date +%Y%m%d-%H%M%S)"-$Operateur-********EndScript********" >>  /var/log/log_evt.log    
 # Fin de script
 exit 0
 
