@@ -1,16 +1,16 @@
-########################################################################################################
-########################################################################################################
+################################################################################################################################################################################################################
+################################################################################################################################################################################################################
 # Script Bash pour maintenance et information sur Poste Distant Linux 
-# Version 0.7
+# Version 0.75
 # Réalisé en collaboration par Anais Lenglet, Bruno Serna, Grégory Dubois, Patrick Baggiolini et Thomas Scotti
-# Dernière mise à jour le  04 / 04 / 2024 
+# Dernière mise à jour le  05 / 04 / 2024 
 # Historique version
+# V0.75 -- 04 / 04 / 2024 création répertoire "Documents" et création var pour chemin enregistrement info utilisateur/computeur
 # V0.7 -- 04 / 04 / 2024 Ajout Fonction information ordinateur
-# V0.6 -- 04 / 04 / 2024 Ajout log event / Fonction action ordinateu / Fonction action utilisaterur 
-#Et  Fonction information utilisateur
+# V0.6 -- 04 / 04 / 2024 Ajout log event / Fonction action ordinateu / Fonction action utilisaterur Et  Fonction information utilisateur
 # V0.5 -- 03 / 04 / 2024 Création script
-########################################################################################################
-########################################################################################################
+################################################################################################################################################################################################################
+################################################################################################################################################################################################################
 
 
 ####################################################
@@ -1337,127 +1337,132 @@ remote_script()
 
 ############## DEBUT FONCTION ######################
 
-# Fonctions Informations utilsiateur
-info_connexion() 
-{
-# Demande quel utilisateur
+# Fonctions Informations utilisateur
+info_connexion() {
+    # Demande quel utilisateur
     echo ""
     echo "Date de dernière connexion"
     read -p "Tapez le nom d'utilisateur souhaité : " user_inf
 
-# Est-ce que le nom existe sur le systeme ?
+    # Est-ce que le nom existe sur le systeme ?
     if ssh $nom_distant@$ip_distante cat /etc/passwd | grep $user_inf >/dev/null; then
-     # si oui -> affichage dernière connexion
+        # si oui -> affichage dernière connexion
         ssh $nom_distant@$ip_distante lastlog -u $user_inf && sleep 2s
-        echo "Dernière connexion : " >>/home/wilder/Documents/info-$user_inf-$(date +%Y-%m-%d).txt
-        ssh $nom_distant@$ip_distante lastlog -u $user_inf >>/home/wilder/Documents/info-$user_inf-$(date +%Y-%m-%d).txt
+        echo $nom_distant@$ip_distante "Dernière connexion : " >>$path_info_file-$user_inf-$(date +%Y-%m-%d).txt
+        ssh $nom_distant@$ip_distante lastlog -u $user_inf >>$path_info_file-$user_inf-$(date +%Y-%m-%d).txt
         echo ""
         echo "Les données sont enregistrées dans le fichier info-$user_inf-$(date +%Y-%m-%d).txt" && sleep 3s
     else
-    # si non -> sortie du script
-        echo "L'utilisateur $user_inf n'existe pas" && sleep 2s
+        # si non -> sortie du script
+        echo "L'utilisateur $user_mpd n'existe pas" && sleep 2s
     fi
 }
 
-# Fonctions Informations dernière modification mot de passe
-info_modification() 
-{
- # Demande quel utilisateur
+# Fonctions Informations dernière modification de mot de passe
+info_modification() {
+    # Demande quel utilisateur
     echo ""
     echo "Date de dernière modification du mdp"
     read -p "Tapez le nom d'utilisateur souhaité : " user_inf
-# Est-ce que le nom existe sur le systeme ?
-    if $nom_distant@$ip_distante cat /etc/passwd | grep $user_inf >/dev/null; then
-    # si oui -> affichage dernière connexion
-        ssh $nom_distant@$ip_distante chage -l $user_inf | head -n 1 && sleep 2s
-        ssh $nom_distant@$ip_distante chage -l $user_inf | head -n 1 >>/home/wilder/Documents/info-$user_inf-$(date +%Y-%m-%d).txt
+
+    # Est-ce que le nom existe sur le systeme ?
+    if ssh $nom_distant@$ip_distante cat /etc/passwd | grep $user_inf >/dev/null; then
+        # si oui -> affichage dernière modification
+        ssh $nom_distant@$ip_distante sudo -S chage -l $user_inf | head -n 1 && sleep 2s
+        echo "Dernière modification du mot de passe : " >>$path_info_file-$user_inf-$(date +%Y-%m-%d).txt
+        ssh $nom_distant@$ip_distante sudo -S chage -l $user_inf | head -n 1 >>$path_info_file-$user_inf-$(date +%Y-%m-%d).txt
         echo ""
         echo "Les données sont enregistrées dans le fichier info-$user_inf-$(date +%Y-%m-%d).txt" && sleep 3s
     else
-    # si non -> sortie du script
-        echo "L'utilisateur $user_inf n'existe pas" && sleep 2s
+        # si non -> sortie du script
+        echo "L'utilisateur $user_mpd n'existe pas" && sleep 2s
     fi
 
 }
 
-# Fonctions Informations liste session ouvertes
-liste_sessions() 
-{
-# Demande quel utilisateur
+liste_sessions() {
+    # Demande quel utilisateur
     echo ""
     echo "Liste des sessions ouvertes pour l'utilisateur"
     echo ""
     read -p "Tapez le nom d'utilisateur souhaité : " user_inf
-# Est-ce que le nom existe sur le systeme ?
-    if $nom_distant@$ip_distante cat /etc/passwd | grep $user_inf >/dev/null; then
-    # si oui -> affichage des sessions
-        ssh $nom_distant@$ip_distante w -u $user_inf && sleep 2s
-        ssh $nom_distant@$ip_distante w -u $user_inf >>/home/wilder/Documents/info-$user_inf-$(date +%Y-%m-%d).txt
+
+    # Est-ce que le nom existe sur le systeme ?
+    if ssh $nom_distant@$ip_distante cat /etc/passwd | grep $user_inf >/dev/null; then
+        # si oui -> affichage des sessions
+        ssh $nom_distant@$ip_distante last $user_inf && sleep 2s
+        echo "Liste des sessions : " >>$path_info_file-$user_inf-$(date +%Y-%m-%d).txt
+        ssh $nom_distant@$ip_distante last $user_inf >>$path_info_file-$user_inf-$(date +%Y-%m-%d).txt
         echo ""
         echo "Les données sont enregistrées dans le fichier info-$user_inf-$(date +%Y-%m-%d).txt" && sleep 3s
+
     else
-    # si non -> sortie du script
+        # si non -> sortie du script
         echo "L'utilisateur $user_inf n'existe pas" && sleep 2s
     fi
 
 }
 
-# Fonctions Informations droit dossier
-droits_dossier() 
-{
-# Demande quel utilisateur
+droits_dossier() {
+    # Demande quel utilisateur
     echo ""
     echo "Visualisation des droits sur un dossier"
     echo ""
     read -p "Tapez le nom d'utilisateur souhaité : " user_inf
-# Est-ce que le nom existe sur le systeme ?
-    if $nom_distant@$ip_distante cat /etc/passwd | grep $user_inf >/dev/null; then
-    # si oui -> demande quel dossier à verifier
-        read -p "Sur quel dossier souhaitez-vous vérifier les droits ? (spécifier chemin du dossier)" dossier_a
-        if $nom_distant@$ip_distante [ -d $dossier_a ]; then
-    # affichage des droits
+
+    # Est-ce que le nom existe sur le systeme ?
+    if ssh $nom_distant@$ip_distante cat /etc/passwd | grep $user_inf >/dev/null; then
+        # si oui -> demande quel dossier à verifier
+        read -p "Sur quel dossier souhaitez-vous vérifier les droits ?
+(spécifier chemin du dossier)" dossier_a
+        if ssh $nom_distant@$ip_distante [ -d $dossier_a ]; then
+            # affichage des droits
             ssh $nom_distant@$ip_distante ls -ld $dossier_a/ && sleep 2s
-            ssh $nom_distant@$ip_distante ls -ld $dossier_a/ >>/home/wilder/Documents/info-$user_inf-$(date +%Y-%m-%d).txt
+            echo "Droits et permission sur le dossier $dossier_a/ : " >>$path_info_file-$user_inf-$(date +%Y-%m-%d).txt
+            ssh $nom_distant@$ip_distante ls -ld $dossier_a/ >>$path_info_file-$user_inf-$(date +%Y-%m-%d).txt
             echo ""
             echo "Les données sont enregistrées dans le fichier info-$user_inf-$(date +%Y-%m-%d).txt" && sleep 3s
         else
-        # si non -> sortie du script
+            # si non -> sortie du script
             echo "Le dossier $dossier_a n'existe pas" && sleep 2s
         fi
     else
-    # si non -> sortie du script
+        # si non -> sortie du script
         echo "L'utilisateur $user_inf n'existe pas" && sleep 2s
     fi
 }
 
-# Fonctions Informations droit fichier
-droits_fichier() 
-{
-# Demande quel utilisateur
+droits_fichier() {
+
+    # Demande quel utilisateur
     echo ""
     echo "Visualisation des droits sur un fichier"
     echo ""
     read -p "Tapez le nom d'utilisateur souhaité : " user_inf
-# Est-ce que le nom existe sur le systeme ?
-    if $nom_distant@$ip_distante cat /etc/passwd | grep $user_inf >/dev/null; then
-    # si oui -> demande quel dossier à verifier
+
+    # Est-ce que le nom existe sur le systeme ?
+    if ssh $nom_distant@$ip_distante cat /etc/passwd | grep $user_inf >/dev/null; then
+        # si oui -> demande quel dossier à verifier
         read -p "Sur quel fichier souhaitez-vous vérifier les droits ?
 (spécifier chemin du fichier)" fichier_a
-        if $nom_distant@$ip_distante [ -f $fichier_a ]; then
-        # affichage des droits
+        if ssh $nom_distant@$ip_distante [ -f $fichier_a ]; then
+            # affichage des droits
             ssh $nom_distant@$ip_distante ls -l $fichier_a && sleep 2s
-            ssh $nom_distant@$ip_distante ls -l $fichier_a >>/home/wilder/Documents/info-$user_inf-$(date +%Y-%m-%d).txt
+            echo "Droits et permission sur le fichier $fichier_a/ : " >>$path_info_file-$user_inf-$(date +%Y-%m-%d).txt
+            ssh $nom_distant@$ip_distante ls -l $fichier_a >>$path_info_file-$user_inf-$(date +%Y-%m-%d).txt
             echo ""
             echo "Les données sont enregistrées dans le fichier info-$user_inf-$(date +%Y-%m-%d).txt" && sleep 3s
         else
-        # si non -> sortie du script
+            # si non -> sortie du script
             echo "Le fichier $fichier_a n'existe pas" && sleep 2s
         fi
     else
-    # si non -> sortie du script
+        # si non -> sortie du script
         echo "L'utilisateur $user_inf n'existe pas" && sleep 2s
     fi
+
 }
+
 
 
 ############## FIN FONCTION ######################
@@ -1692,6 +1697,17 @@ StatusPare_feu()
 ####################################################
 
 
+# Prérequis
+# Création répertoire Documents
+path_info_file=~/\Documents
+if [ ! -z "$path_info_file" ] ;then
+    # Si le dossier existepas le créér       
+    mkdir "$path_info_file"
+    else
+    echo "existe"
+fi 
+$path_info_file/info-CLILIN01-$(date +%Y-%m-%d).txt 
+
 #Demande d'infos sur la machine distante
 	echo "=================================================="
     echo "        Initialisation script pour connexion      "
@@ -1718,6 +1734,3 @@ exit 0
 ####################################################
 ################ Fin script  #######################
 ####################################################
-
-
-
