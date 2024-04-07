@@ -1,4 +1,7 @@
 function Menu_Principal {
+
+While ($true) {
+
     Clear-Host
     Write-Host "=================================="
     Write-Host "|         Menu Principal        | "
@@ -14,13 +17,13 @@ function Menu_Principal {
     Write-Host "[X] Arrêter le script "
     Write-Host ""
 
-    do {
         $ChoixMenuPrincipal = Read-Host "Veuillez faire votre choix : "
 
         Switch ($ChoixMenuPrincipal) {
             "1" { 
                 Write-Host ""
                 Write-Host "Vous avez choisi ACTION"
+                Start-Sleep -Seconds 1
                 Menu_Action
                 break
             }
@@ -28,6 +31,7 @@ function Menu_Principal {
             "2" { 
                 Write-Host ""
                 Write-Host "Vous avez choisi Information"
+                Start-Sleep -Seconds 1
                 Menu_Information
                 break
             }
@@ -35,18 +39,23 @@ function Menu_Principal {
             "X" { 
                 Write-Host ""
                 Write-Host "Arrêt du script"
+                Start-Sleep -Seconds 1
                 exit 
             }
 
             Default { 
                 Write-Host ""
                 Write-Host "Choix incorrect, veuillez recommencer."
+                Start-Sleep -Seconds 1
             }
         }
-    } while ($true)
+    }
 }
 
 function Menu_Action {
+
+While ($true) {
+
     Clear-Host
     Write-Host "=================================="
     Write-Host "|             ACTION            | "
@@ -62,42 +71,48 @@ function Menu_Action {
     Write-Host "[X] Retour au menu principal"
     Write-Host ""
 
-    do {
         $ChoixMenuAction = Read-Host "Veuillez faire votre choix : "
 
         Switch ($ChoixMenuAction) {
             "1" { 
                 Write-Host ""
                 Write-Host "Vous avez choisi ACTION sur UTILISATEUR"
+                Start-Sleep -Seconds 1
                 Menu_Action_Utilisateur
-                break
+
             }
 
             "2" { 
                 Write-Host ""
                 Write-Host "Vous avez choisi ACTION sur POSTE"
+                Start-Sleep -Seconds 1
                 Menu_Action_Poste
-                break
+
             }
 
             "X" { 
                 Write-Host ""
                 Write-Host "Retour au menu principal"
+                Start-Sleep -Seconds 1
                 Menu_Principal 
             }
 
             Default { 
                 Write-Host ""
                 Write-Host "Choix incorrect, veuillez recommencer."
+                Start-Sleep -Seconds 1
             }
         }
-    } while ($true)
+    }
 }
 
 function Menu_Information {
+
+While ($true) {
+
     Clear-Host
     Write-Host "=================================="
-    Write-Host "|          INFORMATION           | "
+    Write-Host "|          INFORMATION           |"
     Write-Host "=================================="
     Write-Host ""
     Write-Host "Machine distante : "
@@ -110,39 +125,43 @@ function Menu_Information {
     Write-Host "[X] Retour au menu principal"
     Write-Host ""
 
-    do {
         $ChoixMenuInformation = Read-Host "Veuillez faire votre choix : "
 
         Switch ($ChoixMenuInformation) {
             "1" { 
                 Write-Host ""
                 Write-Host "Vous avez choisi INFORMATION sur UTILISATEUR"
+                Start-Sleep -Seconds 1
                 Menu_Information_Utilisateur
-                break
             }
 
             "2" { 
                 Write-Host ""
                 Write-Host "Vous avez choisi INFORMATION sur POSTE"
+                Start-Sleep -Seconds 1
                 Menu_Information_Poste 
-                break
             }
 
             "X" { 
                 Write-Host ""
                 Write-Host "Retour au menu principal"
+                Start-Sleep -Seconds 1
                 Menu_Principal 
             }
 
             Default { 
                 Write-Host ""
                 Write-Host "Choix incorrect, veuillez recommencer."
+                Start-Sleep -Seconds 1
             }
         }
-    } while ($true)
+    }
 }
 
 function Menu_Action_Utilisateur {
+
+While ($true) {
+
     Clear-Host
     Write-Host "=================================="
     Write-Host "|        ACTION UTILISATEUR     | "
@@ -164,27 +183,30 @@ function Menu_Action_Utilisateur {
     Write-Host "[X] Retour au menu principal"
     Write-Host ""
 
-    do {
         $ChoixMenuActionUtilisateur = Read-Host "Veuillez faire votre choix : "
 
         Switch ($ChoixMenuActionUtilisateur) {
             "1" { 
                 Write-Host ""
                 Write-Host "Vous avez choisi de créer un compte utilisateur local"
-                 
-                break
+                Start-Sleep -Seconds 1
+
+                break    
+                
             }
 
             "2" { 
                 Write-Host ""
                 Write-Host "Vous avez choisi de supprimer un compte utilisateur local"
-                 
+                Start-Sleep -Seconds 1
+
                 break
             }
 
             "3" { 
                 Write-Host ""
                 Write-Host "Vous avez choisi de désactiver un compte utilisateur local"
+                Start-Sleep -Seconds 1
                  
                 break
             }
@@ -192,6 +214,7 @@ function Menu_Action_Utilisateur {
             "4" { 
                 Write-Host ""
                 Write-Host "Vous avez choisi de modifier un mot de passe"
+                Start-Sleep -Seconds 1
                  
                 break
             }
@@ -199,6 +222,7 @@ function Menu_Action_Utilisateur {
             "5" { 
                 Write-Host ""
                 Write-Host "Vous avez choisi d'ajouter un compte à un groupe d'administration"
+                Start-Sleep -Seconds 1
                  
                 break
             }
@@ -206,6 +230,7 @@ function Menu_Action_Utilisateur {
             "6" { 
                 Write-Host ""
                 Write-Host "Vous avez choisi d'ajouter un compte à un groupe local"
+                Start-Sleep -Seconds 1
                  
                 break
             }
@@ -213,6 +238,7 @@ function Menu_Action_Utilisateur {
             "7" { 
                 Write-Host ""
                 Write-Host "Vous avez choisi de retirer un compte d'un groupe local"
+                Start-Sleep -Seconds 1
                  
                 break
             }
@@ -220,6 +246,7 @@ function Menu_Action_Utilisateur {
             "0" { 
                 Write-Host ""
                 Write-Host "Retour au menu précédent"
+                Start-Sleep -Seconds 1
                 Menu_Action
                  
                 break
@@ -228,18 +255,23 @@ function Menu_Action_Utilisateur {
             "X" { 
                 Write-Host ""
                 Write-Host "Retour au menu principal"
+                Start-Sleep -Seconds 1
                 Menu_Principal 
             }
 
             Default { 
                 Write-Host ""
                 Write-Host "Choix incorrect, veuillez recommencer."
+                Start-Sleep -Seconds 1
             }
         }
-    } while ($true)
+    }
 }
 
 function Menu_Action_Poste {
+
+While ($true) {
+
     Clear-Host
     Write-Host "=================================="
     Write-Host "|           ACTION POSTE         | "
@@ -267,13 +299,13 @@ function Menu_Action_Poste {
     Write-Host "[X] Retour au menu principal"
     Write-Host ""
 
-    do {
         $ChoixMenuActionPoste = Read-Host "Veuillez faire votre choix : "
 
         Switch ($ChoixMenuActionPoste) {
             "1" { 
                 Write-Host ""
                 Write-Host "Vous avez choisi d'arrêter le poste"
+                Start-Sleep -Seconds 1
                  
                 break
             }
@@ -281,6 +313,7 @@ function Menu_Action_Poste {
             "2" { 
                 Write-Host ""
                 Write-Host "Vous avez choisi de redémarrer le poste"
+                Start-Sleep -Seconds 1
                  
                 break
             }
@@ -288,6 +321,7 @@ function Menu_Action_Poste {
             "3" { 
                 Write-Host ""
                 Write-Host "Vous avez choisi de vérouiller le poste"
+                Start-Sleep -Seconds 1
                  
                 break
             }
@@ -295,6 +329,7 @@ function Menu_Action_Poste {
             "4" { 
                 Write-Host ""
                 Write-Host "Vous avez choisi de mettre à jour le poste"
+                Start-Sleep -Seconds 1
                  
                 break
             }
@@ -302,6 +337,7 @@ function Menu_Action_Poste {
             "5" { 
                 Write-Host ""
                 Write-Host "Vous avez choisi de créer un dossier"
+                Start-Sleep -Seconds 1
                  
                 break
             }
@@ -309,6 +345,7 @@ function Menu_Action_Poste {
             "6" { 
                 Write-Host ""
                 Write-Host "Vous avez choisi de supprimer un dossier"
+                Start-Sleep -Seconds 1
                  
                 break
             }
@@ -316,6 +353,7 @@ function Menu_Action_Poste {
             "7" { 
                 Write-Host ""
                 Write-Host "Vous avez choisi de prendre la main sur le poste"
+                Start-Sleep -Seconds 1
                  
                 break
             }
@@ -323,6 +361,7 @@ function Menu_Action_Poste {
             "8" { 
                 Write-Host ""
                 Write-Host "Vous avez choisi d'activer le pare-feu sur le poste"
+                Start-Sleep -Seconds 1
                  
                 break
             }
@@ -330,6 +369,7 @@ function Menu_Action_Poste {
             "9" { 
                 Write-Host ""
                 Write-Host "Vous avez choisi de désactiver le pare-feu sur le poste"
+                Start-Sleep -Seconds 1
                  
                 break
             }
@@ -337,6 +377,7 @@ function Menu_Action_Poste {
             "10" { 
                 Write-Host ""
                 Write-Host "Vous avez choisi de modifier les règles du pare-feu sur le poste"
+                Start-Sleep -Seconds 1
                  
                 break
             }
@@ -344,6 +385,7 @@ function Menu_Action_Poste {
             "11" { 
                 Write-Host ""
                 Write-Host "Vous avez choisi d'installer un logiciel sur le poste"
+                Start-Sleep -Seconds 1
                  
                 break
             }
@@ -351,6 +393,7 @@ function Menu_Action_Poste {
             "12" { 
                 Write-Host ""
                 Write-Host "Vous avez choisi de désinstaller un logiciel sur le poste"
+                Start-Sleep -Seconds 1
                  
                 break
             }
@@ -358,6 +401,7 @@ function Menu_Action_Poste {
             "13" { 
                 Write-Host ""
                 Write-Host "Vous avez choisi d'éxécuter un script sur le poste"
+                Start-Sleep -Seconds 1
                  
                 break
             }
@@ -365,26 +409,30 @@ function Menu_Action_Poste {
             "0" { 
                 Write-Host ""
                 Write-Host "Retour au menu précédent"
+                Start-Sleep -Seconds 1
                 Menu_Action
-                 
-                break
+
             }
 
             "X" { 
                 Write-Host ""
                 Write-Host "Retour au menu principal"
+                Start-Sleep -Seconds 1
                 Menu_Principal 
             }
 
             Default { 
                 Write-Host ""
                 Write-Host "Choix incorrect, veuillez recommencer."
+                Start-Sleep -Seconds 1
             }
         }
-    } while ($true)
+    }
 }
 
 function Menu_Information_Utilisateur {
+
+While ($true) {
 
     Clear-Host
     Write-Host "=================================="
@@ -405,13 +453,13 @@ function Menu_Information_Utilisateur {
     Write-Host "[X] Retour au menu principal"
     Write-Host ""
 
-    do {
         $ChoixMenuInformationUtilisateur = Read-Host "Veuillez faire votre choix : "
 
         Switch ($ChoixMenuInformationUtilisateur) {
             "1" { 
                 Write-Host ""
                 Write-Host "Vous avez choisi de consulter la date de la dernière connexion de l'utilisateur"
+                Start-Sleep -Seconds 1
                  
                 break
             }
@@ -419,6 +467,7 @@ function Menu_Information_Utilisateur {
             "2" { 
                 Write-Host ""
                 Write-Host "Vous avez choisi de consulter la date de la dernière modification du mot de passe de l'utilisateur"
+                Start-Sleep -Seconds 1
                  
                 break
             }
@@ -426,6 +475,7 @@ function Menu_Information_Utilisateur {
             "3" { 
                 Write-Host ""
                 Write-Host "Vous avez choisi de consulter la liste des sessions utilisateurs ouvertes"
+                Start-Sleep -Seconds 1
                  
                 break
             }
@@ -433,6 +483,7 @@ function Menu_Information_Utilisateur {
             "4" { 
                 Write-Host ""
                 Write-Host "Vous avez choisi de consulter les droits et permissions sur un dossier"
+                Start-Sleep -Seconds 1
                  
                 break
             }
@@ -440,6 +491,7 @@ function Menu_Information_Utilisateur {
             "5" { 
                 Write-Host ""
                 Write-Host "Vous avez choisi de consulter les droits et permissions sur un fichier"
+                Start-Sleep -Seconds 1
                  
                 break
             }
@@ -447,28 +499,31 @@ function Menu_Information_Utilisateur {
             "0" { 
                 Write-Host ""
                 Write-Host "Retour au menu précédent"
+                Start-Sleep -Seconds 1
                 Menu_Information
-                 
-                break
             }
 
             "X" { 
                 Write-Host ""
                 Write-Host "Retour au menu principal"
+                Start-Sleep -Seconds 1
                 Menu_Principal 
             }
 
             Default { 
                 Write-Host ""
                 Write-Host "Choix incorrect, veuillez recommencer."
+                Start-Sleep -Seconds 1
             }
         }
-    } while ($true)
+    }
 }
 
 function Menu_Information_Poste {
 
-Clear-Host
+While ($true) {
+
+    Clear-Host
     Write-Host "=================================="
     Write-Host "|        INFORMATION POSTE      | "
     Write-Host "=================================="
@@ -493,13 +548,13 @@ Clear-Host
     Write-Host "[X] Retour au menu principal"
     Write-Host ""
 
-    do {
         $ChoixMenuInformationPoste = Read-Host "Veuillez faire votre choix : "
 
         Switch ($ChoixMenuInformationPoste) {
             "1" { 
                 Write-Host ""
                 Write-Host "Vous avez choisi de consulter la version de l'OS"
+                Start-Sleep -Seconds 1
                  
                 break
             }
@@ -507,6 +562,7 @@ Clear-Host
             "2" { 
                 Write-Host ""
                 Write-Host "Vous avez choisi de consulter le nombre d'interfaces réseaux"
+                Start-Sleep -Seconds 1
                  
                 break
             }
@@ -514,6 +570,7 @@ Clear-Host
             "3" { 
                 Write-Host ""
                 Write-Host "Vous avez choisi de consulter l'adresse IP de chaque interface réseau"
+                Start-Sleep -Seconds 1
                  
                 break
             }
@@ -521,6 +578,7 @@ Clear-Host
             "4" { 
                 Write-Host ""
                 Write-Host "Vous avez choisi de consulter l'adresse MAC de chaque interface réseau"
+                Start-Sleep -Seconds 1
                  
                 break
             }
@@ -528,6 +586,7 @@ Clear-Host
             "5" { 
                 Write-Host ""
                 Write-Host "Vous avez choisi de consulter la liste des applications / paquets installés"
+                Start-Sleep -Seconds 1
                  
                 break
             }
@@ -535,6 +594,7 @@ Clear-Host
             "6" { 
                 Write-Host ""
                 Write-Host "Vous avez choisi de consulter la liste des utilisateurs locaux"
+                Start-Sleep -Seconds 1
                  
                 break
             }
@@ -542,6 +602,7 @@ Clear-Host
             "7" { 
                 Write-Host ""
                 Write-Host "Vous avez choisi de consulter la liste des informations CPU"
+                Start-Sleep -Seconds 1
                  
                 break
             }
@@ -549,6 +610,7 @@ Clear-Host
             "8" { 
                 Write-Host ""
                 Write-Host "Vous avez choisi de consulter la mémoire RAM totale et l'utilisation"
+                Start-Sleep -Seconds 1
                  
                 break
             }
@@ -556,6 +618,7 @@ Clear-Host
             "9" { 
                 Write-Host ""
                 Write-Host "Vous avez choisi de consulter l'utilisation du disque dur"
+                Start-Sleep -Seconds 1
                  
                 break
             }
@@ -563,6 +626,7 @@ Clear-Host
             "10" { 
                 Write-Host ""
                 Write-Host "Vous avez choisi de consulter l'utilisation du processeur"
+                Start-Sleep -Seconds 1
                  
                 break
             }
@@ -570,6 +634,7 @@ Clear-Host
             "11" { 
                 Write-Host ""
                 Write-Host "Vous avez choisi de consulter le statut du pare-feu et la liste des ports ouverts"
+                Start-Sleep -Seconds 1
                  
                 break
             }
@@ -577,22 +642,24 @@ Clear-Host
             "0" { 
                 Write-Host ""
                 Write-Host "Retour au menu précédent"
+                Start-Sleep -Seconds 1
                 Menu_Information
-                 
-                break
+
             }
 
             "X" { 
                 Write-Host ""
                 Write-Host "Retour au menu principal"
+                Start-Sleep -Seconds 1
                 Menu_Principal 
             }
 
             Default { 
                 Write-Host ""
                 Write-Host "Choix incorrect, veuillez recommencer."
+                Start-Sleep -Seconds 1
             }
         }
-    } while ($true)
+    }
 }
 Menu_Principal
