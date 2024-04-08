@@ -1,11 +1,12 @@
 ################################################################################################################################################################################################################
 ################################################################################################################################################################################################################
 # Script Bash pour maintenance et information sur Poste Distant Linux 
-# Version 0.75
+# Version 0.8
 # Réalisé en collaboration par Anais Lenglet, Bruno Serna, Grégory Dubois, Patrick Baggiolini et Thomas Scotti
-# Dernière mise à jour le  05 / 04 / 2024 
+# Dernière mise à jour le  08 / 04 / 2024 
 # Historique version
-# V0.75 -- 04 / 04 / 2024 création répertoire "Documents" et création var pour chemin enregistrement info utilisateur/computeur
+# V0.8 -- 08 / 04 / 2024 finalisation chemin pour enregistrement fichier information utilisateur/computeur
+# V0.75 -- 05 / 04 / 2024 création répertoire "Documents" et création var pour chemin enregistrement info utilisateur/computeur
 # V0.7 -- 04 / 04 / 2024 Ajout Fonction information ordinateur
 # V0.6 -- 04 / 04 / 2024 Ajout log event / Fonction action ordinateu / Fonction action utilisaterur Et  Fonction information utilisateur
 # V0.5 -- 03 / 04 / 2024 Création script
@@ -605,9 +606,16 @@ Menu_Information_Ordinateur ()
                 echo " "    
                 echo "Vous avez choisit Utilisation du disque" && sleep 2s
                 echo $(date +%Y%m%d-%H%M%S)"-$Operateur-Information Utilisation du disque chosit" >>  /var/log/log_evt.log
-                ProcesseurInfo
+                DiskInfo
                 ;;               
             10)        
+                echo " "    
+                echo "Vous avez choisit Utilisation du processeur" && sleep 2s
+                echo $(date +%Y%m%d-%H%M%S)"-$Operateur-Information Utilisation du processeur" >>  /var/log/log_evt.log
+                ProcesseurInfo
+                ;;               
+
+            11)        
                 echo " "    
                 echo "Vous avez choisit Statut du pare-feu et liste des ports ouverts" && sleep 2s
                 echo $(date +%Y%m%d-%H%M%S)"-$Operateur-Information Statut du pare-feu et liste des ports ouverts" >>  /var/log/log_evt.log
@@ -1348,10 +1356,10 @@ info_connexion() {
     if ssh $nom_distant@$ip_distante cat /etc/passwd | grep $user_inf >/dev/null; then
         # si oui -> affichage dernière connexion
         ssh $nom_distant@$ip_distante lastlog -u $user_inf && sleep 2s
-        echo $nom_distant@$ip_distante "Dernière connexion : " >>$path_info_file-$user_inf-$(date +%Y-%m-%d).txt
-        ssh $nom_distant@$ip_distante lastlog -u $user_inf >>$path_info_file-$user_inf-$(date +%Y-%m-%d).txt
+        echo $nom_distant@$ip_distante "Dernière connexion : " >>"$path_info_file""Info_""$user_inf""_$(date +%Y-%m-%d).txt"
+        ssh $nom_distant@$ip_distante lastlog -u $user_inf >>"$path_info_file""Info_""$user_inf""_$(date +%Y-%m-%d).txt"
         echo ""
-        echo "Les données sont enregistrées dans le fichier info-$user_inf-$(date +%Y-%m-%d).txt" && sleep 3s
+        echo echo "Les données sont enregistrées dans le fichier" "$path_info_file""Info_""$user_inf""_$(date +%Y-%m-%d).txt"&& sleep 3s
     else
         # si non -> sortie du script
         echo "L'utilisateur $user_mpd n'existe pas" && sleep 2s
@@ -1369,10 +1377,10 @@ info_modification() {
     if ssh $nom_distant@$ip_distante cat /etc/passwd | grep $user_inf >/dev/null; then
         # si oui -> affichage dernière modification
         ssh $nom_distant@$ip_distante sudo -S chage -l $user_inf | head -n 1 && sleep 2s
-        echo "Dernière modification du mot de passe : " >>$path_info_file-$user_inf-$(date +%Y-%m-%d).txt
-        ssh $nom_distant@$ip_distante sudo -S chage -l $user_inf | head -n 1 >>$path_info_file-$user_inf-$(date +%Y-%m-%d).txt
+        echo "Dernière modification du mot de passe : " >>"$path_info_file""Info_""$user_inf""_$(date +%Y-%m-%d).txt"
+        ssh $nom_distant@$ip_distante sudo -S chage -l $user_inf | head -n 1 >>"$path_info_file""Info_""$user_inf""_$(date +%Y-%m-%d).txt"
         echo ""
-        echo "Les données sont enregistrées dans le fichier info-$user_inf-$(date +%Y-%m-%d).txt" && sleep 3s
+        echo echo "Les données sont enregistrées dans le fichier" "$path_info_file""Info_""$user_inf""_$(date +%Y-%m-%d).txt"&& sleep 3s
     else
         # si non -> sortie du script
         echo "L'utilisateur $user_mpd n'existe pas" && sleep 2s
@@ -1391,10 +1399,10 @@ liste_sessions() {
     if ssh $nom_distant@$ip_distante cat /etc/passwd | grep $user_inf >/dev/null; then
         # si oui -> affichage des sessions
         ssh $nom_distant@$ip_distante last $user_inf && sleep 2s
-        echo "Liste des sessions : " >>$path_info_file-$user_inf-$(date +%Y-%m-%d).txt
-        ssh $nom_distant@$ip_distante last $user_inf >>$path_info_file-$user_inf-$(date +%Y-%m-%d).txt
+        echo "Liste des sessions : " >>"$path_info_file""Info_""$user_inf""_$(date +%Y-%m-%d).txt"
+        ssh $nom_distant@$ip_distante last $user_inf >>"$path_info_file""Info_""$user_inf""_$(date +%Y-%m-%d).txt"
         echo ""
-        echo "Les données sont enregistrées dans le fichier info-$user_inf-$(date +%Y-%m-%d).txt" && sleep 3s
+        echo echo "Les données sont enregistrées dans le fichier" "$path_info_file""Info_""$user_inf""_$(date +%Y-%m-%d).txt"&& sleep 3s
 
     else
         # si non -> sortie du script
@@ -1418,10 +1426,10 @@ droits_dossier() {
         if ssh $nom_distant@$ip_distante [ -d $dossier_a ]; then
             # affichage des droits
             ssh $nom_distant@$ip_distante ls -ld $dossier_a/ && sleep 2s
-            echo "Droits et permission sur le dossier $dossier_a/ : " >>$path_info_file-$user_inf-$(date +%Y-%m-%d).txt
-            ssh $nom_distant@$ip_distante ls -ld $dossier_a/ >>$path_info_file-$user_inf-$(date +%Y-%m-%d).txt
+            echo "Droits et permission sur le dossier $dossier_a/ : " >>"$path_info_file""Info_""$user_inf""_$(date +%Y-%m-%d).txt"
+            ssh $nom_distant@$ip_distante ls -ld $dossier_a/ >>"$path_info_file""Info_""$user_inf""_$(date +%Y-%m-%d).txt"
             echo ""
-            echo "Les données sont enregistrées dans le fichier info-$user_inf-$(date +%Y-%m-%d).txt" && sleep 3s
+            echo echo "Les données sont enregistrées dans le fichier" "$path_info_file""Info_""$user_inf""_$(date +%Y-%m-%d).txt"&& sleep 3s
         else
             # si non -> sortie du script
             echo "Le dossier $dossier_a n'existe pas" && sleep 2s
@@ -1448,10 +1456,10 @@ droits_fichier() {
         if ssh $nom_distant@$ip_distante [ -f $fichier_a ]; then
             # affichage des droits
             ssh $nom_distant@$ip_distante ls -l $fichier_a && sleep 2s
-            echo "Droits et permission sur le fichier $fichier_a/ : " >>$path_info_file-$user_inf-$(date +%Y-%m-%d).txt
-            ssh $nom_distant@$ip_distante ls -l $fichier_a >>$path_info_file-$user_inf-$(date +%Y-%m-%d).txt
+            echo "Droits et permission sur le fichier $fichier_a/ : " >>"$path_info_file""Info_""$user_inf""_$(date +%Y-%m-%d).txt"
+            ssh $nom_distant@$ip_distante ls -l $fichier_a >>"$path_info_file""Info_""$user_inf""_$(date +%Y-%m-%d).txt"
             echo ""
-            echo "Les données sont enregistrées dans le fichier info-$user_inf-$(date +%Y-%m-%d).txt" && sleep 3s
+            echo echo "Les données sont enregistrées dans le fichier" "$path_info_file""Info_""$user_inf""_$(date +%Y-%m-%d).txt"&& sleep 3s
         else
             # si non -> sortie du script
             echo "Le fichier $fichier_a n'existe pas" && sleep 2s
@@ -1473,6 +1481,7 @@ droits_fichier() {
 ####################################################
 
 ############## DEBUT FONCTION ######################
+
 # Fonction pour avoir la version de l'OS
 GetOs()
 {
@@ -1481,9 +1490,9 @@ GetOs()
     if [ "$ConfOS" = "O" ]; then
         clear
         ssh $nom_distant@$ip_distante lsb_release -a 
-        ssh $nom_distant@$ip_distante lsb_release -a >> /home/wilder/Documents/info-CLILIN01-$(date +%Y-%m-%d).txt
+        ssh $nom_distant@$ip_distante lsb_release -a >> "$path_info_file""Info_""$ip_distante""_$(date +%Y-%m-%d).txt"
         echo ""
-        echo "Les données sont enregistrées dans le fichier info-CLILIN01-$(date +%Y-%m-%d).txt" && sleep 5s
+        echo "Les données sont enregistrées dans le fichier" "$path_info_file""Info_""$ip_distante""_$(date +%Y-%m-%d).txt" && sleep 5s
         return
     else
         clear
@@ -1502,10 +1511,10 @@ NbrCarte()
         clear
         echo "Voici la liste des interfaces présentes sur cette machine :" 
         ssh $nom_distant@$ip_distante ifconfig -a | grep UP | cut -d : -f1
-        echo "liste des cartes" >> /home/wilder/Documents/info-CLILIN01-$(date +%Y-%m-%d).txt
-        ssh $nom_distant@$ip_distante ifconfig -a | grep UP | cut -d : -f1 >> /home/wilder/Documents/info-CLILIN01-$(date +%Y-%m-%d).txt
+        echo "liste des cartes" >> "$path_info_file""Info_""$ip_distante""_$(date +%Y-%m-%d).txt"
+        ssh $nom_distant@$ip_distante ifconfig -a | grep UP | cut -d : -f1 >> "$path_info_file""Info_""$ip_distante""_$(date +%Y-%m-%d).txt"
         echo ""
-        echo "Les données sont enregistrées dans le fichier info-CLILIN01-$(date +%Y-%m-%d).txt" && sleep 5s       
+        echo "Les données sont enregistrées dans le fichier" "$path_info_file""Info_""$ip_distante""_$(date +%Y-%m-%d).txt" && sleep 5s       
     fi
 }
 
@@ -1516,10 +1525,10 @@ IPdemande()
     clear
     read -p "Quelle carte choisissez-vous ? " CartIp
    ssh $nom_distant@$ip_distante echo "$CartIp" && ifconfig "$CartIp" | awk ' /inet /{print $2, $3 ,$4, $5, $6}'
-    echo "l'adresse ip de la carte "$CartIp" est :" >> /home/wilder/Documents/info-CLILIN01-$(date +%Y-%m-%d).txt
-    ssh $nom_distant@$ip_distanteifconfig "$CartIp" | awk ' /inet /{print $2, $3 ,$4, $5, $6}' >> /home/wilder/Documents/info-CLILIN01-$(date +%Y-%m-%d).txt
+    echo "l'adresse ip de la carte "$CartIp" est :" >> "$path_info_file""Info_""$ip_distante""_$(date +%Y-%m-%d).txt"
+    ssh $nom_distant@$ip_distanteifconfig "$CartIp" | awk ' /inet /{print $2, $3 ,$4, $5, $6}' >> "$path_info_file""Info_""$ip_distante""_$(date +%Y-%m-%d).txt"
     echo ""
-    echo "Les données sont enregistrées dans le fichier info-CLILIN01-$(date +%Y-%m-%d).txt" && sleep 5s    
+    echo "Les données sont enregistrées dans le fichier" "$path_info_file""Info_""$ip_distante""_$(date +%Y-%m-%d).txt" && sleep 5s    
 }
 
 #Fonction demande adresse Mac
@@ -1528,10 +1537,10 @@ MACdemande()
     clear
     read -p "Quelle carte choisissez-vous ? " CartMac
     ssh $nom_distant@$ip_distante echo "$CartMac" && ifconfig "$CartMac" | awk '/ether / {print $2}'
-    ssh $nom_distant@$ip_distante echo "l'adresse mac de la carte "$CartMac" est:" >> /home/wilder/Documents/info-CLILIN01-$(date +%Y-%m-%d).txt
-    ifconfig "$CartMac" | awk '/ether / {print $2}' >> /home/wilder/Documents/info-CLILIN01-$(date +%Y-%m-%d).txt
+    ssh $nom_distant@$ip_distante echo "l'adresse mac de la carte "$CartMac" est:" >> "$path_info_file""Info_""$ip_distante""_$(date +%Y-%m-%d).txt"
+    ifconfig "$CartMac" | awk '/ether / {print $2}' >> "$path_info_file""Info_""$ip_distante""_$(date +%Y-%m-%d).txt"
     echo ""
-    echo "Les données sont enregistrées dans le fichier info-CLILIN01-$(date +%Y-%m-%d).txt" && sleep 5s
+    echo "Les données sont enregistrées dans le fichier" "$path_info_file""Info_""$ip_distante""_$(date +%Y-%m-%d).txt" && sleep 5s
 }
 
 # Fonction qu'est-ce qui est installé?
@@ -1543,10 +1552,10 @@ Application()
         clear
         echo " Voici la liste des applications et paquets présents sur cette machine : "
         ssh $nom_distant@$ip_distante ls /usr/share/applications | awk -F '.desktop' ' { print $1}' 
-        echo "liste des applications :" >> /home/wilder/Documents/info-CLILIN01-$(date +%Y-%m-%d).txt
-        ssh $nom_distant@$ip_distante ls /usr/share/applications | awk -F '.desktop' ' { print $1}' >> /home/wilder/Documents/info-CLILIN01-$(date +%Y-%m-%d).txt
+        echo "liste des applications :" >> "$path_info_file""Info_""$ip_distante""_$(date +%Y-%m-%d).txt"
+        ssh $nom_distant@$ip_distante ls /usr/share/applications | awk -F '.desktop' ' { print $1}' >> "$path_info_file""Info_""$ip_distante""_$(date +%Y-%m-%d).txt"
         echo ""
-        echo "Les données sont enregistrées dans le fichier info-CLILIN01-$(date +%Y-%m-%d).txt" && sleep 5s
+        echo "Les données sont enregistrées dans le fichier" "$path_info_file""Info_""$ip_distante""_$(date +%Y-%m-%d).txt" && sleep 5s
         return
     else
         clear
@@ -1565,10 +1574,10 @@ Userlist()
         clear
         echo " Voici la liste des utilisateurs locaux :"
         ssh $nom_distant@$ip_distante cut -d: -f1 /etc/passwd 
-        echo "liste des utilisateurs :" >> /home/wilder/Documents/info-CLILIN01-$(date +%Y-%m-%d).txt
-        ssh $nom_distant@$ip_distante cut -d: -f1 /etc/passwd  >> /home/wilder/Documents/info-CLILIN01-$(date +%Y-%m-%d).txt
+        echo "liste des utilisateurs :" >> "$path_info_file""Info_""$ip_distante""_$(date +%Y-%m-%d).txt"
+        ssh $nom_distant@$ip_distante cut -d: -f1 /etc/passwd  >> "$path_info_file""Info_""$ip_distante""_$(date +%Y-%m-%d).txt"
         echo ""
-        echo "Les données sont enregistrées dans le fichier info-CLILIN01-$(date +%Y-%m-%d).txt" && sleep 5s
+        echo "Les données sont enregistrées dans le fichier" "$path_info_file""Info_""$ip_distante""_$(date +%Y-%m-%d).txt" && sleep 5s
         return
     else
         clear
@@ -1587,10 +1596,10 @@ GetCpu()
         clear
         echo " Voici les détails du CPU de la machine :"
         ssh $nom_distant@$ip_distante lscpu | head -n15 
-        echo "Détail du CPU :" >> /home/wilder/Documents/info-CLILIN01-$(date +%Y-%m-%d).txt
-        ssh $nom_distant@$ip_distante lscpu | head -n15 >> /home/wilder/Documents/info-CLILIN01-$(date +%Y-%m-%d).txt
+        echo "Détail du CPU :" >> "$path_info_file""Info_""$ip_distante""_$(date +%Y-%m-%d).txt"
+        ssh $nom_distant@$ip_distante lscpu | head -n15 >> "$path_info_file""Info_""$ip_distante""_$(date +%Y-%m-%d).txt"
         echo ""
-        echo "Les données sont enregistrées dans le fichier info-CLILIN01-$(date +%Y-%m-%d).txt" && sleep 5s
+        echo "Les données sont enregistrées dans le fichier" "$path_info_file""Info_""$ip_distante""_$(date +%Y-%m-%d).txt" && sleep 5s
         return
     else
         clear
@@ -1610,10 +1619,10 @@ RamInfo()
         clear
         echo " Voici les détails de la RAM sur cette machine :"
         ssh $nom_distant@$ip_distante free -m | head -n2 
-        echo "Détail de la RAM :" >> /home/wilder/Documents/info-CLILIN01-$(date +%Y-%m-%d).txt
-        ssh $nom_distant@$ip_distante free -m | head -n2 >> /home/wilder/Documents/info-CLILIN01-$(date +%Y-%m-%d).txt
+        echo "Détail de la RAM :" >> "$path_info_file""Info_""$ip_distante""_$(date +%Y-%m-%d).txt"
+        ssh $nom_distant@$ip_distante free -m | head -n2 >> "$path_info_file""Info_""$ip_distante""_$(date +%Y-%m-%d).txt"
         echo ""
-        echo "Les données sont enregistrées dans le fichier info-CLILIN01-$(date +%Y-%m-%d).txt" && sleep 5s
+        echo "Les données sont enregistrées dans le fichier" "$path_info_file""Info_""$ip_distante""_$(date +%Y-%m-%d).txt" && sleep 5s
         return
     else
         clear
@@ -1632,10 +1641,10 @@ DiskInfo()
         clear
         echo " Voici les détails du/des disques de cette machine :"
         ssh $nom_distant@$ip_distante df -h 
-        echo "Détail des disques :" >> /home/wilder/Documents/info-CLILIN01-$(date +%Y-%m-%d).txt
-        ssh $nom_distant@$ip_distante df -h >> /home/wilder/Documents/info-CLILIN01-$(date +%Y-%m-%d).txt
+        echo "Détail des disques :" >> "$path_info_file""Info_""$ip_distante""_$(date +%Y-%m-%d).txt"
+        ssh $nom_distant@$ip_distante df -h >> "$path_info_file""Info_""$ip_distante""_$(date +%Y-%m-%d).txt"
         echo ""
-        echo "Les données sont enregistrées dans le fichier info-CLILIN01-$(date +%Y-%m-%d).txt" && sleep 5s
+        echo "Les données sont enregistrées dans le fichier" "$path_info_file""Info_""$ip_distante""_$(date +%Y-%m-%d).txt" && sleep 5s
         return
     else
         clear
@@ -1654,10 +1663,10 @@ ProcesseurInfo()
         clear
         echo " Voici les détails du processeur de cette machine :"
         ssh $nom_distant@$ip_distante mpstat 
-        echo "les détails du processeur :" >> /home/wilder/Documents/info-CLILIN01-$(date +%Y-%m-%d).txt
-        ssh $nom_distant@$ip_distante mpstat >> /home/wilder/Documents/info-CLILIN01-$(date +%Y-%m-%d).txt
+        echo "les détails du processeur :" >> "$path_info_file""Info_""$ip_distante""_$(date +%Y-%m-%d).txt"
+        ssh $nom_distant@$ip_distante mpstat >> "$path_info_file""Info_""$ip_distante""_$(date +%Y-%m-%d).txt"
         echo ""
-        echo "Les données sont enregistrées dans le fichier info-CLILIN01-$(date +%Y-%m-%d).txt" && sleep 5s
+        echo "Les données sont enregistrées dans le fichier" "$path_info_file""Info_""$ip_distante""_$(date +%Y-%m-%d).txt" && sleep 5s
         return
     else
         clear
@@ -1677,9 +1686,9 @@ StatusPare_feu()
         clear
         echo " Voici les détails du pare-feu de cette machine :"
         ssh $nom_distant@$ip_distante sudo ufw status 
-        ssh $nom_distant@$ip_distante sudo ufw status >> /home/wilder/Documents/info-CLILIN01-$(date +%Y-%m-%d).txt
+        ssh $nom_distant@$ip_distante sudo ufw status >> "$path_info_file""Info_""$ip_distante""_$(date +%Y-%m-%d).txt"
         echo ""
-        echo "Les données sont enregistrées dans le fichier info-CLILIN01-$(date +%Y-%m-%d).txt" && sleep 5s
+        echo "Les données sont enregistrées dans le fichier" "$path_info_file""Info_""$ip_distante""_$(date +%Y-%m-%d).txt" && sleep 5s
         return
     else
         clear
@@ -1699,14 +1708,11 @@ StatusPare_feu()
 
 # Prérequis
 # Création répertoire Documents
-path_info_file=~/\Documents
-if [ ! -z "$path_info_file" ] ;then
-    # Si le dossier existepas le créér       
+path_info_file=~/Documents/
+if [ ! -d "$path_info_file" ] ;then
+    # Si le dossier existe pas le créér       
     mkdir "$path_info_file"
-    else
-    echo "existe"
 fi 
-$path_info_file/info-CLILIN01-$(date +%Y-%m-%d).txt 
 
 #Demande d'infos sur la machine distante
 	echo "=================================================="
