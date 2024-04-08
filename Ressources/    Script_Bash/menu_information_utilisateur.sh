@@ -25,8 +25,8 @@ afficher_menu() {
     echo ""
 }
 
-# Fonctions Informations utilisateur
 
+# Fonctions Informations utilisateur
 info_connexion() {
     # Demande quel utilisateur
     echo ""
@@ -37,8 +37,8 @@ info_connexion() {
     if ssh $nom_distant@$ip_distante cat /etc/passwd | grep $user_inf >/dev/null; then
         # si oui -> affichage dernière connexion
         ssh $nom_distant@$ip_distante lastlog -u $user_inf && sleep 2s
-        echo $nom_distant@$ip_distante "Dernière connexion : " >>$path_info_file-$user_inf-$(date +%Y-%m-%d).txt
-        ssh $nom_distant@$ip_distante lastlog -u $user_inf >>$path_info_file-$user_inf-$(date +%Y-%m-%d).txt
+        echo $nom_distant@$ip_distante "Dernière connexion : " >>"$path_info_file""Info_""$user_inf""_$(date +%Y-%m-%d).txt"
+        ssh $nom_distant@$ip_distante lastlog -u $user_inf >>"$path_info_file""Info_""$user_inf""_$(date +%Y-%m-%d).txt"
         echo ""
         echo "Les données sont enregistrées dans le fichier info-$user_inf-$(date +%Y-%m-%d).txt" && sleep 3s
     else
@@ -58,8 +58,8 @@ info_modification() {
     if ssh $nom_distant@$ip_distante cat /etc/passwd | grep $user_inf >/dev/null; then
         # si oui -> affichage dernière modification
         ssh $nom_distant@$ip_distante sudo -S chage -l $user_inf | head -n 1 && sleep 2s
-        echo "Dernière modification du mot de passe : " >>$path_info_file-$user_inf-$(date +%Y-%m-%d).txt
-        ssh $nom_distant@$ip_distante sudo -S chage -l $user_inf | head -n 1 >>$path_info_file-$user_inf-$(date +%Y-%m-%d).txt
+        echo "Dernière modification du mot de passe : " >>"$path_info_file""Info_""$user_inf""_$(date +%Y-%m-%d).txt"
+        ssh $nom_distant@$ip_distante sudo -S chage -l $user_inf | head -n 1 >>"$path_info_file""Info_""$user_inf""_$(date +%Y-%m-%d).txt"
         echo ""
         echo "Les données sont enregistrées dans le fichier info-$user_inf-$(date +%Y-%m-%d).txt" && sleep 3s
     else
@@ -80,8 +80,8 @@ liste_sessions() {
     if ssh $nom_distant@$ip_distante cat /etc/passwd | grep $user_inf >/dev/null; then
         # si oui -> affichage des sessions
         ssh $nom_distant@$ip_distante last $user_inf && sleep 2s
-        echo "Liste des sessions : " >>$path_info_file-$user_inf-$(date +%Y-%m-%d).txt
-        ssh $nom_distant@$ip_distante last $user_inf >>$path_info_file-$user_inf-$(date +%Y-%m-%d).txt
+        echo "Liste des sessions : " >>"$path_info_file""Info_""$user_inf""_$(date +%Y-%m-%d).txt"
+        ssh $nom_distant@$ip_distante last $user_inf >>"$path_info_file""Info_""$user_inf""_$(date +%Y-%m-%d).txt"
         echo ""
         echo "Les données sont enregistrées dans le fichier info-$user_inf-$(date +%Y-%m-%d).txt" && sleep 3s
 
@@ -107,8 +107,8 @@ droits_dossier() {
         if ssh $nom_distant@$ip_distante [ -d $dossier_a ]; then
             # affichage des droits
             ssh $nom_distant@$ip_distante ls -ld $dossier_a/ && sleep 2s
-            echo "Droits et permission sur le dossier $dossier_a/ : " >>$path_info_file-$user_inf-$(date +%Y-%m-%d).txt
-            ssh $nom_distant@$ip_distante ls -ld $dossier_a/ >>$path_info_file-$user_inf-$(date +%Y-%m-%d).txt
+            echo "Droits et permission sur le dossier $dossier_a/ : " >>"$path_info_file""Info_""$user_inf""_$(date +%Y-%m-%d).txt"
+            ssh $nom_distant@$ip_distante ls -ld $dossier_a/ >>"$path_info_file""Info_""$user_inf""_$(date +%Y-%m-%d).txt"
             echo ""
             echo "Les données sont enregistrées dans le fichier info-$user_inf-$(date +%Y-%m-%d).txt" && sleep 3s
         else
@@ -137,8 +137,8 @@ droits_fichier() {
         if ssh $nom_distant@$ip_distante [ -f $fichier_a ]; then
             # affichage des droits
             ssh $nom_distant@$ip_distante ls -l $fichier_a && sleep 2s
-            echo "Droits et permission sur le fichier $fichier_a/ : " >>$path_info_file-$user_inf-$(date +%Y-%m-%d).txt
-            ssh $nom_distant@$ip_distante ls -l $fichier_a >>$path_info_file-$user_inf-$(date +%Y-%m-%d).txt
+            echo "Droits et permission sur le fichier $fichier_a/ : " >>"$path_info_file""Info_""$user_inf""_$(date +%Y-%m-%d).txt"
+            ssh $nom_distant@$ip_distante ls -l $fichier_a >>"$path_info_file""Info_""$user_inf""_$(date +%Y-%m-%d).txt"
             echo ""
             echo "Les données sont enregistrées dans le fichier info-$user_inf-$(date +%Y-%m-%d).txt" && sleep 3s
         else
@@ -150,18 +150,15 @@ droits_fichier() {
         echo "L'utilisateur $user_inf n'existe pas" && sleep 2s
     fi
 
-}
+}}
 
 # Prérequis
 # Création répertoire Documents
-path_info_file=~/\Documents
-if [ ! -z "$path_info_file" ] ;then
-    # Si le dossier existepas le créér       
+path_info_file=~/Documents/
+if [ ! -d "$path_info_file" ] ;then
+    # Si le dossier existe pas le créér       
     mkdir "$path_info_file"
-    else
-    echo "existe"
 fi 
-$path_info_file/info-CLILIN01-$(date +%Y-%m-%d).txt 
 
 
 # Demande d'infos sur la machine distante
