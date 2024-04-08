@@ -26,7 +26,6 @@ show_menu_computer()
     echo ""
 }
 
-
 # Fonction pour avoir la version de l'OS
 GetOs()
 {
@@ -35,9 +34,9 @@ GetOs()
     if [ "$ConfOS" = "O" ]; then
         clear
         ssh $nom_distant@$ip_distante lsb_release -a 
-        ssh $nom_distant@$ip_distante lsb_release -a >> /home/wilder/Documents/info-CLILIN01-$(date +%Y-%m-%d).txt
+        ssh $nom_distant@$ip_distante lsb_release -a >> "$path_info_file""Info_""$ip_distante""_$(date +%Y-%m-%d).txt"
         echo ""
-        echo "Les données sont enregistrées dans le fichier info-CLILIN01-$(date +%Y-%m-%d).txt" && sleep 5s
+        echo "Les données sont enregistrées dans le fichier" "$path_info_file""Info_""$ip_distante""_$(date +%Y-%m-%d).txt" && sleep 5s
         return
     else
         clear
@@ -46,8 +45,6 @@ GetOs()
         return
     fi   
 }
-
-
 
 # Fonction pour avoir le nombre d'interfaces
 NbrCarte()
@@ -58,13 +55,12 @@ NbrCarte()
         clear
         echo "Voici la liste des interfaces présentes sur cette machine :" 
         ssh $nom_distant@$ip_distante ifconfig -a | grep UP | cut -d : -f1
-        echo "liste des cartes" >> /home/wilder/Documents/info-CLILIN01-$(date +%Y-%m-%d).txt
-        ssh $nom_distant@$ip_distante ifconfig -a | grep UP | cut -d : -f1 >> /home/wilder/Documents/info-CLILIN01-$(date +%Y-%m-%d).txt
+        echo "liste des cartes" >> "$path_info_file""Info_""$ip_distante""_$(date +%Y-%m-%d).txt"
+        ssh $nom_distant@$ip_distante ifconfig -a | grep UP | cut -d : -f1 >> "$path_info_file""Info_""$ip_distante""_$(date +%Y-%m-%d).txt"
         echo ""
-        echo "Les données sont enregistrées dans le fichier info-CLILIN01-$(date +%Y-%m-%d).txt" && sleep 5s       
+        echo "Les données sont enregistrées dans le fichier" "$path_info_file""Info_""$ip_distante""_$(date +%Y-%m-%d).txt" && sleep 5s       
     fi
 }
-
 
 
 #Fonction demande adresse IP
@@ -73,13 +69,11 @@ IPdemande()
     clear
     read -p "Quelle carte choisissez-vous ? " CartIp
    ssh $nom_distant@$ip_distante echo "$CartIp" && ifconfig "$CartIp" | awk ' /inet /{print $2, $3 ,$4, $5, $6}'
-    echo "l'adresse ip de la carte "$CartIp" est :" >> /home/wilder/Documents/info-CLILIN01-$(date +%Y-%m-%d).txt
-    ssh $nom_distant@$ip_distanteifconfig "$CartIp" | awk ' /inet /{print $2, $3 ,$4, $5, $6}' >> /home/wilder/Documents/info-CLILIN01-$(date +%Y-%m-%d).txt
+    echo "l'adresse ip de la carte "$CartIp" est :" >> "$path_info_file""Info_""$ip_distante""_$(date +%Y-%m-%d).txt"
+    ssh $nom_distant@$ip_distanteifconfig "$CartIp" | awk ' /inet /{print $2, $3 ,$4, $5, $6}' >> "$path_info_file""Info_""$ip_distante""_$(date +%Y-%m-%d).txt"
     echo ""
-    echo "Les données sont enregistrées dans le fichier info-CLILIN01-$(date +%Y-%m-%d).txt" && sleep 5s    
+    echo "Les données sont enregistrées dans le fichier" "$path_info_file""Info_""$ip_distante""_$(date +%Y-%m-%d).txt" && sleep 5s    
 }
-
-
 
 #Fonction demande adresse Mac
 MACdemande()
@@ -87,10 +81,10 @@ MACdemande()
     clear
     read -p "Quelle carte choisissez-vous ? " CartMac
     ssh $nom_distant@$ip_distante echo "$CartMac" && ifconfig "$CartMac" | awk '/ether / {print $2}'
-    ssh $nom_distant@$ip_distante echo "l'adresse mac de la carte "$CartMac" est:" >> /home/wilder/Documents/info-CLILIN01-$(date +%Y-%m-%d).txt
-    ifconfig "$CartMac" | awk '/ether / {print $2}' >> /home/wilder/Documents/info-CLILIN01-$(date +%Y-%m-%d).txt
+    ssh $nom_distant@$ip_distante echo "l'adresse mac de la carte "$CartMac" est:" >> "$path_info_file""Info_""$ip_distante""_$(date +%Y-%m-%d).txt"
+    ifconfig "$CartMac" | awk '/ether / {print $2}' >> "$path_info_file""Info_""$ip_distante""_$(date +%Y-%m-%d).txt"
     echo ""
-    echo "Les données sont enregistrées dans le fichier info-CLILIN01-$(date +%Y-%m-%d).txt" && sleep 5s
+    echo "Les données sont enregistrées dans le fichier" "$path_info_file""Info_""$ip_distante""_$(date +%Y-%m-%d).txt" && sleep 5s
 }
 
 # Fonction qu'est-ce qui est installé?
@@ -102,10 +96,10 @@ Application()
         clear
         echo " Voici la liste des applications et paquets présents sur cette machine : "
         ssh $nom_distant@$ip_distante ls /usr/share/applications | awk -F '.desktop' ' { print $1}' 
-        echo "liste des applications :" >> /home/wilder/Documents/info-CLILIN01-$(date +%Y-%m-%d).txt
-        ssh $nom_distant@$ip_distante ls /usr/share/applications | awk -F '.desktop' ' { print $1}' >> /home/wilder/Documents/info-CLILIN01-$(date +%Y-%m-%d).txt
+        echo "liste des applications :" >> "$path_info_file""Info_""$ip_distante""_$(date +%Y-%m-%d).txt"
+        ssh $nom_distant@$ip_distante ls /usr/share/applications | awk -F '.desktop' ' { print $1}' >> "$path_info_file""Info_""$ip_distante""_$(date +%Y-%m-%d).txt"
         echo ""
-        echo "Les données sont enregistrées dans le fichier info-CLILIN01-$(date +%Y-%m-%d).txt" && sleep 5s
+        echo "Les données sont enregistrées dans le fichier" "$path_info_file""Info_""$ip_distante""_$(date +%Y-%m-%d).txt" && sleep 5s
         return
     else
         clear
@@ -124,10 +118,10 @@ Userlist()
         clear
         echo " Voici la liste des utilisateurs locaux :"
         ssh $nom_distant@$ip_distante cut -d: -f1 /etc/passwd 
-        echo "liste des utilisateurs :" >> /home/wilder/Documents/info-CLILIN01-$(date +%Y-%m-%d).txt
-        ssh $nom_distant@$ip_distante cut -d: -f1 /etc/passwd  >> /home/wilder/Documents/info-CLILIN01-$(date +%Y-%m-%d).txt
+        echo "liste des utilisateurs :" >> "$path_info_file""Info_""$ip_distante""_$(date +%Y-%m-%d).txt"
+        ssh $nom_distant@$ip_distante cut -d: -f1 /etc/passwd  >> "$path_info_file""Info_""$ip_distante""_$(date +%Y-%m-%d).txt"
         echo ""
-        echo "Les données sont enregistrées dans le fichier info-CLILIN01-$(date +%Y-%m-%d).txt" && sleep 5s
+        echo "Les données sont enregistrées dans le fichier" "$path_info_file""Info_""$ip_distante""_$(date +%Y-%m-%d).txt" && sleep 5s
         return
     else
         clear
@@ -146,10 +140,10 @@ GetCpu()
         clear
         echo " Voici les détails du CPU de la machine :"
         ssh $nom_distant@$ip_distante lscpu | head -n15 
-        echo "Détail du CPU :" >> /home/wilder/Documents/info-CLILIN01-$(date +%Y-%m-%d).txt
-        ssh $nom_distant@$ip_distante lscpu | head -n15 >> /home/wilder/Documents/info-CLILIN01-$(date +%Y-%m-%d).txt
+        echo "Détail du CPU :" >> "$path_info_file""Info_""$ip_distante""_$(date +%Y-%m-%d).txt"
+        ssh $nom_distant@$ip_distante lscpu | head -n15 >> "$path_info_file""Info_""$ip_distante""_$(date +%Y-%m-%d).txt"
         echo ""
-        echo "Les données sont enregistrées dans le fichier info-CLILIN01-$(date +%Y-%m-%d).txt" && sleep 5s
+        echo "Les données sont enregistrées dans le fichier" "$path_info_file""Info_""$ip_distante""_$(date +%Y-%m-%d).txt" && sleep 5s
         return
     else
         clear
@@ -158,7 +152,6 @@ GetCpu()
         return
     fi        
 }
-
 
 
 # Fonction mémoire RAM et utilisation
@@ -170,10 +163,10 @@ RamInfo()
         clear
         echo " Voici les détails de la RAM sur cette machine :"
         ssh $nom_distant@$ip_distante free -m | head -n2 
-        echo "Détail de la RAM :" >> /home/wilder/Documents/info-CLILIN01-$(date +%Y-%m-%d).txt
-        ssh $nom_distant@$ip_distante free -m | head -n2 >> /home/wilder/Documents/info-CLILIN01-$(date +%Y-%m-%d).txt
+        echo "Détail de la RAM :" >> "$path_info_file""Info_""$ip_distante""_$(date +%Y-%m-%d).txt"
+        ssh $nom_distant@$ip_distante free -m | head -n2 >> "$path_info_file""Info_""$ip_distante""_$(date +%Y-%m-%d).txt"
         echo ""
-        echo "Les données sont enregistrées dans le fichier info-CLILIN01-$(date +%Y-%m-%d).txt" && sleep 5s
+        echo "Les données sont enregistrées dans le fichier" "$path_info_file""Info_""$ip_distante""_$(date +%Y-%m-%d).txt" && sleep 5s
         return
     else
         clear
@@ -182,8 +175,6 @@ RamInfo()
         return
     fi        
 }
-
-
 
 # Fonction Utilisation du disque
 DiskInfo()
@@ -194,10 +185,10 @@ DiskInfo()
         clear
         echo " Voici les détails du/des disques de cette machine :"
         ssh $nom_distant@$ip_distante df -h 
-        echo "Détail des disques :" >> /home/wilder/Documents/info-CLILIN01-$(date +%Y-%m-%d).txt
-        ssh $nom_distant@$ip_distante df -h >> /home/wilder/Documents/info-CLILIN01-$(date +%Y-%m-%d).txt
+        echo "Détail des disques :" >> "$path_info_file""Info_""$ip_distante""_$(date +%Y-%m-%d).txt"
+        ssh $nom_distant@$ip_distante df -h >> "$path_info_file""Info_""$ip_distante""_$(date +%Y-%m-%d).txt"
         echo ""
-        echo "Les données sont enregistrées dans le fichier info-CLILIN01-$(date +%Y-%m-%d).txt" && sleep 5s
+        echo "Les données sont enregistrées dans le fichier" "$path_info_file""Info_""$ip_distante""_$(date +%Y-%m-%d).txt" && sleep 5s
         return
     else
         clear
@@ -216,10 +207,10 @@ ProcesseurInfo()
         clear
         echo " Voici les détails du processeur de cette machine :"
         ssh $nom_distant@$ip_distante mpstat 
-        echo "les détails du processeur :" >> /home/wilder/Documents/info-CLILIN01-$(date +%Y-%m-%d).txt
-        ssh $nom_distant@$ip_distante mpstat >> /home/wilder/Documents/info-CLILIN01-$(date +%Y-%m-%d).txt
+        echo "les détails du processeur :" >> "$path_info_file""Info_""$ip_distante""_$(date +%Y-%m-%d).txt"
+        ssh $nom_distant@$ip_distante mpstat >> "$path_info_file""Info_""$ip_distante""_$(date +%Y-%m-%d).txt"
         echo ""
-        echo "Les données sont enregistrées dans le fichier info-CLILIN01-$(date +%Y-%m-%d).txt" && sleep 5s
+        echo "Les données sont enregistrées dans le fichier" "$path_info_file""Info_""$ip_distante""_$(date +%Y-%m-%d).txt" && sleep 5s
         return
     else
         clear
@@ -228,8 +219,6 @@ ProcesseurInfo()
         return
     fi        
 }
-
-
 
 # Fonction Statut du pare-feu et liste des ports ouverts
 StatusPare_feu()
@@ -241,9 +230,9 @@ StatusPare_feu()
         clear
         echo " Voici les détails du pare-feu de cette machine :"
         ssh $nom_distant@$ip_distante sudo ufw status 
-        ssh $nom_distant@$ip_distante sudo ufw status >> /home/wilder/Documents/info-CLILIN01-$(date +%Y-%m-%d).txt
+        ssh $nom_distant@$ip_distante sudo ufw status >> "$path_info_file""Info_""$ip_distante""_$(date +%Y-%m-%d).txt"
         echo ""
-        echo "Les données sont enregistrées dans le fichier info-CLILIN01-$(date +%Y-%m-%d).txt" && sleep 5s
+        echo "Les données sont enregistrées dans le fichier" "$path_info_file""Info_""$ip_distante""_$(date +%Y-%m-%d).txt" && sleep 5s
         return
     else
         clear
@@ -252,6 +241,14 @@ StatusPare_feu()
         return
     fi        
 }
+
+# Prérequis
+# Création répertoire Documents
+path_info_file=~/Documents/
+if [ ! -d "$path_info_file" ] ;then
+    # Si le dossier existe pas le créér       
+    mkdir "$path_info_file"
+fi 
 
 
 
