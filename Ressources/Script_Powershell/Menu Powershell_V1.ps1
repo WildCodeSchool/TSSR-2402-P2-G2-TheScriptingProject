@@ -23,30 +23,35 @@ While ($true) {
             "1" { 
                 Write-Host ""
                 Write-Host "Vous avez choisi ACTION"
-                Start-Sleep -Seconds 1
+                Start-Sleep -Seconds 2
+                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Menu Action a été choisi" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log        
                 Menu_Action
-                break
+                
             }
 
             "2" { 
                 Write-Host ""
-                Write-Host "Vous avez choisi Information"
-                Start-Sleep -Seconds 1
+                Write-Host "Vous avez choisi INFORMATION"
+                Start-Sleep -Seconds 2
+                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Menu Information a été choisi" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
                 Menu_Information
-                break
+                
             }
 
             "X" { 
                 Write-Host ""
                 Write-Host "Arrêt du script"
-                Start-Sleep -Seconds 1
+                Start-Sleep -Seconds 2
+                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Sortie du Script" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
                 exit 
             }
 
             Default { 
                 Write-Host ""
                 Write-Host "Choix incorrect, veuillez recommencer."
-                Start-Sleep -Seconds 1
+                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Choix incorrect" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
+                $Touche = Read-Host "Appuyez sur Entrée pour continuer..."
+                Start-Sleep -Seconds 2
             }
         }
     }
@@ -77,7 +82,8 @@ While ($true) {
             "1" { 
                 Write-Host ""
                 Write-Host "Vous avez choisi ACTION sur UTILISATEUR"
-                Start-Sleep -Seconds 1
+                Start-Sleep -Seconds 2
+                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Menu Action sur Uutilisateur a été choisi" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
                 Menu_Action_Utilisateur
 
             }
@@ -85,7 +91,8 @@ While ($true) {
             "2" { 
                 Write-Host ""
                 Write-Host "Vous avez choisi ACTION sur POSTE"
-                Start-Sleep -Seconds 1
+                Start-Sleep -Seconds 2
+                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Menu Action sur Poste a été choisi" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
                 Menu_Action_Poste
 
             }
@@ -93,14 +100,17 @@ While ($true) {
             "X" { 
                 Write-Host ""
                 Write-Host "Retour au menu principal"
-                Start-Sleep -Seconds 1
+                Start-Sleep -Seconds 2
+                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Retour au menu principal" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
                 Menu_Principal 
             }
 
             Default { 
                 Write-Host ""
                 Write-Host "Choix incorrect, veuillez recommencer."
-                Start-Sleep -Seconds 1
+                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Choix incorrect" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
+                $Touche = Read-Host "Appuyez sur Entrée pour continuer..."
+                Start-Sleep -Seconds 2
             }
         }
     }
@@ -131,28 +141,33 @@ While ($true) {
             "1" { 
                 Write-Host ""
                 Write-Host "Vous avez choisi INFORMATION sur UTILISATEUR"
-                Start-Sleep -Seconds 1
+                Start-Sleep -Seconds 2
+                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Menu Information sur Utilsiateur choisit" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
                 Menu_Information_Utilisateur
             }
 
             "2" { 
                 Write-Host ""
                 Write-Host "Vous avez choisi INFORMATION sur POSTE"
-                Start-Sleep -Seconds 1
+                Start-Sleep -Seconds 2
+                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Menu Information sur Poste choisit" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
                 Menu_Information_Poste 
             }
 
             "X" { 
                 Write-Host ""
                 Write-Host "Retour au menu principal"
-                Start-Sleep -Seconds 1
+                Start-Sleep -Seconds 2
+                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Retour au menu principal" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
                 Menu_Principal 
             }
 
             Default { 
                 Write-Host ""
                 Write-Host "Choix incorrect, veuillez recommencer."
-                Start-Sleep -Seconds 1
+                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Choix incorrect" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
+                $Touche = Read-Host "Appuyez sur Entrée pour continuer..."
+                Start-Sleep -Seconds 2
             }
         }
     }
@@ -189,80 +204,83 @@ While ($true) {
             "1" { 
                 Write-Host ""
                 Write-Host "Vous avez choisi de créer un compte utilisateur local"
-                Start-Sleep -Seconds 1
-
-                break    
+                Start-Sleep -Seconds 2
+                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Création de compte utilisateur chosit" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log               
                 
             }
 
             "2" { 
                 Write-Host ""
                 Write-Host "Vous avez choisi de supprimer un compte utilisateur local"
-                Start-Sleep -Seconds 1
+                Start-Sleep -Seconds 2
+                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Suppression de compte utilisateur chosit" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log               
 
-                break
+                
             }
 
             "3" { 
                 Write-Host ""
                 Write-Host "Vous avez choisi de désactiver un compte utilisateur local"
-                Start-Sleep -Seconds 1
-                 
-                break
+                Start-Sleep -Seconds 2
+                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Désactivation de compte utilisateur choisit" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log               
             }
 
             "4" { 
                 Write-Host ""
                 Write-Host "Vous avez choisi de modifier un mot de passe"
-                Start-Sleep -Seconds 1
+                Start-Sleep -Seconds 2
+                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Changement de mot de passe choisit" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log 
                  
-                break
             }
 
             "5" { 
                 Write-Host ""
                 Write-Host "Vous avez choisi d'ajouter un compte à un groupe d'administration"
-                Start-Sleep -Seconds 1
-                 
-                break
+                Start-Sleep -Seconds 2
+                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Ajout d'un compte à un groupe d'administration choisit" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log 
+                
             }
 
             "6" { 
                 Write-Host ""
                 Write-Host "Vous avez choisi d'ajouter un compte à un groupe local"
-                Start-Sleep -Seconds 1
-                 
-                break
+                Start-Sleep -Seconds 2
+                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Ajout d'un compte à un groupe local choisit" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log 
+                
             }
 
             "7" { 
                 Write-Host ""
                 Write-Host "Vous avez choisi de retirer un compte d'un groupe local"
-                Start-Sleep -Seconds 1
-                 
-                break
+                Start-Sleep -Seconds 2
+                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Suppression d'un compte à un groupe local choisit" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log 
+                
             }
 
             "0" { 
                 Write-Host ""
                 Write-Host "Retour au menu précédent"
-                Start-Sleep -Seconds 1
+                Start-Sleep -Seconds 2
+                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Retour au menu précédent" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
                 Menu_Action
                  
-                break
+                
             }
 
             "X" { 
                 Write-Host ""
                 Write-Host "Retour au menu principal"
-                Start-Sleep -Seconds 1
+                Start-Sleep -Seconds 2
+                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Retour au menu principal" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
                 Menu_Principal 
             }
 
             Default { 
                 Write-Host ""
                 Write-Host "Choix incorrect, veuillez recommencer."
-                Start-Sleep -Seconds 1
+                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Choix incorrect" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
+                $Touche = Read-Host "Appuyez sur Entrée pour continuer..."
+                Start-Sleep -Seconds 2
             }
         }
     }
@@ -305,111 +323,125 @@ While ($true) {
             "1" { 
                 Write-Host ""
                 Write-Host "Vous avez choisi d'arrêter le poste"
-                Start-Sleep -Seconds 1
+                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Arrêt poste choisit" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
+                Start-Sleep -Seconds 2
                  
-                break
+                
             }
 
             "2" { 
                 Write-Host ""
                 Write-Host "Vous avez choisi de redémarrer le poste"
-                Start-Sleep -Seconds 1
+                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Redémarrage poste choisit" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
+                Start-Sleep -Seconds 2
                  
-                break
+                
             }
 
             "3" { 
                 Write-Host ""
                 Write-Host "Vous avez choisi de vérouiller le poste"
-                Start-Sleep -Seconds 1
+                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Vérouillage du poste choisit" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
+                Start-Sleep -Seconds 2
                  
-                break
+                
             }
 
             "4" { 
                 Write-Host ""
                 Write-Host "Vous avez choisi de mettre à jour le poste"
-                Start-Sleep -Seconds 1
+                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Mise à jour du poste choisit" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
+                Start-Sleep -Seconds 2
                  
-                break
+                
             }
 
             "5" { 
                 Write-Host ""
                 Write-Host "Vous avez choisi de créer un dossier"
-                Start-Sleep -Seconds 1
+                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Création d'un dossier sur poste choisit" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
+                Start-Sleep -Seconds 2
                  
-                break
+                
             }
 
             "6" { 
                 Write-Host ""
                 Write-Host "Vous avez choisi de supprimer un dossier"
-                Start-Sleep -Seconds 1
+                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Suppresision d'un dossier sur poste choisit" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
+                Start-Sleep -Seconds 2
                  
-                break
+                
             }
 
             "7" { 
                 Write-Host ""
                 Write-Host "Vous avez choisi de prendre la main sur le poste"
-                Start-Sleep -Seconds 1
+                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Prise en main sur poste choisit" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
+                Start-Sleep -Seconds 2
                  
-                break
+                
             }
 
             "8" { 
                 Write-Host ""
                 Write-Host "Vous avez choisi d'activer le pare-feu sur le poste"
-                Start-Sleep -Seconds 1
+                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Activation du pare-feu du poste choisit" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
+                Start-Sleep -Seconds 2
                  
-                break
+                
             }
 
             "9" { 
                 Write-Host ""
                 Write-Host "Vous avez choisi de désactiver le pare-feu sur le poste"
-                Start-Sleep -Seconds 1
+                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Désactivation du pare-feu du poste choisit" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
+                Start-Sleep -Seconds 2
                  
-                break
+                
             }
 
             "10" { 
                 Write-Host ""
                 Write-Host "Vous avez choisi de modifier les règles du pare-feu sur le poste"
-                Start-Sleep -Seconds 1
+                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Modification de règle du pare-feu du poste choisit" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
+                Start-Sleep -Seconds 2
                  
-                break
+                
             }
 
             "11" { 
                 Write-Host ""
                 Write-Host "Vous avez choisi d'installer un logiciel sur le poste"
-                Start-Sleep -Seconds 1
+                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Installation de logiciel sur le poste choisit" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
+                Start-Sleep -Seconds 2
                  
-                break
+                
             }
 
             "12" { 
                 Write-Host ""
                 Write-Host "Vous avez choisi de désinstaller un logiciel sur le poste"
-                Start-Sleep -Seconds 1
+                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Désinstallation de logiciel sur le poste choisit" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
+                Start-Sleep -Seconds 2
                  
-                break
+                
             }
 
             "13" { 
                 Write-Host ""
                 Write-Host "Vous avez choisi d'éxécuter un script sur le poste"
-                Start-Sleep -Seconds 1
+                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Exécution d'un script sur le poste distant" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
+                Start-Sleep -Seconds 2
                  
-                break
+                
             }
 
             "0" { 
                 Write-Host ""
                 Write-Host "Retour au menu précédent"
-                Start-Sleep -Seconds 1
+                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Retour au menu précédent" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
+                Start-Sleep -Seconds 2
                 Menu_Action
 
             }
@@ -417,14 +449,17 @@ While ($true) {
             "X" { 
                 Write-Host ""
                 Write-Host "Retour au menu principal"
-                Start-Sleep -Seconds 1
+                Start-Sleep -Seconds 2
+                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Retour au menu principal" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
                 Menu_Principal 
             }
 
             Default { 
                 Write-Host ""
                 Write-Host "Choix incorrect, veuillez recommencer."
-                Start-Sleep -Seconds 1
+                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Choix incorrect" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
+                $Touche = Read-Host "Appuyez sur Entrée pour continuer..."
+                Start-Sleep -Seconds 2
             }
         }
     }
@@ -459,61 +494,70 @@ While ($true) {
             "1" { 
                 Write-Host ""
                 Write-Host "Vous avez choisi de consulter la date de la dernière connexion de l'utilisateur"
-                Start-Sleep -Seconds 1
-                 
-                break
+                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Date dernière connexion utilisateur" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
+                Start-Sleep -Seconds 2
+
+                
             }
 
             "2" { 
                 Write-Host ""
                 Write-Host "Vous avez choisi de consulter la date de la dernière modification du mot de passe de l'utilisateur"
-                Start-Sleep -Seconds 1
+                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Date dernière modificaiton mot de passe utilisateur chosit" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
+                Start-Sleep -Seconds 2
                  
-                break
+                
             }
 
             "3" { 
                 Write-Host ""
                 Write-Host "Vous avez choisi de consulter la liste des sessions utilisateurs ouvertes"
-                Start-Sleep -Seconds 1
+                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Liste des session utilisateurs ouvertes chosit" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
+                Start-Sleep -Seconds 2
                  
-                break
+                
             }
 
             "4" { 
                 Write-Host ""
                 Write-Host "Vous avez choisi de consulter les droits et permissions sur un dossier"
-                Start-Sleep -Seconds 1
+                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Droits/permission sur un dossier chosit" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
+                Start-Sleep -Seconds 2
                  
-                break
+                
             }
 
             "5" { 
                 Write-Host ""
                 Write-Host "Vous avez choisi de consulter les droits et permissions sur un fichier"
-                Start-Sleep -Seconds 1
+                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Droits/permission sur un fichier chosit" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
+                Start-Sleep -Seconds 2
                  
-                break
+                
             }
 
             "0" { 
                 Write-Host ""
                 Write-Host "Retour au menu précédent"
-                Start-Sleep -Seconds 1
+                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Retour au menu précédent" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
+                Start-Sleep -Seconds 2
                 Menu_Information
             }
 
             "X" { 
                 Write-Host ""
                 Write-Host "Retour au menu principal"
-                Start-Sleep -Seconds 1
+                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Retour au menu principal" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
+                Start-Sleep -Seconds 2
                 Menu_Principal 
             }
 
             Default { 
                 Write-Host ""
                 Write-Host "Choix incorrect, veuillez recommencer."
-                Start-Sleep -Seconds 1
+                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Choix incorrect" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
+                $Touche = Read-Host "Appuyez sur Entrée pour continuer..."
+                Start-Sleep -Seconds 2
             }
         }
     }
@@ -554,95 +598,107 @@ While ($true) {
             "1" { 
                 Write-Host ""
                 Write-Host "Vous avez choisi de consulter la version de l'OS"
-                Start-Sleep -Seconds 1
+                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Information version de l'OS  chosit" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
+                Start-Sleep -Seconds 2
                  
-                break
+                
             }
 
             "2" { 
                 Write-Host ""
                 Write-Host "Vous avez choisi de consulter le nombre d'interfaces réseaux"
-                Start-Sleep -Seconds 1
+                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Information sur le nombre d'interfaces réseaux chosit" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
+                Start-Sleep -Seconds 2
                  
-                break
+                
             }
 
             "3" { 
                 Write-Host ""
                 Write-Host "Vous avez choisi de consulter l'adresse IP de chaque interface réseau"
-                Start-Sleep -Seconds 1
+                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Information adresse IP de chaque interface chosit" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
+                Start-Sleep -Seconds 2
                  
-                break
+                
             }
 
             "4" { 
                 Write-Host ""
                 Write-Host "Vous avez choisi de consulter l'adresse MAC de chaque interface réseau"
-                Start-Sleep -Seconds 1
+                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Information adresse MAC de chaque interface chosit" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
+                Start-Sleep -Seconds 2
                  
-                break
+                
             }
 
             "5" { 
                 Write-Host ""
                 Write-Host "Vous avez choisi de consulter la liste des applications / paquets installés"
-                Start-Sleep -Seconds 1
+                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Information Liste des applicattions/paquets chosit" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
+                Start-Sleep -Seconds 2
                  
-                break
+                
             }
 
             "6" { 
                 Write-Host ""
                 Write-Host "Vous avez choisi de consulter la liste des utilisateurs locaux"
-                Start-Sleep -Seconds 1
+                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Information Liste utilsiateurs locaux choisit " | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
+                Start-Sleep -Seconds 2
                  
-                break
+                
             }
 
             "7" { 
                 Write-Host ""
                 Write-Host "Vous avez choisi de consulter la liste des informations CPU"
-                Start-Sleep -Seconds 1
+                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Information sur le CPU chosit" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
+                Start-Sleep -Seconds 2
                  
-                break
+                
             }
 
             "8" { 
                 Write-Host ""
                 Write-Host "Vous avez choisi de consulter la mémoire RAM totale et l'utilisation"
-                Start-Sleep -Seconds 1
+                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Information RAM totale et utilisation chosit" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
+                Start-Sleep -Seconds 2
                  
-                break
+                
             }
 
             "9" { 
                 Write-Host ""
                 Write-Host "Vous avez choisi de consulter l'utilisation du disque dur"
-                Start-Sleep -Seconds 1
+                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur--Information Utilisation du disque dur chosit" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
+                Start-Sleep -Seconds 2
                  
-                break
+                
             }
 
             "10" { 
                 Write-Host ""
                 Write-Host "Vous avez choisi de consulter l'utilisation du processeur"
-                Start-Sleep -Seconds 1
+                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Information Utilisation du processeur chosit" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
+                Start-Sleep -Seconds 2
                  
-                break
+                
             }
 
             "11" { 
                 Write-Host ""
                 Write-Host "Vous avez choisi de consulter le statut du pare-feu et la liste des ports ouverts"
-                Start-Sleep -Seconds 1
+                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Droits/permission sur un fichier chosit" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
+                Start-Sleep -Seconds 2
                  
-                break
+                
             }
 
             "0" { 
                 Write-Host ""
                 Write-Host "Retour au menu précédent"
-                Start-Sleep -Seconds 1
+                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Retour au menu précédent" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
+                Start-Sleep -Seconds 2
                 Menu_Information
 
             }
@@ -650,14 +706,17 @@ While ($true) {
             "X" { 
                 Write-Host ""
                 Write-Host "Retour au menu principal"
-                Start-Sleep -Seconds 1
+                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Retour au menu principal" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
+                Start-Sleep -Seconds 2
                 Menu_Principal 
             }
 
             Default { 
                 Write-Host ""
                 Write-Host "Choix incorrect, veuillez recommencer."
-                Start-Sleep -Seconds 1
+                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Choix incorrect" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
+                $Touche = Read-Host "Appuyez sur Entrée pour continuer..."
+                Start-Sleep -Seconds 2
             }
         }
     }
