@@ -173,9 +173,7 @@ function Lock
 		Return	
     }
 }
-$NomDistant = Read-Host "Quel est le nom de l'utilisateur/poste distant"
-$IpDistante = Read-Host "Quelle est l'adresse IP du poste distant"
-Start-Sleep -Seconds 1
+
 
 # Fonction "Activation du pare-feu"
 function FirewallOn
@@ -187,7 +185,7 @@ function FirewallOn
 	if ( $ConfwWOn -eq "O" )
     { 
     $Command ={Set-NetFirewallProfile -Enabled true ; Get-NetFirewallProfile | Format-Table Name, Enabled}
-		invoke-Command -ComputerName 172.16.10.20 -ScriptBlock $Command -Credential wilder
+		invoke-Command -ComputerName $IpDistante -ScriptBlock $Command -Credential wilder
 		Write-Host "Le pare-feu de la machine distante a bien été activé"
 		Start-Sleep -Seconds 2
 	}
@@ -200,7 +198,6 @@ function FirewallOn
 	}
 }
 
-
 # Fonction "Désactivation du pare-feu"
 function FirewallOff
 {
@@ -211,7 +208,7 @@ function FirewallOff
 	if ( $ConfwWOff -eq "O" )
     { 
     $Command ={Set-NetFirewallProfile -Enabled false ; Get-NetFirewallProfile | Format-Table Name, Enabled}
-		invoke-Command -ComputerName 172.16.10.20 -ScriptBlock $Command -Credential wilder
+		invoke-Command -ComputerName $IpDistante -ScriptBlock $Command -Credential wilder
 		Write-Host "Le pare-feu de la machine distante a bien été désactivé"
 		Start-Sleep -Seconds 2
 	}
@@ -224,9 +221,9 @@ function FirewallOff
 	}
 }
 
-
-
-
+$NomDistant = Read-Host "Quel est le nom de l'utilisateur/poste distant"
+$IpDistante = Read-Host "Quelle est l'adresse IP du poste distant"
+Start-Sleep -Seconds 1
 
 Clear-Host
 
