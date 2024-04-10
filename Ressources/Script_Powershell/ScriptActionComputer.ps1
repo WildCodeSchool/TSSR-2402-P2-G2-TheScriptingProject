@@ -435,6 +435,185 @@ function RemoveDirectory {
     }
 }
 
+function Applications 
+{
+    While ($True)
+    {
+    Write-Host " [1] Installation d'applications"
+    Write-Host " [2] Désinstallation d'applications"
+    Write-Host " [3] Installation de ChocolaTey"
+    Write-Host " [4] Rechercher une application sur ChocolaTey"
+    Write-Host " [5] Liste des applications installées sur le poste"
+    Write-Host " [6] Liste des mises à jour disponibles des applications sur le poste"
+    Write-Host " [7] MàJ d'une application"
+    Write-Host " [8] MàJ de toutes les applications"
+    Write-Host " [*] Revenir au menu précédent"
+    Write-Host ""
+    Write-Host "ATTENTION : L'installation de ChocolaTey sur le poste est obligatoire avant toute installation/désinstallation"
+    $ChoiceAppMenu = Read-Host "Faites votre choix parmi la selection ci-dessus "
+
+    switch ($ChoiceAppMenu)
+    {
+        1
+        {
+        $ConfAppInstall = Read-Host "Souhaitez-vous installer une application ? [O Pour valider]"
+        
+        If ($ConfAppInstall -eq "O")
+        {
+            $AppInstall = Read-Host "Indiquer le nom de l'application"
+            Invoke-Command -ComputerName $IpDistante -Credential $NomDistant -ScriptBlock { param($AppInstall) choco install $AppInstall -y --force } -ArgumentList $AppInstall
+            Read-Host "Appuyez sur ENTREE pour continuer ..."
+            Clear-Host
+        }
+        else 
+        {
+            Write-Host "Opération annulée - Retour au menu précédent"
+            return 
+        }
+        }
+
+        2
+        {
+        $ConfAppUnInstall = Read-Host "Souhaitez-vous désinstaller une application ? [O Pour valider]"
+    
+        If ($ConfAppUnInstall -eq "O")
+        {
+            $AppUnInstall = Read-Host "Indiquer le nom de l'application"
+            Invoke-Command -ComputerName $IpDistante -Credential $NomDistant -ScriptBlock { param($AppUnInstall) choco uninstall $AppUnInstall -y --force} -ArgumentList $AppUnInstall
+            Read-Host "Appuyez sur ENTREE pour continuer ..."
+            Clear-Host
+        }
+        else 
+        {
+            Write-Host "Opération annulée - Retour au menu précédent"
+            return 
+        }    
+
+        }
+        
+        3
+        {
+        $ConfInstallChoco = Read-Host "Souhaitez-vous installer ChocolaTey ? [O Pour valider]"   
+
+        If ($ConfInstallChoco -eq "O")
+        {
+            Invoke-Command -ComputerName $IpDistante -Credential $NomDistant -ScriptBlock {Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))}
+            Read-Host "Appuyez sur ENTREE pour continuer ..."
+            Clear-Host
+        }
+        else 
+        {
+            Write-Host "Opération annulée - Retour au menu précédent"
+            return 
+        }  
+
+        }
+
+        4
+        {
+            $ConfSearchAppChoco = Read-Host "Souhaitez-vous rechercher une application sur ChocolaTey ? [O Pour valider]"
+            
+        If ($ConfSearchAppChoco -eq "O")
+        {
+            $AppSearchChoco = Read-Host "Indiquer le nom de l'application à rechercher sur ChocolaTey"
+            Invoke-Command -ComputerName $IpDistante -Credential $NomDistant -ScriptBlock { param($AppSearchChoco) choco search --by-id-only $AppSearchChoco } -ArgumentList $AppSearchChoco
+            Read-Host "Appuyez sur ENTREE pour continuer ..."
+            Clear-Host
+        }
+        else 
+        {
+            Write-Host "Opération annulée - Retour au menu précédent"
+            return 
+        } 
+
+        }
+
+        5
+        {
+            $ConfSearchAppPC = Read-Host "Souhaitez-vous obtenir la liste des applications sur le poste ? [O Pour valider]"
+            
+        If ($ConfSearchAppPC -eq "O")
+        {
+            Write-Host "Voici la liste des applications installées sur le poste : "
+            Invoke-Command -ComputerName $IpDistante -Credential $NomDistant -ScriptBlock { choco list }
+            Read-Host "Appuyez sur ENTREE pour continuer ..."
+            Clear-Host
+        }
+        else 
+        {
+            Write-Host "Opération annulée - Retour au menu précédent"
+            return 
+        } 
+
+        }
+
+        6
+        {
+            $ConfSearchMajAppPC = Read-Host "Souhaitez-vous obtenir la liste des mises à jour disponibles des applications sur le poste ? [O Pour valider]"
+            
+        If ($ConfSearchMajAppPC -eq "O")
+        {
+            Write-Host "Voici la liste des mises à jour disponibles des applications sur le poste : "
+            Invoke-Command -ComputerName $IpDistante -Credential $NomDistant -ScriptBlock {choco outdated}
+            Read-Host "Appuyez sur ENTREE pour continuer ..."
+            Clear-Host
+        }
+        else 
+        {
+            Write-Host "Opération annulée - Retour au menu précédent"
+            return 
+        } 
+
+        }
+
+        7
+        {
+            $ConfMajApp = Read-Host "Souhaitez-vous mettre à jour une application ? [O Pour valider] "
+            
+        If ($ConfMajApp -eq "O")
+        {
+            $AppMaj = Read-Host "Indiquer le nom de l'application à mettre à jour"
+            Invoke-Command -ComputerName $IpDistante -Credential $NomDistant -ScriptBlock { param($AppMaj) choco upgrade $AppMaj -y } -ArgumentList $AppMaj
+            Read-Host "Appuyez sur ENTREE pour continuer ..."
+            Clear-Host
+        }
+        else 
+        {
+            Write-Host "Opération annulée - Retour au menu précédent"
+            return 
+        }
+
+        }
+
+        8
+        {
+            $ConfMajAppAll = Read-Host "Souhaitez-vous mettre à jour toutes les applications ? [O Pour valider] "
+            
+        If ($ConfMajAppAll -eq "O")
+        {
+            Write-Host "Toutes les applications du poste vont être mises à jour: "
+            Invoke-Command -ComputerName $IpDistante -Credential $NomDistant -ScriptBlock {choco upgrade all -y}
+            Read-Host "Appuyez sur ENTREE pour continuer ..."
+            Clear-Host
+        }
+        else 
+        {
+            Write-Host "Opération annulée - Retour au menu précédent"
+            return 
+        }
+
+        }
+
+        default
+        {
+            Write-Host "Retour au menu précédent"
+            return
+        }
+
+        }
+    }
+}
+
 
 $NomDistant = Read-Host "Quel est le nom de l'utilisateur/poste distant"
 $IpDistante = Read-Host "Quelle est l'adresse IP du poste distant"
