@@ -323,7 +323,117 @@ function FirewellRules
         }
     }
 }
+# Fonction "Création Dossier"
+function CreateDirectory {
+    # Demande de confirmation
+    $ConfCreateDirectory = Read-Host "Confirmez-vous la création d'un dossier ? [O pour valider] "
+    # Si confirmation OK, exécution de la commande "Création Dossier"
+    if ($ConfCreateDirectory -eq "O") {
+        # Demande du nom du dossier à créer        
+        $NameDirectory = Read-Host "Quel est le nom du dossier à créer ? "
+        # Si aucun nom rentré, sortie de la fonction "Création Dossier"
+        if ([string]::IsNullOrEmpty($NameDirectory)) {
+            Write-Host "Vous n'avez pas indiqué de nom de dossier, retour au menu précédent"
+            Start-Sleep -Seconds 1
+            return
+        }			
+        # Demande du chemin de destination du dossier à créer
+        [String]$PathDirectory = Read-Host "Quel est le chemin de destination de votre dossier (Pensez à mettre les séparateurs '\' ) " 
+        # Si le chemin n'est pas spécifié, utilisation du chemin courant
+        if ([string]::IsNullOrEmpty($PathDirectory)) 
+        {
+		$PathDirectory = ".\"
+        Write-Host "Pas de chemin indiqué, le dossier sera créée dans le répertoire Documents"
+        }
+	# Vérification de l'existence du dossier sur l'ordinateur distant
+		$CMDTestPath = {
+		param($Path)	
+		Test-Path -Path $Path
+		}
+    # Création d'une variable contenant chemin + nom de dossier
+        $Directory = $PathDirectory + $NameDirectory
+		$TestPath = Invoke-Command -ComputerName $IpDistante -ScriptBlock $CMDTestPath -ArgumentList $Directory -Credential $NomDistant
+		if ($TestPath -eq "True") 
+		{
+		Write-Host "Le dossier existe déjà à l'emplacement spécifié."
+		Write-Host "Retour au menu précédent"
+		Start-Sleep -Seconds 1
+		return
+		}
+		else 
+    # Création du dossier sur l'ordinateur distant
+		{
+        $CMDCreate = {
+        param($Folder)
+        New-Item -ItemType Directory -Path $Folder
+        }
+		Invoke-Command -ComputerName $IpDistante -ScriptBlock $CMDCreate -ArgumentList $Directory -Credential $NomDistant
+		
+		Write-Host "Le dossier $NameDirectory a été créé à l'emplacement $PathDirectory sur le poste."
+		Start-Sleep -Seconds 1
+        }
+    }
+    # Si confirmation NOK, sortie de la fonction "Création Dossier"
+    else {
+        Write-Host "Opération annulée - Retour au menu précédent"
+        Start-Sleep -Seconds 1
+        return
+    }
+}
 
+$NomDistant = Read-Host "Quel est le nom de l'utilisateur/poste distant"
+$IpDistante = Read-Host "Quelle est l'adresse IP du poste distant"
+Start-Sleep -Seconds 1
+
+# Fonction "Suppression Dossier"
+function RemoveDirectory {
+    # Demande de confirmation
+    $ConfRemoveDirectory = Read-Host "Confirmez-vous la suppression d'un dossier ? [O pour valider] "
+    # Si confirmation OK, exécution de la commande "Suppression Dossier"
+    if ($ConfRemoveDirectory -eq "O") {
+        # Demande du nom du dossier à supprimer        
+        $NameDirectory2 = Read-Host "Indiquez le chemin du dossier à supprimer"
+        # Si aucun nom rentré, sortie de la fonction "Suppression Dossier"
+        if ([string]::IsNullOrEmpty($NameDirectory2)) {
+            Write-Host "Vous n'avez pas indiqué de dossier, retour au menu précédent"
+            Start-Sleep -Seconds 1
+            return       
+        }	
+    # Vérification de l'existence du dossier à supprimer
+        $CMDTestPath = {
+            param($Path)	
+            Test-Path -Path $Path
+            }
+
+        $TestPathDirectory2 = Invoke-Command -ComputerName $IpDistante -ScriptBlock $CMDTestPath -ArgumentList $NameDirectory2 -Credential $NomDistant
+    # Si le dossier ,'existe pas, retour au menu précédent
+        if ($TestPathDirectory2 -eq $False)
+        {
+            Write-Host "Le dossier n'existe pas, retour au menu précédent"
+            Start-Sleep -Seconds 1
+            return   
+        }
+
+		else 
+    # Suppression du dossier
+		{
+        $CMDRemoval = {
+        param($Folder)
+        Remove-Item -Path $Folder
+        }
+		Invoke-Command -ComputerName $IpDistante -ScriptBlock $CMDRemoval -ArgumentList $NameDirectory2 -Credential $NomDistant
+		
+		Write-Host "Le dossier $NameDirectory2 a été supprimé"
+		Start-Sleep -Seconds 1
+        }
+    }
+    # Si confirmation NOK, sortie de la fonction "Suppression Dossier"
+    else {
+        Write-Host "Opération annulée - Retour au menu précédent"
+        Start-Sleep -Seconds 1
+        return
+    }
+}
 
 
 $NomDistant = Read-Host "Quel est le nom de l'utilisateur/poste distant"
