@@ -31,7 +31,8 @@ NC='\033[0m' # No Color
 BG_BLUE='\033[44m'
 
 # Fonction menu principal
-Menu_Principal() {
+Menu_Principal() 
+{
     while true; do
         # Effacer l'écran
         clear
@@ -86,7 +87,8 @@ Menu_Principal() {
 }
 
 # Fonction menu Action
-Menu_Action() {
+Menu_Action() 
+{
     while true; do
         # Effacer l'écran
         clear
@@ -136,7 +138,8 @@ Menu_Action() {
 }
 
 # Fonction menu Information
-Menu_Information() {
+Menu_Information() 
+{
     while true; do
         # Effacer l'écran
         clear
@@ -194,7 +197,8 @@ Menu_Information() {
 ############## DEBUT FONCTION ######################
 
 # Fonction menu Action Utilisateur
-Menu_Action_Utilisateur() {
+Menu_Action_Utilisateur() 
+{
     while true; do
         # Effacer l'écran
         clear
@@ -288,7 +292,8 @@ Menu_Action_Utilisateur() {
 }
 
 # Fonction pour afficher le menu Ordinateur
-Menu_Action_Ordinateur() {
+Menu_Action_Ordinateur() 
+{
     while true; do
         # Effacer l'écran1
         clear
@@ -444,7 +449,8 @@ Menu_Action_Ordinateur() {
 ############## DEBUT FONCTION ######################
 
 # Fonction menu Information Utilisateur
-Menu_Information_Utilsateur() {
+Menu_Information_Utilsateur() 
+{
     while true; do
         # Effacer l'écran
         clear
@@ -524,7 +530,8 @@ Menu_Information_Utilsateur() {
 }
 
 # Fonction menu Information ordinateur
-Menu_Information_Ordinateur() {
+Menu_Information_Ordinateur() 
+{
 
     while true; do
         # Effacer l'écran
@@ -656,7 +663,8 @@ Menu_Information_Ordinateur() {
 ############## DEBUT FONCTION ######################
 
 # Création de compte utilisateur local
-créer_utilisateur() {
+créer_utilisateur() 
+{
     clear
     # Demande quel utilisateur à créer
     read -p "Quel compte utilisateur souhaitez-vous céer?" newUser
@@ -690,7 +698,8 @@ changer_mdp() {
 }
 
 # Suppression de compte utilisateur local
-supprimer_utilisateur() {
+supprimer_utilisateur() 
+{
     clear
     # Demande quel compte utilisateur à supprimer
     read -p "Quel compte utilisateur souhaitez-vous supprimer?" user_del
@@ -714,7 +723,8 @@ supprimer_utilisateur() {
 }
 
 # Désactivation de compte utilisateur local
-désactiver_utilisateur() {
+désactiver_utilisateur() 
+{
     clear
     # Demande quel compte utilisateur à désactiver
     read -p "Quel compte utilisateur souhaitez-vous désactiver?" user_lock
@@ -745,7 +755,8 @@ désactiver_utilisateur() {
 }
 
 # Ajout utilisateur à un groupe d'administration
-ajouter_groupe_admin() {
+ajouter_groupe_admin() 
+{
     clear
     # Demande quel compte utilisateur à ajouter
     read -p "Quel compte utilisateur souhaitez-vous ajouter au groupe d'administration?" user_adm
@@ -762,7 +773,8 @@ ajouter_groupe_admin() {
 }
 
 # Ajout utilsiateur à un groupe local
-ajout_utilisateur_groupe() {
+ajout_utilisateur_groupe() 
+{
     clear
     # Demande quel compte à ajouter au groupe local
     read -p "Quel compte utilisateur souhaitez-vous ajouter a un groupe local?" user_addgroup
@@ -786,7 +798,8 @@ ajout_utilisateur_groupe() {
 }
 
 # Suppression utilisateur d'un groupe local
-supprimer_utilisateur_groupe() {
+supprimer_utilisateur_groupe() 
+{
     clear
     # Demande quel compte à supprimer d'un compte local
     read -p "Quel compte utilisateur souhaitez-vous supprimer d'un groupe local?" user_delgroup
@@ -819,7 +832,8 @@ supprimer_utilisateur_groupe() {
 ############## DEBUT FONCTION ######################
 
 # Fonction "Arrêt"
-shutdown() {
+shutdown() 
+{
     clear
     # Demande de confrmation
     read -p "Confirmez-vous l'arrêt de la machine distante ? [O pour valider] " conf_shutdown
@@ -873,7 +887,8 @@ shutdown() {
 }
 
 # Fonction "Redémarrage"
-reboot() {
+reboot() 
+{
     clear
     # Demande de confrmation
     read -p "Confirmez-vous l'arrêt de la machine distante ? [O pour valider] " conf_reboot
@@ -926,7 +941,8 @@ reboot() {
 }
 
 # Fonction "Vérouillage"
-lock() {
+lock() 
+{
     clear
     # Demande de confrmation
     read -p "Confirmez-vous le vérouillage de la session de la machine distante ? [O pour valider] " conf_lock
@@ -945,7 +961,8 @@ lock() {
 }
 
 # Fonction MàJ
-update() {
+update() 
+{
     clear
     # Demande de confrmation
     read -p "Confirmez-vous la mise-à-jour du système de la machine distante ? [O pour valider] " conf_update
@@ -964,7 +981,8 @@ update() {
 }
 
 # Fonction "Création Dossier"
-create_directory() {
+create_directory() 
+{
     clear
     # Demande de confrmation
     read -p "Confirmez-vous la création d'un dossier ? [O pour valider] " conf_create_directory
@@ -1018,7 +1036,8 @@ create_directory() {
 }
 
 # Fonction "Suppression Dossier"
-remove_directory() {
+remove_directory() 
+{
     clear
     # Demande de confrmation
     read -p "Confirmez-vous la suppression d'un dossier ? [O pour valider] " conf_remove_directory
@@ -1058,7 +1077,8 @@ remove_directory() {
     fi
 }
 # Fonction "Prise de main à distance"
-remote_control() {
+remote_control() 
+{
     clear
     # Demande de confirmation + Avertissement concernant la sortie du script dès l'éxécution de cette fonction
     echo -e "${RED}ATTENTION : Cette commande vous sortira momentanément du script${NC}"
@@ -1098,7 +1118,8 @@ firewall_on() {
 }
 
 # Fonction "Désactivation du pare-feu"
-firewall_off() {
+firewall_off() 
+{
     clear
     # Demande de confirmation + Avertissement
     echo -e "${RED}ATTENTION : Cette commande peut impacter la vulnérabilité de la machine distante${NC}"
@@ -1119,7 +1140,8 @@ firewall_off() {
 }
 
 # Fonction "Règles du pare-feu"
-firewall_rules() {
+firewall_rules() 
+{
     clear
     # Demande de confirmation + Avertissement concernant la sortie du script dès l'éxécution de cette fonction
     echo -e "${RED}ATTENTION : Les commandes suivantes sont reservées à un public averti${NC}"
@@ -1208,7 +1230,8 @@ firewall_rules() {
     fi
 }
 # Fonction "Installation Application"
-install_app() {
+install_app() 
+{
     clear
     # Demande de confirmation
     read -p "Confirmez-vous l'accès à l'installation de logiciels ? [O Pour valider] : " conf_install
@@ -1253,7 +1276,8 @@ install_app() {
     fi
 }
 # Fonction "Désinstallation Application"
-uninstall_app() {
+uninstall_app() 
+{
     clear
     # Demande de confirmation
     read -p "Confirmez-vous l'accès à la désinstallation de logiciels ? [O Pour valider] : " conf_uninstall
@@ -1298,7 +1322,8 @@ uninstall_app() {
     fi
 }
 # Fonction "Script à distance"
-remote_script() {
+remote_script() 
+{
     clear
     # Demande de confirmation
     read -p "Confirmez-vous l'éxécution d'un script sur la machine distante ? [O pour valider ] : " conf_script
@@ -1345,7 +1370,8 @@ remote_script() {
 ############## DEBUT FONCTION ######################
 
 # Fonctions Informations utilisateur
-info_connexion() {
+info_connexion() 
+{
     clear
     # Demande quel utilisateur
     echo ""
@@ -1367,7 +1393,8 @@ info_connexion() {
 }
 
 # Fonctions Informations dernière modification de mot de passe
-info_modification() {
+info_modification() 
+{
     clear
     # Demande quel utilisateur
     echo ""
@@ -1389,7 +1416,8 @@ info_modification() {
 
 }
 
-liste_sessions() {
+liste_sessions() 
+{
     clear
     # Demande quel utilisateur
     echo ""
@@ -1413,7 +1441,8 @@ liste_sessions() {
 
 }
 
-droits_dossier() {
+droits_dossier() 
+{
     clear
     # Demande quel utilisateur
     echo ""
@@ -1443,7 +1472,8 @@ droits_dossier() {
     fi
 }
 
-droits_fichier() {
+droits_fichier() 
+{
     clear
     # Demande quel utilisateur
     echo ""
@@ -1483,7 +1513,8 @@ droits_fichier() {
 ############## DEBUT FONCTION ######################
 
 # Fonction pour avoir la version de l'OS
-GetOs() {
+GetOs() 
+{
     clear
     read -p "Voulez-vous voir la version de l'OS? [O pour valider] " ConfOS
     if [ "$ConfOS" = "O" ]; then
@@ -1502,7 +1533,8 @@ GetOs() {
 }
 
 # Fonction pour avoir le nombre d'interfaces
-NbrCarte() {
+NbrCarte() 
+{
     clear
     read -p "Voulez-vous voir le nombre d'interfaces présentes sur cette machine? [O pour valider]" NbrI
     if [ "$NbrI" = "O" ]; then
@@ -1528,7 +1560,8 @@ IPdemande() {
 }
 
 #Fonction demande adresse Mac
-MACdemande() {
+MACdemande() 
+{
     clear
     read -p "Quelle carte choisissez-vous ? " CartMac
     ssh $nom_distant@$ip_distante echo "$CartMac" && ifconfig "$CartMac" | awk '/ether / {print $2}'
@@ -1539,7 +1572,8 @@ MACdemande() {
 }
 
 # Fonction qu'est-ce qui est installé?
-Application() {
+Application() 
+{
     clear
     read -p "Voulez-vous la liste des applications et paquets installés? [O pour valider]" app
     if [ "$app" = "O" ]; then
@@ -1560,7 +1594,8 @@ Application() {
 }
 
 # Fonction liste des utilisateurs locaux
-Userlist() {
+Userlist() 
+{
     clear
     read -p "Voulez-vous voir la liste des utilisateurs locaux ? [O pour valider]" ListU
     if [ "$ListU" = "O" ]; then
@@ -1581,7 +1616,8 @@ Userlist() {
 }
 
 # Fonction Type de CPU, nombre de cœurs, etc.
-GetCpu() {
+GetCpu() 
+{
     clear
     read -p "Voulez-vous voir les détails du CPU ? [O pour valider]" Gcpu
     if [ "$Gcpu" = "O" ]; then
@@ -1602,7 +1638,8 @@ GetCpu() {
 }
 
 # Fonction mémoire RAM et utilisation
-RamInfo() {
+RamInfo() 
+{
     clear
     read -p "Voulez-vous voir les détails de la RAM ? [O pour valider]" RamInf
     if [ "$RamInf" = "O" ]; then
@@ -1623,7 +1660,8 @@ RamInfo() {
 }
 
 # Fonction Utilisation du disque
-DiskInfo() {
+DiskInfo() 
+{
     clear
     read -p "Voulez-vous voir les détails du/des disques ? [O pour valider]" DiskInf
     if [ "$DiskInf" = "O" ]; then
@@ -1644,7 +1682,8 @@ DiskInfo() {
 }
 
 # Fonction Utilisation du processeur
-ProcesseurInfo() {
+ProcesseurInfo() 
+{
     clear
     read -p "Voulez-vous voir les détails du processeur ? [O pour valider]" ProcesseurInf
     if [ "$ProcesseurInf" = "O" ]; then
@@ -1665,7 +1704,8 @@ ProcesseurInfo() {
 }
 
 # Fonction Statut du pare-feu et liste des ports ouverts
-StatusPare_feu() {
+StatusPare_feu() 
+{
     clear
     read -p "Voulez-vous voir les informations liées au pare-feu ? [O pour valider]" FireW
     if [ "$FireW" = "O" ]; then
