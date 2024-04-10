@@ -24,7 +24,7 @@ Menu_Principal() {
     while true; do
         # Effacer l'écran
         clear
-        # Demande de premier choix ACTION / INFORMAITON ou QUITTER
+        # Demande de premier choix ACTION / INFORMATION ou QUITTER
         echo "=================================================="
         echo '                Menu Principal                    '
         echo "=================================================="
@@ -48,7 +48,7 @@ Menu_Principal() {
             Menu_Action
             ;;
         2)
-            # Envoie vers MENU INFORMAITON
+            # Envoie vers MENU INFORMATION
             echo " "
             echo "Vous avez choisit INFORMATION" && sleep 2s
             echo $(date +%Y%m%d-%H%M%S)"-$Operateur-INFORMATION a été chosit" >>/var/log/log_evt.log
@@ -646,6 +646,7 @@ Menu_Information_Ordinateur() {
 
 # Création de compte utilisateur local
 créer_utilisateur() {
+    clear
     # Demande quel utilisateur à créer
     read -p "Quel compte utilisateur souhaitez-vous céer?" newUser
     # Vérification si l'utilisateur existe
@@ -662,6 +663,7 @@ créer_utilisateur() {
 
 # Changement de mot de passe
 changer_mdp() {
+    clear
     # Demande changment mot de passe -> pour quel utilisateur?
     read -p "Pour quel compte utilisateur souhaitez-vous modifier le mot de passe? " user_mdp
 
@@ -678,6 +680,7 @@ changer_mdp() {
 
 # Suppression de compte utilisateur local
 supprimer_utilisateur() {
+    clear
     # Demande quel compte utilisateur à supprimer
     read -p "Quel compte utilisateur souhaitez-vous supprimer?" user_del
     # Vérification si l'utilisateur existe
@@ -701,6 +704,7 @@ supprimer_utilisateur() {
 
 # Désactivation de compte utilisateur local
 désactiver_utilisateur() {
+    clear
     # Demande quel compte utilisateur à désactiver
     read -p "Quel compte utilisateur souhaitez-vous désactiver?" user_lock
 
@@ -731,6 +735,7 @@ désactiver_utilisateur() {
 
 # Ajout utilisateur à un groupe d'administration
 ajouter_groupe_admin() {
+    clear
     # Demande quel compte utilisateur à ajouter
     read -p "Quel compte utilisateur souhaitez-vous ajouter au groupe d'administration?" user_adm
 
@@ -747,6 +752,7 @@ ajouter_groupe_admin() {
 
 # Ajout utilsiateur à un groupe local
 ajout_utilisateur_groupe() {
+    clear
     # Demande quel compte à ajouter au groupe local
     read -p "Quel compte utilisateur souhaitez-vous ajouter a un groupe local?" user_addgroup
     # Vérification si l'utilisateur existe
@@ -770,6 +776,7 @@ ajout_utilisateur_groupe() {
 
 # Suppression utilisateur d'un groupe local
 supprimer_utilisateur_groupe() {
+    clear
     # Demande quel compte à supprimer d'un compte local
     read -p "Quel compte utilisateur souhaitez-vous supprimer d'un groupe local?" user_delgroup
 
@@ -802,6 +809,7 @@ supprimer_utilisateur_groupe() {
 
 # Fonction "Arrêt"
 shutdown() {
+    clear
     # Demande de confrmation
     read -p "Confirmez-vous l'arrêt de la machine distante ? [O pour valider] " conf_shutdown
     # Si confirmation OK, affichage du sous-menu de la fonction "Arrêt"
@@ -855,6 +863,7 @@ shutdown() {
 
 # Fonction "Redémarrage"
 reboot() {
+    clear
     # Demande de confrmation
     read -p "Confirmez-vous l'arrêt de la machine distante ? [O pour valider] " conf_reboot
     # Si confirmation OK, affichage du sous-menu de la fonction "Redémarrage"
@@ -907,6 +916,7 @@ reboot() {
 
 # Fonction "Vérouillage"
 lock() {
+    clear
     # Demande de confrmation
     read -p "Confirmez-vous le vérouillage de la session de la machine distante ? [O pour valider] " conf_lock
     # Si confirmation OK, exécution de la commande "Vérouillage"
@@ -925,6 +935,7 @@ lock() {
 
 # Fonction MàJ
 update() {
+    clear
     # Demande de confrmation
     read -p "Confirmez-vous la mise-à-jour du système de la machine distante ? [O pour valider] " conf_update
     # Si confirmation OK, exécution de la commande "MàJ"
@@ -943,6 +954,7 @@ update() {
 
 # Fonction "Création Dossier"
 create_directory() {
+    clear
     # Demande de confrmation
     read -p "Confirmez-vous la création d'un dossier ? [O pour valider] " conf_create_directory
     # Si confirmation OK, exécution de la commande "Création Dossier"
@@ -996,6 +1008,7 @@ create_directory() {
 
 # Fonction "Suppression Dossier"
 remove_directory() {
+    clear
     # Demande de confrmation
     read -p "Confirmez-vous la suppression d'un dossier ? [O pour valider] " conf_remove_directory
     # Si confirmation OK, exécution de la commande "Suppression Dossier"
@@ -1035,6 +1048,7 @@ remove_directory() {
 }
 # Fonction "Prise de main à distance"
 remote_control() {
+    clear
     # Demande de confirmation + Avertissement concernant la sortie du script dès l'éxécution de cette fonction
     echo "ATTENTION : Cette commande vous sortira momentanément du script"
     read -p "Confirmez-vous ? [O pour valider] : " conf_remote
@@ -1053,6 +1067,7 @@ remote_control() {
 
 # Fonction "Activation du pare-feu"
 firewall_on() {
+    clear
     # Demande de confirmation + Avertissement
     echo "ATTENTION : Cette commande peut impacter l'éxécution du script"
     read -p "Confirmez-vous l'activation du pare-feu sur la machine distante ? [O pour valider ] : " conf_fw_on
@@ -1073,6 +1088,7 @@ firewall_on() {
 
 # Fonction "Désactivation du pare-feu"
 firewall_off() {
+    clear
     # Demande de confirmation + Avertissement
     echo "ATTENTION : Cette commande peut impacter la vulnérabilité de la machine distante"
     read -p "Confirmez-vous la désactivation du pare-feu sur la machine distante ? [O pour valider ] : " conf_fw_off
@@ -1093,6 +1109,7 @@ firewall_off() {
 
 # Fonction "Règles du pare-feu"
 firewall_rules() {
+    clear
     # Demande de confirmation + Avertissement concernant la sortie du script dès l'éxécution de cette fonction
     echo "ATTENTION : Les commandes suivantes sont reservées à un public averti"
     read -p "Confirmez-vous l'accès à la modification des régles du pare-feu ? [O Pour valider] : " conf_fw_rules
@@ -1181,6 +1198,7 @@ firewall_rules() {
 }
 # Fonction "Installation Application"
 install_app() {
+    clear
     # Demande de confirmation
     read -p "Confirmez-vous l'accès à l'installation de logiciels ? [O Pour valider] : " conf_install
     # Si confirmation OK, affichage du sous-menu de la fonction "Installation Application"
@@ -1225,6 +1243,7 @@ install_app() {
 }
 # Fonction "Désinstallation Application"
 uninstall_app() {
+    clear
     # Demande de confirmation
     read -p "Confirmez-vous l'accès à la désinstallation de logiciels ? [O Pour valider] : " conf_uninstall
     # Si confirmation OK, affichage du sous-menu de la fonction "Installation Application"
@@ -1269,6 +1288,7 @@ uninstall_app() {
 }
 # Fonction "Script à distance"
 remote_script() {
+    clear
     # Demande de confirmation
     read -p "Confirmez-vous l'éxécution d'un script sur la machine distante ? [O pour valider ] : " conf_script
     # Si confirmation OK, éxécution de la commande "Script à distance""
@@ -1315,6 +1335,7 @@ remote_script() {
 
 # Fonctions Informations utilisateur
 info_connexion() {
+    clear
     # Demande quel utilisateur
     echo ""
     echo "Date de dernière connexion"
@@ -1336,6 +1357,7 @@ info_connexion() {
 
 # Fonctions Informations dernière modification de mot de passe
 info_modification() {
+    clear
     # Demande quel utilisateur
     echo ""
     echo "Date de dernière modification du mdp"
@@ -1357,6 +1379,7 @@ info_modification() {
 }
 
 liste_sessions() {
+    clear
     # Demande quel utilisateur
     echo ""
     echo "Liste des sessions ouvertes pour l'utilisateur"
@@ -1380,6 +1403,7 @@ liste_sessions() {
 }
 
 droits_dossier() {
+    clear
     # Demande quel utilisateur
     echo ""
     echo "Visualisation des droits sur un dossier"
@@ -1409,7 +1433,7 @@ droits_dossier() {
 }
 
 droits_fichier() {
-
+    clear
     # Demande quel utilisateur
     echo ""
     echo "Visualisation des droits sur un fichier"
