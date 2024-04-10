@@ -177,6 +177,56 @@ $NomDistant = Read-Host "Quel est le nom de l'utilisateur/poste distant"
 $IpDistante = Read-Host "Quelle est l'adresse IP du poste distant"
 Start-Sleep -Seconds 1
 
+# Fonction "Activation du pare-feu"
+function FirewallOn
+{
+# Demande de confirmation + Avertissement
+	Write-Host "ATTENTION : Cette commande peut impacter l'éxécution du script"
+	$ConfwWOn = Read-Host "Confirmez-vous l'activation du pare-feu sur la machine distante ? [O pour valider ] : " 
+# Si confirmation OK, éxécution de la commande "Activation du pare-feu"	
+	if ( $ConfwWOn -eq "O" )
+    { 
+    $Command ={Set-NetFirewallProfile -Enabled true ; Get-NetFirewallProfile | Format-Table Name, Enabled}
+		invoke-Command -ComputerName 172.16.10.20 -ScriptBlock $Command -Credential wilder
+		Write-Host "Le pare-feu de la machine distante a bien été activé"
+		Start-Sleep -Seconds 2
+	}
+# Si confirmation NOK, sortie de la fonction "Activation du pare-feu"
+	else
+    {
+		Write-Host "Opération annulée - Retour au menu précédent"
+		Start-Sleep -Seconds 2
+		return	
+	}
+}
+
+
+# Fonction "Désactivation du pare-feu"
+function FirewallOff
+{
+# Demande de confirmation + Avertissement
+	Write-Host "ATTENTION : Cette commande peut impacter l'éxécution du script"
+	$ConfwWOff = Read-Host "Confirmez-vous la désactivation du pare-feu sur la machine distante ? [O pour valider ] : " 
+# Si confirmation OK, éxécution de la commande "Activation du pare-feu"	
+	if ( $ConfwWOff -eq "O" )
+    { 
+    $Command ={Set-NetFirewallProfile -Enabled false ; Get-NetFirewallProfile | Format-Table Name, Enabled}
+		invoke-Command -ComputerName 172.16.10.20 -ScriptBlock $Command -Credential wilder
+		Write-Host "Le pare-feu de la machine distante a bien été désactivé"
+		Start-Sleep -Seconds 2
+	}
+# Si confirmation NOK, sortie de la fonction "Activation du pare-feu"
+	else
+    {
+		Write-Host "Opération annulée - Retour au menu précédent"
+		Start-Sleep -Seconds 2
+		return	
+	}
+}
+
+
+
+
 
 Clear-Host
 
