@@ -5,7 +5,8 @@ $nom_distant = "wilder"
 $ip_distante = "172.16.10.20"
 
 
-function InfoConnexion { 
+function InfoConnexion 
+{ 
     # Demande quel utilisateur?
     $userInf = Read-Host "Quel compte utilisateur souhaitez-vous vérifier?"
     
