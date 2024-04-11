@@ -662,6 +662,32 @@ function RemoteControl
     }
 }
 
+function RemoteScript
+{
+    $ConfRS = Read-Host "Confirmez-vous l'éxécution d'un script sur la machine distante ? [O pour valider ]"
+    if ($ConfRS -eq "O")
+    {
+        $NameScript = Read-Host "Quel est le nom du script (Sans l'extension) ?"
+		$PathScript = Read-Host "Quel est le chemin du script ?"
+        $PathNameScript = "$PathScript\$NameScript.ps1"
+        $TestPathNameScript = Invoke-Command -ComputerName $IpDistante -Credential $Credentials -ScriptBlock { param($PathNameScript) Test-Path -Path $PathNameScript} -ArgumentList $PathNameScript
+        if ($TestPathNameScript -eq $True)
+        {
+            Write-Host "Le script $NameScript existe"
+            Write-Host "Le script $NameScript va être éxécuté"
+            Start-Sleep -Seconds 1
+
+            Invoke-Command -ComputerName $IpDistante -Credential $Credentials -ScriptBlock { Set-ExecutionPolicy RemoteSigned -Scope CurrentUser  }
+            Invoke-Command -ComputerName $IpDistante -Credential $Credentials -ScriptBlock { param($PathNameScript) & $PathNameScript } -ArgumentList $PathNameScript
+        }  
+        else 
+        {
+            Write-Host "Opération annulée - Retour au menu précédent"
+            return 
+        } 
+    }
+}
+
 $NomDistant = Read-Host "Quel est le nom de l'utilisateur/poste distant"
 $IpDistante = Read-Host "Quelle est l'adresse IP du poste distant"
 Start-Sleep -Seconds 1
