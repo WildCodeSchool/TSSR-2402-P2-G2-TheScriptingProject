@@ -19,7 +19,7 @@ Notre projet consistera à créer un script éxécutable sur une machine afin d'
 | Sprint  | Anaïs | Bruno | Grégory | Patrick | Thomas |
 |   :---------: |  :-------: | :---------: |  :-------: | :-------: | :-------: |
 | 5 |  Préparation documents | **PO** - Pseudo-Code/squelette |  Prépa 2 VM  Windows | **SM** - Pseudo-Code/squelette | Prépa 2 VM Linux |
-|  6 |  Préparation documents | Script menu, Assemblage et layout du script final|  **Script Master** Script action utilisateur et Script information utilisateur| Script information ordinateur | **PO** Script action ordinateur présentation sprint|
+|  6 |  Préparation documents | Script menu, Assemblage et layout du script final|  **SM** Script action utilisateur et Script information utilisateur| Script information ordinateur | **PO** Script action ordinateur présentation sprint|
 | 7 |  :-------: | :---------: |  :-------: | :-------: | :-------: |           
 | 8 |  :-------: | :---------: |  :-------: | :-------: | :-------: |  
 | 9 |  :-------: | :---------: |  :-------: | :-------: | :-------: |  
