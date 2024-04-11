@@ -614,6 +614,53 @@ function Applications
     }
 }
 
+function RemoteControl
+{
+	Write-Host "ATTENTION : Cette commande vous sortira momentanément du script"
+	$ConfRemote = Read-Host "Confirmez-vous ? [O pour valider]" 
+
+    If ($ConfRemote -eq "O")
+    {
+        While ($True)
+        {
+            Write-Host "[1] Contrôle par interface graphique (GUI)"
+            Write-Host "[2] Contrôle par le terminal PowerShell"
+            Write-Host "[*] Retour au menu précédent"
+            Write-Host ""
+            $ChoiceRemote = Read-Host "Faire un choix parmi la sélection ci-dessus"
+
+            switch ($ChoiceRemote)
+            
+            {
+                1
+                { 
+                    Write-Host "Contrôle par interface graphique (GUI)"
+                    mstsc -v $IpDistante
+                    return
+                }
+
+                2
+                {
+                    Write-Host "Contrôle par le terminal PowerShell"
+                    Enter-PSSession -ComputerName $IpDistante -Credential $Credentials
+                    return
+                }
+
+                Default 
+                {
+                    Write-Host "Retour au menu précédent"
+                    Start-Sleep -Seconds 1
+                    return
+                }
+            }
+        }
+    }   
+    else
+    {
+        Write-Host "Opération annulée - Retour au menu précédent"
+        return 
+    }
+}
 
 $NomDistant = Read-Host "Quel est le nom de l'utilisateur/poste distant"
 $IpDistante = Read-Host "Quelle est l'adresse IP du poste distant"
