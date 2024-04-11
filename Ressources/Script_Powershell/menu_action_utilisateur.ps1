@@ -5,7 +5,8 @@ $nom_distant = "wilder"
 $ip_distante = "172.16.10.20"
 
 
-function 1 {
+function 1 
+{
     #Création d'un compte utilisateur local 
     # Demande quel utilisateur à créer
     $newUser = Read-Host "Quel compte utilisateur souhaitez-vous créer?"
@@ -14,7 +15,7 @@ function 1 {
     $userExists = ssh $nom_distant@$ip_distante "net user $newUser"
     if ($userExists) {
         # Si oui -> sortie du script
-        Write-Host "L'utilisateur existe déjà."
+        Write-Host "L'utilisateur existe déjà." -ForegroundColor Red
         Start-Sleep -Seconds 2
     }
     else {
@@ -22,12 +23,13 @@ function 1 {
         # Création de l'utilisateur
         ssh $nom_distant@$ip_distante "net user $newUser /add" > $null
         # Confirmation de la création
-        Write-Host "Compte $newUser créé."
+        Write-Host "Compte $newUser créé." -ForegroundColor Green
         Start-Sleep -Seconds 2
     }
 }
 
-function 2 {
+function 2 
+{
     # Demande quel compte utilisateur à supprimer
     $userDel = Read-Host "Quel compte utilisateur souhaitez-vous supprimer ?"
 
@@ -39,23 +41,24 @@ function 2 {
         # Si oui -> suppression du compte
         if ($confirmation -eq "Oui") {
             ssh $nom_distant@$ip_distante "net user $userDel /delete"
-            Write-Host "Le compte $userDel est supprimé."
+            Write-Host "Le compte $userDel est supprimé." -ForegroundColor Green
             Start-Sleep -Seconds 2
         }
         else {
             # Si non -> sortie du script
-            Write-Host "Suppression annulée."
+            Write-Host "Suppression annulée." -ForegroundColor Red
             Start-Sleep -Seconds 2
         }
     }
     else {
         # Si le compte n'existe pas
-        Write-Host "Le compte utilisateur n'existe pas."
+        Write-Host "Le compte utilisateur n'existe pas." -ForegroundColor Red
         Start-Sleep -Seconds 2
     }
 }
 
-function 3 {
+function 3 
+{
     # Demande quel compte utilisateur à désactiver
     $userLock = Read-Host "Quel compte utilisateur souhaitez-vous désactiver ?"
 
@@ -67,24 +70,25 @@ function 3 {
         # Si oui -> désactivation du compte
         if ($confirmation -eq "Oui") {
             ssh $nom_distant@$ip_distante "net user $userLock /active:no"
-            Write-Host "L'utilisateur $userLock est désactivé."
+            Write-Host "L'utilisateur $userLock est désactivé." -ForegroundColor Green
             Start-Sleep -Seconds 2
         }
         else {
             # Si non -> sortie du script
-            Write-Host "Désactivation annulée."
+            Write-Host "Désactivation annulée." -ForegroundColor Red
             Start-Sleep -Seconds 2
         }
     }
     else {
         # Si l'utilisateur n'existe pas
-        Write-Host "L'utilisateur $userLock n'existe pas."
+        Write-Host "L'utilisateur $userLock n'existe pas." -ForegroundColor Red
         Start-Sleep -Seconds 2
     }
 }
 
 
-function 4 {
+function 4 
+{
     # Modification d'un mot de passe
     # Demande changement du mot de passe -> pour quel utilisateur ?
     $userMdp = Read-Host "Pour quel compte utilisateur souhaitez-vous modifier le mot de passe ?"
@@ -95,16 +99,102 @@ function 4 {
         # Si oui -> demander de taper le nouveau mdp
         $newMdp = Read-Host "Entrer le nouveu mot de passe :"
         ssh $nom_distant@$ip_distante "net user $userMdp $newMdp"
-        Write-Host "Le mot de passe est bien modifié."
+        Write-Host "Le mot de passe est bien modifié." -ForegroundColor Green
         Start-Sleep -Seconds 2
     }
     else {
         # Si non -> sortie du script
-        Write-Host "L'utilisateur $userMdp n'existe pas."
+        Write-Host "L'utilisateur $userMdp n'existe pas." -ForegroundColor Red
         Start-Sleep -Seconds 2
     }
 }
 
+function 5 
+{
+    # Demande quel compte utilisateur à ajouter
+    $userAdm = Read-Host "Quel compte utilisateur souhaitez-vous ajouter au groupe d'administration?"
+
+    # Vérification si l'utilisateur existe
+    $userExists = ssh $nom_distant@$ip_distante "net user $userAdm"
+    if ($userExists) {
+        # Si l'utilisateur existe -> ajout au groupe Administrators
+        Invoke-Command -ComputerName $ip_distante -ScriptBlock { Add-LocalGroupMember -Group Administrateurs -Member $using:userAdm } -Credential wilder
+        Write-Host "Le compte $userAdm est ajouté au groupe Administrateurs." -ForegroundColor Green
+        Start-Sleep -Seconds 2
+    }
+    else {
+        # Si non sortie du script
+        Write-Host "Le compte utilisateur n'existe pas." -ForegroundColor Red
+        Start-Sleep -Seconds 2
+    }
+}
+
+Function 6 
+{
+    # Demande quel compte à ajouter au groupe local
+    $userAddG = Read-Host "Quel compte utilisateur souhaitez-vous ajouter à un groupe local?"
+    
+    # Vérification si l'utilisateur existe
+    $userExists = ssh $nom_distant@$ip_distante "net user $userAddG"
+    if ($userExists) {
+        # Si l'utilisateur existe -> demande quel groupe?
+        $choixAddGroup = Read-Host "À quel groupe souhaitez-vous ajouter l'utilisateur $userAddG?"
+    
+        $groupExists = Invoke-Command -ComputerName $ip_distante -ScriptBlock { Get-LocalGroup -Name $using:choixAddGroup } -Credential wilder
+            
+        if ($groupExists) {
+            Write-Host "Ajout du compte en cours..." -ForegroundColor Green
+            Start-Sleep -Seconds 2
+            Invoke-Command -ComputerName $ip_distante -ScriptBlock { Add-LocalGroupMember -Group $using:choixAddGroup -Member $using:userAddG } -Credential wilder
+            Write-Host "Le compte $userAddG est ajouté au groupe $choixAddGroup." -ForegroundColor Green
+
+            # Affichage des utilisateurs du groupe pour vérification
+            Write-Host "Vous trouverez ci-dessous la liste des utilisateurs du groupe $choixAddGroup ." -ForegroundColor Green
+            Invoke-Command -ComputerName $ip_distante -ScriptBlock { Get-LocalGroupMember -Group $using:choixAddGroup } -Credential wilder
+        }
+        else {
+            Write-Host "Le groupe n'existe pas." -ForegroundColor Red
+        }
+    }
+    else {
+        # Si non, sortie du script
+        Write-Host "Le compte utilisateur n'existe pas." -ForegroundColor Red
+    }
+}
+
+Function 7 
+{
+    # Suppression utilisateur d'un groupe local
+    $userDel = Read-Host "Quel compte utilisateur souhaitez-vous supprimer d'un groupe local?"
+        
+    # Vérification si l'utilisateur existe
+    $userExists = ssh $nom_distant@$ip_distante "net user $userDel"
+    if ($userExists) {
+        # Si l'utilisateur existe -> demande quel groupe?
+        $choixDelGroup = Read-Host "De quel groupe souhaitez-vous supprimer l'utilisateur $userDel?"
+        
+        $groupExists = Invoke-Command -ComputerName $ip_distante -ScriptBlock { Get-LocalGroup -Name $using:choixDelGroup } -Credential wilder
+                
+        if ($groupExists) {
+            # Si le groupe existe -> suppression de l'utilisateur du groupe
+            Write-Host "Traitement en cours..." -ForegroundColor Green
+            Start-Sleep -Seconds 2
+            Invoke-Command -ComputerName $ip_distante -ScriptBlock { Remove-LocalGroupMember -Group $using:choixDelGroup -Member $using:userDel } -Credential wilder
+            Write-Host "Le compte $userDel est supprimé du groupe $choixDelGroup." -ForegroundColor Green
+
+            # Affichage des utilisateurs du groupe pour vérification
+            Write-Host "Vous trouverez ci-dessous la liste des utilisateurs du groupe $choixDelGroup ." -ForegroundColor Green
+            Invoke-Command -ComputerName $ip_distante -ScriptBlock { Get-LocalGroupMember -Group $using:choixDelGroup } -Credential wilder
+        }
+        else {
+            Write-Host "Le groupe n'existe pas." -ForegroundColor Red
+        }
+    }
+    else {
+        # Si non, sortie du script
+        Write-Host "Le compte utilisateur n'existe pas." -ForegroundColor Red
+    }
+}
 
 
 
