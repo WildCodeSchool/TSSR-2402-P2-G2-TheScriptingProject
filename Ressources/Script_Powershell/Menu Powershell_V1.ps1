@@ -721,4 +721,10 @@ While ($true) {
         }
     }
 }
+
+$NomDistant = Read-Host "Nom d'utilisateur du poste ?"
+$IpDistante = Read-Host "Adresse IP du poste ?"
+$Credentials = Get-Credential -Credential $NomDistant
+
+
 Menu_Principal
