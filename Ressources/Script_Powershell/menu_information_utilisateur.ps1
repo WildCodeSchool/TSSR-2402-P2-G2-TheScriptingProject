@@ -11,7 +11,7 @@ function InfoConnexion {
     $userInf = Read-Host "Quel compte utilisateur souhaitez-vous vérifier?"
     
     # Vérification si l'utilisateur existe
-    $userExists = ssh $NomDistant@$IpDistante "net user $userInf"
+    $userExists = Invoke-Command -ComputerName $IpDistante -ScriptBlock { Get-LocalUser -Name $using:UserInf } -Credential wilder
     if ($userExists) {
         # Si oui -> affichage date de dernière connexion
         Write-Host "Date de dernière connexion de l'utilisateur $userInf."
@@ -42,7 +42,7 @@ function InfoModificationMdp {
     $userInf = Read-Host "Tapez le nom d'utilisateur souhaité "
 
     # Vérification si l'utilisateur existe
-    $userExists = ssh $NomDistant@$IpDistante "net user $userInf"
+    $userExists = Invoke-Command -ComputerName $IpDistante -ScriptBlock { Get-LocalUser -Name $using:UserInf } -Credential wilder
     if ($userExists) {
         # Si oui -> affichage date de dernière connexion
         $Call = Write-Host "Date de dernière modification du mot de passe l'utilisateur $userInf."
@@ -88,7 +88,7 @@ function droitsDossier {
     $UserInf = Read-Host "Tapez le nom d'utilisateur souhaité "
 
     # Vérifie si l'utilisateur existe sur le serveur distant
-    $userExists = ssh $NomDistant@$IpDistante "net user $UserInf"
+    $userExists = Invoke-Command -ComputerName $IpDistante -ScriptBlock { Get-LocalUser -Name $using:UserInf } -Credential wilder
     if ($userExists) {
         # si oui -> demande quel dossier à vérifier
         $Dossier = Read-Host "Sur quel dossier souhaitez-vous vérifier les droits ? (spécifiez le chemin du dossier)"
@@ -129,7 +129,7 @@ function droitsFichier {
     $UserInf_ = Read-Host "Tapez le nom d'utilisateur souhaité "
 
     # Vérifie si l'utilisateur existe sur le serveur distant
-    $userExists = ssh $NomDistant@$IpDistante "net user $UserInf"
+    $userExists = Invoke-Command -ComputerName $IpDistante -ScriptBlock { Get-LocalUser -Name $using:UserInf } -Credential wilder
     if ($userExists) {
         # si oui -> demande quel fichier à vérifier
         $Fichier = Read-Host "Sur quel fichier souhaitez-vous vérifier les droits ? (spécifiez le chemin du fichier)"
