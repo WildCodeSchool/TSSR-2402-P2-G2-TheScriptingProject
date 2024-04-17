@@ -100,3 +100,37 @@ function droitsDossier
         Start-Sleep -Seconds 2
     }
 }
+
+function droitsFichier 
+{
+    # Demande quel utilisateur
+    Write-Host ""
+    Write-Host "Visualisation des droits sur un fichier"
+    Write-Host ""
+    $User = Read-Host "Tapez le nom d'utilisateur souhaité : "
+
+    # Vérifie si l'utilisateur existe sur le serveur distant
+    $userExists = ssh $nom_distant@$ip_distante "net user $User"
+    if ($userExists) {
+        # si oui -> demande quel fichier à vérifier
+        $Fichier = Read-Host "Sur quel fichier souhaitez-vous vérifier les droits ? (spécifiez le chemin du fichier)"
+
+        # Vérifie si le fichier existe sur le serveur distant
+        if ($Fichier) {
+            # affichage des droits
+            Invoke-Command -ComputerName $ip_distante -Credential $nom_distant -ScriptBlock {
+                param($FilePath)
+                Get-Acl -Path $FilePath } -ArgumentList $Fichier
+        }
+        else {
+            # si non -> sortie du script
+            Write-Host "Le fichier $Fichier n'existe pas"
+            Start-Sleep -Seconds 2
+        }
+    }
+    else {
+        # si non -> sortie du script
+        Write-Host "L'utilisateur $User n'existe pas"
+        Start-Sleep -Seconds 2
+    }
+}
