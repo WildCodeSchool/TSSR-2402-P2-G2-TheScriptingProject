@@ -30,7 +30,7 @@ function Menu_Principal
         Write-Host "|         Menu Principal        | "
         Write-Host "=================================="
         Write-Host ""
-        Write-Host "Machine distante : $NomDistant@$IpDistante"
+        Write-Host "Poste Distante : $NomDistant@$IpDistante"
         Write-Host ""
         Write-Host "Bonjour, voici les différents choix possibles à effectuer sur le poste distant :"
         Write-Host ""
@@ -99,7 +99,7 @@ function Menu_Principal
         Write-Host "|             ACTION            | "
         Write-Host "=================================="
         Write-Host ""
-        Write-Host "Machine distante : $NomDistant@$IpDistante"
+        Write-Host "Poste Distante : $NomDistant@$IpDistante"
         Write-Host ""
         Write-Host "Voici les différents choix possibles :"
         Write-Host ""
@@ -161,7 +161,7 @@ function Menu_Information
         Write-Host "|          INFORMATION           |"
         Write-Host "=================================="
         Write-Host ""
-        Write-Host "Machine distante : $NomDistant@$IpDistante"
+        Write-Host "Poste Distante : $NomDistant@$IpDistante"
         Write-Host ""
         Write-Host "Voici les différents choix possibles :"
         Write-Host ""
@@ -231,7 +231,7 @@ function Menu_Action_Utilisateur
         Write-Host "|        ACTION UTILISATEUR     | "
         Write-Host "=================================="
         Write-Host ""
-        Write-Host "Machine distante : $NomDistant@$IpDistante"
+        Write-Host "Poste Distante : $NomDistant@$IpDistante"
         Write-Host ""
         Write-Host "Voici les différents choix possibles :"
         Write-Host ""
@@ -345,10 +345,10 @@ function Menu_Action_Poste
         Clear-Host
     # Demande choix ACTION Poste / retour menu précédent / retour menu principal
         Write-Host "=================================="
-        Write-Host "|           ACTION POSTE         | "
+        Write-Host "|       ACTION POSTE DISTANT     | "
         Write-Host "=================================="
         Write-Host ""
-        Write-Host "Machine distante : $NomDistant@$IpDistante"
+        Write-Host "Poste Distante : $NomDistant@$IpDistante"
         Write-Host ""
         Write-Host "Voici les différents choix possibles :"
         Write-Host ""
@@ -363,7 +363,7 @@ function Menu_Action_Poste
         Write-Host "[9]  Désactivation du pare-feu"
         Write-Host "[10] Règles du parefeu"
         Write-Host "[11] Installation/Désinstallation d'un logiciel"
-        Write-Host "[12] Exécution d'un script sur la machine distante"
+        Write-Host "[12] Exécution d'un script sur le Poste Distante"
         Write-Host ""
         Write-Host "[0] Retour au menu précédent"
         Write-Host "[X] Retour au menu principal"
@@ -517,7 +517,7 @@ function Menu_Information_Utilisateur
         Write-Host "|    INFORMATION UTILISATEUR    | "
         Write-Host "=================================="
         Write-Host ""
-        Write-Host "Machine distante : $NomDistant@$IpDistante"
+        Write-Host "Poste Distante : $NomDistant@$IpDistante"
         Write-Host ""
         Write-Host "Voici les différents choix possibles :"
         Write-Host ""
@@ -611,11 +611,11 @@ function Menu_Information_Utilisateur
     # Effacer l'écran
         Clear-Host
     # Demande choix INFOMRATION UTILISATEUR / retour menu précédent / retour menu principal
-        Write-Host "=================================="
-        Write-Host "|        INFORMATION POSTE      | "
-        Write-Host "=================================="
+        Write-Host "=================================================="
+        Write-Host '        Menu "INFORMATION POSTE DISTANT"          '
+        Write-Host "=================================================="
         Write-Host ""
-        Write-Host "Machine distante : $NomDistant@$IpDistante"
+        Write-Host "Poste Distante : $NomDistant@$IpDistante"
         Write-Host ""
         Write-Host "Voici les différents choix possibles :"
         Write-Host ""
@@ -995,9 +995,9 @@ function Shutdown
 # Si confirmation OK, affichage du sous-menu de la fonction "Arrêt"
 	If  ($ConfShutdown -eq "O") 
     {
-    Write-Host " [1] Arrêt instantané de la machine" -ForegroundColor Yellow -BackgroundColor Black
-		Write-Host " [2] Arrêt planifié de la machine avec message d'avertissement" -ForegroundColor Yellow -BackgroundColor Black
-		Write-Host " [3] Arrêt planifié de la machine sans message d'avertissement" -ForegroundColor Yellow -BackgroundColor Black
+    Write-Host " [1] Arrêt instantané du poste" -ForegroundColor Yellow -BackgroundColor Black
+		Write-Host " [2] Arrêt planifié du poste avec message d'avertissement" -ForegroundColor Yellow -BackgroundColor Black
+		Write-Host " [3] Arrêt planifié du poste sans message d'avertissement" -ForegroundColor Yellow -BackgroundColor Black
 		Write-Host " [*] Revenir au menu précédent" -ForegroundColor Yellow -BackgroundColor Black
         Write-Host ""
         $ConfMessage_S = Read-Host "Faites votre choix parmi la sélection ci-dessus" 
@@ -1053,9 +1053,9 @@ function Reboot
 # Si confirmation OK, affichage du sous-menu de la fonction "Redémarrage"
 	If  ($ConfReboot -eq "O") 
     {
-    Write-Host " [1] Redémarrage instantané de la machine" -ForegroundColor Yellow -BackgroundColor Black
-		Write-Host " [2] Redémarrage planifié de la machine avec message d'avertissement" -ForegroundColor Yellow -BackgroundColor Black
-		Write-Host " [3] Redémarrage planifié de la machine sans message d'avertissement" -ForegroundColor Yellow -BackgroundColor Black
+    Write-Host " [1] Redémarrage instantané du poste" -ForegroundColor Yellow -BackgroundColor Black
+		Write-Host " [2] Redémarrage planifié du poste avec message d'avertissement" -ForegroundColor Yellow -BackgroundColor Black
+		Write-Host " [3] Redémarrage planifié du poste sans message d'avertissement" -ForegroundColor Yellow -BackgroundColor Black
 		Write-Host " [*] Revenir au menu précédent" -ForegroundColor Yellow -BackgroundColor Black
         Write-Host ""
         $ConfMessage_R = Read-Host "Faites votre choix parmi la sélection ci-dessus" 
@@ -1106,7 +1106,7 @@ function Reboot
 function Lock
 {
 # Demande de confirmation
-	$ConfLock = Read-Host "Confirmez-vous le vérouillage de la session de la machine distante ? [O pour valider] "
+	$ConfLock = Read-Host "Confirmez-vous le vérouillage de la session de le Poste Distante ? [O pour valider] "
 # Si confirmation OK, exécution de la commande "Vérouillage"
 	If ($ConfLock -eq "O")
     {
@@ -1127,13 +1127,13 @@ function FirewallOn
 {
 # Demande de confirmation + Avertissement
 	Write-Host "ATTENTION : Cette commande peut impacter l'éxécution du script" -ForegroundColor Yellow -BackgroundColor Black
-	$ConfwWOn = Read-Host "Confirmez-vous l'activation du pare-feu sur la machine distante ? [O pour valider ] : " 
+	$ConfwWOn = Read-Host "Confirmez-vous l'activation du pare-feu sur le Poste Distante ? [O pour valider ] : " 
 # Si confirmation OK, éxécution de la commande "Activation du pare-feu"	
 	if ( $ConfwWOn -eq "O" )
     { 
     $Command ={Set-NetFirewallProfile -Enabled true ; Get-NetFirewallProfile | Format-Table Name, Enabled}
 		invoke-Command -ComputerName $IpDistante -ScriptBlock $Command -Credential $Credentials 
-		Write-Host "Le pare-feu de la machine distante a bien été activé" -ForegroundColor Yellow -BackgroundColor Black
+		Write-Host "Le pare-feu de le Poste Distante a bien été activé" -ForegroundColor Yellow -BackgroundColor Black
 		Start-Sleep -Seconds 2
 	}
 # Si confirmation NOK, sortie de la fonction "Activation du pare-feu"
@@ -1150,13 +1150,13 @@ function FirewallOff
 {
 # Demande de confirmation + Avertissement
 	Write-Host "ATTENTION : Cette commande peut impacter l'éxécution du script" -ForegroundColor Yellow -BackgroundColor Black
-	$ConfwWOff = Read-Host "Confirmez-vous la désactivation du pare-feu sur la machine distante ? [O pour valider ] : " 
+	$ConfwWOff = Read-Host "Confirmez-vous la désactivation du pare-feu sur le Poste Distante ? [O pour valider ] : " 
 # Si confirmation OK, éxécution de la commande "Activation du pare-feu"	
 	if ( $ConfwWOff -eq "O" )
     { 
     $Command ={Set-NetFirewallProfile -Enabled false ; Get-NetFirewallProfile | Format-Table Name, Enabled}
 		invoke-Command -ComputerName $IpDistante -ScriptBlock $Command -Credential $Credentials 
-		Write-Host "Le pare-feu de la machine distante a bien été désactivé" -ForegroundColor Yellow -BackgroundColor Black
+		Write-Host "Le pare-feu sur le Poste Distante a bien été désactivé" -ForegroundColor Yellow -BackgroundColor Black
 		Start-Sleep -Seconds 2
 	}
 # Si confirmation NOK, sortie de la fonction "Activation du pare-feu"
@@ -1589,7 +1589,7 @@ function RemoteControl
 
 function RemoteScript
 {
-    $ConfRS = Read-Host "Confirmez-vous l'éxécution d'un script sur la machine distante ? [O pour valider ]"
+    $ConfRS = Read-Host "Confirmez-vous l'éxécution d'un script sur le Poste Distante ? [O pour valider ]"
     if ($ConfRS -eq "O")
     {
         $NameScript = Read-Host "Quel est le nom du script (Sans l'extension) ?"
@@ -1819,7 +1819,7 @@ function GetOS {
     }
 }
 
-#Fonction pour avoir les cartes reseaux presente sur la machine.
+#Fonction pour avoir les cartes reseaux presente sur le poste.
 function NbrCarte {
     Clear-Host
     $NbrCarteConf = Read-Host "Voulez-vous voir le nombre d'interfaces présentes sur le poste distant ? [O pour valider]"
@@ -1900,7 +1900,7 @@ function MACDemande {
     }   
 }
 
-#Fonction pour avoir la liste des application et paquet installer sur la machine
+#Fonction pour avoir la liste des application et paquet installer sur le poste
 function ApplicationList {
     clear-host
     $ApplicationListConf = Read-Host "Voulez-vous la liste des applications/paquets installés sur le poste distant ? [O pour valider]"
@@ -2108,15 +2108,15 @@ function StatutPort {
 ################ Début script  #####################
 ####################################################
 
-#Demande d'infos sur la machine distante
+#Demande d'infos sur le Poste Distante
 clear-Host
 Write-Host "=================================================="
 Write-Host        "Initialisation script pour connexion"
 Write-Host "=================================================="
 Write-Host ""
 # Demande d'identification
-$NomDistant = Read-Host "Veuillez entrer le nom d'utilisateur de la machine distante "
-$IpDistante = Read-Host "Veuillez entrer l'adresse IP de la machine distante "
+$NomDistant = Read-Host "Veuillez entrer le nom d'utilisateur du Poste Distante "
+$IpDistante = Read-Host "Veuillez entrer l'adresse IP du Poste Distante "
 $Credentials = Get-Credential -Credential $NomDistant
 $Operateur = Read-Host "Veuillez vous identifiez "
 
