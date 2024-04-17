@@ -68,6 +68,23 @@ Lors du message : **`Souhaitez-vous continuer ? [O/n]`**-> Taper **`O`**
 ssh-keyscan -t rsa 172.16.10.10
 ```
 
-![gen](https://raw.githubusercontent.com/WildCodeSchool/TSSR-2402-P1-G1-SecurisationDeMotDePasse/main/Images/Images%20Greg/generer%20cl%C3%A9%20ubuntu.PNG)
+![gen](https://raw.githubusercontent.com/WildCodeSchool/TSSR-2402-P1-G1-SecurisationDeMotDePasse/main/Images/Images%20Greg/generer%20cl%C3%A9%20ubuntu.PNG) 
 
 
+### II- Installation des paquets nécessaires sur les clients Ubuntu 
+
+- Exécuter le Terminal
+
+- Pour installer le paquet de la commande ifconfig faire :
+  ```bash
+  sudo apt install net-tools
+  ```
+
+  ![](https://www.cjoint.com/doc/24_04/NDro5ObmV1n_IFconfig.png)
+
+- Pour installer le paquet de la commande
+  ```bash
+  sudo apt install sysstat
+  ```
+  ![](https://www.cjoint.com/doc/24_04/NDrpmkMXM2n_Bash-proceseru.png)
+  
