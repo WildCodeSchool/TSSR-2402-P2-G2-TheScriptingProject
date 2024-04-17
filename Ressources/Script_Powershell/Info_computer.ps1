@@ -1,12 +1,10 @@
-
-#Fonction menu info utilisateur
-function ShowMenuComputer {
+function ShowMenuInfoPoste {
+    While ($true) {
     # Effacer l'écran
     Clear-Host
-
     # Affichage des actions
     Write-Host "=================================================="
-    Write-Host '        Menu "Information Machine Distante":      '
+    Write-Host '        Menu "INFORMATION POSTE DISTANT"          '
     Write-Host "=================================================="
     Write-Host "[1]  Version de l'OS"
     Write-Host "[2]  Nombre d'interfaces"
@@ -18,24 +16,76 @@ function ShowMenuComputer {
     Write-Host "[8]  Mémoire RAM totale et utilisation"
     Write-Host "[9]  Utilisation du disque"
     Write-Host "[10] Utilisation du processeur"
-    Write-Host "[11] Statut du pare-feu et liste des ports ouverts"
+    Write-Host "[11] Statut du pare-feu"
+    Write-Host "[12] Liste des ports ouverts"
     Write-Host ""
     Write-Host "[X]  Retour au menu précédent"
     Write-Host ""
+$ChoiceInfoComputer = Read-Host "Faites votre choix"
+switch ($ChoiceInfoComputer)
+    {
+        "1"
+        {GetOS
+        }
+        "2"
+        {NbrCarte
+        }
+        "3"
+        {IPInterface
+        }
+        "4"
+        {MACdemande
+        }
+        "5"
+        {ApplicationList
+        }
+        "6"
+        {UserList
+        }
+        "7"
+        {GetCPU
+        }
+        "8"
+        {RAMInfo
+        }
+        "9"
+        {DiskInfo
+        }
+        "10"
+        {ProcesseurInfo
+        }
+        "11"
+        {StatutParefeu
+        }
+        "12"
+        {StatutPort
+        }
+        "X"
+        {Write-Host "Retour au menu précédent" -ForegroundColor Magenta -BackgroundColor Black
+        Start-Sleep -Seconds 2 
+        return
+        }
+    }
+            }
 }
-
 #Fonction pour avoir la version de l'os
 function GetOS {
     Clear-Host
-    $ConfOS = Read-Host "Voulez-vous voir la version de l'OS? [O pour valider]"
+    $GetOSConf = Read-Host "Voulez-vous voir la version de l'OS du poste distant ? [O pour valider]"
+    Clear-Host
+    Write-Host "Voici la version de l'OS du poste distant : "
+    Write-Host ""
 
-    if ($ConfOS -eq "O") {
-        Clear-Host
-        Invoke-Command -ComputerName $IP -ScriptBlock {(systeminfo)[2,3]}
-        Invoke-Command -ComputerName $IP -ScriptBlock {(systeminfo)[2,3]} >> "/home/wilder/Documents/info-CLIWIN01-$((Get-Date).ToString('yyyy-MM-dd')).txt"
+    if ($GetOSConf -eq "O") {
+        $GetOSCMD = Invoke-Command -ComputerName $IPDistante -Credential $Credentials -ScriptBlock {(systeminfo)[2,3]}
+        $GetOSCMD
         Write-Host ""
-        Write-Host "Les données sont enregistrées dans le fichier info-CLIWIN01-$((Get-Date).ToString('yyyy-MM-dd')).txt"
-        Start-Sleep -Seconds 3
+        Start-Sleep -Seconds 1
+        Write-Host "Les données sont enregistrées dans le fichier" $PathInfoPoste
+        "Voici la version de l'OS du poste distant : " | Out-File -Append -FilePath $PathInfoPoste
+        $GetOSCMD | Out-File -Append -FilePath $PathInfoPoste
+        Write-Host ""
+        Read-Host "Appuyez sur Entrée pour continuer ..."
         return
     }
     else {
@@ -47,19 +97,24 @@ function GetOS {
 }
 
 #Fonction pour avoir les cartes reseaux presente sur la machine.
-function Get-NbrCarte {
+function NbrCarte {
     Clear-Host
-    $NbrI = Read-Host "Voulez-vous voir le nombre d'interfaces présentes sur cette machine? [O pour valider]"
+    $NbrCarteConf = Read-Host "Voulez-vous voir le nombre d'interfaces présentes sur le poste distant ? [O pour valider]"
     
-    if ($NbrI -eq "O") {
+    if ($NbrCarteConf -eq "O") {
         Clear-Host
-        Write-Host "Voici la liste des interfaces présentes sur cette machine :"
+        Write-Host "Voici la liste des interfaces présentes sur le poste distant : "
         
-        $interfaces = Invoke-Command -ComputerName $IP -ScriptBlock { Get-NetAdapter }#| Where-Object { $_.Status -eq 'Up'  } a rajouter si on veux uniquement ceux qui sont actif 
-        $interfaces = Invoke-Command -ComputerName $IP -ScriptBlock { Get-NetAdapter } >> "/home/wilder/Documents/info-CLIWIN01-$(Get-Date -Format 'yyyy-MM-dd').txt" -Value "Liste des cartes"
+        #Invoke-Command -ComputerName $IPDistante -Credential $Credentials -ScriptBlock { Get-NetAdapter }#| Where-Object { $_.Status -eq 'Up'  } a rajouter si on veux uniquement ceux qui sont actif 
+        $NbrCarteCMD = Invoke-Command -ComputerName $IPDistante -Credential $Credentials -ScriptBlock { ipconfig /all }
+        $NbrCarteCMD
         Write-Host ""
-        Write-Host "Les données sont enregistrées dans le fichier info-CLIWIN01-$(Get-Date -Format 'yyyy-MM-dd').txt" 
-        Start-Sleep -Seconds 3
+        Start-Sleep -Seconds 1
+        Write-Host "Les données sont enregistrées dans le fichier" $PathInfoPoste
+        "Voici la liste des interfaces présentes sur le poste distant : " | Out-File -Append -FilePath $PathInfoPoste
+        $NbrCarteCMD | Out-File -Append -FilePath $PathInfoPoste
+        Write-Host ""
+        Read-Host "Appuyez sur Entrée pour continuer ..."
     }
     else {
         Clear-Host
@@ -70,19 +125,23 @@ function Get-NbrCarte {
 }
 
 #Fonction pour demander l'address IP
-function Get-IPDemande {
+function IPInterface {
     Clear-Host
-    $CartIp = Read-Host "Quelle carte choisissez-vous ?"
+    $IPInterfaceConf = Read-Host "Voulez-vous voir les adresses IP de chaque interface (IPv4 / IPv6) du poste distant ? [O pour valider]"
     
-    if ($CartIp -eq "O") {
+    if ($IPInterfaceConf -eq "O") {
         Clear-Host
-        Write-Host "Voici la totalite des addresses IPv4 et IPv6"
+        Write-Host "Voici les adresses IP de chaque interface (IPv4 / IPv6) du poste distant : "
         
-        Invoke-Command -ComputerName $IP -ScriptBlock {Get-NetIPAddress | Select-Object InterfaceAlias, AddressFamily, IPAddress } 
-        Invoke-Command -ComputerName $IP -ScriptBlock {Get-NetIPAddress | Select-Object InterfaceAlias, AddressFamily, IPAddress } >> "/home/wilder/Documents/info-CLIWIN01-$(Get-Date -Format 'yyyy-MM-dd').txt" -Value "Liste des adresses IP" 
+        $IPInterfaceCMD = Invoke-Command -ComputerName $IPDistante -Credential $Credentials -ScriptBlock {Get-NetIPAddress | Format-Table InterfaceAlias, AddressFamily, IPAddress }
+        $IPInterfaceCMD
+        Write-Host ""    
+        Start-Sleep -Seconds 1
+        Write-Host "Les données sont enregistrées dans le fichier" $PathInfoPoste
+        "Voici les adresses IP de chaque interface (IPv4 / IPv6) du poste distant : " | Out-File -Append -FilePath $PathInfoPoste
+        $IPInterfaceCMD | Out-File -Append -FilePath $PathInfoPoste
         Write-Host ""
-        Write-Host "Les données sont enregistrées dans le fichier info-CLIWIN01-$(Get-Date -Format 'yyyy-MM-dd').txt"
-        Start-Sleep -Seconds 3
+        Read-Host "Appuyez sur Entrée pour continuer ..."
     }
     else {
         Clear-Host
@@ -93,18 +152,22 @@ function Get-IPDemande {
 }
 
 #Fonction pour avoir les addresses MAC
-function MACdemande {
+function MACDemande {
     Clear-Host
-    $CartMac = Read-Host "Quelle carte choisissez-vous ?"
+    $MACDemandeConf = Read-Host "Voulez-vous voir la liste des adresses MAC de chaque interface du poste distant ? [O pour valider]"
 
-    if ($CartMac -eq "O") {
+    if ($MACDemandeConf -eq "O") {
         clear-Host
-        Write-Host "Voici la liste des addresses MAC disponible"
-        Invoke-Command -ComputerName $IP -ScriptBlock {Get-NetAdapter |Select-Object Name, MacAddress, Status} 
-        Invoke-Command -ComputerName $IP -ScriptBlock {Get-NetAdapter |Select-Object Name, MacAddress, Status} >> "/home/wilder/Documents/info-CLIWIN01-$(Get-Date -Format 'yyyy-MM-dd').txt" -Value "Liste des adresses MAC"
+        Write-Host "Voici la liste des adresses MAC de chaque interface du poste distant : "
+        $MACDemande = Invoke-Command -ComputerName $IPDistante -Credential $Credentials -ScriptBlock {Get-NetAdapter | Format-Table Name, MacAddress, Status} 
+        $MACDemande
         Write-Host ""
-        Write-Host "Les données sont enregistrées dans le fichier info-CLIWIN01-$(Get-Date -Format 'yyyy-MM-dd').txt"
-        Start-Sleep -Seconds 3
+        Start-Sleep -Seconds 1
+        Write-Host "Les données sont enregistrées dans le fichier" $PathInfoPoste
+        "Voici la liste des adresses MAC de chaque interface du poste distant : " | Out-File -Append -FilePath $PathInfoPoste
+        $IPInterfaceCMD | Out-File -Append -FilePath $PathInfoPoste
+        Write-Host ""
+        Read-Host "Appuyez sur Entrée pour continuer ..."
     }
     else {
         Clear-Host
@@ -115,18 +178,26 @@ function MACdemande {
 }
 
 #Fonction pour avoir la liste des application et paquet installer sur la machine
-function Application {
+function ApplicationList {
     clear-host
-    $app = Read-Host "Voulez-vous la liste des applications et paquets installés? [O pour valider]"
+    $ApplicationListConf = Read-Host "Voulez-vous la liste des applications/paquets installés sur le poste distant ? [O pour valider]"
 
-    if ($app -eq "O") {
+    if ($ApplicationListConf -eq "O") {
         clear-host
-        Write-Host "Voici la liste des applications et paquets présents sur cette machine : "
-        Invoke-Command -ComputerName $IP -ScriptBlock {Get-ItemProperty Registry::HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Uninstall*}
-        Invoke-Command -ComputerName $IP -ScriptBlock {Get-ItemProperty Registry::HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Uninstall*}>> "/home/wilder/Documents/info-CLIWIN01-$(Get-Date -Format 'yyyy-MM-dd').txt" -Value "Liste des Programes"
+        Write-Host "Voici la liste des applications/paquets installés sur le poste distant : "
+        $ApplicationListCMD = Invoke-Command -ComputerName $IPDistante -Credential $Credentials -ScriptBlock {
+            $INSTALLED = Get-ItemProperty HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall\* |  Select-Object DisplayName, DisplayVersion
+            $INSTALLED += Get-ItemProperty HKLM:\Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\* | Select-Object DisplayName, DisplayVersion
+            $INSTALLED | sort-object -Property DisplayName -Unique | Format-Table -AutoSize }
+            $ApplicationListCMD
         Write-Host ""
-        Write-Host "Les données sont enregistrées dans le fichier info-CLIWIN01-$(Get-Date -Format 'yyyy-MM-dd').txt"
-        Start-Sleep -Seconds 3
+        Start-Sleep -Seconds 1
+
+        Write-Host "Les données sont enregistrées dans le fichier" $PathInfoPoste
+        "Voici la liste des applications/paquets installés sur le poste distant : " | Out-File -Append -FilePath $PathInfoPoste
+        $ApplicationListCMD | Out-File -Append -FilePath $PathInfoPoste
+        Write-Host ""
+        Read-Host "Appuyez sur Entrée pour continuer ..."
     }
     else {
         clear-host
@@ -138,16 +209,20 @@ function Application {
 # Fonction liste des utilisateurs locaux
 function UserList {
     clear-host
-    $ListU = read-host "Voulez-vous voir la liste des utilisateurs locaux ? [O pour valider]"
+    $UserListConf = read-host "Voulez-vous voir la liste des utilisateurs locaux du poste distant ? [O pour valider]"
 
-    if ($ListU -eq "O") {
+    if ($UserListConf -eq "O") {
         clear-host
-        Write-Host "Voici la liste des utilisateurs locaux : "
-        Invoke-Command -ComputerName $IP -ScriptBlock {Get-LocalUser |Select-Object Name}
-        Invoke-Command -ComputerName $IP -ScriptBlock {Get-LocalUser |Select-Object Name}>> "/home/wilder/Documents/info-CLIWIN01-$(Get-Date -Format 'yyyy-MM-dd').txt" -Value "Liste des Utilisateur"
+        $UserListCMD = Write-Host "Voici la liste des utilisateurs locaux du poste distant : "
+        Invoke-Command -ComputerName $IPDistante -Credential $Credentials -ScriptBlock {Get-LocalUser | Format-Table Name}
+        $UserListCMD
         Write-Host ""
-        Write-Host "Les données sont enregistrées dans le fichier info-CLIWIN01-$(Get-Date -Format 'yyyy-MM-dd').txt"
-        Start-Sleep -Seconds 3
+        Start-Sleep -Seconds 1
+        Write-Host "Les données sont enregistrées dans le fichier" $PathInfoPoste
+        "Voici la liste des utilisateurs locaux du poste distant : " | Out-File -Append -FilePath $PathInfoPoste
+        $UserListCMD | Out-File -Append -FilePath $PathInfoPoste
+        Write-Host ""
+        Read-Host "Appuyez sur Entrée pour continuer ..."
     }
     else {
         clear-host
@@ -157,18 +232,22 @@ function UserList {
 }
 
 #Fonction Type de CPU, nombre de coeurs, etc
-function GetCpu{
+function GetCPU {
     clear-host
-    $Gcpu = Read-Host "Voulez-vous voir les détails du CPU ? [O pour valider]"
+    $GetCPUConf = Read-Host "Voulez-vous voir les détails du CPU du poste distant ? [O pour valider]"
 
-    if ($Gcpu -eq "O") {
+    if ($GetCPUConf -eq "O") {
         clear-host
-        Write-Host " Voici les détails du CPU de la machine : "
-        Invoke-Command -ComputerName $IP -ScriptBlock {Get-WmiObject -Class Win32_Processor | Select-Object Name, NumberOfCores}
-        Invoke-Command -ComputerName $IP -ScriptBlock {Get-WmiObject -Class Win32_Processor | Select-Object Name, NumberOfCores} >> "/home/wilder/Documents/info-CLIWIN01-$(Get-Date -Format 'yyyy-MM-dd').txt" -Value "Detail du Cpu"
+        Write-Host "Voici les détails du CPU du poste distant : "
+        $GetCPUCMD = Invoke-Command -ComputerName $IPDistante -Credential $Credentials -ScriptBlock {Get-WmiObject -Class Win32_Processor | Format-Table Name, NumberOfCores}
+        $GetCPUCMD
         Write-Host ""
-        Write-Host "Les données sont enregistrées dans le fichier info-CLIWIN01-$(Get-Date -Format 'yyyy-MM-dd').txt"
-        Start-Sleep -Seconds 3
+        Start-Sleep -Seconds 1
+        Write-Host "Les données sont enregistrées dans le fichier" $PathInfoPoste
+        "Voici les détails du CPU du poste distant : " | Out-File -Append -FilePath $PathInfoPoste
+        $GetCPUCMD | Out-File -Append -FilePath $PathInfoPoste
+        Write-Host ""
+        Read-Host "Appuyez sur Entrée pour continuer ..."
     }
     else {
         clear-host
@@ -178,18 +257,22 @@ function GetCpu{
 }
 
 #Fonction detail de la ram
-function RamInfo {
+function RAMInfo {
     clear-host
-    $RamI = Read-Host "Voulez-vous voir les détails de la RAM ? [O pour valider]"
+    $RAMInfoConf = Read-Host "Voulez-vous voir les détails de la RAM du poste distant ? [O pour valider]"
 
-    if ($RamI -eq "O") {
+    if ($RAMInfoConf -eq "O") {
         clear-host
-        Write-Host "Voici les détails de la RAM sur cette machine"
-        Invoke-Command -ComputerName $IP -ScriptBlock {(systeminfo)[24,25]}
-        Invoke-Command -ComputerName $IP -ScriptBlock {(systeminfo)[24,25]}>> "/home/wilder/Documents/info-CLIWIN01-$(Get-Date -Format 'yyyy-MM-dd').txt" -Value "detail de la ram"
+        Write-Host "Voici les détails de la RAM du poste distant : "
+        $RAMInfoCMD = Invoke-Command -ComputerName $IPDistante -Credential $Credentials -ScriptBlock {(systeminfo)[24,25]}
+        $RAMInfoCMD
         Write-Host ""
-        Write-Host "Les données sont enregistrées dans le fichier info-CLIWIN01-$(Get-Date -Format 'yyyy-MM-dd').txt"
-        Start-Sleep -Seconds 3
+        Start-Sleep -Seconds 1
+        Write-Host "Les données sont enregistrées dans le fichier" $PathInfoPoste
+        "Voici les détails de la RAM du poste distant : " | Out-File -Append -FilePath $PathInfoPoste
+        $RAMInfoCMD | Out-File -Append -FilePath $PathInfoPoste
+        Write-Host ""
+        Read-Host "Appuyez sur Entrée pour continuer ..."
     }
     else {
         clear-host
@@ -201,16 +284,20 @@ function RamInfo {
 #Fonction utilisation du disque
 function DiskInfo {
     clear-host
-    $DiskInf = Read-Host "Voulez-vous voir les détails du/des disques ? [O pour valider]"
+    $DiskInfoConf = Read-Host "Voulez-vous voir les détails du/des disques du poste distant ? [O pour valider]"
 
-    if ($DiskInf -eq "O") {
+    if ($DiskInfoConf -eq "O") {
         clear-host
-        Write-Host "Voici les détails du/des disques de cette machine :"
-        Invoke-Command -ComputerName $IP -ScriptBlock {get-wmiObject Win32_LogicalDisk | Select-Object DeviceID,Size, Freespace}
-        Invoke-Command -ComputerName $IP -ScriptBlock {get-wmiObject Win32_LogicalDisk | Select-Object DeviceID,Size, Freespace} >> "/home/wilder/Documents/info-CLIWIN01-$(Get-Date -Format 'yyyy-MM-dd').txt" -Value "Detail du disque"
+        Write-Host "Voici les détails du/des disques du poste distant : "
+        $DiskInfoCMD = Invoke-Command -ComputerName $IPDistante -Credential $Credentials -ScriptBlock {get-wmiObject Win32_LogicalDisk | Format-Table DeviceID,Size, Freespace}
+        $DiskInfoCMD
         Write-Host ""
-        Write-Host "Les données sont enregistrées dans le fichier info-CLIWIN01-$(Get-Date -Format 'yyyy-MM-dd').txt"
-        Start-Sleep -Seconds 3
+        Start-Sleep -Seconds 1
+        Write-Host "Les données sont enregistrées dans le fichier" $PathInfoPoste
+        "Voici les détails du/des disques du poste distant : " | Out-File -Append -FilePath $PathInfoPoste
+        $DiskInfoCMD | Out-File -Append -FilePath $PathInfoPoste
+        Write-Host ""
+        Read-Host "Appuyez sur Entrée pour continuer ..."
     }
     else {
         clear-host
@@ -222,16 +309,19 @@ function DiskInfo {
 #Foncion utilisation du processeur
 function ProcesseurInfo {
     clear-host
-    $ProcesseurInf = Read-Host "Voulez-vous voir les détails du processeur ? [O pour valider]"
+    $ProcesseurInfoConf = Read-Host "Voulez-vous voir les détails de l'utilisation du processeur du poste distant ? [O pour valider]"
 
-    if ($ProcesseurInf -eq "O") {
+    if ($ProcesseurInfoConf -eq "O") {
         clear-host
-        Write-Host "Voici les details du processeur sur cette machine : "
-        Invoke-Command -ComputerName $IP -ScriptBlock {get-process |select-object Processname, cpu}
-        Invoke-Command -ComputerName $IP -ScriptBlock {get-process |select-object Processname, cpu} >> "/home/wilder/Documents/info-CLIWIN01-$(Get-Date -Format 'yyyy-MM-dd').txt" -Value "detail du processeur"
+        Write-Host "Voici les details de l'utilisation du processeur du poste distant : "
+        $ProcesseurInfoCMD = Invoke-Command -ComputerName $IPDistante -Credential $Credentials -ScriptBlock {Get-Counter "\Processeur(_Total)\% temps processeur"}
+        $ProcesseurInfoCMD
+        Start-Sleep -Seconds 1
+        Write-Host "Les données sont enregistrées dans le fichier" $PathInfoPoste
+        "Voici les details de l'utilisation du processeur du poste distant : " | Out-File -Append -FilePath $PathInfoPoste
+        $ProcesseurInfoCMD | Out-File -Append -FilePath $PathInfoPoste
         Write-Host ""
-        Write-Host "Les données sont enregistrées dans le fichier info-CLIWIN01-$(Get-Date -Format 'yyyy-MM-dd').txt"
-        Start-Sleep -Seconds 3
+        Read-Host "Appuyez sur Entrée pour continuer ..."
     }
     else {
         clear-host
@@ -241,17 +331,21 @@ function ProcesseurInfo {
 }
 
 #Fonction status du parefeu
-function StatusParefeu {
+function StatutParefeu {
     clear-host
-    $FireW = Read-Host "Voulez-vous voir les informations liées au pare-feu ? [O pour valider]"
-    if ($FireW -eq "O") {
+    $StatutParefeuConf = Read-Host "Voulez-vous voir le statut du pare-feu du poste distant ? [O pour valider]"
+    if ($StatutParefeuConf -eq "O") {
         clear-host
-        Write-Host "Voici les détails du pare-feu de cette machine :"
-        Invoke-Command -ComputerName $IP -ScriptBlock {Get-NetFirewallProfile | Format-Table Name, Enabled}
-        Invoke-Command -ComputerName $IP -ScriptBlock {Get-NetFirewallProfile | Format-Table Name, Enabled}>> "/home/wilder/Documents/info-CLIWIN01-$(Get-Date -Format 'yyyy-MM-dd').txt" -Value "Detail du parefeu"
+        Write-Host "Voici le statut du pare-feu du poste distant : "
+        $StatutPareFeuCMD = Invoke-Command -ComputerName $IPDistante -Credential $Credentials -ScriptBlock {Get-NetFirewallProfile | Format-Table Name, Enabled}
+        $StatutPareFeuCMD
         Write-Host ""
-        Write-Host "Les données sont enregistrées dans le fichier info-CLIWIN01-$(Get-Date -Format 'yyyy-MM-dd').txt"
-        Start-Sleep -Seconds 3
+        Start-Sleep -Seconds 1
+        Write-Host "Les données sont enregistrées dans le fichier" $PathInfoPoste
+        "Voici le statut du pare-feu du poste distant : " | Out-File -Append -FilePath $PathInfoPoste
+        $StatutPareFeuCMD | Out-File -Append -FilePath $PathInfoPoste
+        Write-Host ""
+        Read-Host "Appuyez sur Entrée pour continuer ..."
     }
     else {
         clear-host
@@ -261,17 +355,21 @@ function StatusParefeu {
 }
 
 #Status des ports
-function StatusPort {
+function StatutPort {
     clear-host
-    $FireW = Read-Host "Voulez-vous voir les informations liées au ports ? [O pour valider]"
-    if ($FireW -eq "O") {
+    $StatutPortConf = Read-Host "Voulez-vous voir la liste des ports ouverts du poste distant ? [O pour valider]"
+    if ($StatutPortConf -eq "O") {
         clear-host
-        Write-Host "Voici les détails du pare-feu de cette machine :"
-        Invoke-Command -ComputerName $IP -ScriptBlock {Get-NetTCPConnection | Select-Object LocalPort}
-        Invoke-Command -ComputerName $IP -ScriptBlock {Get-NetTCPConnection | Select-Object LocalPort}>> "/home/wilder/Documents/info-CLIWIN01-$(Get-Date -Format 'yyyy-MM-dd').txt" -Value "Detail des ports"
+        Write-Host "Voici la liste des ports ouverts du poste distant : "
+        $StatutPortCMD = Invoke-Command -ComputerName $IPDistante -Credential $Credentials -ScriptBlock {Get-NetTCPConnection | Select-Object LocalPort, State | Sort-Object LocalPort -Descending | Format-Table -AutoSize }
+        $StatutPortCMD
         Write-Host ""
-        Write-Host "Les données sont enregistrées dans le fichier info-CLIWIN01-$(Get-Date -Format 'yyyy-MM-dd').txt"
-        Start-Sleep -Seconds 3
+        Start-Sleep -Seconds 1
+        Write-Host "Les données sont enregistrées dans le fichier" $PathInfoPoste
+        "Voici la liste des ports ouverts du poste distant : " | Out-File -Append -FilePath $PathInfoPoste
+        $StatutPortCMD | Out-File -Append -FilePath $PathInfoPoste
+        Write-Host ""
+        Read-Host "Appuyez sur Entrée pour continuer ..."
     }
     else {
         clear-host
@@ -279,4 +377,3 @@ function StatusPort {
         Start-Sleep -Seconds 2
     }
 }
-
