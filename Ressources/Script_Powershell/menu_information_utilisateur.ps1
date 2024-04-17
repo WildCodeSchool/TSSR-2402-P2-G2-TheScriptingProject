@@ -28,4 +28,23 @@ function InfoConnexion
     }
 }
 
+function InfoModificationMdp 
+{ 
+    # Demande quel utilisateur?
+    Write-Host "Date de dernière modification du mdp"
+    $userInfMdp = Read-Host "Tapez le nom d'utilisateur souhaité "
 
+    # Vérification si l'utilisateur existe
+    $userExists = ssh $nom_distant@$ip_distante "net user $userInfMdp"
+    if ($userExists) {
+        # Si oui -> affichage date de dernière connexion
+        Write-Host "Date de dernière modification du mot de passe l'utilisateur $userInfMdp."
+        Invoke-Command -ComputerName $ip_distante -ScriptBlock { (Get-LocalUser -Name $using:userInfMdp).PasswordLastSet
+        } -Credential wilder
+        Start-Sleep -Seconds 2
+    }
+    else {
+        # Si non, sortie du script
+        Write-Host "Le compte utilisateur n'existe pas." -ForegroundColor Red
+    }
+}
