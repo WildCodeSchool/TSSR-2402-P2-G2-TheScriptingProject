@@ -48,3 +48,21 @@ function InfoModificationMdp
         Write-Host "Le compte utilisateur n'existe pas." -ForegroundColor Red
     }
 }
+
+function InfoLogSession 
+{ 
+    Clear-Host
+    $InfLog = Read-Host "Voulez-vous voir les sessions actives sur le poste distant? [O pour valider]"
+
+   
+    if ($Inflog -eq "O") {
+        # Si oui -> affichage liste sessions ouvertes
+        Write-Host "Session ouverte(s) sur le poste distant."
+        Invoke-Command -ComputerName $ip_distante -ScriptBlock { (Get-WmiObject -class win32_ComputerSystem | select username).username } -Credential wilder
+        Start-Sleep -Seconds 2
+    }
+    else {
+        # Si non, sortie du script
+        Write-Host "Mauvais choix - Retour au menu précédent" -ForegroundColor Red
+    }
+}
