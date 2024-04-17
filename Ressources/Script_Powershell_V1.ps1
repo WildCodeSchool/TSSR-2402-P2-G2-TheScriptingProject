@@ -1,10 +1,11 @@
 ###############################################################################################################################################################################################################
 ################################################################################################################################################################################################################
 # Script Powershell pour maintenance et information sur Poste Distant Windows
-# Version 0.5
+# Version 0.6
 # Réalisé en collaboration par Anais Lenglet, Bruno Serna, Grégory Dubois, Patrick Baggiolini et Thomas Scotti
-# Dernière mise à jour le  16 / 04 / 2024
+# Dernière mise à jour le  17 / 04 / 2024
 # Historique version
+# V0.6 -- 17 / 04 / 2024 Ajout fonction action user
 # V0.5 -- 16 / 04 / 2024 Création script
 ################################################################################################################################################################################################################
 ################################################################################################################################################################################################################
@@ -66,7 +67,8 @@ function Menu_Principal
                 Write-Host ""
                 Write-Host "Arrêt du script"
                 Start-Sleep -Seconds 2
-                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Sortie du Script" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
+                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Sortie du Script" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log    
+                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-********EndScript********" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
                 exit 
             }
             Default 
@@ -75,6 +77,7 @@ function Menu_Principal
                 Write-Host ""
                 Write-Host "Choix incorrect, veuillez recommencer."
                 $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Choix incorrect" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
+                
                 Read-Host "Appuyez sur une touche pour continuer..."
                 Start-Sleep -Seconds 2
             }
@@ -251,7 +254,8 @@ function Menu_Action_Utilisateur
                 Write-Host ""
                 Write-Host "Vous avez choisi de créer un compte utilisateur local"
                 Start-Sleep -Seconds 2
-                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Création de compte utilisateur chosit" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log               
+                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Création de compte utilisateur chosit" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
+                CreateUser               
                 
             }
             "2" 
@@ -259,21 +263,24 @@ function Menu_Action_Utilisateur
                 Write-Host ""
                 Write-Host "Vous avez choisi de supprimer un compte utilisateur local"
                 Start-Sleep -Seconds 2
-                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Suppression de compte utilisateur chosit" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log              
+                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Suppression de compte utilisateur chosit" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
+                DelUser              
             }
             "3" 
             { 
                 Write-Host ""
                 Write-Host "Vous avez choisi de désactiver un compte utilisateur local"
                 Start-Sleep -Seconds 2
-                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Désactivation de compte utilisateur choisit" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log               
+                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Désactivation de compte utilisateur choisit" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log  
+                DisableUser             
             }
             "4" 
             { 
                 Write-Host ""
                 Write-Host "Vous avez choisi de modifier un mot de passe"
                 Start-Sleep -Seconds 2
-                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Changement de mot de passe choisit" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log         
+                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Changement de mot de passe choisit" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log   
+                PasswordUser      
             }
             "5" 
             { 
@@ -281,13 +288,15 @@ function Menu_Action_Utilisateur
                 Write-Host "Vous avez choisi d'ajouter un compte à un groupe d'administration"
                 Start-Sleep -Seconds 2
                 $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Ajout d'un compte à un groupe d'administration choisit" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log 
+                UserAddAdminGroup
             }
             "6" 
             { 
                 Write-Host ""
                 Write-Host "Vous avez choisi d'ajouter un compte à un groupe local"
                 Start-Sleep -Seconds 2
-                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Ajout d'un compte à un groupe local choisit" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log     
+                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Ajout d'un compte à un groupe local choisit" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log    
+                UserAddGroup 
             }
             "7"
             { 
@@ -295,6 +304,7 @@ function Menu_Action_Utilisateur
                 Write-Host "Vous avez choisi de retirer un compte d'un groupe local"
                 Start-Sleep -Seconds 2
                 $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Suppression d'un compte à un groupe local choisit" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log     
+                UserDelGroup
             }
             "0" 
             { 
@@ -317,7 +327,7 @@ function Menu_Action_Utilisateur
                 Write-Host ""
                 Write-Host "Choix incorrect, veuillez recommencer."
                 $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Choix incorrect" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
-                    Read-Host "Appuyez sur une touche pour continuer..."
+                Read-Host "Appuyez sur une touche pour continuer..."
                 Start-Sleep -Seconds 2
             }
         }
@@ -474,7 +484,7 @@ function Menu_Action_Poste
                 Write-Host ""
                 Write-Host "Choix incorrect, veuillez recommencer."
                 $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Choix incorrect" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
-                    Read-Host "Appuyez sur une touche pour continuer..."
+                Read-Host "Appuyez sur une touche pour continuer..."
                 Start-Sleep -Seconds 2
             }
         }
@@ -576,7 +586,7 @@ function Menu_Information_Utilisateur
                 Write-Host ""
                 Write-Host "Choix incorrect, veuillez recommencer."
                 $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Choix incorrect" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
-                    Read-Host "Appuyez sur une touche pour continuer..."
+                Read-Host "Appuyez sur une touche pour continuer..."
                 Start-Sleep -Seconds 2
             }
         }
@@ -723,22 +733,247 @@ function Menu_Information_Utilisateur
         }
     }
 }
+
+############## FIN FONCTION ######################
+
+
+####################################################
+########### Fonction Action Utilisateur ############
+####################################################
+
+############## DEBUT FONCTION ######################
+
+# Fonction Création de compte utilisateur local
+function CreateUser 
+{
+    #Création d'un compte utilisateur local 
+    # Demande quel utilisateur à créer
+    $newUser = Read-Host "Quel compte utilisateur souhaitez-vous créer?"
+
+    # Vérification si l'utilisateur existe
+    $userExists = ssh $NomDistant@$IpDistante "net user $newUser" >$null 2>&1
+    if ($userExists) 
+    {
+        # Si oui -> sortie du script
+        Write-Host "L'utilisateur existe déjà." -ForegroundColor Red
+        Read-Host "Appuyez sur une touche pour continuer..."
+        Start-Sleep -Seconds 2
+    }
+    else {
+        Write-Host "Le compte $newUser n'existe pas et va être créé."
+        # Création de l'utilisateur
+        ssh $NomDistant@$IpDistante "net user $newUser /add" >$null 2>&1
+        # Confirmation de la création
+        Write-Host "Compte $newUser créé." -ForegroundColor Green
+        Read-Host "Appuyez sur une touche pour continuer..."
+        Start-Sleep -Seconds 2
+    }    
+}
+
+# Fonction Suppression de compte utilisateur local
+function DelUser 
+{
+    # Demande quel compte utilisateur à supprimer
+    $userDel = Read-Host "Quel compte utilisateur souhaitez-vous supprimer ?"
+
+    # Vérification si l'utilisateur existe
+    $userExists = ssh $NomDistant@$IpDistante "net user $userDel" >$null 2>&1
+    if ($userExists) {
+        # Si il exsite -> demande de confirmation
+        $confirmation = Read-Host "Voulez-vous vraiment supprimer le compte $userDel ? (Oui/Non)"
+        # Si oui -> suppression du compte
+        if ($confirmation -eq "Oui")
+        {
+            ssh $NomDistant@$IpDistante "net user $userDel /delete"  >$null 2>&1
+            Write-Host "Le compte $userDel est supprimé." -ForegroundColor Green
+            Start-Sleep -Seconds 2
+        }
+        else {
+            # Si non -> sortie du script
+            Write-Host "Suppression annulée." -ForegroundColor Red
+            Start-Sleep -Seconds 2
+        }
+    }
+    else {
+        # Si le compte n'existe pas
+        Write-Host "Le compte utilisateur n'existe pas." -ForegroundColor Red
+        Start-Sleep -Seconds 2
+    }
+}
+
+# Fonction Désactivation de compte utilisateur local
+function DisableUser 
+{
+    # Demande quel compte utilisateur à désactiver
+    $userLock = Read-Host "Quel compte utilisateur souhaitez-vous désactiver ?" 
+
+    # Vérification si l'utilisateur existe
+    $userExists = ssh $NomDistant@$IpDistante "net user $userLock"  >$null 2>&1
+    if ($userExists)
+    {
+        # Si l'utilisateur existe -> demande de confirmation
+        $confirmation = Read-Host "Voulez-vous vraiment désactiver le compte $userLock ? (Oui/Non)"
+        # Si oui -> désactivation du compte
+        if ($confirmation -eq "Oui") {
+            ssh $NomDistant@$IpDistante "net user $userLock /active:no" >$null 2>&1
+            Write-Host "L'utilisateur $userLock est désactivé." -ForegroundColor Green
+            Start-Sleep -Seconds 2
+        }
+        else {
+            # Si non -> sortie du script
+            Write-Host "Désactivation annulée." -ForegroundColor Red
+            Start-Sleep -Seconds 2
+        }
+    }
+    else 
+    {
+        # Si l'utilisateur n'existe pas
+        Write-Host "L'utilisateur $userLock n'existe pas." -ForegroundColor Red
+        Start-Sleep -Seconds 2
+    }
+}
+
+# Fonction Changement de mot de passe de compte utilisateur local
+function PasswordUser
+{
+    # Modification d'un mot de passe
+    # Demande changement du mot de passe -> pour quel utilisateur ?
+    $userMdp = Read-Host "Pour quel compte utilisateur souhaitez-vous modifier le mot de passe ?"
+
+    # Vérifie si le nom d'utilisateur existe sur le système distant
+    $userExist = ssh $NomDistant@$IpDistante "net user $userMdp"  >$null 2>&1
+    if ($userExist) {
+        # Si oui -> demander de taper le nouveau mdp
+        $newMdp = Read-Host "Entrer le nouveu mot de passe :"
+        ssh $NomDistant@$IpDistante "net user $userMdp $newMdp"  >$null 2>&1
+        Write-Host "Le mot de passe est bien modifié." -ForegroundColor Green
+        Start-Sleep -Seconds 2
+    }
+    else {
+        # Si non -> sortie du script
+        Write-Host "L'utilisateur $userMdp n'existe pas." -ForegroundColor Red
+        Start-Sleep -Seconds 2
+    }
+}
+
+# Fonction ajout utilisateur à un groupe d'administration
+function UserAddAdminGroup 
+{
+    # Demande quel compte utilisateur à ajouter
+    $userAdm = Read-Host "Quel compte utilisateur souhaitez-vous ajouter au groupe d'administration?"
+
+    # Vérification si l'utilisateur existe
+    $userExists = ssh $NomDistant@$IpDistante "net user $userAdm"
+    if ($userExists) {
+        # Si l'utilisateur existe -> ajout au groupe Administrators
+        Invoke-Command -ComputerName $IpDistante -ScriptBlock { Add-LocalGroupMember -Group Administrateurs -Member $using:userAdm } -Credential $Credentials
+        Write-Host "Le compte $userAdm est ajouté au groupe Administrateurs." -ForegroundColor Green
+        Start-Sleep -Seconds 2
+    }
+    else {
+        # Si non sortie du script
+        Write-Host "Le compte utilisateur n'existe pas." -ForegroundColor Red
+        Start-Sleep -Seconds 2
+    }
+}
+
+# Fonction ajout utilisateur à un groupe local
+Function UserAddGroup
+{
+    # Demande quel compte à ajouter au groupe local
+    $userAddG = Read-Host "Quel compte utilisateur souhaitez-vous ajouter à un groupe local?"
     
+    # Vérification si l'utilisateur existe
+    $userExists = ssh $NomDistant@$IpDistante "net user $userAddG"
+    if ($userExists) {
+        # Si l'utilisateur existe -> demande quel groupe?
+        $choixAddGroup = Read-Host "À quel groupe souhaitez-vous ajouter l'utilisateur $userAddG?"
     
-    # En attendant le script final
-    #Demande d'infos sur la machine distante
-    clear-Host
-    Write-Host "=================================================="
-    Write-Host        "Initialisation script pour connexion"
-    Write-Host "=================================================="
-    Write-Host ""
-    # Demande d'identification
-    $NomDistant = Read-Host "Veuillez entrer le nom d'utilisateur de la machine distante "
-    $IpDistante = Read-Host "Veuillez entrer l'adresse IP de la machine distante "
-    $Operateur = Read-Host "Veuillez vous identifiez "
-    Write-Host " Veuillez rentrez le mot de passe de la session de connexion :"
-    $Credentials = Get-Credential -Credential $NomDistant
-    
-    
-    Menu_Principal
-    
+        $groupExists = Invoke-Command -ComputerName $IpDistante -ScriptBlock { Get-LocalGroup -Name $using:choixAddGroup } -Credential $Credentials
+            
+        if ($groupExists) {
+            Write-Host "Ajout du compte en cours..." -ForegroundColor Green
+            Start-Sleep -Seconds 2
+            Invoke-Command -ComputerName $IpDistante -ScriptBlock { Add-LocalGroupMember -Group $using:choixAddGroup -Member $using:userAddG } -Credential $Credentials
+            Write-Host "Le compte $userAddG est ajouté au groupe $choixAddGroup." -ForegroundColor Green
+
+            # Affichage des utilisateurs du groupe pour vérification
+            Write-Host "Vous trouverez ci-dessous la liste des utilisateurs du groupe $choixAddGroup ." -ForegroundColor Green
+            Invoke-Command -ComputerName $IpDistante -ScriptBlock { Get-LocalGroupMember -Group $using:choixAddGroup } -Credential $Credentials
+        }
+        else {
+            Write-Host "Le groupe n'existe pas." -ForegroundColor Red
+        }
+    }
+    else {
+        # Si non, sortie du script
+        Write-Host "Le compte utilisateur n'existe pas." -ForegroundColor Red
+    }
+}
+
+# Fonction suppression utilisateur à un groupe local
+Function UserDelGroup
+{
+    # Demande quel compte à supprimer d'un groupe local
+    $userDel = Read-Host "Quel compte utilisateur souhaitez-vous supprimer d'un groupe local?"
+        
+    # Vérification si l'utilisateur existe
+    $userExists = ssh $NomDistant@$IpDistante "net user $userDel"
+    if ($userExists) {
+        # Si l'utilisateur existe -> demande quel groupe?
+        $choixDelGroup = Read-Host "De quel groupe souhaitez-vous supprimer l'utilisateur $userDel?"
+        
+        $groupExists = Invoke-Command -ComputerName $IpDistante -ScriptBlock { Get-LocalGroup -Name $using:choixDelGroup } -Credential $Credentials
+                
+        if ($groupExists) {
+            # Si le groupe existe -> suppression de l'utilisateur du groupe
+            Write-Host "Traitement en cours..." -ForegroundColor Green
+            Start-Sleep -Seconds 2
+            Invoke-Command -ComputerName $IpDistante -ScriptBlock { Remove-LocalGroupMember -Group $using:choixDelGroup -Member $using:userDel } -Credential $Credentials
+            Write-Host "Le compte $userDel est supprimé du groupe $choixDelGroup." -ForegroundColor Green
+
+            # Affichage des utilisateurs du groupe pour vérification
+            Write-Host "Vous trouverez ci-dessous la liste des utilisateurs du groupe $choixDelGroup ." -ForegroundColor Green
+            Invoke-Command -ComputerName $IpDistante -ScriptBlock { Get-LocalGroupMember -Group $using:choixDelGroup } -Credential $Credentials
+        }
+        else {
+            Write-Host "Le groupe n'existe pas." -ForegroundColor Red
+        }
+    }
+    else {
+        # Si non, sortie du script
+        Write-Host "Le compte utilisateur n'existe pas." -ForegroundColor Red
+    }
+}
+
+############## FIN FONCTION ######################
+
+
+
+
+#Demande d'infos sur la machine distante
+clear-Host
+Write-Host "=================================================="
+Write-Host        "Initialisation script pour connexion"
+Write-Host "=================================================="
+Write-Host ""
+# Demande d'identification
+$NomDistant = Read-Host "Veuillez entrer le nom d'utilisateur de la machine distante "
+$IpDistante = Read-Host "Veuillez entrer l'adresse IP de la machine distante "
+$Credentials = Get-Credential -Credential $NomDistant
+$Operateur = Read-Host "Veuillez vous identifiez "
+
+
+# Début enregistrement evennement
+$(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-********StartScript********" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
+
+Menu_Principal   
+
+# Fin enregistrement evennement
+$(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-********EndScript********" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
+# Fin de script
+exit 0
+
+####################################################
+################ Fin script  #######################
+####################################################
