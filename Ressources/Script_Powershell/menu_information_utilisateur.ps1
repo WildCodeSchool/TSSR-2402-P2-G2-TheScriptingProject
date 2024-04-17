@@ -1,8 +1,8 @@
 #menu_action_utilisateur.ps1
 
 # En attendant le script final
-$nom_distant = "wilder"
-$ip_distante = "172.16.10.20"
+$NomDistant = "wilder"
+$IpDistante = "172.16.10.20"
 
 
 function InfoConnexion 
@@ -11,11 +11,11 @@ function InfoConnexion
     $userInf = Read-Host "Quel compte utilisateur souhaitez-vous vérifier?"
     
     # Vérification si l'utilisateur existe
-    $userExists = ssh $nom_distant@$ip_distante "net user $userInf"
+    $userExists = ssh $NomDistant@$IpDistante "net user $userInf"
     if ($userExists) {
         # Si oui -> affichage date de dernière connexion
         Write-Host "Date de dernière connexion de l'utilisateur $userInf."
-        Invoke-Command -ComputerName $ip_distante -ScriptBlock { Get-WinEvent -FilterHashtable @{
+        Invoke-Command -ComputerName $IpDistante -ScriptBlock { Get-WinEvent -FilterHashtable @{
                 LogName = 'Security'
                 ID      = 4624
             } | Where-Object { $_.Properties[5].Value -eq $using:userInf } | Select-Object -ExpandProperty TimeCreated -First 1 
@@ -35,11 +35,11 @@ function InfoModificationMdp
     $userInfMdp = Read-Host "Tapez le nom d'utilisateur souhaité "
 
     # Vérification si l'utilisateur existe
-    $userExists = ssh $nom_distant@$ip_distante "net user $userInfMdp"
+    $userExists = ssh $NomDistant@$IpDistante "net user $userInfMdp"
     if ($userExists) {
         # Si oui -> affichage date de dernière connexion
         Write-Host "Date de dernière modification du mot de passe l'utilisateur $userInfMdp."
-        Invoke-Command -ComputerName $ip_distante -ScriptBlock { (Get-LocalUser -Name $using:userInfMdp).PasswordLastSet
+        Invoke-Command -ComputerName $IpDistante -ScriptBlock { (Get-LocalUser -Name $using:userInfMdp).PasswordLastSet
         } -Credential wilder
         Start-Sleep -Seconds 2
     }
@@ -58,7 +58,7 @@ function InfoLogSession
     if ($Inflog -eq "O") {
         # Si oui -> affichage liste sessions ouvertes
         Write-Host "Session ouverte(s) sur le poste distant."
-        Invoke-Command -ComputerName $ip_distante -ScriptBlock { (Get-WmiObject -class win32_ComputerSystem | select username).username } -Credential wilder
+        Invoke-Command -ComputerName $IpDistante -ScriptBlock { (Get-WmiObject -class win32_ComputerSystem | select username).username } -Credential wilder
         Start-Sleep -Seconds 2
     }
     else {
@@ -76,7 +76,7 @@ function droitsDossier
     $User = Read-Host "Tapez le nom d'utilisateur souhaité : "
 
     # Vérifie si l'utilisateur existe sur le serveur distant
-    $userExists = ssh $nom_distant@$ip_distante "net user $User"
+    $userExists = ssh $NomDistant@$IpDistante "net user $User"
     if ($userExists) {
         # si oui -> demande quel dossier à vérifier
         $Dossier = Read-Host "Sur quel dossier souhaitez-vous vérifier les droits ? (spécifiez le chemin du dossier)"
@@ -84,7 +84,7 @@ function droitsDossier
         # Vérifie si le dossier existe sur le serveur distant
         if ($Dossier) {
             # affichage des droits
-            Invoke-Command -ComputerName $ip_distante -Credential $nom_distant -ScriptBlock {
+            Invoke-Command -ComputerName $IpDistante -Credential $NomDistant -ScriptBlock {
                 param($FolderPath)
                 Get-Acl -Path $FolderPath } -ArgumentList $Dossier
         }
@@ -110,7 +110,7 @@ function droitsFichier
     $User = Read-Host "Tapez le nom d'utilisateur souhaité : "
 
     # Vérifie si l'utilisateur existe sur le serveur distant
-    $userExists = ssh $nom_distant@$ip_distante "net user $User"
+    $userExists = ssh $NomDistant@$IpDistante "net user $User"
     if ($userExists) {
         # si oui -> demande quel fichier à vérifier
         $Fichier = Read-Host "Sur quel fichier souhaitez-vous vérifier les droits ? (spécifiez le chemin du fichier)"
@@ -118,7 +118,7 @@ function droitsFichier
         # Vérifie si le fichier existe sur le serveur distant
         if ($Fichier) {
             # affichage des droits
-            Invoke-Command -ComputerName $ip_distante -Credential $nom_distant -ScriptBlock {
+            Invoke-Command -ComputerName $IpDistante -Credential $NomDistant -ScriptBlock {
                 param($FilePath)
                 Get-Acl -Path $FilePath } -ArgumentList $Fichier
         }
@@ -134,3 +134,4 @@ function droitsFichier
         Start-Sleep -Seconds 2
     }
 }
+
