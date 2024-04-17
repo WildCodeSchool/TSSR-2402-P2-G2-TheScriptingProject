@@ -1,8 +1,8 @@
 #menu_action_utilisateur.ps1
 
 # En attendant le script final
-$nom_distant = "wilder"
-$ip_distante = "172.16.10.20"
+$NomDistant = "wilder"
+$IpDistante = "172.16.10.20"
 
 
 function 1 
