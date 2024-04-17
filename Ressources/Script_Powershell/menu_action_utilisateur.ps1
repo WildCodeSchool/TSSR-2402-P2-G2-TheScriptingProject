@@ -20,8 +20,9 @@ function 1
     }
     else {
         Write-Host "Le compte $newUser n'existe pas et va être créé."
+        $Mdp = Read-Host "Taper le mot de passe"
         # Création de l'utilisateur
-        ssh $nom_distant@$ip_distante "net user $newUser /add" > $null
+        Invoke-Command -ComputerName $IpDistante -ScriptBlock { New-LocalUser -Name $using:newUser -Password (ConvertTo-SecureString -AsPlainText $using:Mdp -Force) } -Credential wilder
         # Confirmation de la création
         Write-Host "Compte $newUser créé." -ForegroundColor Green
         Start-Sleep -Seconds 2
@@ -40,7 +41,7 @@ function 2
         $confirmation = Read-Host "Voulez-vous vraiment supprimer le compte $userDel ? (Oui/Non)"
         # Si oui -> suppression du compte
         if ($confirmation -eq "Oui") {
-            ssh $nom_distant@$ip_distante "net user $userDel /delete"
+            Invoke-Command -ComputerName $IpDistante -ScriptBlock { Remove-LocalUser -Name $using:UserDel } -Credential wilder
             Write-Host "Le compte $userDel est supprimé." -ForegroundColor Green
             Start-Sleep -Seconds 2
         }
@@ -69,7 +70,7 @@ function 3
         $confirmation = Read-Host "Voulez-vous vraiment désactiver le compte $userLock ? (Oui/Non)"
         # Si oui -> désactivation du compte
         if ($confirmation -eq "Oui") {
-            ssh $nom_distant@$ip_distante "net user $userLock /active:no"
+            Invoke-Command -ComputerName $IpDistante -ScriptBlock { Disable-LocalUser -Name $using:UserLock } -Credential wilder
             Write-Host "L'utilisateur $userLock est désactivé." -ForegroundColor Green
             Start-Sleep -Seconds 2
         }
@@ -98,7 +99,7 @@ function 4
     if ($userExist) {
         # Si oui -> demander de taper le nouveau mdp
         $newMdp = Read-Host "Entrer le nouveu mot de passe :"
-        ssh $nom_distant@$ip_distante "net user $userMdp $newMdp"
+        Invoke-Command -ComputerName $IpDistante -ScriptBlock { Set-LocalUser -Name $using:userMdp -Password (ConvertTo-SecureString -AsPlainText $newMdp -Force) } -Credential wilder
         Write-Host "Le mot de passe est bien modifié." -ForegroundColor Green
         Start-Sleep -Seconds 2
     }
