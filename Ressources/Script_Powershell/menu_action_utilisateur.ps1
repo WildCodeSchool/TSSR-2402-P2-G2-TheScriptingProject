@@ -12,7 +12,7 @@ function 1
     $newUser = Read-Host "Quel compte utilisateur souhaitez-vous créer?"
 
     # Vérification si l'utilisateur existe
-    $userExists = ssh $nom_distant@$ip_distante "net user $newUser"
+    $userExists = Invoke-Command -ComputerName $IpDistante -ScriptBlock { Get-LocalUser -Name $using:newUser } -Credential wilder
     if ($userExists) {
         # Si oui -> sortie du script
         Write-Host "L'utilisateur existe déjà." -ForegroundColor Red
@@ -34,7 +34,7 @@ function 2
     $userDel = Read-Host "Quel compte utilisateur souhaitez-vous supprimer ?"
 
     # Vérification si l'utilisateur existe
-    $userExists = ssh $nom_distant@$ip_distante "net user $userDel"
+    $userExists = Invoke-Command -ComputerName $IpDistante -ScriptBlock { Get-LocalUser -Name $using:UserDel } -Credential wilder
     if ($userExists) {
         # Si il exsite -> demande de confirmation
         $confirmation = Read-Host "Voulez-vous vraiment supprimer le compte $userDel ? (Oui/Non)"
@@ -63,7 +63,7 @@ function 3
     $userLock = Read-Host "Quel compte utilisateur souhaitez-vous désactiver ?"
 
     # Vérification si l'utilisateur existe
-    $userExists = ssh $nom_distant@$ip_distante "net user $userLock"
+    $userExists = Invoke-Command -ComputerName $IpDistante -ScriptBlock { Get-LocalUser -Name $using:UserLock } -Credential wilder
     if ($userExists) {
         # Si l'utilisateur existe -> demande de confirmation
         $confirmation = Read-Host "Voulez-vous vraiment désactiver le compte $userLock ? (Oui/Non)"
@@ -94,7 +94,7 @@ function 4
     $userMdp = Read-Host "Pour quel compte utilisateur souhaitez-vous modifier le mot de passe ?"
 
     # Vérifie si le nom d'utilisateur existe sur le système distant
-    $userExist = ssh $nom_distant@$ip_distante "net user $userMdp"
+    $userExist = Invoke-Command -ComputerName $IpDistante -ScriptBlock { Get-LocalUser -Name $using:UserMdp } -Credential wilder
     if ($userExist) {
         # Si oui -> demander de taper le nouveau mdp
         $newMdp = Read-Host "Entrer le nouveu mot de passe :"
@@ -115,7 +115,7 @@ function 5
     $userAdm = Read-Host "Quel compte utilisateur souhaitez-vous ajouter au groupe d'administration?"
 
     # Vérification si l'utilisateur existe
-    $userExists = ssh $nom_distant@$ip_distante "net user $userAdm"
+    $userExists = Invoke-Command -ComputerName $IpDistante -ScriptBlock { Get-LocalUser -Name $using:UserAdm } -Credential wilder
     if ($userExists) {
         # Si l'utilisateur existe -> ajout au groupe Administrators
         Invoke-Command -ComputerName $ip_distante -ScriptBlock { Add-LocalGroupMember -Group Administrateurs -Member $using:userAdm } -Credential wilder
@@ -135,7 +135,7 @@ Function 6
     $userAddG = Read-Host "Quel compte utilisateur souhaitez-vous ajouter à un groupe local?"
     
     # Vérification si l'utilisateur existe
-    $userExists = ssh $nom_distant@$ip_distante "net user $userAddG"
+    $userExists = Invoke-Command -ComputerName $IpDistante -ScriptBlock { Get-LocalUser -Name $using:UserAddG } -Credential wilder
     if ($userExists) {
         # Si l'utilisateur existe -> demande quel groupe?
         $choixAddGroup = Read-Host "À quel groupe souhaitez-vous ajouter l'utilisateur $userAddG?"
@@ -168,7 +168,7 @@ Function 7
     $userDel = Read-Host "Quel compte utilisateur souhaitez-vous supprimer d'un groupe local?"
         
     # Vérification si l'utilisateur existe
-    $userExists = ssh $nom_distant@$ip_distante "net user $userDel"
+    $userExists = Invoke-Command -ComputerName $IpDistante -ScriptBlock { Get-LocalUser -Name $using:UserDel } -Credential wilder
     if ($userExists) {
         # Si l'utilisateur existe -> demande quel groupe?
         $choixDelGroup = Read-Host "De quel groupe souhaitez-vous supprimer l'utilisateur $userDel?"
