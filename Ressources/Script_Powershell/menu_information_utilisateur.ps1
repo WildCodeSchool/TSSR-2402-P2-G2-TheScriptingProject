@@ -126,7 +126,7 @@ function droitsFichier {
     Write-Host ""
     Write-Host "Visualisation des droits sur un fichier"
     Write-Host ""
-    $UserInf_ = Read-Host "Tapez le nom d'utilisateur souhaité "
+    $UserInf = Read-Host "Tapez le nom d'utilisateur souhaité "
 
     # Vérifie si l'utilisateur existe sur le serveur distant
     $userExists = Invoke-Command -ComputerName $IpDistante -ScriptBlock { Get-LocalUser -Name $using:UserInf } -Credential wilder
