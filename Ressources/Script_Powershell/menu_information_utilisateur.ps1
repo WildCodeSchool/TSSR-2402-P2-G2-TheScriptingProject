@@ -66,3 +66,37 @@ function InfoLogSession
         Write-Host "Mauvais choix - Retour au menu précédent" -ForegroundColor Red
     }
 }
+
+function droits_dossier 
+{
+    # Demande quel utilisateur
+    Write-Host ""
+    Write-Host "Visualisation des droits sur un dossier"
+    Write-Host ""
+    $User = Read-Host "Tapez le nom d'utilisateur souhaité : "
+
+    # Vérifie si l'utilisateur existe sur le serveur distant
+    $userExists = ssh $nom_distant@$ip_distante "net user $User"
+    if ($userExists) {
+        # si oui -> demande quel dossier à vérifier
+        $Dossier = Read-Host "Sur quel dossier souhaitez-vous vérifier les droits ? (spécifiez le chemin du dossier)"
+
+        # Vérifie si le dossier existe sur le serveur distant
+        if ($Dossier) {
+            # affichage des droits
+            Invoke-Command -ComputerName $ip_distante -Credential $nom_distant -ScriptBlock {
+                param($FolderPath)
+                Get-Acl -Path $FolderPath } -ArgumentList $Dossier
+        }
+        else {
+            # si non -> sortie du script
+            Write-Host "Le dossier $Dossier n'existe pas"
+            Start-Sleep -Seconds 2
+        }
+    }
+    else {
+        # si non -> sortie du script
+        Write-Host "L'utilisateur $User n'existe pas"
+        Start-Sleep -Seconds 2
+    }
+}
