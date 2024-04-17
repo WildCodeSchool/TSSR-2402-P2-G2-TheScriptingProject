@@ -67,7 +67,7 @@ function InfoLogSession
     }
 }
 
-function droits_dossier 
+function droitsDossier 
 {
     # Demande quel utilisateur
     Write-Host ""
