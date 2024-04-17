@@ -1,12 +1,11 @@
-# Fonction pour afficher le menu
-function ShowMenuComputer  
+function ShowMenuActionPoste
 {
 While ($true) {
 # Effacer l'écran
     Clear-Host
 # Affichage Menu Action
     Write-Host "==================================================" -ForegroundColor Yellow -BackgroundColor Black
-    Write-Host '           Menu "ACTION POSTE DISTANT"            ' -ForegroundColor Yellow -BackgroundColor Black
+    Write-Host '                ACTION POSTE DISTANT"             ' -ForegroundColor Yellow -BackgroundColor Black
     Write-Host "==================================================" -ForegroundColor Yellow -BackgroundColor Black
     Write-Host "" -ForegroundColor Yellow -BackgroundColor Black
     Write-Host "Machine distante : $NomDistant@$IpDistante" -ForegroundColor Yellow -BackgroundColor Black
@@ -20,14 +19,14 @@ While ($true) {
     Write-Host "[7]  Prise de main à distance" -ForegroundColor Yellow -BackgroundColor Black
     Write-Host "[8]  Activation du pare-feu" -ForegroundColor Yellow -BackgroundColor Black
     Write-Host "[9]  Désactivation du pare-feu" -ForegroundColor Yellow -BackgroundColor Black
-    Write-Host "[10] Règles du parefeu" -ForegroundColor Yellow -BackgroundColor Black
+    Write-Host "[10] Règles du pare-feu" -ForegroundColor Yellow -BackgroundColor Black
     Write-Host "[11] Installation/Désinstallation de logiciels" -ForegroundColor Yellow -BackgroundColor Black
-    Write-Host "[12] Exécution d'un script sur la machine distante" -ForegroundColor Yellow -BackgroundColor Black
+    Write-Host "[12] Exécution d'un script sur le poste distant" -ForegroundColor Yellow -BackgroundColor Black
     Write-Host "" -ForegroundColor Yellow -BackgroundColor Black
     Write-Host "[X]  Retour au menu précédent" -ForegroundColor Yellow -BackgroundColor Black
     Write-Host "" -ForegroundColor Yellow -BackgroundColor Black
-    $MainChoice = Read-Host "Faites votre choix" 
-switch ($MainChoice)
+    $ChoiceActionComputer = $(Write-Host -NoNewLine) + $(Write-Host "Faites votre choix : " -ForegroundColor Yellow -BackgroundColor Black -NoNewLine; Read-Host)
+switch ($ChoiceActionComputer)
     {
         "1"
         {Shutdown
@@ -66,7 +65,7 @@ switch ($MainChoice)
         {RemoteScript
         }
         "X"
-        {Write-Host "Retour au menu précédent" -ForegroundColor Magenta -BackgroundColor Black
+        {Write-Host "Retour au menu précédent" -ForegroundColor Cyan -BackgroundColor Black
         Start-Sleep -Seconds 2 
         return
         }
@@ -82,8 +81,8 @@ function Shutdown
 # Si confirmation OK, affichage du sous-menu de la fonction "Arrêt"
 	If  ($ConfShutdown -eq "O") 
     {
-    Write-Host " [1] Arrêt instantané de la machine" -ForegroundColor Yellow -BackgroundColor Black
-		Write-Host " [2] Arrêt planifié de la machine avec message d'avertissement" -ForegroundColor Yellow -BackgroundColor Black
+        Write-Host " [1] Arrêt instantané du poste distant" -ForegroundColor Yellow -BackgroundColor Black
+		Write-Host " [2] Arrêt planifié du poste distant avec message d'avertissement" -ForegroundColor Yellow -BackgroundColor Black
 		Write-Host " [3] Arrêt planifié de la machine sans message d'avertissement" -ForegroundColor Yellow -BackgroundColor Black
 		Write-Host " [*] Revenir au menu précédent" -ForegroundColor Yellow -BackgroundColor Black
         Write-Host ""
@@ -93,31 +92,47 @@ function Shutdown
         {
             "1"
             {
-                Write-Host "Arrêt instantané en cours" -ForegroundColor Yellow -BackgroundColor Black
-                ssh $NomDistant@$IpDistante shutdown /s /f /t 0
+                Write-Host "Arrêt instantané du poste distant en cours" -ForegroundColor Yellow -BackgroundColor Black
+                    Invoke-Command -ComputerName $IpDistante -Credential $Credentials -ScriptBlock { 
+                    shutdown /s /f /t 0 
+                    }
                 Start-Sleep -Seconds 1
+                Write-Host "Commande d'arrêt instantané envoyée avec succès à $IpDistante."
+                Read-Host "Appuyer sur Entrée pour continuer ..."
             }
 
             "2"
             {
-                Write-Host "Arrêt planifié en cours" -ForegroundColor Yellow -BackgroundColor Black
-                $Timer_S1 = Read-Host "Indiquer le compte à rebours (en secondes) : "
-                $MessageTimer_S1 = Read-Host "Indiquer le message à envoyer au poste distant : "
+                Write-Host "Arrêt planifié du poste distant avec message d'avertissement en cours" -ForegroundColor Yellow -BackgroundColor Black
+                $Timer_S1 = Read-Host "Indiquer le compte à rebours (en secondes) "
+                $MessageTimer_S1 = Read-Host "Indiquer le message à envoyer au poste distant "
                 Start-Sleep -Seconds 1
-                ssh $NomDistant@$IpDistante shutdown /s /f /t $Timer_S1 /c "$MessageTimer_S1"
+                    Invoke-Command -ComputerName $IpDistante -Credential $Credentials -ScriptBlock {
+                    param ($Timer_S1, $MessageTimer_S1)
+                    Start-Sleep -Seconds 1
+                    shutdown /s /f /t $Timer_S1 /c "$MessageTimer_S1"
+                    } -ArgumentList $Timer_S1, $MessageTimer_S1
+                Write-Host "Commande d'arrêt planifié avec message d'avertissement envoyée avec succès à $IpDistante."
+                Read-Host "Appuyer sur Entrée pour continuer ..."
             }
 
             "3"
             {
-                Write-Host "Arrêt planifié en cours" -ForegroundColor Yellow -BackgroundColor Black
+                Write-Host "Arrêt planifié du poste distant en cours" -ForegroundColor Yellow -BackgroundColor Black
                 $Timer_S2 = Read-Host "Indiquer le compte à rebours (en secondes) : "
                 Start-Sleep -Seconds 1
-                ssh $NomDistant@$IpDistante shutdown /s /f /t $Timer_S2
+                    Invoke-Command -ComputerName $IpDistante -Credential $Credentials -ScriptBlock {
+                    param ($Timer_S2)
+                    Start-Sleep -Seconds 1
+                    shutdown /s /f /t $Timer_S2
+                    } -ArgumentList $Timer_S2
+                Write-Host "Commande d'arrêt planifié envoyée avec succès à $IpDistante."
+                Read-Host "Appuyer sur Entrée pour continuer ..."
             }
             
             default
             {
-                Write-Host "Retour au menu précédent" -ForegroundColor Magenta -BackgroundColor Black
+                Write-Host "Retour au menu précédent" -ForegroundColor Cyan -BackgroundColor Black
                 Start-Sleep -Seconds 1
                 Return
             }
@@ -126,7 +141,7 @@ function Shutdown
 # Si confirmation NOK, sortie de la fonction "Arrêt"
     Else
     {
-        Write-Host "Retour au menu de selection" -ForegroundColor Magenta -BackgroundColor Black
+        Write-Host "Retour au menu de selection" -ForegroundColor Cyan -BackgroundColor Black
         Start-Sleep -Seconds 1
         Return
     }
@@ -136,13 +151,13 @@ function Shutdown
 function Reboot
 {
 # Demande de confrmation
-	$ConfReboot = Read-Host "Confirmez-vous l'Redémarrage du post distant ? [O pour valider] "
+	$ConfReboot = Read-Host "Confirmez-vous le redémarrage du post distant ? [O pour valider] "
 # Si confirmation OK, affichage du sous-menu de la fonction "Redémarrage"
 	If  ($ConfReboot -eq "O") 
     {
-    Write-Host " [1] Redémarrage instantané de la machine" -ForegroundColor Yellow -BackgroundColor Black
-		Write-Host " [2] Redémarrage planifié de la machine avec message d'avertissement" -ForegroundColor Yellow -BackgroundColor Black
-		Write-Host " [3] Redémarrage planifié de la machine sans message d'avertissement" -ForegroundColor Yellow -BackgroundColor Black
+        Write-Host " [1] Redémarrage instantané du poste distant" -ForegroundColor Yellow -BackgroundColor Black
+		Write-Host " [2] Redémarrage planifié du poste distant avec message d'avertissement" -ForegroundColor Yellow -BackgroundColor Black
+		Write-Host " [3] Redémarrage planifié du poste distant sans message d'avertissement" -ForegroundColor Yellow -BackgroundColor Black
 		Write-Host " [*] Revenir au menu précédent" -ForegroundColor Yellow -BackgroundColor Black
         Write-Host ""
         $ConfMessage_R = Read-Host "Faites votre choix parmi la sélection ci-dessus" 
@@ -151,31 +166,49 @@ function Reboot
         {
             "1"
             {
-                Write-Host "Redémarrage instantané en cours" -ForegroundColor Yellow -BackgroundColor Black
-                ssh $NomDistant@$IpDistante shutdown /r /f /t 0
+                Write-Host "Redémarrage instantané du poste distant en cours" -ForegroundColor Yellow -BackgroundColor Black
+                    Invoke-Command -ComputerName $IpDistante -Credential $Credentials -ScriptBlock {
+                    shutdown /r /f /t 0
+                    }
                 Start-Sleep -Seconds 1
+                Write-Host "Commande de redémarrage du poste distant envoyée avec succès à $IpDistante."
+                Read-Host "Appuyer sur Entrée pour continuer ..."
             }
 
             "2"
             {
-                Write-Host "Redémarrage planifié en cours" -ForegroundColor Yellow -BackgroundColor Black
+                Write-Host "Redémarrage planifié du poste distant avec message d'avertissement en cours" -ForegroundColor Yellow -BackgroundColor Black
                 $Timer_R1 = Read-Host "Indiquer le compte à rebours (en secondes) : "
                 $MessageTimer_R1 = Read-Host "Indiquer le message à envoyer au poste distant : "
                 Start-Sleep -Seconds 1
-                ssh $NomDistant@$IpDistante shutdown /r /f /t $Timer_R1 /c "$MessageTimer_R1"
+                Invoke-Command -ComputerName $IpDistante -Credential $Credentials -ScriptBlock {
+                    param ($Timer_R1, $MessageTimer_R1)
+                    Start-Sleep -Seconds 1
+                    shutdown /r /f /t $Timer_R1 /c "$MessageTimer_R1"
+                    } -ArgumentList $Timer_R1, $MessageTimer_R1
+                Start-Sleep -Seconds 1
+                Write-Host "Commande de redémarrage du poste distant avec message d'avertissement envoyée avec succès à $IpDistante."
+                Read-Host "Appuyer sur Entrée pour continuer ..."
             }
 
             "3"
             {
-                Write-Host "Redémarrage planifié en cours" -ForegroundColor Yellow -BackgroundColor Black
+                Write-Host "Redémarrage planifié du poste distant en cours" -ForegroundColor Yellow -BackgroundColor Black
                 $Timer_R2 = Read-Host "Indiquer le compte à rebours (en secondes) : "
                 Start-Sleep -Seconds 1
-                ssh $NomDistant@$IpDistante shutdown /r /f /t $Timer_R2
+                Invoke-Command -ComputerName $IpDistante -Credential $Credentials -ScriptBlock {
+                    param ($Timer_R2)
+                    Start-Sleep -Seconds 1
+                    shutdown /r /f /t $Timer_R2
+                    } -ArgumentList $Timer_R2
+                Start-Sleep -Seconds 1
+                Write-Host "Commande de redémarrage du poste distant envoyée avec succès à $IpDistante."
+                Read-Host "Appuyer sur Entrée pour continuer ..."
             }
             
             default
             {
-                Write-Host "Retour au menu précédent" -ForegroundColor Magenta -BackgroundColor Black
+                Write-Host "Retour au menu précédent" -ForegroundColor Cyan -BackgroundColor Black
                 Start-Sleep -Seconds 1
                 return
             }
@@ -184,7 +217,7 @@ function Reboot
 # Si confirmation NOK, sortie de la fonction "Redémarrage"
     Else
     {
-        Write-Host "Retour au menu de selection" -ForegroundColor Magenta -BackgroundColor Black
+        Write-Host "Retour au menu de selection" -ForegroundColor Cyan -BackgroundColor Black
         Start-Sleep -Seconds 1
         Return
     }
@@ -193,16 +226,21 @@ function Reboot
 function Lock
 {
 # Demande de confirmation
-	$ConfLock = Read-Host "Confirmez-vous le vérouillage de la session de la machine distante ? [O pour valider] "
+	$ConfLock = Read-Host "Confirmez-vous le vérouillage de la session du poste distant ? [O pour valider] "
 # Si confirmation OK, exécution de la commande "Vérouillage"
 	If ($ConfLock -eq "O")
     {
 		Write-Host "Session du poste distant en cours de vérouillage" -ForegroundColor Yellow -BackgroundColor Black
-        ssh $NomDistant@$IpDistante logoff console
+        Invoke-Command -ComputerName $IpDistante -Credential $Credentials -ScriptBlock {
+            logoff console
+            }
 		Start-Sleep -Seconds 1
+        Write-Host "Commande de vérouillage de la session du poste distant envoyée avec succès à $IpDistante."
+        Read-Host "Appuyer sur Entrée pour continuer ..."
+
 # Si confirmation NOK, sortie de la fonction "Vérouillage"	
 	Else
-		Write-Host "Opération annulée - Retour au menu précédent" -ForegroundColor Magenta -BackgroundColor Black
+		Write-Host "Opération annulée - Retour au menu précédent" -ForegroundColor Cyan -BackgroundColor Black
 		Start-Sleep -Seconds 1
 		Return	
     }
@@ -214,19 +252,20 @@ function FirewallOn
 {
 # Demande de confirmation + Avertissement
 	Write-Host "ATTENTION : Cette commande peut impacter l'éxécution du script" -ForegroundColor Yellow -BackgroundColor Black
-	$ConfwWOn = Read-Host "Confirmez-vous l'activation du pare-feu sur la machine distante ? [O pour valider ] : " 
+	$ConfwWOn = Read-Host "Confirmez-vous l'activation du pare-feu sur le poste distant ? [O pour valider ] : " 
 # Si confirmation OK, éxécution de la commande "Activation du pare-feu"	
 	if ( $ConfwWOn -eq "O" )
     { 
     $Command ={Set-NetFirewallProfile -Enabled true ; Get-NetFirewallProfile | Format-Table Name, Enabled}
-		invoke-Command -ComputerName $IpDistante -ScriptBlock $Command -Credential wilder
-		Write-Host "Le pare-feu de la machine distante a bien été activé" -ForegroundColor Yellow -BackgroundColor Black
-		Start-Sleep -Seconds 2
+		invoke-Command -ComputerName $IpDistante -ScriptBlock $Command -Credential $Credentials
+		Write-Host "Le pare-feu de le poste distant a bien été activé" -ForegroundColor Yellow -BackgroundColor Black
+		Start-Sleep -Seconds 1
+        Read-Host "Appuyer sur Entrée pour continuer ..."
 	}
 # Si confirmation NOK, sortie de la fonction "Activation du pare-feu"
 	else
     {
-		Write-Host "Opération annulée - Retour au menu précédent" -ForegroundColor Magenta -BackgroundColor Black
+		Write-Host "Opération annulée - Retour au menu précédent" -ForegroundColor Cyan -BackgroundColor Black
 		Start-Sleep -Seconds 2
 		return	
 	}
@@ -237,19 +276,20 @@ function FirewallOff
 {
 # Demande de confirmation + Avertissement
 	Write-Host "ATTENTION : Cette commande peut impacter l'éxécution du script" -ForegroundColor Yellow -BackgroundColor Black
-	$ConfwWOff = Read-Host "Confirmez-vous la désactivation du pare-feu sur la machine distante ? [O pour valider ] : " 
+	$ConfwWOff = Read-Host "Confirmez-vous la désactivation du pare-feu sur le poste distant ? [O pour valider ] : " 
 # Si confirmation OK, éxécution de la commande "Activation du pare-feu"	
 	if ( $ConfwWOff -eq "O" )
     { 
     $Command ={Set-NetFirewallProfile -Enabled false ; Get-NetFirewallProfile | Format-Table Name, Enabled}
-		invoke-Command -ComputerName $IpDistante -ScriptBlock $Command -Credential wilder
-		Write-Host "Le pare-feu de la machine distante a bien été désactivé" -ForegroundColor Yellow -BackgroundColor Black
-		Start-Sleep -Seconds 2
+		invoke-Command -ComputerName $IpDistante -ScriptBlock $Command -Credential $Credentials
+		Write-Host "Le pare-feu de le poste distant a bien été désactivé" -ForegroundColor Yellow -BackgroundColor Black
+		Start-Sleep -Seconds 1
+        Read-Host "Appuyer sur Entrée pour continuer ..."
 	}
 # Si confirmation NOK, sortie de la fonction "Activation du pare-feu"
 	else
     {
-		Write-Host "Opération annulée - Retour au menu précédent" -ForegroundColor Magenta -BackgroundColor Black
+		Write-Host "Opération annulée - Retour au menu précédent" -ForegroundColor Cyan -BackgroundColor Black
 		Start-Sleep -Seconds 2
 		return	
 	}
@@ -279,14 +319,14 @@ function FirewallRules
                 # Affichage de l'état actuel du pare-feu
                 1 {
                     Write-Host "Affichage de l'état actuel des règles du pare-feu" -ForegroundColor Yellow -BackgroundColor Black
-                    Invoke-Command -ComputerName $IpDistante -ScriptBlock { Get-NetFirewallRule } -Credential wilder
-                    Start-Sleep -Seconds 2
-					$Continuer = Read-Host "Appuyez sur une touche pour continuer"
+                    Invoke-Command -ComputerName $IpDistante -ScriptBlock { Get-NetFirewallRule } -Credential $Credentials
+                    Start-Sleep -Seconds 1
+					Read-Host "Appuyez sur une touche pour continuer"
                 }
                 # Exécution de la commande d'ouverture de port TCP
                 2 {
                     Write-Host "Ouverture d'un port TCP sur tout les profils" -ForegroundColor Yellow -BackgroundColor Black
-                    Start-Sleep -Seconds 2
+                    Start-Sleep -Seconds 1
                     $OpenTCP = Read-Host "Indiquer le n° du port à ouvrir "
 					$NomdeRegleTCP = Read-Host "Spécifier le nom de la règle "
 					$commandfw= {
@@ -294,15 +334,16 @@ function FirewallRules
 					New-NetFirewallRule -DisplayName $DisplayName -Direction inbound -Profile Any -Action Allow -LocalPort $OpenTCP -Protocol TCP
 					}
 	                Write-Host "Ouverture du port TCP $OpenTCP" -ForegroundColor Yellow -BackgroundColor Black
-                    Start-Sleep -Seconds 2
-                    Invoke-Command -ComputerName $IpDistante -ScriptBlock $commandfw -ArgumentList $NomdeRegleTCP -Credential wilder
+                    Start-Sleep -Seconds 1
+                    Invoke-Command -ComputerName $IpDistante -ScriptBlock $commandfw -ArgumentList $NomdeRegleTCP -Credential $Credentials
                     Write-Host "Port TCP $OpenTCP ouvert" -ForegroundColor Yellow -BackgroundColor Black
-                    Start-Sleep -Seconds 2
+                    Start-Sleep -Seconds 1
+                    Read-Host "Appuyez sur une touche pour continuer"
                 }
 			  	# Exécution de la commande d'ouverture de port UDP
 				3 {
                     Write-Host "Ouverture d'un port UDP sur tout les profils" -ForegroundColor Yellow -BackgroundColor Black
-                    Start-Sleep -Seconds 2
+                    Start-Sleep -Seconds 1
                     $OpenUDP = Read-Host "Indiquer le n° du port à ouvrir "
 					$NomdeRegleUDP = Read-Host "Spécifier le nom de la règle "
 					$commandfw= {
@@ -310,23 +351,25 @@ function FirewallRules
 					New-NetFirewallRule -DisplayName $DisplayName -Direction inbound -Profile Any -Action Allow -LocalPort $OpenUDP -Protocol UDP
 					}
 	                Write-Host "Ouverture du port UDP $OpenUDP" -ForegroundColor Yellow -BackgroundColor Black
-                    Start-Sleep -Seconds 2
-                    Invoke-Command -ComputerName $IpDistante -ScriptBlock $commandfw -ArgumentList $NomdeRegleUDP -Credential wilder
+                    Start-Sleep -Seconds 1
+                    Invoke-Command -ComputerName $IpDistante -ScriptBlock $commandfw -ArgumentList $NomdeRegleUDP -Credential $Credentials
                     Write-Host "Port UDP $OpenUDP ouvert" -ForegroundColor Yellow -BackgroundColor Black
-                    Start-Sleep -Seconds 2
+                    Start-Sleep -Seconds 1
+                    Read-Host "Appuyez sur une touche pour continuer"
                 }
 				# Exécution de la commande de fermeture de port
                 4 {
                     Write-Host "Suppression d'une règle"
-                    Start-Sleep -Seconds 2
+                    Start-Sleep -Seconds 1
                     $RegleSuppr = Read-Host "Indiquer la règle à supprimer : "
 					$commandfw = {
 					param($RulesNames)
 					Remove-NetFirewallRule -displayName $RulesNames}
-                    Start-Sleep -Seconds 2
-                    Invoke-Command -ComputerName $IpDistante -ScriptBlock $commandfw -ArgumentList $RegleSuppr -Credential wilder
+                    Start-Sleep -Seconds 1
+                    Invoke-Command -ComputerName $IpDistante -ScriptBlock $commandfw -ArgumentList $RegleSuppr -Credential $Credentials
                     Write-Host "$RegleSuppr règle supprimé"
-                    Start-Sleep -Seconds 2
+                    Start-Sleep -Seconds 1
+                    Read-Host "Appuyez sur une touche pour continuer"
                 }	
                 # Exécution de la commande de réinitialisation du pare-feu + Avertissement
                 5 {
@@ -336,21 +379,22 @@ function FirewallRules
                     # Si confirmation OK, exécution de la commande de réinitialisation du pare-feu
                     if ($ConfResetFw -eq "O") {
                         Start-Sleep -Seconds 1
-                        Invoke-Command -ComputerName $IpDistante -ScriptBlock { netsh advfirewall reset }  -Credential wilder
+                        Invoke-Command -ComputerName $IpDistante -ScriptBlock { netsh advfirewall reset }  -Credential $Credentials
                         Write-Host "Le pare-feu a été réinitialisé" -ForegroundColor Yellow -BackgroundColor Black
-                        Start-Sleep -Seconds 2
+                        Start-Sleep -Seconds 1
+                        Read-Host "Appuyez sur une touche pour continuer"
                         return
                     }
                     # Si confirmation NOK, sortie de la fonction "Règles du pare-feu"
                     else {
-                        Write-Host "Opération annulée - Retour au menu précédent" -ForegroundColor Magenta -BackgroundColor Black
-                        Start-Sleep -Seconds 1
+                        Write-Host "Opération annulée - Retour au menu précédent" -ForegroundColor Cyan -BackgroundColor Black
+                        Start-Sleep -Seconds 2
                     }
                 }
                 # Si autre/mauvais choix, sortie de la fonction "Règles du pare-feu"
                 default {
-                    Write-Host "Mauvais choix - Retour au menu précédent" -ForegroundColor Magenta -BackgroundColor Black
-                    Start-Sleep -Seconds 1
+                    Write-Host "Mauvais choix - Retour au menu précédent" -ForegroundColor Cyan -BackgroundColor Black
+                    Start-Sleep -Seconds 2
                     return
                 }
             }
@@ -367,8 +411,8 @@ function CreateDirectory {
         $NameDirectory = Read-Host "Quel est le nom du dossier à créer ? "
         # Si aucun nom rentré, sortie de la fonction "Création Dossier"
         if ([string]::IsNullOrEmpty($NameDirectory)) {
-            Write-Host "Vous n'avez pas indiqué de nom de dossier, retour au menu précédent" -ForegroundColor Magenta -BackgroundColor Black
-            Start-Sleep -Seconds 1
+            Write-Host "Vous n'avez pas indiqué de nom de dossier, retour au menu précédent" -ForegroundColor Cyan -BackgroundColor Black
+            Start-Sleep -Seconds 2
             return
         }			
         # Demande du chemin de destination du dossier à créer
@@ -386,12 +430,12 @@ function CreateDirectory {
 		}
     # Création d'une variable contenant chemin + nom de dossier
         $Directory = $PathDirectory + $NameDirectory
-		$TestPath = Invoke-Command -ComputerName $IpDistante -ScriptBlock $CMDTestPath -ArgumentList $Directory -Credential $NomDistant
+		$TestPath = Invoke-Command -ComputerName $IpDistante -ScriptBlock $CMDTestPath -ArgumentList $Directory -Credential $Credentials
 		if ($TestPath -eq "True") 
 		{
-		Write-Host "Le dossier existe déjà à l'emplacement spécifié." -ForegroundColor Magenta -BackgroundColor Black
-		Write-Host "Retour au menu précédent" -ForegroundColor Magenta -BackgroundColor Black
-		Start-Sleep -Seconds 1
+		Write-Host "Le dossier existe déjà à l'emplacement spécifié." -ForegroundColor Cyan -BackgroundColor Black
+		Write-Host "Retour au menu précédent" -ForegroundColor Cyan -BackgroundColor Black
+		Start-Sleep -Seconds 2
 		return
 		}
 		else 
@@ -401,16 +445,17 @@ function CreateDirectory {
         param($Folder)
         New-Item -ItemType Directory -Path $Folder
         }
-		Invoke-Command -ComputerName $IpDistante -ScriptBlock $CMDCreate -ArgumentList $Directory -Credential $NomDistant
+		Invoke-Command -ComputerName $IpDistante -ScriptBlock $CMDCreate -ArgumentList $Directory -Credential $Credentials
 		
 		Write-Host "Le dossier $NameDirectory a été créé à l'emplacement $PathDirectory sur le poste." -ForegroundColor Yellow -BackgroundColor Black
 		Start-Sleep -Seconds 1
+        Read-Host "Appuyez sur une touche pour continuer"
         }
     }
     # Si confirmation NOK, sortie de la fonction "Création Dossier"
     else {
-        Write-Host "Opération annulée - Retour au menu précédent" -ForegroundColor Magenta -BackgroundColor Black
-        Start-Sleep -Seconds 1
+        Write-Host "Opération annulée - Retour au menu précédent" -ForegroundColor Cyan -BackgroundColor Black
+        Start-Sleep -Seconds 2
         return
     }
 }
@@ -425,8 +470,8 @@ function RemoveDirectory {
         $NameDirectory2 = Read-Host "Indiquez le chemin du dossier à supprimer"
         # Si aucun nom rentré, sortie de la fonction "Suppression Dossier"
         if ([string]::IsNullOrEmpty($NameDirectory2)) {
-            Write-Host "Vous n'avez pas indiqué de dossier, retour au menu précédent" -ForegroundColor Magenta -BackgroundColor Black
-            Start-Sleep -Seconds 1
+            Write-Host "Vous n'avez pas indiqué de dossier, retour au menu précédent" -ForegroundColor Cyan -BackgroundColor Black
+            Start-Sleep -Seconds 2
             return       
         }	
     # Vérification de l'existence du dossier à supprimer
@@ -435,12 +480,12 @@ function RemoveDirectory {
             Test-Path -Path $Path
             }
 
-        $TestPathDirectory2 = Invoke-Command -ComputerName $IpDistante -ScriptBlock $CMDTestPath -ArgumentList $NameDirectory2 -Credential $NomDistant
+        $TestPathDirectory2 = Invoke-Command -ComputerName $IpDistante -ScriptBlock $CMDTestPath -ArgumentList $NameDirectory2 -Credential $Credentials
     # Si le dossier ,'existe pas, retour au menu précédent
         if ($TestPathDirectory2 -eq $False)
         {
-            Write-Host "Le dossier n'existe pas, retour au menu précédent" -ForegroundColor Magenta -BackgroundColor Black
-            Start-Sleep -Seconds 1
+            Write-Host "Le dossier n'existe pas, retour au menu précédent" -ForegroundColor Cyan -BackgroundColor Black
+            Start-Sleep -Seconds 2
             return   
         }
 
@@ -451,16 +496,17 @@ function RemoveDirectory {
         param($Folder)
         Remove-Item -Path $Folder
         }
-		Invoke-Command -ComputerName $IpDistante -ScriptBlock $CMDRemoval -ArgumentList $NameDirectory2 -Credential $NomDistant
+		Invoke-Command -ComputerName $IpDistante -ScriptBlock $CMDRemoval -ArgumentList $NameDirectory2 -Credential $Credentials
 		
 		Write-Host "Le dossier $NameDirectory2 a été supprimé" -ForegroundColor Yellow -BackgroundColor Black
 		Start-Sleep -Seconds 1
+        Read-Host "Appuyez sur une touche pour continuer"
         }
     }
     # Si confirmation NOK, sortie de la fonction "Suppression Dossier"
     else {
-        Write-Host "Opération annulée - Retour au menu précédent" -ForegroundColor Magenta -BackgroundColor Black
-        Start-Sleep -Seconds 1
+        Write-Host "Opération annulée - Retour au menu précédent" -ForegroundColor Cyan -BackgroundColor Black
+        Start-Sleep -Seconds 2
         return
     }
 }
@@ -490,13 +536,15 @@ function Applications
         If ($ConfAppInstall -eq "O")
         {
             $AppInstall = Read-Host "Indiquer le nom de l'application"
-            Invoke-Command -ComputerName $IpDistante -Credential $NomDistant -ScriptBlock { param($AppInstall) choco install $AppInstall -y --force } -ArgumentList $AppInstall
-            Read-Host "Appuyez sur Entrée pour continuer ..."
+            Invoke-Command -ComputerName $IpDistante -Credential $Credentials -ScriptBlock { param($AppInstall) choco install $AppInstall -y --force } -ArgumentList $AppInstall
+            Start-Sleep -Seconds 1
+            Read-Host "Appuyez sur une touche pour continuer"
             Clear-Host
         }
         else 
         {
-            Write-Host "Opération annulée - Retour au menu précédent" -ForegroundColor Magenta -BackgroundColor Black
+            Write-Host "Opération annulée - Retour au menu précédent" -ForegroundColor Cyan -BackgroundColor Black
+            Start-Sleep -Seconds 2
             return 
         }
         }
@@ -508,13 +556,15 @@ function Applications
         If ($ConfAppUnInstall -eq "O")
         {
             $AppUnInstall = Read-Host "Indiquer le nom de l'application"
-            Invoke-Command -ComputerName $IpDistante -Credential $NomDistant -ScriptBlock { param($AppUnInstall) choco uninstall $AppUnInstall -y --force} -ArgumentList $AppUnInstall
-            Read-Host "Appuyez sur Entrée pour continuer ..."
+            Invoke-Command -ComputerName $IpDistante -Credential $Credentials -ScriptBlock { param($AppUnInstall) choco uninstall $AppUnInstall -y --force} -ArgumentList $AppUnInstall
+            Start-Sleep -Seconds 1
+            Read-Host "Appuyez sur une touche pour continuer"
             Clear-Host
         }
         else 
         {
-            Write-Host "Opération annulée - Retour au menu précédent" -ForegroundColor Magenta -BackgroundColor Black
+            Write-Host "Opération annulée - Retour au menu précédent" -ForegroundColor Cyan -BackgroundColor Black
+            Start-Sleep -Seconds 2
             return 
         }    
 
@@ -527,13 +577,15 @@ function Applications
         If ($ConfSearchAppChoco -eq "O")
         {
             $AppSearchChoco = Read-Host "Indiquer le nom de l'application à rechercher sur ChocolaTey"
-            Invoke-Command -ComputerName $IpDistante -Credential $NomDistant -ScriptBlock { param($AppSearchChoco) choco search --by-id-only $AppSearchChoco } -ArgumentList $AppSearchChoco
-            Read-Host "Appuyez sur Entrée pour continuer ..."
+            Invoke-Command -ComputerName $IpDistante -Credential $Credentials -ScriptBlock { param($AppSearchChoco) choco search --by-id-only $AppSearchChoco } -ArgumentList $AppSearchChoco
+            Start-Sleep -Seconds 1
+            Read-Host "Appuyez sur une touche pour continuer"
             Clear-Host
         }
         else 
         {
-            Write-Host "Opération annulée - Retour au menu précédent" -ForegroundColor Magenta -BackgroundColor Black
+            Write-Host "Opération annulée - Retour au menu précédent" -ForegroundColor Cyan -BackgroundColor Black
+            Start-Sleep -Seconds 2
             return 
         } 
 
@@ -546,13 +598,16 @@ function Applications
         If ($ConfSearchAppPC -eq "O")
         {
             Write-Host "Voici la liste des applications installées sur le poste : "
-            Invoke-Command -ComputerName $IpDistante -Credential $NomDistant -ScriptBlock { choco list }
-            Read-Host "Appuyez sur Entrée pour continuer ..."
+            Invoke-Command -ComputerName $IpDistante -Credential $Credentials -ScriptBlock { choco list }
+            Start-Sleep -Seconds 1
+            Read-Host "Appuyez sur une touche pour continuer"
             Clear-Host
         }
         else 
         {
-            Write-Host "Opération annulée - Retour au menu précédent" -ForegroundColor Magenta -BackgroundColor Black
+            Write-Host "Opération annulée - Retour au menu précédent" -ForegroundColor Cyan -BackgroundColor Black
+            Start-Sleep -Seconds 2
+            Read-Host "Appuyez sur une touche pour continuer"
             return 
         } 
 
@@ -565,13 +620,15 @@ function Applications
         If ($ConfSearchMajAppPC -eq "O")
         {
             Write-Host "Voici la liste des mises à jour disponibles des applications sur le poste : "
-            Invoke-Command -ComputerName $IpDistante -Credential $NomDistant -ScriptBlock {choco outdated}
-            Read-Host "Appuyez sur Entrée pour continuer ..."
+            Invoke-Command -ComputerName $IpDistante -Credential $Credentials -ScriptBlock {choco outdated}
+            Start-Sleep -Seconds 1
+            Read-Host "Appuyez sur une touche pour continuer"
             Clear-Host
         }
         else 
         {
-            Write-Host "Opération annulée - Retour au menu précédent" -ForegroundColor Magenta -BackgroundColor Black
+            Write-Host "Opération annulée - Retour au menu précédent" -ForegroundColor Cyan -BackgroundColor Black
+            Start-Sleep -Seconds 2
             return 
         } 
 
@@ -584,13 +641,15 @@ function Applications
         If ($ConfMajApp -eq "O")
         {
             $AppMaj = Read-Host "Indiquer le nom de l'application à mettre à jour"
-            Invoke-Command -ComputerName $IpDistante -Credential $NomDistant -ScriptBlock { param($AppMaj) choco upgrade $AppMaj -y } -ArgumentList $AppMaj
-            Read-Host "Appuyez sur Entrée pour continuer ..."
+            Invoke-Command -ComputerName $IpDistante -Credential $Credentials -ScriptBlock { param($AppMaj) choco upgrade $AppMaj -y } -ArgumentList $AppMaj
+            Start-Sleep -Seconds 1
+            Read-Host "Appuyez sur une touche pour continuer"
             Clear-Host
         }
         else 
         {
-            Write-Host "Opération annulée - Retour au menu précédent" -ForegroundColor Magenta -BackgroundColor Black
+            Write-Host "Opération annulée - Retour au menu précédent" -ForegroundColor Cyan -BackgroundColor Black
+            Start-Sleep -Seconds 2
             return 
         }
 
@@ -603,13 +662,15 @@ function Applications
         If ($ConfMajAppAll -eq "O")
         {
             Write-Host "Toutes les applications du poste vont être mises à jour: " -ForegroundColor Yellow -BackgroundColor Black
-            Invoke-Command -ComputerName $IpDistante -Credential $NomDistant -ScriptBlock {choco upgrade all -y}
-            Read-Host "Appuyez sur Entrée pour continuer ..."
+            Invoke-Command -ComputerName $IpDistante -Credential $Credentials -ScriptBlock {choco upgrade all -y}
+            Start-Sleep -Seconds 1
+            Read-Host "Appuyez sur une touche pour continuer"
             Clear-Host
         }
         else 
         {
-            Write-Host "Opération annulée - Retour au menu précédent" -ForegroundColor Magenta -BackgroundColor Black
+            Write-Host "Opération annulée - Retour au menu précédent" -ForegroundColor Cyan -BackgroundColor Black
+            Start-Sleep -Seconds 2
             return 
         }
 
@@ -617,7 +678,7 @@ function Applications
 
         default
         {
-            Write-Host "Mauvais choix - Retour au menu précédent" -ForegroundColor Magenta -BackgroundColor Black
+            Write-Host "Mauvais choix - Retour au menu précédent" -ForegroundColor Cyan -BackgroundColor Black
             Start-Sleep -Seconds 2
             return
         }
@@ -648,6 +709,8 @@ function RemoteControl
                 { 
                     Write-Host "Contrôle par interface graphique (GUI)" -ForegroundColor Yellow -BackgroundColor Black
                     mstsc -v $IpDistante
+                    Start-Sleep -Seconds 1
+                    Read-Host "Appuyez sur une touche pour continuer"
                     return
                 }
 
@@ -660,8 +723,8 @@ function RemoteControl
 
                 Default 
                 {
-                    Write-Host "Retour au menu précédent" -ForegroundColor Magenta -BackgroundColor Black
-                    Start-Sleep -Seconds 1
+                    Write-Host "Retour au menu précédent" -ForegroundColor Cyan -BackgroundColor Black
+                    Start-Sleep -Seconds 2
                     return
                 }
             }
@@ -669,14 +732,15 @@ function RemoteControl
     }   
     else
     {
-        Write-Host "Opération annulée - Retour au menu précédent" -ForegroundColor Magenta -BackgroundColor Black
+        Write-Host "Opération annulée - Retour au menu précédent" -ForegroundColor Cyan -BackgroundColor Black
+        Start-Sleep -Seconds 2
         return 
     }
 }
 
 function RemoteScript
 {
-    $ConfRS = Read-Host "Confirmez-vous l'éxécution d'un script sur la machine distante ? [O pour valider ]"
+    $ConfRS = Read-Host "Confirmez-vous l'éxécution d'un script sur le poste distant ? [O pour valider ]"
     if ($ConfRS -eq "O")
     {
         $NameScript = Read-Host "Quel est le nom du script (Sans l'extension) ?"
@@ -688,23 +752,14 @@ function RemoteScript
             Write-Host "Le script $NameScript existe" -ForegroundColor Yellow -BackgroundColor Black
             Write-Host "Le script $NameScript va être éxécuté" -ForegroundColor Yellow -BackgroundColor Black
             Start-Sleep -Seconds 1
-
             Invoke-Command -ComputerName $IpDistante -Credential $Credentials -ScriptBlock { Set-ExecutionPolicy RemoteSigned -Scope CurrentUser  }
             Invoke-Command -ComputerName $IpDistante -Credential $Credentials -ScriptBlock { param($PathNameScript) & $PathNameScript } -ArgumentList $PathNameScript
         }  
         else 
         {
-            Write-Host "Opération annulée - Retour au menu précédent" -ForegroundColor Magenta -BackgroundColor Black
+            Write-Host "Opération annulée - Retour au menu précédent" -ForegroundColor Cyan -BackgroundColor Black
+            Start-Sleep -Seconds 2
             return 
         } 
     }
 }
-
-$NomDistant = Read-Host "Quel est le nom de l'utilisateur/poste distant"
-$IpDistante = Read-Host "Quelle est l'adresse IP du poste distant"
-Start-Sleep -Seconds 1
-
-Clear-Host
-
-ShowMenuComputer
-
