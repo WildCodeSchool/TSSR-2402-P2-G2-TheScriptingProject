@@ -925,7 +925,8 @@ Function UserAddGroup
             Start-Sleep -Seconds 2
             Invoke-Command -ComputerName $IpDistante -Credential $Credentials -ScriptBlock { Add-LocalGroupMember -Group $using:choixAddGroup -Member $using:userAddG } 
             Write-Host "Le compte $userAddG est ajouté au groupe $choixAddGroup." -ForegroundColor Green
-
+	    Start-Sleep -Seconds 2
+	
             # Affichage des utilisateurs du groupe pour vérification
             Write-Host "Vous trouverez ci-dessous la liste des utilisateurs du groupe $choixAddGroup ." -ForegroundColor Green
             Invoke-Command -ComputerName $IpDistante -Credential $Credentials -ScriptBlock { Get-LocalGroupMember -Group $using:choixAddGroup } 
@@ -961,6 +962,7 @@ Function UserDelGroup
             Start-Sleep -Seconds 2
             Invoke-Command -ComputerName $IpDistante -Credential $Credentials -ScriptBlock { Remove-LocalGroupMember -Group $using:choixDelGroup -Member $using:userDel } 
             Write-Host "Le compte $userDel est supprimé du groupe $choixDelGroup." -ForegroundColor Green
+	    Start-Sleep -Seconds 2
 
             # Affichage des utilisateurs du groupe pour vérification
             Write-Host "Vous trouverez ci-dessous la liste des utilisateurs du groupe $choixDelGroup ." -ForegroundColor Green
