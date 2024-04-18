@@ -1355,9 +1355,9 @@ info_connexion() {
     # Est-ce que le nom existe sur le systeme ?
     if ssh $nom_distant@$ip_distante cat /etc/passwd | grep $user_inf >/dev/null; then
         # si oui -> affichage dernière connexion
-        ssh $nom_distant@$ip_distante lastlog -u $user_inf && sleep 2s
+        ssh $nom_distant@$ip_distante last $user_inf | head -n 1 && sleep 2s
         echo $nom_distant@$ip_distante "Dernière connexion : " >>"$path_info_file""Info_""$user_inf""_$(date +%Y-%m-%d).txt"
-        ssh $nom_distant@$ip_distante lastlog -u $user_inf >>"$path_info_file""Info_""$user_inf""_$(date +%Y-%m-%d).txt"
+        ssh $nom_distant@$ip_distante last $user_inf | head -n 1 >>"$path_info_file""Info_""$user_inf""_$(date +%Y-%m-%d).txt"
         echo ""
         echo -e "Les données sont enregistrées dans le fichier" "${GREEN}$path_info_file""Info_""$user_inf""_$(date +%Y-%m-%d).txt${NC}" && sleep 3s
     else
