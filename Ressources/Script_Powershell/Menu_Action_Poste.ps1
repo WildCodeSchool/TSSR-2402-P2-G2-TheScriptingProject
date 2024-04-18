@@ -93,12 +93,17 @@ function Shutdown
             "1"
             {
                 Write-Host "Arrêt instantané du poste distant en cours" -ForegroundColor Yellow -BackgroundColor Black
+                try {
                     Invoke-Command -ComputerName $IpDistante -Credential $Credentials -ScriptBlock { 
-                    shutdown /s /f /t 0 
-                    }
-                Start-Sleep -Seconds 1
+                        shutdown /s /f /t 0 
+                        }
                 Write-Host "Commande d'arrêt instantané envoyée avec succès à $IpDistante."
                 Read-Host "Appuyer sur Entrée pour continuer ..."
+                    }
+                catch {
+                    Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red -BackgroundColor White
+                    Read-Host "Appuyer sur Entrée pour continuer ..."
+                    }
             }
 
             "2"
@@ -106,28 +111,36 @@ function Shutdown
                 Write-Host "Arrêt planifié du poste distant avec message d'avertissement en cours" -ForegroundColor Yellow -BackgroundColor Black
                 $Timer_S1 = Read-Host "Indiquer le compte à rebours (en secondes) "
                 $MessageTimer_S1 = Read-Host "Indiquer le message à envoyer au poste distant "
-                Start-Sleep -Seconds 1
+                    try {
                     Invoke-Command -ComputerName $IpDistante -Credential $Credentials -ScriptBlock {
-                    param ($Timer_S1, $MessageTimer_S1)
-                    Start-Sleep -Seconds 1
-                    shutdown /s /f /t $Timer_S1 /c "$MessageTimer_S1"
-                    } -ArgumentList $Timer_S1, $MessageTimer_S1
-                Write-Host "Commande d'arrêt planifié avec message d'avertissement envoyée avec succès à $IpDistante."
-                Read-Host "Appuyer sur Entrée pour continuer ..."
+                        param ($Timer_S1, $MessageTimer_S1)
+                        shutdown /s /f /t $Timer_S1 /c "$MessageTimer_S1"
+                        } -ArgumentList $Timer_S1, $MessageTimer_S1
+                    Write-Host "Commande d'arrêt planifié avec message d'avertissement envoyée avec succès à $IpDistante."
+                    Read-Host "Appuyer sur Entrée pour continuer ..."
+                    }
+                    catch {
+                    Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red -BackgroundColor White
+                    Read-Host "Appuyer sur Entrée pour continuer ..."
+                    }
             }
 
             "3"
             {
                 Write-Host "Arrêt planifié du poste distant en cours" -ForegroundColor Yellow -BackgroundColor Black
                 $Timer_S2 = Read-Host "Indiquer le compte à rebours (en secondes) : "
-                Start-Sleep -Seconds 1
+                    try {
                     Invoke-Command -ComputerName $IpDistante -Credential $Credentials -ScriptBlock {
-                    param ($Timer_S2)
-                    Start-Sleep -Seconds 1
-                    shutdown /s /f /t $Timer_S2
-                    } -ArgumentList $Timer_S2
-                Write-Host "Commande d'arrêt planifié envoyée avec succès à $IpDistante."
-                Read-Host "Appuyer sur Entrée pour continuer ..."
+                        param ($Timer_S2)
+                        shutdown /s /f /t $Timer_S2
+                        } -ArgumentList $Timer_S2
+                    Write-Host "Commande d'arrêt planifié envoyée avec succès à $IpDistante."
+                    Read-Host "Appuyer sur Entrée pour continuer ..."
+                    }
+                    catch {
+                    Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red -BackgroundColor White
+                    Read-Host "Appuyer sur Entrée pour continuer ..."
+                    }
             }
             
             default
@@ -167,12 +180,16 @@ function Reboot
             "1"
             {
                 Write-Host "Redémarrage instantané du poste distant en cours" -ForegroundColor Yellow -BackgroundColor Black
+                    try {
                     Invoke-Command -ComputerName $IpDistante -Credential $Credentials -ScriptBlock {
-                    shutdown /r /f /t 0
+                        shutdown /r /f /t 0
+                        }
+                    Write-Host "Commande de redémarrage du poste distant envoyée avec succès à $IpDistante."
                     }
-                Start-Sleep -Seconds 1
-                Write-Host "Commande de redémarrage du poste distant envoyée avec succès à $IpDistante."
-                Read-Host "Appuyer sur Entrée pour continuer ..."
+                    catch {
+                    Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red -BackgroundColor White
+                    Read-Host "Appuyer sur Entrée pour continuer ..."
+                }
             }
 
             "2"
@@ -180,30 +197,37 @@ function Reboot
                 Write-Host "Redémarrage planifié du poste distant avec message d'avertissement en cours" -ForegroundColor Yellow -BackgroundColor Black
                 $Timer_R1 = Read-Host "Indiquer le compte à rebours (en secondes) : "
                 $MessageTimer_R1 = Read-Host "Indiquer le message à envoyer au poste distant : "
-                Start-Sleep -Seconds 1
-                Invoke-Command -ComputerName $IpDistante -Credential $Credentials -ScriptBlock {
-                    param ($Timer_R1, $MessageTimer_R1)
-                    Start-Sleep -Seconds 1
-                    shutdown /r /f /t $Timer_R1 /c "$MessageTimer_R1"
-                    } -ArgumentList $Timer_R1, $MessageTimer_R1
-                Start-Sleep -Seconds 1
-                Write-Host "Commande de redémarrage du poste distant avec message d'avertissement envoyée avec succès à $IpDistante."
-                Read-Host "Appuyer sur Entrée pour continuer ..."
+                    try {
+                    Invoke-Command -ComputerName $IpDistante -Credential $Credentials -ScriptBlock {
+                        param ($Timer_R1, $MessageTimer_R1)
+                        shutdown /r /f /t $Timer_R1 /c "$MessageTimer_R1"
+                        } -ArgumentList $Timer_R1, $MessageTimer_R1
+                    Write-Host "Commande de redémarrage du poste distant avec message d'avertissement envoyée avec succès à $IpDistante."
+                    Read-Host "Appuyer sur Entrée pour continuer ..."
+                    }
+                    catch {
+                    Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red -BackgroundColor White
+                    Read-Host "Appuyer sur Entrée pour continuer ..."
+                }
             }
 
             "3"
             {
                 Write-Host "Redémarrage planifié du poste distant en cours" -ForegroundColor Yellow -BackgroundColor Black
                 $Timer_R2 = Read-Host "Indiquer le compte à rebours (en secondes) : "
-                Start-Sleep -Seconds 1
-                Invoke-Command -ComputerName $IpDistante -Credential $Credentials -ScriptBlock {
-                    param ($Timer_R2)
-                    Start-Sleep -Seconds 1
-                    shutdown /r /f /t $Timer_R2
-                    } -ArgumentList $Timer_R2
-                Start-Sleep -Seconds 1
-                Write-Host "Commande de redémarrage du poste distant envoyée avec succès à $IpDistante."
-                Read-Host "Appuyer sur Entrée pour continuer ..."
+                    try {
+                    Invoke-Command -ComputerName $IpDistante -Credential $Credentials -ScriptBlock {
+                        param ($Timer_R2)
+                        Start-Sleep -Seconds 1
+                        shutdown /r /f /t $Timer_R2
+                        } -ArgumentList $Timer_R2
+                    Write-Host "Commande de redémarrage du poste distant envoyée avec succès à $IpDistante."
+                    Read-Host "Appuyer sur Entrée pour continuer ..."
+                    }
+                    catch {
+                        Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red -BackgroundColor White
+                        Read-Host "Appuyer sur Entrée pour continuer ..."
+                    }
             }
             
             default
@@ -231,15 +255,21 @@ function Lock
 	If ($ConfLock -eq "O")
     {
 		Write-Host "Session du poste distant en cours de vérouillage" -ForegroundColor Yellow -BackgroundColor Black
-        Invoke-Command -ComputerName $IpDistante -Credential $Credentials -ScriptBlock {
-            logoff console
+            try {
+                Invoke-Command -ComputerName $IpDistante -Credential $Credentials -ScriptBlock {
+                    logoff console
+                    }
+                Write-Host "Commande de vérouillage de la session du poste distant envoyée avec succès à $IpDistante."
+                Read-Host "Appuyer sur Entrée pour continuer ..."
             }
-		Start-Sleep -Seconds 1
-        Write-Host "Commande de vérouillage de la session du poste distant envoyée avec succès à $IpDistante."
-        Read-Host "Appuyer sur Entrée pour continuer ..."
+            catch {
+                Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red -BackgroundColor White
+                Read-Host "Appuyer sur Entrée pour continuer ..."
+            }
+    }
 
 # Si confirmation NOK, sortie de la fonction "Vérouillage"	
-	Else
+	Else {
 		Write-Host "Opération annulée - Retour au menu précédent" -ForegroundColor Cyan -BackgroundColor Black
 		Start-Sleep -Seconds 1
 		Return	
@@ -252,16 +282,22 @@ function FirewallOn
 {
 # Demande de confirmation + Avertissement
 	Write-Host "ATTENTION : Cette commande peut impacter l'éxécution du script" -ForegroundColor Yellow -BackgroundColor Black
-	$ConfwWOn = Read-Host "Confirmez-vous l'activation du pare-feu sur le poste distant ? [O pour valider ] : " 
+	$ConfwWOn = Read-Host "Confirmez-vous l'activation du pare-feu sur le poste distant ? [O pour valider ] " 
 # Si confirmation OK, éxécution de la commande "Activation du pare-feu"	
 	if ( $ConfwWOn -eq "O" )
     { 
     $Command ={Set-NetFirewallProfile -Enabled true ; Get-NetFirewallProfile | Format-Table Name, Enabled}
-		invoke-Command -ComputerName $IpDistante -ScriptBlock $Command -Credential $Credentials
-		Write-Host "Le pare-feu de le poste distant a bien été activé" -ForegroundColor Yellow -BackgroundColor Black
-		Start-Sleep -Seconds 1
-        Read-Host "Appuyer sur Entrée pour continuer ..."
-	}
+        try {
+            invoke-Command -ComputerName $IpDistante -ScriptBlock $Command -Credential $Credentials
+            Write-Host "Le pare-feu de le poste distant a bien été activé" -ForegroundColor Yellow -BackgroundColor Black
+            Start-Sleep -Seconds 1
+            Read-Host "Appuyer sur Entrée pour continuer ..."
+        }
+        catch {
+            Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red -BackgroundColor White
+            Read-Host "Appuyer sur Entrée pour continuer ..."
+        }
+    }
 # Si confirmation NOK, sortie de la fonction "Activation du pare-feu"
 	else
     {
@@ -276,15 +312,21 @@ function FirewallOff
 {
 # Demande de confirmation + Avertissement
 	Write-Host "ATTENTION : Cette commande peut impacter l'éxécution du script" -ForegroundColor Yellow -BackgroundColor Black
-	$ConfwWOff = Read-Host "Confirmez-vous la désactivation du pare-feu sur le poste distant ? [O pour valider ] : " 
+	$ConfwWOff = Read-Host "Confirmez-vous la désactivation du pare-feu sur le poste distant ? [O pour valider ] " 
 # Si confirmation OK, éxécution de la commande "Activation du pare-feu"	
 	if ( $ConfwWOff -eq "O" )
     { 
     $Command ={Set-NetFirewallProfile -Enabled false ; Get-NetFirewallProfile | Format-Table Name, Enabled}
-		invoke-Command -ComputerName $IpDistante -ScriptBlock $Command -Credential $Credentials
-		Write-Host "Le pare-feu de le poste distant a bien été désactivé" -ForegroundColor Yellow -BackgroundColor Black
-		Start-Sleep -Seconds 1
-        Read-Host "Appuyer sur Entrée pour continuer ..."
+        try {
+            invoke-Command -ComputerName $IpDistante -ScriptBlock $Command -Credential $Credentials
+            Write-Host "Le pare-feu de le poste distant a bien été désactivé" -ForegroundColor Yellow -BackgroundColor Black
+            Start-Sleep -Seconds 1
+            Read-Host "Appuyer sur Entrée pour continuer ..."
+        }
+        catch {
+            Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red -BackgroundColor White
+            Read-Host "Appuyer sur Entrée pour continuer ..."
+        }
 	}
 # Si confirmation NOK, sortie de la fonction "Activation du pare-feu"
 	else
@@ -298,11 +340,11 @@ function FirewallOff
 
 # Fonction "Règles du pare-feu"
 function FirewallRules
- {
+{
 
     # Demande de confirmation + Avertissement concernant la sortie du script dès l'éxécution de cette fonction
     Write-Host "ATTENTION : Les commandes suivantes sont réservées à un public averti" -ForegroundColor Yellow -BackgroundColor Black
-    $ConfFwRules = Read-Host "Confirmez-vous l'accès à la modification des règles du pare-feu ? [O Pour valider] : "
+    $ConfFwRules = Read-Host "Confirmez-vous l'accès à la modification des règles du pare-feu ? [O Pour valider] "
 
     # Si confirmation OK, affichage du sous-menu de la fonction "Règles du pare-feu"
     if ($ConfFwRules -eq "O") {
@@ -319,9 +361,15 @@ function FirewallRules
                 # Affichage de l'état actuel du pare-feu
                 1 {
                     Write-Host "Affichage de l'état actuel des règles du pare-feu" -ForegroundColor Yellow -BackgroundColor Black
-                    Invoke-Command -ComputerName $IpDistante -ScriptBlock { Get-NetFirewallRule } -Credential $Credentials
-                    Start-Sleep -Seconds 1
-					Read-Host "Appuyez sur une touche pour continuer"
+                    try {
+                        Invoke-Command -ComputerName $IpDistante -ScriptBlock { Get-NetFirewallRule } -Credential $Credentials
+                        Start-Sleep -Seconds 1
+                        Read-Host "Appuyez sur une touche pour continuer"
+                    }
+                    catch {
+                        Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red -BackgroundColor White
+                        Read-Host "Appuyer sur Entrée pour continuer ..."
+                    }
                 }
                 # Exécution de la commande d'ouverture de port TCP
                 2 {
@@ -329,61 +377,86 @@ function FirewallRules
                     Start-Sleep -Seconds 1
                     $OpenTCP = Read-Host "Indiquer le n° du port à ouvrir "
 					$NomdeRegleTCP = Read-Host "Spécifier le nom de la règle "
-					$commandfw= {
-					param($DisplayName)	
-					New-NetFirewallRule -DisplayName $DisplayName -Direction inbound -Profile Any -Action Allow -LocalPort $OpenTCP -Protocol TCP
-					}
-	                Write-Host "Ouverture du port TCP $OpenTCP" -ForegroundColor Yellow -BackgroundColor Black
+					$CommandFW= {
+                        param($DisplayName)	
+                        New-NetFirewallRule -DisplayName $DisplayName -Direction inbound -Profile Any -Action Allow -LocalPort $OpenTCP -Protocol TCP
+                    }
+                    Write-Host "Ouverture du port TCP $OpenTCP" -ForegroundColor Yellow -BackgroundColor Black
                     Start-Sleep -Seconds 1
-                    Invoke-Command -ComputerName $IpDistante -ScriptBlock $commandfw -ArgumentList $NomdeRegleTCP -Credential $Credentials
-                    Write-Host "Port TCP $OpenTCP ouvert" -ForegroundColor Yellow -BackgroundColor Black
-                    Start-Sleep -Seconds 1
-                    Read-Host "Appuyez sur une touche pour continuer"
+                    try {
+                        Invoke-Command -ComputerName $IpDistante -ScriptBlock $CommandFW -ArgumentList $NomdeRegleTCP -Credential $Credentials
+                        Write-Host "Port TCP $OpenTCP ouvert" -ForegroundColor Yellow -BackgroundColor Black
+                        Start-Sleep -Seconds 1
+                        Read-Host "Appuyez sur une touche pour continuer"
+                    }
+                    catch {
+                        Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red -BackgroundColor White
+                        Read-Host "Appuyer sur Entrée pour continuer ..."
+                    }
                 }
-			  	# Exécution de la commande d'ouverture de port UDP
+                # Exécution de la commande d'ouverture de port UDP
 				3 {
                     Write-Host "Ouverture d'un port UDP sur tout les profils" -ForegroundColor Yellow -BackgroundColor Black
                     Start-Sleep -Seconds 1
                     $OpenUDP = Read-Host "Indiquer le n° du port à ouvrir "
 					$NomdeRegleUDP = Read-Host "Spécifier le nom de la règle "
-					$commandfw= {
-					param($DisplayName)	
-					New-NetFirewallRule -DisplayName $DisplayName -Direction inbound -Profile Any -Action Allow -LocalPort $OpenUDP -Protocol UDP
+					$CommandFW2= {
+                        param($DisplayName)	
+                        New-NetFirewallRule -DisplayName $DisplayName -Direction inbound -Profile Any -Action Allow -LocalPort $OpenUDP -Protocol UDP
 					}
-	                Write-Host "Ouverture du port UDP $OpenUDP" -ForegroundColor Yellow -BackgroundColor Black
+                    Write-Host "Ouverture du port UDP $OpenUDP" -ForegroundColor Yellow -BackgroundColor Black
                     Start-Sleep -Seconds 1
-                    Invoke-Command -ComputerName $IpDistante -ScriptBlock $commandfw -ArgumentList $NomdeRegleUDP -Credential $Credentials
-                    Write-Host "Port UDP $OpenUDP ouvert" -ForegroundColor Yellow -BackgroundColor Black
-                    Start-Sleep -Seconds 1
-                    Read-Host "Appuyez sur une touche pour continuer"
+                    try {
+                        Invoke-Command -ComputerName $IpDistante -ScriptBlock $CommandFW2 -ArgumentList $NomdeRegleUDP -Credential $Credentials
+                        Write-Host "Port UDP $OpenUDP ouvert" -ForegroundColor Yellow -BackgroundColor Black
+                        Start-Sleep -Seconds 1
+                        Read-Host "Appuyez sur une touche pour continuer"
+                    }
+                    catch {
+                        Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red -BackgroundColor White
+                        Read-Host "Appuyer sur Entrée pour continuer ..."
+                    }
                 }
 				# Exécution de la commande de fermeture de port
                 4 {
                     Write-Host "Suppression d'une règle"
                     Start-Sleep -Seconds 1
                     $RegleSuppr = Read-Host "Indiquer la règle à supprimer : "
-					$commandfw = {
-					param($RulesNames)
-					Remove-NetFirewallRule -displayName $RulesNames}
+					$CommandFW3 = {
+                        param($RulesNames)
+                        Remove-NetFirewallRule -displayName $RulesNames
+                    }
+                    Write-Host "Suppression de la règle $RegleSuppr en cours" -ForegroundColor Yellow -BackgroundColor Black
                     Start-Sleep -Seconds 1
-                    Invoke-Command -ComputerName $IpDistante -ScriptBlock $commandfw -ArgumentList $RegleSuppr -Credential $Credentials
-                    Write-Host "$RegleSuppr règle supprimé"
-                    Start-Sleep -Seconds 1
-                    Read-Host "Appuyez sur une touche pour continuer"
+                    try {
+                        Invoke-Command -ComputerName $IpDistante -ScriptBlock $CommandFW3 -ArgumentList $RegleSuppr -Credential $Credentials
+                        Write-Host "$RegleSuppr règle supprimé"
+                        Start-Sleep -Seconds 1
+                        Read-Host "Appuyez sur une touche pour continuer"
+                    }
+                    catch {
+                        Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red -BackgroundColor White
+                        Read-Host "Appuyer sur Entrée pour continuer ..."
+                    }
                 }	
                 # Exécution de la commande de réinitialisation du pare-feu + Avertissement
                 5 {
                     Write-Host "Réinitialisation du pare-feu" -ForegroundColor Yellow -BackgroundColor Black
                     Write-Host "ATTENTION : Cette commande peut compromettre la connexion à distance" -ForegroundColor Yellow -BackgroundColor Black
-                    $ConfResetFw = Read-Host "Souhaitez-vous tout de même continuer ? [O pour valider] : "
+                    $ConfResetFW = Read-Host "Souhaitez-vous tout de même continuer ? [O pour valider] : "
                     # Si confirmation OK, exécution de la commande de réinitialisation du pare-feu
-                    if ($ConfResetFw -eq "O") {
+                    if ($ConfResetFW -eq "O") {
                         Start-Sleep -Seconds 1
+                        try {
                         Invoke-Command -ComputerName $IpDistante -ScriptBlock { netsh advfirewall reset }  -Credential $Credentials
                         Write-Host "Le pare-feu a été réinitialisé" -ForegroundColor Yellow -BackgroundColor Black
                         Start-Sleep -Seconds 1
                         Read-Host "Appuyez sur une touche pour continuer"
-                        return
+                        }
+                        catch {
+                            Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red -BackgroundColor White
+                            Read-Host "Appuyer sur Entrée pour continuer ..."
+                        }
                     }
                     # Si confirmation NOK, sortie de la fonction "Règles du pare-feu"
                     else {
@@ -430,8 +503,14 @@ function CreateDirectory {
 		}
     # Création d'une variable contenant chemin + nom de dossier
         $Directory = $PathDirectory + $NameDirectory
-		$TestPath = Invoke-Command -ComputerName $IpDistante -ScriptBlock $CMDTestPath -ArgumentList $Directory -Credential $Credentials
-		if ($TestPath -eq "True") 
+        try {
+            $TestPath = Invoke-Command -ComputerName $IpDistante -ScriptBlock $CMDTestPath -ArgumentList $Directory -Credential $Credentials
+        }
+            catch {
+            Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red -BackgroundColor White
+            Read-Host "Appuyer sur Entrée pour continuer ..."
+        }
+        if ($TestPath -eq "True") 
 		{
 		Write-Host "Le dossier existe déjà à l'emplacement spécifié." -ForegroundColor Cyan -BackgroundColor Black
 		Write-Host "Retour au menu précédent" -ForegroundColor Cyan -BackgroundColor Black
@@ -445,11 +524,16 @@ function CreateDirectory {
         param($Folder)
         New-Item -ItemType Directory -Path $Folder
         }
-		Invoke-Command -ComputerName $IpDistante -ScriptBlock $CMDCreate -ArgumentList $Directory -Credential $Credentials
-		
-		Write-Host "Le dossier $NameDirectory a été créé à l'emplacement $PathDirectory sur le poste." -ForegroundColor Yellow -BackgroundColor Black
-		Start-Sleep -Seconds 1
-        Read-Host "Appuyez sur une touche pour continuer"
+            try {
+                Invoke-Command -ComputerName $IpDistante -ScriptBlock $CMDCreate -ArgumentList $Directory -Credential $Credentials
+                Write-Host "Le dossier $NameDirectory a été créé à l'emplacement $PathDirectory sur le poste." -ForegroundColor Yellow -BackgroundColor Black
+                Start-Sleep -Seconds 1
+                Read-Host "Appuyez sur une touche pour continuer"
+            }
+            catch {
+                Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red -BackgroundColor White
+                Read-Host "Appuyer sur Entrée pour continuer ..."
+            }
         }
     }
     # Si confirmation NOK, sortie de la fonction "Création Dossier"
@@ -496,11 +580,16 @@ function RemoveDirectory {
         param($Folder)
         Remove-Item -Path $Folder
         }
-		Invoke-Command -ComputerName $IpDistante -ScriptBlock $CMDRemoval -ArgumentList $NameDirectory2 -Credential $Credentials
-		
-		Write-Host "Le dossier $NameDirectory2 a été supprimé" -ForegroundColor Yellow -BackgroundColor Black
-		Start-Sleep -Seconds 1
-        Read-Host "Appuyez sur une touche pour continuer"
+            try {
+                Invoke-Command -ComputerName $IpDistante -ScriptBlock $CMDRemoval -ArgumentList $NameDirectory2 -Credential $Credentials
+                Write-Host "Le dossier $NameDirectory2 a été supprimé" -ForegroundColor Yellow -BackgroundColor Black
+                Start-Sleep -Seconds 1
+                Read-Host "Appuyez sur une touche pour continuer"
+            }
+            catch {
+                Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red -BackgroundColor White
+                Read-Host "Appuyer sur Entrée pour continuer ..."
+            }
         }
     }
     # Si confirmation NOK, sortie de la fonction "Suppression Dossier"
@@ -536,10 +625,15 @@ function Applications
         If ($ConfAppInstall -eq "O")
         {
             $AppInstall = Read-Host "Indiquer le nom de l'application"
-            Invoke-Command -ComputerName $IpDistante -Credential $Credentials -ScriptBlock { param($AppInstall) choco install $AppInstall -y --force } -ArgumentList $AppInstall
-            Start-Sleep -Seconds 1
-            Read-Host "Appuyez sur une touche pour continuer"
-            Clear-Host
+            try {
+                Invoke-Command -ComputerName $IpDistante -Credential $Credentials -ScriptBlock { param($AppInstall) choco install $AppInstall -y --force } -ArgumentList $AppInstall
+                Start-Sleep -Seconds 1
+                Read-Host "Appuyez sur une touche pour continuer"
+            }
+            catch {
+                Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red -BackgroundColor White
+                Read-Host "Appuyer sur Entrée pour continuer ..."
+            }
         }
         else 
         {
@@ -556,10 +650,15 @@ function Applications
         If ($ConfAppUnInstall -eq "O")
         {
             $AppUnInstall = Read-Host "Indiquer le nom de l'application"
-            Invoke-Command -ComputerName $IpDistante -Credential $Credentials -ScriptBlock { param($AppUnInstall) choco uninstall $AppUnInstall -y --force} -ArgumentList $AppUnInstall
-            Start-Sleep -Seconds 1
-            Read-Host "Appuyez sur une touche pour continuer"
-            Clear-Host
+            try {
+                Invoke-Command -ComputerName $IpDistante -Credential $Credentials -ScriptBlock { param($AppUnInstall) choco uninstall $AppUnInstall -y --force} -ArgumentList $AppUnInstall
+                Start-Sleep -Seconds 1
+                Read-Host "Appuyez sur une touche pour continuer"
+            }
+            catch {
+                Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red -BackgroundColor White
+                Read-Host "Appuyer sur Entrée pour continuer ..."
+            }
         }
         else 
         {
@@ -577,10 +676,15 @@ function Applications
         If ($ConfSearchAppChoco -eq "O")
         {
             $AppSearchChoco = Read-Host "Indiquer le nom de l'application à rechercher sur ChocolaTey"
-            Invoke-Command -ComputerName $IpDistante -Credential $Credentials -ScriptBlock { param($AppSearchChoco) choco search --by-id-only $AppSearchChoco } -ArgumentList $AppSearchChoco
-            Start-Sleep -Seconds 1
-            Read-Host "Appuyez sur une touche pour continuer"
-            Clear-Host
+            try {
+                Invoke-Command -ComputerName $IpDistante -Credential $Credentials -ScriptBlock { param($AppSearchChoco) choco search --by-id-only $AppSearchChoco } -ArgumentList $AppSearchChoco
+                Start-Sleep -Seconds 1
+                Read-Host "Appuyez sur une touche pour continuer"
+            }
+            catch {
+                Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red -BackgroundColor White
+                Read-Host "Appuyer sur Entrée pour continuer ..."
+            }
         }
         else 
         {
@@ -598,10 +702,15 @@ function Applications
         If ($ConfSearchAppPC -eq "O")
         {
             Write-Host "Voici la liste des applications installées sur le poste : "
-            Invoke-Command -ComputerName $IpDistante -Credential $Credentials -ScriptBlock { choco list }
-            Start-Sleep -Seconds 1
-            Read-Host "Appuyez sur une touche pour continuer"
-            Clear-Host
+            try {
+                Invoke-Command -ComputerName $IpDistante -Credential $Credentials -ScriptBlock { choco list }
+                Start-Sleep -Seconds 1
+                Read-Host "Appuyez sur une touche pour continuer"
+            }
+            catch {
+                Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red -BackgroundColor White
+                Read-Host "Appuyer sur Entrée pour continuer ..."
+            }
         }
         else 
         {
@@ -620,10 +729,15 @@ function Applications
         If ($ConfSearchMajAppPC -eq "O")
         {
             Write-Host "Voici la liste des mises à jour disponibles des applications sur le poste : "
-            Invoke-Command -ComputerName $IpDistante -Credential $Credentials -ScriptBlock {choco outdated}
-            Start-Sleep -Seconds 1
-            Read-Host "Appuyez sur une touche pour continuer"
-            Clear-Host
+            try {
+                Invoke-Command -ComputerName $IpDistante -Credential $Credentials -ScriptBlock {choco outdated}
+                Start-Sleep -Seconds 1
+                Read-Host "Appuyez sur une touche pour continuer"
+            }
+            catch {
+                Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red -BackgroundColor White
+                Read-Host "Appuyer sur Entrée pour continuer ..."
+            }
         }
         else 
         {
@@ -641,10 +755,15 @@ function Applications
         If ($ConfMajApp -eq "O")
         {
             $AppMaj = Read-Host "Indiquer le nom de l'application à mettre à jour"
-            Invoke-Command -ComputerName $IpDistante -Credential $Credentials -ScriptBlock { param($AppMaj) choco upgrade $AppMaj -y } -ArgumentList $AppMaj
-            Start-Sleep -Seconds 1
-            Read-Host "Appuyez sur une touche pour continuer"
-            Clear-Host
+            try {
+                Invoke-Command -ComputerName $IpDistante -Credential $Credentials -ScriptBlock { param($AppMaj) choco upgrade $AppMaj -y } -ArgumentList $AppMaj
+                Start-Sleep -Seconds 1
+                Read-Host "Appuyez sur une touche pour continuer"
+            }
+            catch {
+                Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red -BackgroundColor White
+                Read-Host "Appuyer sur Entrée pour continuer ..."
+            }
         }
         else 
         {
@@ -662,10 +781,15 @@ function Applications
         If ($ConfMajAppAll -eq "O")
         {
             Write-Host "Toutes les applications du poste vont être mises à jour: " -ForegroundColor Yellow -BackgroundColor Black
-            Invoke-Command -ComputerName $IpDistante -Credential $Credentials -ScriptBlock {choco upgrade all -y}
-            Start-Sleep -Seconds 1
-            Read-Host "Appuyez sur une touche pour continuer"
-            Clear-Host
+            try {
+                Invoke-Command -ComputerName $IpDistante -Credential $Credentials -ScriptBlock {choco upgrade all -y}
+                Start-Sleep -Seconds 1
+                Read-Host "Appuyez sur une touche pour continuer"
+            }
+            catch {
+                Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red -BackgroundColor White
+                Read-Host "Appuyer sur Entrée pour continuer ..."
+            }
         }
         else 
         {
@@ -708,17 +832,27 @@ function RemoteControl
                 1
                 { 
                     Write-Host "Contrôle par interface graphique (GUI)" -ForegroundColor Yellow -BackgroundColor Black
-                    mstsc -v $IpDistante
-                    Start-Sleep -Seconds 1
-                    Read-Host "Appuyez sur une touche pour continuer"
-                    return
+                    try {
+                        mstsc -v $IpDistante
+                        Start-Sleep -Seconds 1
+                        Read-Host "Appuyez sur une touche pour continuer"
+                    }
+                    catch {
+                        Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red -BackgroundColor White
+                        Read-Host "Appuyer sur Entrée pour continuer ..."
+                    }
                 }
 
                 2
                 {
                     Write-Host "Contrôle par le terminal PowerShell" -ForegroundColor Yellow -BackgroundColor Black
-                    Enter-PSSession -ComputerName $IpDistante -Credential $Credentials
-                    return
+                    try {
+                        Enter-PSSession -ComputerName $IpDistante -Credential $Credentials
+                    }
+                    catch {
+                        Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red -BackgroundColor White
+                        Read-Host "Appuyer sur Entrée pour continuer ..."
+                    }
                 }
 
                 Default 
@@ -751,9 +885,14 @@ function RemoteScript
         {
             Write-Host "Le script $NameScript existe" -ForegroundColor Yellow -BackgroundColor Black
             Write-Host "Le script $NameScript va être éxécuté" -ForegroundColor Yellow -BackgroundColor Black
-            Start-Sleep -Seconds 1
-            Invoke-Command -ComputerName $IpDistante -Credential $Credentials -ScriptBlock { Set-ExecutionPolicy RemoteSigned -Scope CurrentUser  }
-            Invoke-Command -ComputerName $IpDistante -Credential $Credentials -ScriptBlock { param($PathNameScript) & $PathNameScript } -ArgumentList $PathNameScript
+            try {
+                Invoke-Command -ComputerName $IpDistante -Credential $Credentials -ScriptBlock { Set-ExecutionPolicy RemoteSigned -Scope CurrentUser  }
+                Invoke-Command -ComputerName $IpDistante -Credential $Credentials -ScriptBlock { param($PathNameScript) & $PathNameScript } -ArgumentList $PathNameScript
+            }
+            catch {
+                Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red -BackgroundColor White
+                Read-Host "Appuyer sur Entrée pour continuer ..."
+            }
         }  
         else 
         {
