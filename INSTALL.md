@@ -2,11 +2,83 @@
 
 ## Documentation Administrateur
 
-- Pré-requis techniques
+## Configuration des VM (Important)
 
-### A. Installation Powershell 7.4.1
+### 1. VM Windows Client
 
-**Sur la VM server Windows SRVWIN01 uniquement**
+#### Prérequis : 
+ - Nom de Machine : CLIWIN01
+ - Utilisateur : wilder (dans le groupe des admins locaux)
+ - Mot de passe : Azerty1*
+ - IP adresse : 172.16.10.20/24
+
+#### Configuration obligatoire :
+
+* Désactivation du pare-feu,
+Ouvrir une console PowerShell en administrateur 
+```powershell
+Set-NetFirewallProfile -Profile Domain,Public,Private -Enabled False
+```
+
+* Configuration de démarrage automatique et démarrage du service **Registre Distant**
+![registre](https://github.com/WildCodeSchool/TSSR-2402-P2-G2-TheScriptingProject/blob/Dev/Ressources/Image_Greg/registre.PNG?raw=true)
+
+
+* Créer un compte identique au compte administrateur du serveur : **Administrator** et le mettre dans le groupe des **administrateurs locaux**
+
+![admin](https://github.com/WildCodeSchool/TSSR-2402-P2-G2-TheScriptingProject/blob/Dev/Ressources/Image_Greg/admin.PNG?raw=true)
+
+* Ouvrir une console PowerShell en administrateur
+```powershell
+# Récupérer l'index de l'interface
+Get-NetConnectionProfile
+# Modifier le profile
+Set-NetConnectionProfile -InterfaceIndex <Index> -NetworkCategory Private
+# Si le pare-feu est activé mettre l'exception WinRM
+Enable-NetFirewallRule -Name WINRM-HTTP-In-Tcp
+```
+* Ouvrir un terminal **cmd.exe** en administrateur et exécuter les commandes :
+```cmd
+# Configuration du LocalAccountTokenFilterPolicy
+reg add HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System /v LocalAccountTokenFilterPolicy /t REG_DWORD /d 1 /f
+
+# Configuration du WinRM
+winrm quickconfig
+```
+
+* Il est probable que le service WinRM ne soit pas configuré pour démarrer automatiquement. Voici comment le configurer pour un démarrage automatique :
+
+1. Ouvre une console PowerShell en tant qu'administrateur.
+2. Exécute la commande suivante :
+    ```powershell
+    Set-Service -Name winrm -StartupType 'Automatic'
+    ```
+3. Pour démarrer le service immédiatement, utilise :
+    ```powershell
+    Start-Service -Name winrm
+    ```
+
+Après ces étapes, le service WinRM devrait démarrer automatiquement à chaque redémarrage de la machine.
+
+### 2. VM Windows Server 2022
+
+#### Prérequis : 
+
+- Nom de Machine : SRVWIN01
+- Utilisateur : Administrator (dans le groupe des admins locaux)
+- Mot de passe : Azerty1* 
+- IP adresse : 172.16.10.05/24
+
+#### Configuration obligatoire :
+
+**Ajouter le PC client à la liste des hôte de confiance avec la commande :**
+```powershell
+Set-Item WSMan:\localhost\Client\TrustedHosts -Value 172.16.10.20
+```
+
+**Installation Powershell 7.4.1**
+
+
 
 - Pour installer PowerShell sur Windows, utilisez le lien suivant pour télécharger le package d’installation depuis GitHub.
 
@@ -26,40 +98,49 @@ Vous trouverez Powershell 7.4.1 dans les applications.
 
 ![find](https://github.com/WildCodeSchool/TSSR-2402-P2-G2-TheScriptingProject/blob/Dev/Ressources/Image_Greg/find.PNG?raw=true)
 
-### B. Configuration du SSH
+### 3. VM Ubuntu Client
 
-**Important : Action à réaliser sur les VM server Windows SRVWIN01 et client CLIWIN01**
+#### Prérequis : 
+ - Nom de Machine : CLILIN01
+ - Utilisateur : wilder (dans lse groupe sudo)
+ - Mot de passe : Azerty1*
+ - IP adresse : 172.16.10.30/24
 
-- Exécuter Powershell en "mode administrateur"
+#### Configuration obligatoire :
+**A. Installation SSH**
 
-- Pour installer le service SSH :
-```powershell
-Add-WindowsCapability -Online -Name OpenSSH.Server
-```
-  
-![SSH_WinServ_1](https://raw.githubusercontent.com/WildCodeSchool/TSSR-2402-P1-G1-SecurisationDeMotDePasse/main/Images/SSH%20WinServ/SSH_WinServ_1.jpg)
+ - Exécuter le Terminal
 
-<br>
-
-- Pour un démarrage automatique :
-
-```powershell 
-Set-Service sshd -StartupType Automatic
+```bash
+sudo apt-get install openssh-server
 ```
 
-![SSH_WinServ_2](https://raw.githubusercontent.com/WildCodeSchool/TSSR-2402-P1-G1-SecurisationDeMotDePasse/main/Images/SSH%20WinServ/SSH_WinServ_2.jpg)
+![UBUNTU](https://raw.githubusercontent.com/WildCodeSchool/TSSR-2402-P1-G1-SecurisationDeMotDePasse/main/Images/Images%20Greg/install%20ssh%20Ubuntu%201.PNG)
 
-<br>
-
-- Redémarer la VM et vérifier dans les Services que le serveur OpenSSH est bien "**en cours**" et en "**démarrage automatique**"
-
-![SSH_WinServ_4](https://raw.githubusercontent.com/WildCodeSchool/TSSR-2402-P1-G1-SecurisationDeMotDePasse/main/Images/SSH%20WinServ/SSH_WinServ_4.jpg)
+Lors du message : **`Souhaitez-vous continuer ? [O/n]`**-> Taper **`O`**
 
 
+- Une fois le SSH installé, il faut l'activer :
+```bash
+ sudo systemctl enable ssh
+```
+
+![active](https://raw.githubusercontent.com/WildCodeSchool/TSSR-2402-P1-G1-SecurisationDeMotDePasse/main/Images/Images%20Greg/activation%20ssh%20ubuntu.PNG)
 
 
+**B. Installation des paquets nécessaires** 
 
+- Exécuter le Terminal
 
+- Pour installer le paquet de la commande ifconfig faire :
+  ```bash
+  sudo apt install net-tools
+  ```
 
+  ![](https://www.cjoint.com/doc/24_04/NDro5ObmV1n_IFconfig.png)
 
-- FAQ
+- Pour installer le paquet de la commande
+  ```bash
+  sudo apt install sysstat
+  ```
+  ![](https://www.cjoint.com/doc/24_04/NDrpmkMXM2n_Bash-proceseru.png)
