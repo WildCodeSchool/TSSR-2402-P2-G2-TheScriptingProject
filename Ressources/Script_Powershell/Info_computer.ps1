@@ -73,15 +73,18 @@ switch ($ChoiceInfoComputer)
             }
 }
 #Fonction pour avoir la version de l'os
-function GetOS {
+function GetOS 
+{
     Clear-Host
     $GetOSConf = Read-Host "Voulez-vous voir la version de l'OS du poste distant ? [O pour valider]"
     Clear-Host
     Write-Host "Voici la version de l'OS du poste distant : "
     Write-Host ""
 
-    if ($GetOSConf -eq "O") {
-        try {
+    if ($GetOSConf -eq "O") 
+    {
+        try 
+        {
             $GetOSCMD = Invoke-Command -ComputerName $IPDistante -Credential $Credentials -ScriptBlock {(systeminfo)[2,3]}
             $GetOSCMD
             Write-Host ""
@@ -93,12 +96,14 @@ function GetOS {
             Read-Host "Appuyez sur Entrée pour continuer ..."
             #return
         }
-        catch {
+        catch 
+        {
             Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red
             Read-Host "Appuyer sur Entrée pour continuer ..."
         }
     }
-    else {
+    else 
+    {
         Clear-Host
         Write-Host "Mauvais choix - Retour au menu précédent"
         Start-Sleep -Seconds 2
@@ -107,16 +112,19 @@ function GetOS {
 }
 
 #Fonction pour avoir les cartes reseaux presente sur la machine.
-function NbrCarte {
+function NbrCarte 
+{
     Clear-Host
     $NbrCarteConf = Read-Host "Voulez-vous voir le nombre d'interfaces présentes sur le poste distant ? [O pour valider]"
     
-    if ($NbrCarteConf -eq "O") {
+    if ($NbrCarteConf -eq "O") 
+    {
         Clear-Host
         Write-Host "Voici la liste des interfaces présentes sur le poste distant : "
         
         #Invoke-Command -ComputerName $IPDistante -Credential $Credentials -ScriptBlock { Get-NetAdapter }#| Where-Object { $_.Status -eq 'Up'  } a rajouter si on veux uniquement ceux qui sont actif 
-        try{
+        try
+        {
             $NbrCarteCMD = Invoke-Command -ComputerName $IPDistante -Credential $Credentials -ScriptBlock { ipconfig /all }
             $NbrCarteCMD
             Write-Host ""
@@ -128,12 +136,14 @@ function NbrCarte {
         
             Read-Host "Appuyez sur Entrée pour continuer ..."
         }
-        catch {
+        catch 
+        {
             Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red
             Read-Host "Appuyer sur Entrée pour continuer ..."
         }
     }
-    else {
+    else 
+    {
         Clear-Host
         Write-Host "Mauvais choix - Retour au menu précédent"
         Start-Sleep -Seconds 2
@@ -142,15 +152,18 @@ function NbrCarte {
 }
 
 #Fonction pour demander l'address IP
-function IPInterface {
+function IPInterface 
+{
     Clear-Host
     $IPInterfaceConf = Read-Host "Voulez-vous voir les adresses IP de chaque interface (IPv4 / IPv6) du poste distant ? [O pour valider]"
     
-    if ($IPInterfaceConf -eq "O") {
+    if ($IPInterfaceConf -eq "O") 
+    {
         Clear-Host
         Write-Host "Voici les adresses IP de chaque interface (IPv4 / IPv6) du poste distant : "
         
-        try{
+        try
+        {
             $IPInterfaceCMD = Invoke-Command -ComputerName $IPDistante -Credential $Credentials -ScriptBlock {Get-NetIPAddress | Format-Table InterfaceAlias, AddressFamily, IPAddress }
             $IPInterfaceCMD
             Write-Host ""    
@@ -161,12 +174,14 @@ function IPInterface {
             Write-Host ""
             Read-Host "Appuyez sur Entrée pour continuer ..."
         }
-        catch {
+        catch 
+        {
             Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red
             Read-Host "Appuyer sur Entrée pour continuer ..."
         }
     }    
-    else {
+    else 
+    {
         Clear-Host
         Write-Host "Mauvais choix - Retour au menu précédent"
         Start-Sleep -Seconds 2
@@ -176,14 +191,17 @@ function IPInterface {
 
 
 #Fonction pour avoir les addresses MAC
-function MACDemande {
+function MACDemande 
+{
     Clear-Host
     $MACDemandeConf = Read-Host "Voulez-vous voir la liste des adresses MAC de chaque interface du poste distant ? [O pour valider]"
 
-    if ($MACDemandeConf -eq "O") {
+    if ($MACDemandeConf -eq "O") 
+    {
         clear-Host
         Write-Host "Voici la liste des adresses MAC de chaque interface du poste distant : "
-        try{
+        try
+        {
             $MACDemande = Invoke-Command -ComputerName $IPDistante -Credential $Credentials -ScriptBlock {Get-NetAdapter | Format-Table Name, MacAddress, Status} 
             $MACDemande
             Write-Host ""
@@ -194,12 +212,14 @@ function MACDemande {
             Write-Host ""
             Read-Host "Appuyez sur Entrée pour continuer ..."
         }
-        catch {
+        catch 
+        {
             Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red
             Read-Host "Appuyer sur Entrée pour continuer ..."
         }
     }
-    else {
+    else 
+    {
         Clear-Host
         Write-Host "Mauvais choix - Retour au menu précédent"
         Start-Sleep -Seconds 2
@@ -208,14 +228,17 @@ function MACDemande {
 }
 
 #Fonction pour avoir la liste des application et paquet installer sur la machine
-function ApplicationList {
+function ApplicationList 
+{
     clear-host
     $ApplicationListConf = Read-Host "Voulez-vous la liste des applications/paquets installés sur le poste distant ? [O pour valider]"
 
-    if ($ApplicationListConf -eq "O") {
+    if ($ApplicationListConf -eq "O") 
+    {
         clear-host
         Write-Host "Voici la liste des applications/paquets installés sur le poste distant : "
-        try{
+        try
+        {
             $ApplicationListCMD = Invoke-Command -ComputerName $IPDistante -Credential $Credentials -ScriptBlock {
                 $INSTALLED = Get-ItemProperty HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall\* |  Select-Object DisplayName, DisplayVersion
                 $INSTALLED += Get-ItemProperty HKLM:\Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\* | Select-Object DisplayName, DisplayVersion
@@ -230,12 +253,14 @@ function ApplicationList {
             Write-Host ""
             Read-Host "Appuyez sur Entrée pour continuer ..."
         }
-        catch {
+        catch 
+        {
             Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red
             Read-Host "Appuyer sur Entrée pour continuer ..."
         }
     }
-    else {
+    else 
+    {
         clear-host
         Write-Host "Mauvais choix - Retour au menu précédent"
         Start-Sleep -Seconds 2
@@ -243,14 +268,17 @@ function ApplicationList {
 }
 
 # Fonction liste des utilisateurs locaux
-function UserList {
+function UserList 
+{
     clear-host
     $UserListConf = read-host "Voulez-vous voir la liste des utilisateurs locaux du poste distant ? [O pour valider]"
 
-    if ($UserListConf -eq "O") {
+    if ($UserListConf -eq "O") 
+    {
         clear-host
         $UserListCMD = Write-Host "Voici la liste des utilisateurs locaux du poste distant : "
-        try{
+        try
+        {
             Invoke-Command -ComputerName $IPDistante -Credential $Credentials -ScriptBlock {Get-LocalUser | Format-Table Name}
             $UserListCMD
             Write-Host ""
@@ -261,12 +289,14 @@ function UserList {
             Write-Host ""
             Read-Host "Appuyez sur Entrée pour continuer ..."
         }
-        catch {
+        catch 
+        {
             Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red
             Read-Host "Appuyer sur Entrée pour continuer ..."
         }
     }
-    else {
+    else 
+    {
         clear-host
         Write-Host "Mauvais choix - Retour au menu précédent"
         Start-Sleep -Seconds 2
@@ -274,14 +304,17 @@ function UserList {
 }
 
 #Fonction Type de CPU, nombre de coeurs, etc
-function GetCPU {
+function GetCPU 
+{
     clear-host
     $GetCPUConf = Read-Host "Voulez-vous voir les détails du CPU du poste distant ? [O pour valider]"
 
-    if ($GetCPUConf -eq "O") {
+    if ($GetCPUConf -eq "O") 
+    {
         clear-host
         Write-Host "Voici les détails du CPU du poste distant : "
-        try{
+        try
+        {
             $GetCPUCMD = Invoke-Command -ComputerName $IPDistante -Credential $Credentials -ScriptBlock {Get-WmiObject -Class Win32_Processor | Format-Table Name, NumberOfCores}
             $GetCPUCMD
             Write-Host ""
@@ -292,12 +325,14 @@ function GetCPU {
             Write-Host ""
             Read-Host "Appuyez sur Entrée pour continuer ..."
         }
-        catch {
+        catch 
+        {
             Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red
             Read-Host "Appuyer sur Entrée pour continuer ..."
         }
     }
-    else {
+    else 
+    {
         clear-host
         Write-Host "Mauvais choix - Retour au menu précédent"
         Start-Sleep -Seconds 2
@@ -305,14 +340,17 @@ function GetCPU {
 }
 
 #Fonction detail de la ram
-function RAMInfo {
+function RAMInfo 
+{
     clear-host
     $RAMInfoConf = Read-Host "Voulez-vous voir les détails de la RAM du poste distant ? [O pour valider]"
 
-    if ($RAMInfoConf -eq "O") {
+    if ($RAMInfoConf -eq "O") 
+    {
         clear-host
         Write-Host "Voici les détails de la RAM du poste distant : "
-        try{
+        try
+        {
             $RAMInfoCMD = Invoke-Command -ComputerName $IPDistante -Credential $Credentials -ScriptBlock {(systeminfo)[24,25]}
             $RAMInfoCMD
             Write-Host ""
@@ -323,12 +361,14 @@ function RAMInfo {
             Write-Host ""
             Read-Host "Appuyez sur Entrée pour continuer ..."
         }
-        catch {
+        catch 
+        {
             Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red
             Read-Host "Appuyer sur Entrée pour continuer ..."
         }
     }
-    else {
+    else 
+    {
         clear-host
         Write-Host "Mauvais choix - Retour au menu précédent"
         Start-Sleep -Seconds 2
@@ -336,14 +376,17 @@ function RAMInfo {
 }
 
 #Fonction utilisation du disque
-function DiskInfo {
+function DiskInfo 
+{
     clear-host
     $DiskInfoConf = Read-Host "Voulez-vous voir les détails du/des disques du poste distant ? [O pour valider]"
 
-    if ($DiskInfoConf -eq "O") {
+    if ($DiskInfoConf -eq "O") 
+    {
         clear-host
         Write-Host "Voici les détails du/des disques du poste distant : "
-        try{   
+        try
+        {   
             $DiskInfoCMD = Invoke-Command -ComputerName $IPDistante -Credential $Credentials -ScriptBlock {get-wmiObject Win32_LogicalDisk | Format-Table DeviceID,Size, Freespace}
             $DiskInfoCMD
             Write-Host ""
@@ -354,12 +397,14 @@ function DiskInfo {
             Write-Host ""
             Read-Host "Appuyez sur Entrée pour continuer ..."
         }
-        catch {
+        catch 
+        {
             Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red
             Read-Host "Appuyer sur Entrée pour continuer ..."
         }
     }
-    else {
+    else 
+    {
         clear-host
         Write-Host "Mauvais choix - Retour au menu précédent"
         Start-Sleep -Seconds 2
@@ -371,10 +416,12 @@ function ProcesseurInfo {
     clear-host
     $ProcesseurInfoConf = Read-Host "Voulez-vous voir les détails de l'utilisation du processeur du poste distant ? [O pour valider]"
 
-    if ($ProcesseurInfoConf -eq "O") {
+    if ($ProcesseurInfoConf -eq "O") 
+    {
         clear-host
         Write-Host "Voici les details de l'utilisation du processeur du poste distant : "
-        try{       
+        try
+        {       
             $ProcesseurInfoCMD = Invoke-Command -ComputerName $IPDistante -Credential $Credentials -ScriptBlock {Get-Counter "\Processeur(_Total)\% temps processeur"}
             $ProcesseurInfoCMD
             Start-Sleep -Seconds 1
@@ -384,12 +431,14 @@ function ProcesseurInfo {
             Write-Host ""
             Read-Host "Appuyez sur Entrée pour continuer ..."
         }
-        catch {
+        catch 
+        {
             Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red
             Read-Host "Appuyer sur Entrée pour continuer ..."
         }
     }
-    else {
+    else 
+    {
         clear-host
         Write-Host "Mauvais choix - Retour au menu précédent"
         Start-Sleep -Seconds 2
@@ -397,13 +446,16 @@ function ProcesseurInfo {
 }
 
 #Fonction status du parefeu
-function StatutParefeu {
+function StatutParefeu 
+{
     clear-host
     $StatutParefeuConf = Read-Host "Voulez-vous voir le statut du pare-feu du poste distant ? [O pour valider]"
-    if ($StatutParefeuConf -eq "O") {
+    if ($StatutParefeuConf -eq "O") 
+    {
         clear-host
         Write-Host "Voici le statut du pare-feu du poste distant : "
-        try{
+        try
+        {
             $StatutPareFeuCMD = Invoke-Command -ComputerName $IPDistante -Credential $Credentials -ScriptBlock {Get-NetFirewallProfile | Format-Table Name, Enabled}
             $StatutPareFeuCMD
             Write-Host ""
@@ -414,7 +466,8 @@ function StatutParefeu {
             Write-Host ""
             Read-Host "Appuyez sur Entrée pour continuer ..."
         }
-    catch {
+        catch 
+        {
             Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red
             Read-Host "Appuyer sur Entrée pour continuer ..."
         }
@@ -427,13 +480,16 @@ function StatutParefeu {
 }
 
 #Status des ports
-function StatutPort {
+function StatutPort 
+{
     clear-host
     $StatutPortConf = Read-Host "Voulez-vous voir la liste des ports ouverts du poste distant ? [O pour valider]"
-    if ($StatutPortConf -eq "O") {
+    if ($StatutPortConf -eq "O") 
+    {
         clear-host
         Write-Host "Voici la liste des ports ouverts du poste distant : "
-        try{       
+        try
+        {       
             $StatutPortCMD = Invoke-Command -ComputerName $IPDistante -Credential $Credentials -ScriptBlock {Get-NetTCPConnection | Select-Object LocalPort, State | Sort-Object LocalPort -Descending | Format-Table -AutoSize }
             $StatutPortCMD
             Write-Host ""
@@ -444,14 +500,18 @@ function StatutPort {
             Write-Host ""
             Read-Host "Appuyez sur Entrée pour continuer ..."
         }
-        catch {
+        catch 
+        {
             Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red
             Read-Host "Appuyer sur Entrée pour continuer ..."
         } 
     }
-    else {
+    else 
+    {
         clear-host
         Write-Host "Mauvais choix - Retour au menu précédent"
         Start-Sleep -Seconds 2
     }
 }
+
+ShowMenuInfoPoste
