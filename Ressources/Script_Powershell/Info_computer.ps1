@@ -1,5 +1,7 @@
 $NomDistant = Read-Host "Veuillez entrer le nom d'utilisateur du Poste Distante "
+Write-Host ""
 $IpDistante = Read-Host "Veuillez entrer l'adresse IP du Poste Distante "
+Write-Host ""
 $Credentials = Get-Credential -Credential $NomDistant
 
 function ShowMenuInfoPoste {
@@ -77,6 +79,7 @@ function GetOS
 {
     Clear-Host
     $GetOSConf = Read-Host "Voulez-vous voir la version de l'OS du poste distant ? [O pour valider]"
+    Write-Host ""
     Clear-Host
     Write-Host "Voici la version de l'OS du poste distant : "
     Write-Host ""
@@ -90,6 +93,7 @@ function GetOS
             Write-Host ""
             Start-Sleep -Seconds 1
             Write-Host "Les données sont enregistrées dans le fichier" $PathInfoPoste
+            Write-Host ""
             "Voici la version de l'OS du poste distant : " | Out-File -Append -FilePath $PathInfoPoste
             $GetOSCMD | Out-File -Append -FilePath $PathInfoPoste
             Write-Host ""
@@ -99,6 +103,7 @@ function GetOS
         catch 
         {
             Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red
+            Write-Host ""
             Read-Host "Appuyer sur Entrée pour continuer ..."
         }
     }
@@ -116,11 +121,13 @@ function NbrCarte
 {
     Clear-Host
     $NbrCarteConf = Read-Host "Voulez-vous voir le nombre d'interfaces présentes sur le poste distant ? [O pour valider]"
+    Write-Host ""
     
     if ($NbrCarteConf -eq "O") 
     {
         Clear-Host
         Write-Host "Voici la liste des interfaces présentes sur le poste distant : "
+        Write-Host ""
         
         #Invoke-Command -ComputerName $IPDistante -Credential $Credentials -ScriptBlock { Get-NetAdapter }#| Where-Object { $_.Status -eq 'Up'  } a rajouter si on veux uniquement ceux qui sont actif 
         try
@@ -130,6 +137,7 @@ function NbrCarte
             Write-Host ""
             Start-Sleep -Seconds 1
             Write-Host "Les données sont enregistrées dans le fichier" $PathInfoPoste
+            Write-Host ""
             "Voici la liste des interfaces présentes sur le poste distant : " | Out-File -Append -FilePath $PathInfoPoste
             $NbrCarteCMD | Out-File -Append -FilePath $PathInfoPoste
             Write-Host ""
@@ -139,7 +147,9 @@ function NbrCarte
         catch 
         {
             Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red
+            Write-Host ""
             Read-Host "Appuyer sur Entrée pour continuer ..."
+            Write-Host ""
         }
     }
     else 
@@ -161,6 +171,7 @@ function IPInterface
     {
         Clear-Host
         Write-Host "Voici les adresses IP de chaque interface (IPv4 / IPv6) du poste distant : "
+        Write-Host ""
         
         try
         {
@@ -169,6 +180,7 @@ function IPInterface
             Write-Host ""    
             Start-Sleep -Seconds 1
             Write-Host "Les données sont enregistrées dans le fichier" $PathInfoPoste
+            Write-Host ""
             "Voici les adresses IP de chaque interface (IPv4 / IPv6) du poste distant : " | Out-File -Append -FilePath $PathInfoPoste
             $IPInterfaceCMD | Out-File -Append -FilePath $PathInfoPoste
             Write-Host ""
@@ -177,6 +189,7 @@ function IPInterface
         catch 
         {
             Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red
+            Write-Host ""
             Read-Host "Appuyer sur Entrée pour continuer ..."
         }
     }    
@@ -215,6 +228,7 @@ function MACDemande
         catch 
         {
             Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red
+            Write-Host ""
             Read-Host "Appuyer sur Entrée pour continuer ..."
         }
     }
@@ -232,6 +246,7 @@ function ApplicationList
 {
     clear-host
     $ApplicationListConf = Read-Host "Voulez-vous la liste des applications/paquets installés sur le poste distant ? [O pour valider]"
+    Write-Host ""
 
     if ($ApplicationListConf -eq "O") 
     {
@@ -256,6 +271,7 @@ function ApplicationList
         catch 
         {
             Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red
+            Write-Host ""
             Read-Host "Appuyer sur Entrée pour continuer ..."
         }
     }
@@ -272,6 +288,7 @@ function UserList
 {
     clear-host
     $UserListConf = read-host "Voulez-vous voir la liste des utilisateurs locaux du poste distant ? [O pour valider]"
+    Write-Host ""
 
     if ($UserListConf -eq "O") 
     {
@@ -284,6 +301,7 @@ function UserList
             Write-Host ""
             Start-Sleep -Seconds 1
             Write-Host "Les données sont enregistrées dans le fichier" $PathInfoPoste
+            Write-Host ""
             "Voici la liste des utilisateurs locaux du poste distant : " | Out-File -Append -FilePath $PathInfoPoste
             $UserListCMD | Out-File -Append -FilePath $PathInfoPoste
             Write-Host ""
@@ -292,6 +310,7 @@ function UserList
         catch 
         {
             Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red
+            Write-Host ""
             Read-Host "Appuyer sur Entrée pour continuer ..."
         }
     }
@@ -313,6 +332,7 @@ function GetCPU
     {
         clear-host
         Write-Host "Voici les détails du CPU du poste distant : "
+        Write-Host ""
         try
         {
             $GetCPUCMD = Invoke-Command -ComputerName $IPDistante -Credential $Credentials -ScriptBlock {Get-WmiObject -Class Win32_Processor | Format-Table Name, NumberOfCores}
@@ -320,6 +340,7 @@ function GetCPU
             Write-Host ""
             Start-Sleep -Seconds 1
             Write-Host "Les données sont enregistrées dans le fichier" $PathInfoPoste
+            Write-Host ""
             "Voici les détails du CPU du poste distant : " | Out-File -Append -FilePath $PathInfoPoste
             $GetCPUCMD | Out-File -Append -FilePath $PathInfoPoste
             Write-Host ""
@@ -328,6 +349,7 @@ function GetCPU
         catch 
         {
             Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red
+            Write-Host ""
             Read-Host "Appuyer sur Entrée pour continuer ..."
         }
     }
@@ -349,6 +371,7 @@ function RAMInfo
     {
         clear-host
         Write-Host "Voici les détails de la RAM du poste distant : "
+        Write-Host ""
         try
         {
             $RAMInfoCMD = Invoke-Command -ComputerName $IPDistante -Credential $Credentials -ScriptBlock {(systeminfo)[24,25]}
@@ -356,6 +379,7 @@ function RAMInfo
             Write-Host ""
             Start-Sleep -Seconds 1
             Write-Host "Les données sont enregistrées dans le fichier" $PathInfoPoste
+            Write-Host ""
             "Voici les détails de la RAM du poste distant : " | Out-File -Append -FilePath $PathInfoPoste
             $RAMInfoCMD | Out-File -Append -FilePath $PathInfoPoste
             Write-Host ""
@@ -364,6 +388,7 @@ function RAMInfo
         catch 
         {
             Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red
+            Write-Host ""
             Read-Host "Appuyer sur Entrée pour continuer ..."
         }
     }
@@ -385,6 +410,7 @@ function DiskInfo
     {
         clear-host
         Write-Host "Voici les détails du/des disques du poste distant : "
+        Write-Host ""
         try
         {   
             $DiskInfoCMD = Invoke-Command -ComputerName $IPDistante -Credential $Credentials -ScriptBlock {get-wmiObject Win32_LogicalDisk | Format-Table DeviceID,Size, Freespace}
@@ -392,6 +418,7 @@ function DiskInfo
             Write-Host ""
             Start-Sleep -Seconds 1
             Write-Host "Les données sont enregistrées dans le fichier" $PathInfoPoste
+            Write-Host ""
             "Voici les détails du/des disques du poste distant : " | Out-File -Append -FilePath $PathInfoPoste
             $DiskInfoCMD | Out-File -Append -FilePath $PathInfoPoste
             Write-Host ""
@@ -400,6 +427,7 @@ function DiskInfo
         catch 
         {
             Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red
+            Write-Host ""
             Read-Host "Appuyer sur Entrée pour continuer ..."
         }
     }
@@ -415,6 +443,7 @@ function DiskInfo
 function ProcesseurInfo {
     clear-host
     $ProcesseurInfoConf = Read-Host "Voulez-vous voir les détails de l'utilisation du processeur du poste distant ? [O pour valider]"
+    Write-Host ""
 
     if ($ProcesseurInfoConf -eq "O") 
     {
@@ -434,6 +463,7 @@ function ProcesseurInfo {
         catch 
         {
             Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red
+            Write-Host ""
             Read-Host "Appuyer sur Entrée pour continuer ..."
         }
     }
@@ -454,6 +484,7 @@ function StatutParefeu
     {
         clear-host
         Write-Host "Voici le statut du pare-feu du poste distant : "
+        Write-Host ""
         try
         {
             $StatutPareFeuCMD = Invoke-Command -ComputerName $IPDistante -Credential $Credentials -ScriptBlock {Get-NetFirewallProfile | Format-Table Name, Enabled}
@@ -469,6 +500,7 @@ function StatutParefeu
         catch 
         {
             Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red
+            Write-Host ""
             Read-Host "Appuyer sur Entrée pour continuer ..."
         }
     }
@@ -484,6 +516,7 @@ function StatutPort
 {
     clear-host
     $StatutPortConf = Read-Host "Voulez-vous voir la liste des ports ouverts du poste distant ? [O pour valider]"
+    Write-Host ""
     if ($StatutPortConf -eq "O") 
     {
         clear-host
@@ -503,6 +536,7 @@ function StatutPort
         catch 
         {
             Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red
+            Write-Host ""
             Read-Host "Appuyer sur Entrée pour continuer ..."
         } 
     }
