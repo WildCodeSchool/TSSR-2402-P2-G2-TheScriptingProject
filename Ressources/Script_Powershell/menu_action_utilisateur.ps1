@@ -1,11 +1,14 @@
 #menu_action_utilisateur.ps1
 
 # En attendant le script final
-$NomDistant = "wilder"
-$IpDistante = "172.16.10.20"
 
+# Demande d'identification
+$NomDistant = Read-Host "Veuillez entrer le nom d'utilisateur du Poste Distante "
+$IpDistante = Read-Host "Veuillez entrer l'adresse IP du Poste Distante "
+$Credentials = Get-Credential -Credential $NomDistant
 
-function 1 
+# Fonction Création de compte utilisateur local
+function CreateUser 
 {
     #Création d'un compte utilisateur local 
     # Demande quel utilisateur à créer
@@ -29,7 +32,9 @@ function 1
     }
 }
 
-function 2 
+
+# Fonction Suppression de compte utilisateur local
+function DelUser 
 {
     # Demande quel compte utilisateur à supprimer
     $userDel = Read-Host "Quel compte utilisateur souhaitez-vous supprimer ?"
@@ -58,7 +63,9 @@ function 2
     }
 }
 
-function 3 
+
+# Fonction Désactivation de compte utilisateur local
+function DisableUser 
 {
     # Demande quel compte utilisateur à désactiver
     $userLock = Read-Host "Quel compte utilisateur souhaitez-vous désactiver ?"
@@ -87,8 +94,8 @@ function 3
     }
 }
 
-
-function 4 
+# Fonction Changement de mot de passe de compte utilisateur local
+function PasswordUser
 {
     # Modification d'un mot de passe
     # Demande changement du mot de passe -> pour quel utilisateur ?
@@ -110,7 +117,8 @@ function 4
     }
 }
 
-function 5 
+# Fonction ajout utilisateur à un groupe d'administration
+function UserAddAdminGroup 
 {
     # Demande quel compte utilisateur à ajouter
     $userAdm = Read-Host "Quel compte utilisateur souhaitez-vous ajouter au groupe d'administration?"
@@ -130,7 +138,8 @@ function 5
     }
 }
 
-Function 6 
+# Fonction ajout utilisateur à un groupe local
+Function UserAddGroup
 {
     # Demande quel compte à ajouter au groupe local
     $userAddG = Read-Host "Quel compte utilisateur souhaitez-vous ajouter à un groupe local?"
@@ -163,7 +172,8 @@ Function 6
     }
 }
 
-Function 7 
+# Fonction suppression utilisateur à un groupe local
+Function UserDelGroup
 {
     # Suppression utilisateur d'un groupe local
     $userDel = Read-Host "Quel compte utilisateur souhaitez-vous supprimer d'un groupe local?"
