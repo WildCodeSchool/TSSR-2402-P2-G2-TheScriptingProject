@@ -73,8 +73,9 @@ Après ces étapes, le service WinRM devrait démarrer automatiquement à chaque
 
 **Ajouter le PC client à la liste des hôte de confiance avec la commande :**
 ```powershell
-Set-Item WSMan:\localhost\Client\TrustedHosts -Value 172.16.10.20
+Set-Item WSMan:\localhost\Client\TrustedHosts -Value *
 ```
+(le caractère "*" permet d'ajouter toutes les machines clientes distantes, qu'importe leurs adresses IP)
 
 **Installation Powershell 7.4.1**
 
