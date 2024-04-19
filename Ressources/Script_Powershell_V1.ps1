@@ -5,6 +5,7 @@
 # Réalisé en collaboration par Anais Lenglet, Bruno Serna, Grégory Dubois, Patrick Baggiolini et Thomas Scotti
 # Dernière mise à jour le  1 / 04 / 2024
 # Historique version
+# V0.95 -- 19 / 04 / 2024 Mise en forme du script (Couleurs / Correction syntaxique)
 # V0.9 -- 19 / 04 / 2024 mise à jour fonction ACTION ET INFO et ajout Try/Catch
 # V0.85 -- 18 / 04 / 2024 mise à jour fonction actions 
 # V0.8 -- 17 / 04 / 2024 Ajout fonction info user / computer
@@ -28,20 +29,20 @@ function Menu_Principal
     # Effacer l'écran
         Clear-Host
     # Demande de premier choix ACTION / INFORMATION ou QUITTER
-        Write-Host "=================================="
-        Write-Host "|         Menu Principal        | "
-        Write-Host "=================================="
+        Write-Host "==================================" -ForegroundColor DarkYellow
+        Write-Host "|         MENU PRINCIPAL        | " -ForegroundColor DarkYellow
+        Write-Host "==================================" -ForegroundColor DarkYellow
         Write-Host ""
-        Write-Host "Poste Distante : $NomDistant@$IpDistante"
+        Write-Host "Poste distant : $NomDistant@$IpDistante" -ForegroundColor Yellow
         Write-Host ""
-        Write-Host "Bonjour, voici les différents choix possibles à effectuer sur le poste distant :"
+        Write-Host "Bonjour, voici les différents choix possibles à effectuer sur le poste distant :" -ForegroundColor DarkYellow
         Write-Host ""
-        Write-Host "[1] ACTION sur UTILISATEUR ou POSTE"
-        Write-Host "[2] INFORMATION sur UTILISATEUR ou POSTE"
+        Write-Host "[1] ACTION" -ForegroundColor DarkYellow
+        Write-Host "[2] INFORMATION" -ForegroundColor DarkYellow
         Write-Host ""
-        Write-Host "[*] Arrêter le script "
+        Write-Host "[*] Arrêter le script" -ForegroundColor DarkYellow
         Write-Host ""
-        $ChoixMenuPrincipal = Read-Host "Veuillez faire votre choix : "
+        $ChoixMenuPrincipal = Read-Host "Faites votre choix parmi la sélection ci-dessus "
     # Traitement de l'action choisie
         Switch ($ChoixMenuPrincipal) 
         {
@@ -49,7 +50,7 @@ function Menu_Principal
         # Envoie vers MENU ACTION
             { 
                 Write-Host ""
-                Write-Host "Vous avez choisi ACTION"
+                Write-Host "Vous avez choisi ACTION" -ForegroundColor DarkYellow
                 Start-Sleep -Seconds 2
                 $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Menu Action a été choisi" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log        
                 Menu_Action
@@ -59,7 +60,7 @@ function Menu_Principal
         # Envoie vers MENU INFORMATION
             { 
                 Write-Host ""
-                Write-Host "Vous avez choisi INFORMATION"
+                Write-Host "Vous avez choisi INFORMATION" -ForegroundColor DarkYellow
                 Start-Sleep -Seconds 2
                 $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Menu Information a été choisi" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
                 Menu_Information
@@ -69,7 +70,7 @@ function Menu_Principal
         # Arrêt Script
             { 
                 Write-Host ""
-                Write-Host "Arrêt du script"
+                Write-Host "Arrêt du script" -ForegroundColor DarkYellow
                 Start-Sleep -Seconds 2
                 $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Sortie du Script" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log    
                 $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-********EndScript********" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
@@ -79,10 +80,10 @@ function Menu_Principal
         # Erreur de commande
             { 
                 Write-Host ""
-                Write-Host "Choix incorrect, veuillez recommencer."
+                Write-Host "Choix incorrect - Veuillez recommencer" -ForegroundColor DarkYellow
                 $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Choix incorrect" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
                 
-                Read-Host "Appuyez sur entrée pour continuer"
+                Read-Host "Appuyez sur Entrée pour continuer ... "
                 Start-Sleep -Seconds 2
             }
         }
@@ -97,27 +98,25 @@ function Menu_Principal
     # Effacer l'écran
         Clear-Host
     # Demande choix ACTION UTILISATEUR / ACTION POSTE DISTANT / retour menu principal
-        Write-Host "=================================="
-        Write-Host "|             ACTION            | "
-        Write-Host "=================================="
+        Write-Host "==================================" -ForegroundColor DarkYellow
+        Write-Host "|             ACTION            | " -ForegroundColor DarkYellow
+        Write-Host "==================================" -ForegroundColor DarkYellow
         Write-Host ""
-        Write-Host "Poste Distante : $NomDistant@$IpDistante"
+        Write-Host "Poste distant : $NomDistant@$IpDistante" -ForegroundColor Yellow
         Write-Host ""
-        Write-Host "Voici les différents choix possibles :"
+        Write-Host "[1] ACTION sur UTILISATEUR" -ForegroundColor DarkYellow
+        Write-Host "[2] ACTION sur POSTE" -ForegroundColor DarkYellow
         Write-Host ""
-        Write-Host "[1] ACTION sur UTILISATEUR"
-        Write-Host "[2] ACTION sur POSTE"
+        Write-Host "[*] Retour au menu principal" -ForegroundColor DarkYellow
         Write-Host ""
-        Write-Host "[*] Retour au menu principal"
-        Write-Host ""
-        $ChoixMenuAction = Read-Host "Veuillez faire votre choix : "
+        $ChoixMenuAction = Read-Host "Faites votre choix parmi la sélection ci-dessus "
     # Traitement de l'action choisie
         Switch ($ChoixMenuAction) 
         {
             "1" 
             { 
                 Write-Host ""
-                Write-Host "Vous avez choisi ACTION sur UTILISATEUR"
+                Write-Host "Vous avez choisi ACTION sur UTILISATEUR" -ForegroundColor DarkYellow
                 Start-Sleep -Seconds 2
                 $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Menu Action sur Uutilisateur a été choisi" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
                 Menu_Action_Utilisateur
@@ -125,7 +124,7 @@ function Menu_Principal
             "2" 
             { 
                 Write-Host ""
-                Write-Host "Vous avez choisi ACTION sur POSTE"
+                Write-Host "Vous avez choisi ACTION sur POSTE" -ForegroundColor DarkYellow
                 Start-Sleep -Seconds 2
                 $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Menu Action sur Poste a été choisi" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
                 Menu_Action_Poste
@@ -133,7 +132,7 @@ function Menu_Principal
             "*" 
             { 
                 Write-Host ""
-                Write-Host "Retour au menu principal"
+                Write-Host "Retour au menu principal" -ForegroundColor Cyan
                 Start-Sleep -Seconds 2
                 $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Retour au menu principal" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
                 Menu_Principal 
@@ -141,9 +140,9 @@ function Menu_Principal
             Default 
             { 
                 Write-Host ""
-                Write-Host "Choix incorrect, veuillez recommencer."
+                Write-Host "Choix incorrect - Veuillez recommencer" -ForegroundColor Cyan
                 $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Choix incorrect" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
-                Read-Host "Appuyez sur entrée pour continuer"
+                Read-Host "Appuyez sur Entrée pour continuer ... "
                 Start-Sleep -Seconds 2
             }
         }
@@ -158,28 +157,25 @@ function Menu_Information
     # Effacer l'écran
         Clear-Host
     # Demande choix INFO UTILISATEUR / INFO POSTE DISTANT / retour menu principal
-        Write-Host "=================================="
-        Write-Host "=================================="
-        Write-Host "|          INFORMATION           |"
-        Write-Host "=================================="
+        Write-Host "======================================" -ForegroundColor DarkYellow
+        Write-Host "|             INFORMATION            |" -ForegroundColor DarkYellow
+        Write-Host "======================================" -ForegroundColor DarkYellow
         Write-Host ""
-        Write-Host "Poste Distante : $NomDistant@$IpDistante"
+        Write-Host "Poste distant : $NomDistant@$IpDistante" -ForegroundColor Yellow
         Write-Host ""
-        Write-Host "Voici les différents choix possibles :"
+        Write-Host "[1] INFORMATION sur UTILISATEUR" -ForegroundColor DarkYellow
+        Write-Host "[2] INFORMATION sur POSTE" -ForegroundColor DarkYellow
         Write-Host ""
-        Write-Host "[1] INFORMATION sur UTILISATEUR"
-        Write-Host "[2] INFORMATION sur POSTE"
+        Write-Host "[*] Retour au menu principal" -ForegroundColor DarkYellow
         Write-Host ""
-        Write-Host "[*] Retour au menu principal"
-        Write-Host ""
-        $ChoixMenuInformation = Read-Host "Veuillez faire votre choix : "
+        $ChoixMenuInformation = Read-Host "Faites votre choix parmi la sélection ci-dessus "
     # Traitement de l'action choisie
         Switch ($ChoixMenuInformation) 
         {
             "1" 
             { 
                 Write-Host ""
-                Write-Host "Vous avez choisi INFORMATION sur UTILISATEUR"
+                Write-Host "Vous avez choisi INFORMATION sur UTILISATEUR" -ForegroundColor DarkYellow
                 Start-Sleep -Seconds 2
                 $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Menu Information sur Utilsiateur choisit" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
                 Menu_Information_Utilisateur
@@ -187,7 +183,7 @@ function Menu_Information
             "2"
             { 
                 Write-Host ""
-                Write-Host "Vous avez choisi INFORMATION sur POSTE"
+                Write-Host "Vous avez choisi INFORMATION sur POSTE" -ForegroundColor DarkYellow
                 Start-Sleep -Seconds 2
                 $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Menu Information sur Poste choisit" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
                 Menu_Information_Poste 
@@ -195,7 +191,7 @@ function Menu_Information
             "*" 
             { 
                 Write-Host ""
-                Write-Host "Retour au menu principal"
+                Write-Host "Retour au menu principal" -ForegroundColor Cyan
                 Start-Sleep -Seconds 2
                 $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Retour au menu principal" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
                 Menu_Principal 
@@ -203,9 +199,9 @@ function Menu_Information
             Default 
             { 
                 Write-Host ""
-                Write-Host "Choix incorrect, veuillez recommencer."
+                Write-Host "Choix incorrect - Veuillez recommencer" -ForegroundColor Cyan
                 $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Choix incorrect" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
-                Read-Host "Appuyez sur entrée pour continuer"
+                Read-Host "Appuyez sur Entrée pour continuer ... "
                 Start-Sleep -Seconds 2
             }
         }
@@ -229,34 +225,32 @@ function Menu_Action_Utilisateur
         Clear-Host
     # Demande choix ACTION UTILISATEUR / retour menu précédent / retour menu principal
         Clear-Host
-        Write-Host "=================================="
-        Write-Host "|        ACTION UTILISATEUR     | "
-        Write-Host "=================================="
+        Write-Host "==================================================" -ForegroundColor DarkYellow
+        Write-Host "|           ACTION UTILISATEUR DISTANT           |" -ForegroundColor DarkYellow
+        Write-Host "==================================================" -ForegroundColor DarkYellow
         Write-Host ""
-        Write-Host "Poste Distante : $NomDistant@$IpDistante"
+        Write-Host "Poste distant : $NomDistant@$IpDistante" -ForegroundColor Yellow
         Write-Host ""
-        Write-Host "Voici les différents choix possibles :"
+        Write-Host "[1] Création d'un compte utilisateur local" -ForegroundColor DarkYellow
+        Write-Host "[2] Suppresion d'un compte utilisateur local" -ForegroundColor DarkYellow
+        Write-Host "[3] Désactivation d'un compte utilisateur local" -ForegroundColor DarkYellow
+        Write-Host "[4] Modification d'un mot de passe" -ForegroundColor DarkYellow
+        Write-Host "[5] Ajout d'un compte à un groupe d'administration" -ForegroundColor DarkYellow
+        Write-Host "[6] Ajout d'un compte à un groupe local" -ForegroundColor DarkYellow
+        Write-Host "[7] Sortie d'un compte à un groupe local" -ForegroundColor DarkYellow
         Write-Host ""
-        Write-Host "[1] Création d'un compte utilisateur local"
-        Write-Host "[2] Suppresion d'un compte utilisateur local"
-        Write-Host "[3] Désactivation d'un compte utilisateur local"
-        Write-Host "[4] Modification d'un mot de passe"
-        Write-Host "[5] Ajout d'un compte à un groupe d'administration"
-        Write-Host "[6] Ajout d'un compte à un groupe local"
-        Write-Host "[7] Sortie d'un compte à un groupe local"
-        Write-Host ""
-        Write-Host "[0] Retour au menu précédent"
-        Write-Host "[*] Retour au menu principal"
+        Write-Host "[0] Retour au menu précédent" -ForegroundColor DarkYellow
+        Write-Host "[*] Retour au menu principal" -ForegroundColor DarkYellow
         Write-Host ""
     # Demande du choix action
-        $ChoixMenuActionUtilisateur = Read-Host "Veuillez faire votre choix : "
+        $ChoixMenuActionUtilisateur = Read-Host "Faites votre choix parmi la sélection ci-dessus "
     # Traitement de l'action choisie
         Switch ($ChoixMenuActionUtilisateur) 
         {
             "1" 
             { 
                 Write-Host ""
-                Write-Host "Vous avez choisi de créer un compte utilisateur local"
+                Write-Host "Vous avez choisi de créer un compte utilisateur local" -ForegroundColor DarkYellow
                 Start-Sleep -Seconds 2
                 $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Création de compte utilisateur chosit" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
                 CreateUser               
@@ -265,7 +259,7 @@ function Menu_Action_Utilisateur
             "2" 
             { 
                 Write-Host ""
-                Write-Host "Vous avez choisi de supprimer un compte utilisateur local"
+                Write-Host "Vous avez choisi de supprimer un compte utilisateur local" -ForegroundColor DarkYellow
                 Start-Sleep -Seconds 2
                 $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Suppression de compte utilisateur chosit" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
                 DelUser              
@@ -273,7 +267,7 @@ function Menu_Action_Utilisateur
             "3" 
             { 
                 Write-Host ""
-                Write-Host "Vous avez choisi de désactiver un compte utilisateur local"
+                Write-Host "Vous avez choisi de désactiver un compte utilisateur local" -ForegroundColor DarkYellow
                 Start-Sleep -Seconds 2
                 $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Désactivation de compte utilisateur choisit" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log  
                 DisableUser             
@@ -281,7 +275,7 @@ function Menu_Action_Utilisateur
             "4" 
             { 
                 Write-Host ""
-                Write-Host "Vous avez choisi de modifier un mot de passe"
+                Write-Host "Vous avez choisi de modifier un mot de passe" -ForegroundColor DarkYellow
                 Start-Sleep -Seconds 2
                 $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Changement de mot de passe choisit" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log   
                 PasswordUser      
@@ -289,7 +283,7 @@ function Menu_Action_Utilisateur
             "5" 
             { 
                 Write-Host ""
-                Write-Host "Vous avez choisi d'ajouter un compte à un groupe d'administration"
+                Write-Host "Vous avez choisi d'ajouter un compte utilisateur à un groupe d'administration" -ForegroundColor DarkYellow
                 Start-Sleep -Seconds 2
                 $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Ajout d'un compte à un groupe d'administration choisit" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log 
                 UserAddAdminGroup
@@ -297,7 +291,7 @@ function Menu_Action_Utilisateur
             "6" 
             { 
                 Write-Host ""
-                Write-Host "Vous avez choisi d'ajouter un compte à un groupe local"
+                Write-Host "Vous avez choisi d'ajouter un compte utilisateur à un groupe local" -ForegroundColor DarkYellow
                 Start-Sleep -Seconds 2
                 $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Ajout d'un compte à un groupe local choisit" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log    
                 UserAddGroup 
@@ -305,7 +299,7 @@ function Menu_Action_Utilisateur
             "7"
             { 
                 Write-Host ""
-                Write-Host "Vous avez choisi de retirer un compte d'un groupe local"
+                Write-Host "Vous avez choisi de retirer un compte utilisateur d'un groupe local" -ForegroundColor DarkYellow
                 Start-Sleep -Seconds 2
                 $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Suppression d'un compte à un groupe local choisit" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log     
                 UserDelGroup
@@ -313,7 +307,7 @@ function Menu_Action_Utilisateur
             "0" 
             { 
                 Write-Host ""
-                Write-Host "Retour au menu précédent"
+                Write-Host "Retour au menu précédent" 
                 Start-Sleep -Seconds 2
                 $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Retour au menu précédent" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
                 Menu_Action    
@@ -321,7 +315,7 @@ function Menu_Action_Utilisateur
             "*" 
             { 
                 Write-Host ""
-                Write-Host "Retour au menu principal"
+                Write-Host "Retour au menu principal" -ForegroundColor Cyan
                 Start-Sleep -Seconds 2
                 $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Retour au menu principal" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
                 Menu_Principal 
@@ -329,9 +323,9 @@ function Menu_Action_Utilisateur
             Default 
             { 
                 Write-Host ""
-                Write-Host "Choix incorrect, veuillez recommencer."
+                Write-Host "Choix incorrect - Veuillez recommencer" -ForegroundColor Cyan
                 $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Choix incorrect" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
-                Read-Host "Appuyez sur entrée pour continuer"
+                Read-Host "Appuyez sur Entrée pour continuer ... "
                 Start-Sleep -Seconds 2
             }
         }
@@ -347,10 +341,10 @@ function Menu_Action_Poste
     Clear-Host
 # Affichage Menu Action
     Write-Host "==============================================" -ForegroundColor DarkYellow
-    Write-Host '             ACTION POSTE DISTANT             ' -ForegroundColor DarkYellow
+    Write-Host "|             ACTION POSTE DISTANT           |" -ForegroundColor DarkYellow
     Write-Host "==============================================" -ForegroundColor DarkYellow
     Write-Host "" -ForegroundColor DarkYellow
-    Write-Host "Machine distante : $NomDistant@$IpDistante" -ForegroundColor Yellow -BackgroundColor Black
+    Write-Host "Poste distant : $NomDistant@$IpDistante" -ForegroundColor Yellow
     Write-Host "" -ForegroundColor DarkYellow
     Write-Host "[1]  Arrêt" -ForegroundColor DarkYellow
     Write-Host "[2]  Redémarrage" -ForegroundColor DarkYellow
@@ -375,7 +369,7 @@ function Menu_Action_Poste
             "1" 
             { 
                 Write-Host ""
-                Write-Host "Vous avez choisi d'arrêter le poste"
+                Write-Host "Vous avez choisi d'arrêter le poste" -ForegroundColor DarkYellow
                 $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Arrêt poste choisit" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
                 Start-Sleep -Seconds 2    
                 Shutdown
@@ -383,7 +377,7 @@ function Menu_Action_Poste
             "2" 
             { 
                 Write-Host ""
-                Write-Host "Vous avez choisi de redémarrer le poste"
+                Write-Host "Vous avez choisi de redémarrer le poste" -ForegroundColor DarkYellow
                 $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Redémarrage poste choisit" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
                 Start-Sleep -Seconds 2        
                 Reboot
@@ -391,7 +385,7 @@ function Menu_Action_Poste
             "3"
             { 
                 Write-Host ""
-                Write-Host "Vous avez choisi de vérouiller le poste"
+                Write-Host "Vous avez choisi de vérouiller le poste" -ForegroundColor DarkYellow
                 $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Vérouillage du poste choisit" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
                 Start-Sleep -Seconds 2         
                 Lock
@@ -399,14 +393,14 @@ function Menu_Action_Poste
             "4" 
             { 
                 Write-Host ""
-                Write-Host "Vous avez choisi de mettre à jour le poste"
+                Write-Host "Vous avez choisi de mettre à jour le poste" -ForegroundColor DarkYellow
                 $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Mise à jour du poste choisit" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
                 Start-Sleep -Seconds 2    
             }
             "5" 
             { 
                 Write-Host ""
-                Write-Host "Vous avez choisi de créer un dossier"
+                Write-Host "Vous avez choisi de créer un dossier" -ForegroundColor DarkYellow
                 $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Création d'un dossier sur poste choisit" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
                 Start-Sleep -Seconds 2    
                 CreateDirectory
@@ -414,7 +408,7 @@ function Menu_Action_Poste
             "6"
             { 
                 Write-Host ""
-                Write-Host "Vous avez choisi de supprimer un dossier"
+                Write-Host "Vous avez choisi de supprimer un dossier" -ForegroundColor DarkYellow
                 $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Suppresision d'un dossier sur poste choisit" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
                 Start-Sleep -Seconds 2    
                 RemoveDirectory
@@ -422,7 +416,7 @@ function Menu_Action_Poste
             "7" 
             { 
                 Write-Host ""
-                Write-Host "Vous avez choisi de prendre la main sur le poste"
+                Write-Host "Vous avez choisi de prendre la main sur le poste" -ForegroundColor DarkYellow
                 $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Prise en main sur poste choisit" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
                 Start-Sleep -Seconds 2    
                 RemoteControl
@@ -430,7 +424,7 @@ function Menu_Action_Poste
             "8" 
             { 
                 Write-Host ""
-                Write-Host "Vous avez choisi d'activer le pare-feu sur le poste"
+                Write-Host "Vous avez choisi d'activer le pare-feu sur le poste" -ForegroundColor DarkYellow
                 $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Activation du pare-feu du poste choisit" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
                 Start-Sleep -Seconds 2    
                 FirewallOn
@@ -438,7 +432,7 @@ function Menu_Action_Poste
             "9" 
             { 
                 Write-Host ""
-                Write-Host "Vous avez choisi de désactiver le pare-feu sur le poste"
+                Write-Host "Vous avez choisi de désactiver le pare-feu sur le poste" -ForegroundColor DarkYellow
                 $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Désactivation du pare-feu du poste choisit" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
                 Start-Sleep -Seconds 2    
                 FirewallOff
@@ -446,7 +440,7 @@ function Menu_Action_Poste
             "10" 
             { 
                 Write-Host ""
-                Write-Host "Vous avez choisi de modifier les règles du pare-feu sur le poste"
+                Write-Host "Vous avez choisi de modifier les règles du pare-feu sur le poste" -ForegroundColor DarkYellow
                 $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Modification de règle du pare-feu du poste choisit" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
                 Start-Sleep -Seconds 2    
                 FirewallRules
@@ -454,7 +448,7 @@ function Menu_Action_Poste
             "11" 
             { 
                 Write-Host ""
-                Write-Host "Vous avez choisi d'installer/désinstaller un logiciel sur le poste"
+                Write-Host "Vous avez choisi d'installer/désinstaller un logiciel sur le poste" -ForegroundColor DarkYellow
                 $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Installation/Désinstallation de logiciel sur le poste choisit" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
                 Start-Sleep -Seconds 2    
                 Applications
@@ -462,7 +456,7 @@ function Menu_Action_Poste
             "12"
             { 
                 Write-Host ""
-                Write-Host "Vous avez choisi d'éxécuter un script sur le poste"
+                Write-Host "Vous avez choisi d'éxécuter un script sur le poste" -ForegroundColor DarkYellow
                 $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Exécution d'un script sur le poste distant" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
                 Start-Sleep -Seconds 2    
                 RemoteScript
@@ -470,7 +464,7 @@ function Menu_Action_Poste
             "0" 
             { 
                 Write-Host ""
-                Write-Host "Retour au menu précédent"
+                Write-Host "Retour au menu précédent" -ForegroundColor Cyan
                 $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Retour au menu précédent" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
                 Start-Sleep -Seconds 2
                 Menu_Action
@@ -478,7 +472,7 @@ function Menu_Action_Poste
             "*" 
             { 
                 Write-Host ""
-                Write-Host "Retour au menu principal"
+                Write-Host "Retour au menu principal" -ForegroundColor Cyan
                 Start-Sleep -Seconds 2
                 $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Retour au menu principal" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
                 Menu_Principal 
@@ -486,9 +480,9 @@ function Menu_Action_Poste
             Default 
             { 
                 Write-Host ""
-                Write-Host "Choix incorrect, veuillez recommencer."
+                Write-Host "Choix incorrect - Veuillez recommencer" -ForegroundColor Cyan
                 $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Choix incorrect" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
-                Read-Host "Appuyez sur entrée pour continuer"
+                Read-Host "Appuyez sur Entrée pour continuer ... "
                 Start-Sleep -Seconds 2
             }
         }
@@ -512,32 +506,30 @@ function Menu_Information_Utilisateur
     # Effacer l'écran 
         Clear-Host
     #Demande choix INFOMRATION UTILISATEUR / retour menu précédent / retour menu principal
-        Write-Host "=================================="
-        Write-Host "|    INFORMATION UTILISATEUR    | "
-        Write-Host "=================================="
+        Write-Host "=====================================================================" -ForegroundColor DarkYellow
+        Write-Host "|                  INFORMATION UTILISATEUR DISTANT                  |" -ForegroundColor DarkYellow
+        Write-Host "=====================================================================" -ForegroundColor DarkYellow
         Write-Host ""
-        Write-Host "Poste Distante : $NomDistant@$IpDistante"
+        Write-Host "Poste distant : $NomDistant@$IpDistante" -ForegroundColor Yellow
         Write-Host ""
-        Write-Host "Voici les différents choix possibles :"
+        Write-Host "[1] Date de la dernière connexion de l'utilisateur" -ForegroundColor DarkYellow
+        Write-Host "[2] Date de la dernière modification du mot de passe de l'utilisateur" -ForegroundColor DarkYellow
+        Write-Host "[3] Liste des sessions utilisateurs ouvertes" -ForegroundColor DarkYellow
+        Write-Host "[4] Droits/permissions sur un dossier" -ForegroundColor DarkYellow
+        Write-Host "[5] Droits/permissions sur un fichier" -ForegroundColor DarkYellow
         Write-Host ""
-        Write-Host "[1]  Date de la dernière connexion de l'utilisateur"
-        Write-Host "[2]  Date de la dernière modification du mot de passe de l'utilisateur"
-        Write-Host "[3]  Liste des sessions utilisateurs ouvertes"
-        Write-Host "[4]  Droits/permissions sur un dossier"
-        Write-Host "[5]  Droits/permissions sur un fichier"
-        Write-Host ""
-        Write-Host "[0] Retour au menu précédent"
-        Write-Host "[*] Retour au menu principal"
+        Write-Host "[0] Retour au menu précédent" -ForegroundColor DarkYellow
+        Write-Host "[*] Retour au menu principal" -ForegroundColor DarkYellow
         Write-Host ""
     # Demande du choix action
-        $ChoixMenuInformationUtilisateur = Read-Host "Veuillez faire votre choix : "
+        $ChoixMenuInformationUtilisateur = Read-Host "Faites votre choix parmi la sélection ci-dessus "
     # Traitement de l'action choisie
         Switch ($ChoixMenuInformationUtilisateur) 
         {
             "1" 
             { 
                 Write-Host ""
-                Write-Host "Vous avez choisi de consulter la date de la dernière connexion de l'utilisateur"
+                Write-Host "Vous avez choisi de consulter la date de la dernière connexion de l'utilisateur" -ForegroundColor DarkYellow
                 $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Date dernière connexion utilisateur" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
                 Start-Sleep -Seconds 2    
                 InfoConnexion
@@ -545,7 +537,7 @@ function Menu_Information_Utilisateur
             "2" 
             { 
                 Write-Host ""
-                Write-Host "Vous avez choisi de consulter la date de la dernière modification du mot de passe de l'utilisateur"
+                Write-Host "Vous avez choisi de consulter la date de la dernière modification du mot de passe de l'utilisateur" -ForegroundColor DarkYellow
                 $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Date dernière modificaiton mot de passe utilisateur chosit" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
                 Start-Sleep -Seconds 2    
                 InfoModificationMdp
@@ -553,7 +545,7 @@ function Menu_Information_Utilisateur
             "3" 
             { 
                 Write-Host ""
-                Write-Host "Vous avez choisi de consulter la liste des sessions utilisateurs ouvertes"
+                Write-Host "Vous avez choisi de consulter la liste des sessions utilisateurs ouvertes" -ForegroundColor DarkYellow
                 $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Liste des session utilisateurs ouvertes chosit" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
                 Start-Sleep -Seconds 2    
                 InfoLogSession
@@ -561,7 +553,7 @@ function Menu_Information_Utilisateur
             "4" 
             { 
                 Write-Host ""
-                Write-Host "Vous avez choisi de consulter les droits et permissions sur un dossier"
+                Write-Host "Vous avez choisi de consulter les droits et permissions sur un dossier" -ForegroundColor DarkYellow
                 $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Droits/permission sur un dossier chosit" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
                 Start-Sleep -Seconds 2    
                 droitsDossier
@@ -569,7 +561,7 @@ function Menu_Information_Utilisateur
             "5"
             { 
                 Write-Host ""
-                Write-Host "Vous avez choisi de consulter les droits et permissions sur un fichier"
+                Write-Host "Vous avez choisi de consulter les droits et permissions sur un fichier" -ForegroundColor DarkYellow
                 $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Droits/permission sur un fichier chosit" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
                 Start-Sleep -Seconds 2   
                 droitsFichier
@@ -577,7 +569,7 @@ function Menu_Information_Utilisateur
             "0"
             { 
                 Write-Host ""
-                Write-Host "Retour au menu précédent"
+                Write-Host "Retour au menu précédent" -ForegroundColor Cyan
                 $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Retour au menu précédent" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
                 Start-Sleep -Seconds 2
                 Menu_Information
@@ -585,7 +577,7 @@ function Menu_Information_Utilisateur
             "*" 
             { 
                 Write-Host ""
-                Write-Host "Retour au menu principal"
+                Write-Host "Retour au menu principal" -ForegroundColor Cyan
                 $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Retour au menu principal" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
                 Start-Sleep -Seconds 2
                 Menu_Principal 
@@ -593,9 +585,9 @@ function Menu_Information_Utilisateur
             Default 
             { 
                 Write-Host ""
-                Write-Host "Choix incorrect, veuillez recommencer."
+                Write-Host "Choix incorrect - Veuillez recommencer" -ForegroundColor Cyan
                 $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Choix incorrect" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
-                Read-Host "Appuyez sur entrée pour continuer"
+                Read-Host "Appuyez sur Entrée pour continuer ... "
                 Start-Sleep -Seconds 2
             }
         }
@@ -610,39 +602,37 @@ function Menu_Information_Utilisateur
     # Effacer l'écran
         Clear-Host
     # Demande choix INFOMRATION UTILISATEUR / retour menu précédent / retour menu principal
-        Write-Host "=================================================="
-        Write-Host '        Menu "INFORMATION POSTE DISTANT"          '
-        Write-Host "=================================================="
+        Write-Host "===============================================" -ForegroundColor DarkYellow
+        Write-Host "|          INFORMATION POSTE DISTANT          |" -ForegroundColor DarkYellow
+        Write-Host "===============================================" -ForegroundColor DarkYellow
         Write-Host ""
-        Write-Host "Poste Distante : $NomDistant@$IpDistante"
+        Write-Host "Poste distant : $NomDistant@$IpDistante" -ForegroundColor Yellow
         Write-Host ""
-        Write-Host "Voici les différents choix possibles :"
+        Write-Host "[1]  Version de l'OS" -ForegroundColor DarkYellow
+        Write-Host "[2]  Nombre d'interfaces réseaux" -ForegroundColor DarkYellow
+        Write-Host "[3]  Adresse IP de chaque interface réseau" -ForegroundColor DarkYellow
+        Write-Host "[4]  Adresse MAC de chaque interface réseau" -ForegroundColor DarkYellow
+        Write-Host "[5]  Liste des applications / paquets installés" -ForegroundColor DarkYellow
+        Write-Host "[6]  Liste des utilisateurs locaux" -ForegroundColor DarkYellow
+        Write-Host "[7]  Informations CPU" -ForegroundColor DarkYellow
+        Write-Host "[8]  Mémoire RAM totale & Utilisation" -ForegroundColor DarkYellow
+        Write-Host "[9]  Utilisation du disque dur" -ForegroundColor DarkYellow
+        Write-Host "[10] Utilisation du processeur" -ForegroundColor DarkYellow
+        Write-Host "[11] Statut du pare-feu " -ForegroundColor DarkYellow
+        Write-Host "[12] Liste des ports ouverts sur le pare-feu" -ForegroundColor DarkYellow
         Write-Host ""
-        Write-Host "[1]  Version de l'OS"
-        Write-Host "[2]  Nombre d'interfaces réseaux"
-        Write-Host "[3]  Adresse IP de chaque interface réseau"
-        Write-Host "[4]  Adresse MAC de chaque interface réseau"
-        Write-Host "[5]  Liste des applications / paquets installés"
-        Write-Host "[6]  Liste des utilisateurs locaux"
-        Write-Host "[7]  Informations CPU"
-        Write-Host "[8]  Mémoire RAM totale & Utilisation"
-        Write-Host "[9]  Utilisation du disque dur"
-        Write-Host "[10] Utilisation du processeur"
-        Write-Host "[11] Statut du pare-feu "
-        Write-Host "[12] Liste des ports ouverts sur le pare-feu"
-        Write-Host ""
-        Write-Host "[0] Retour au menu précédent"
-        Write-Host "[*] Retour au menu principal"
+        Write-Host "[0] Retour au menu précédent" -ForegroundColor DarkYellow
+        Write-Host "[*] Retour au menu principal" -ForegroundColor DarkYellow
         Write-Host ""
     # Demande du choix action
-        $ChoixMenuInformationPoste = Read-Host "Veuillez faire votre choix : "
+        $ChoixMenuInformationPoste = Read-Host "Faites votre choix parmi la sélection ci-dessus "
     # Traitement de l'action choisie
         Switch ($ChoixMenuInformationPoste) 
         {
             "1" 
             { 
                 Write-Host ""
-                Write-Host "Vous avez choisi de consulter la version de l'OS"
+                Write-Host "Vous avez choisi de consulter la version de l'OS" -ForegroundColor DarkYellow
                 $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Information version de l'OS  chosit" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
                 Start-Sleep -Seconds 2
                 GetOS
@@ -650,7 +640,7 @@ function Menu_Information_Utilisateur
             "2" 
             { 
                 Write-Host ""
-                Write-Host "Vous avez choisi de consulter le nombre d'interfaces réseaux"
+                Write-Host "Vous avez choisi de consulter le nombre d'interfaces réseaux" -ForegroundColor DarkYellow
                 $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Information sur le nombre d'interfaces réseaux chosit" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
                 Start-Sleep -Seconds 2    
                 NbrCarte
@@ -658,7 +648,7 @@ function Menu_Information_Utilisateur
             "3"
             { 
                 Write-Host ""
-                Write-Host "Vous avez choisi de consulter l'adresse IP de chaque interface réseau"
+                Write-Host "Vous avez choisi de consulter l'adresse IP de chaque interface réseau" -ForegroundColor DarkYellow
                 $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Information adresse IP de chaque interface chosit" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
                 Start-Sleep -Seconds 2    
                 IPInterface
@@ -666,7 +656,7 @@ function Menu_Information_Utilisateur
             "4" 
             { 
                 Write-Host ""
-                Write-Host "Vous avez choisi de consulter l'adresse MAC de chaque interface réseau"
+                Write-Host "Vous avez choisi de consulter l'adresse MAC de chaque interface réseau" -ForegroundColor DarkYellow
                 $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Information adresse MAC de chaque interface chosit" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
                 Start-Sleep -Seconds 2    
                 MACDemande
@@ -674,7 +664,7 @@ function Menu_Information_Utilisateur
             "5" 
             { 
                 Write-Host ""
-                Write-Host "Vous avez choisi de consulter la liste des applications / paquets installés"
+                Write-Host "Vous avez choisi de consulter la liste des applications / paquets installés" -ForegroundColor DarkYellow
                 $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Information Liste des applicattions/paquets chosit" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
                 Start-Sleep -Seconds 2    
                 ApplicationList
@@ -682,7 +672,7 @@ function Menu_Information_Utilisateur
             "6" 
             { 
                 Write-Host ""
-                Write-Host "Vous avez choisi de consulter la liste des utilisateurs locaux"
+                Write-Host "Vous avez choisi de consulter la liste des utilisateurs locaux" -ForegroundColor DarkYellow
                 $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Information Liste utilsiateurs locaux choisit " | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
                 Start-Sleep -Seconds 2    
                 UserList
@@ -690,7 +680,7 @@ function Menu_Information_Utilisateur
             "7"
             { 
                 Write-Host ""
-                Write-Host "Vous avez choisi de consulter la liste des informations CPU"
+                Write-Host "Vous avez choisi de consulter la liste des informations CPU" -ForegroundColor DarkYellow
                 $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Information sur le CPU chosit" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
                 Start-Sleep -Seconds 2    
                 GetCPU
@@ -698,7 +688,7 @@ function Menu_Information_Utilisateur
             "8" 
             { 
                 Write-Host ""
-                Write-Host "Vous avez choisi de consulter la mémoire RAM totale et l'utilisation"
+                Write-Host "Vous avez choisi de consulter la mémoire RAM totale et l'utilisation" -ForegroundColor DarkYellow
                 $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Information RAM totale et utilisation chosit" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
                 Start-Sleep -Seconds 2       
                 RAMInfo 
@@ -706,7 +696,7 @@ function Menu_Information_Utilisateur
             "9" 
             { 
                 Write-Host ""
-                Write-Host "Vous avez choisi de consulter l'utilisation du disque dur"
+                Write-Host "Vous avez choisi de consulter l'utilisation du disque dur" -ForegroundColor DarkYellow
                 $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur--Information Utilisation du disque dur chosit" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
                 Start-Sleep -Seconds 2
                 DiskInfo
@@ -714,7 +704,7 @@ function Menu_Information_Utilisateur
             "10"
             { 
                 Write-Host ""
-                Write-Host "Vous avez choisi de consulter l'utilisation du processeur"
+                Write-Host "Vous avez choisi de consulter l'utilisation du processeur" -ForegroundColor DarkYellow
                 $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Information Utilisation du processeur chosit" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
                 Start-Sleep -Seconds 2
                 ProcesseurInfo
@@ -722,7 +712,7 @@ function Menu_Information_Utilisateur
             "11"
             { 
                 Write-Host ""
-                Write-Host "Vous avez choisi de consulter le statut du pare-feu "
+                Write-Host "Vous avez choisi de consulter le statut du pare-feu " -ForegroundColor DarkYellow
                 $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-statut du pare-feu chosit" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
                 Start-Sleep -Seconds 2    
                 StatutParefeu
@@ -730,7 +720,7 @@ function Menu_Information_Utilisateur
             "12"
             { 
                 Write-Host ""
-                Write-Host "Vous avez choisi de consulter la liste des ports ouverts sur le pare-feu"
+                Write-Host "Vous avez choisi de consulter la liste des ports ouverts sur le pare-feu" -ForegroundColor DarkYellow
                 $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Liste des ports ouverts sur le pare-feu choisit" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
                 Start-Sleep -Seconds 2    
                 StatutPort
@@ -739,7 +729,7 @@ function Menu_Information_Utilisateur
             "0" 
             { 
                 Write-Host ""
-                Write-Host "Retour au menu précédent"
+                Write-Host "Retour au menu précédent" -ForegroundColor Cyan
                 $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Retour au menu précédent" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
                 Start-Sleep -Seconds 2
                 Menu_Information
@@ -747,7 +737,7 @@ function Menu_Information_Utilisateur
             "*" 
             { 
                 Write-Host ""
-                Write-Host "Retour au menu principal"
+                Write-Host "Retour au menu principal" -ForegroundColor Cyan
                 $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Retour au menu principal" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
                 Start-Sleep -Seconds 2
                 Menu_Principal 
@@ -755,9 +745,9 @@ function Menu_Information_Utilisateur
             Default 
             { 
                 Write-Host ""
-                Write-Host "Choix incorrect, veuillez recommencer."
+                Write-Host "Choix incorrect - Veuillez recommencer" -ForegroundColor Cyan
                 $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Choix incorrect" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
-                Read-Host "Appuyez sur entrée pour continuer"
+                Read-Host "Appuyez sur Entrée pour continuer ... "
                 Start-Sleep -Seconds 2
             }
         }
@@ -779,33 +769,33 @@ function CreateUser
 {
     #Création d'un compte utilisateur local 
     # Demande quel utilisateur à créer
-    $newUser = Read-Host "Quel compte utilisateur souhaitez-vous créer?"
+    $newUser = Read-Host "Indiquez le compte utilisateur à créer "
 
     # Vérification si l'utilisateur existe
     $userExists = Invoke-Command -ComputerName $IpDistante -ScriptBlock { Get-LocalUser -Name $using:newUser } -Credential $Credentials
     if ($userExists) 
     {
         # Si oui -> sortie du script
-        Write-Host "L'utilisateur existe déjà." -ForegroundColor Red
+        Write-Host "Le compte utilisateur $newUser existe déjà." -ForegroundColor Red
         Start-Sleep -Seconds 2
-        Read-Host "Appuyer sur Entrée pour continuer ..."
+        Read-Host "Appuyez sur Entrée pour continuer ... "
     }
     else 
     {
-        Write-Host "Le compte $newUser n'existe pas et va être créé."
-        $Mdp = Read-Host "Taper le mot de passe"
+        Write-Host "Le compte utilisateur $newUser n'existe pas et va être créé" -ForegroundColor DarkYellow
+        $Mdp = Read-Host "Indiquez le mot de passe "
         try 
         {
             # Création de l'utilisateur
             Invoke-Command -ComputerName $IpDistante -ScriptBlock { New-LocalUser -Name $using:newUser -Password (ConvertTo-SecureString -AsPlainText $using:Mdp -Force) } -Credential $Credentials
             # Confirmation de la création
-            Write-Host "Compte $newUser créé." -ForegroundColor Green
+            Write-Host "Le compte utilisateur $newUser a été créée" -ForegroundColor Green
             Start-Sleep -Seconds 2
         }
         catch 
         {
             Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red
-            Read-Host "Appuyer sur Entrée pour continuer ..."
+            Read-Host "Appuyez sur Entrée pour continuer ... "
         }
     }
 }
@@ -815,40 +805,40 @@ function CreateUser
 function DelUser 
 {
     # Demande quel compte utilisateur à supprimer
-    $userDel = Read-Host "Quel compte utilisateur souhaitez-vous supprimer ?"
+    $userDel = Read-Host "Indiquez le compte utilisateur à supprimer "
 
     # Vérification si l'utilisateur existe
     $userExists = Invoke-Command -ComputerName $IpDistante -ScriptBlock { Get-LocalUser -Name $using:UserDel } -Credential $Credentials
     if ($userExists)
     {
         # Si il exsite -> demande de confirmation
-        $confirmation = Read-Host "Voulez-vous vraiment supprimer le compte $userDel ? (Oui/Non)"
+        $confirmation = Read-Host "Appuyez sur [O] pour confirmer la suppression du compte utilisateur $userDel "
         # Si oui -> suppression du compte
-        if ($confirmation -eq "Oui") 
+        if ($confirmation -eq "O") 
         {
             try 
             {   
                 Invoke-Command -ComputerName $IpDistante -ScriptBlock { Remove-LocalUser -Name $using:UserDel } -Credential $Credentials
-                Write-Host "Le compte $userDel est supprimé." -ForegroundColor Green
+                Write-Host "Le compte utilisateur $userDel a été supprimé" -ForegroundColor Green
                 Start-Sleep -Seconds 2
             }
             catch 
             {
                 Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red
-                Read-Host "Appuyer sur Entrée pour continuer ..."
+                Read-Host "Appuyez sur Entrée pour continuer ... "
             }
         }
         else 
         {
             # Si non -> sortie du script
-            Write-Host "Suppression annulée." -ForegroundColor Red
+            Write-Host "Suppression annulée" -ForegroundColor Red
             Start-Sleep -Seconds 2
         }
     }
     else 
     {
         # Si le compte n'existe pas
-        Write-Host "Le compte utilisateur n'existe pas." -ForegroundColor Red
+        Write-Host "Le compte utilisateur $userDel n'existe pas" -ForegroundColor Red
         Start-Sleep -Seconds 2
     }
     }
@@ -858,40 +848,40 @@ function DelUser
 function DisableUser 
 {
     # Demande quel compte utilisateur à désactiver
-    $userLock = Read-Host "Quel compte utilisateur souhaitez-vous désactiver ?"
+    $userLock = Read-Host "Indiquez le compte utilisateur à désactiver "
 
     # Vérification si l'utilisateur existe
     $userExists = Invoke-Command -ComputerName $IpDistante -ScriptBlock { Get-LocalUser -Name $using:UserLock } -Credential $Credentials
     if ($userExists) 
     {
         # Si l'utilisateur existe -> demande de confirmation
-        $confirmation = Read-Host "Voulez-vous vraiment désactiver le compte $userLock ? (Oui/Non)"
+        $confirmation = Read-Host "Appuyez sur [O] pour confirmer la désactivation du compte utilisateur $userDel "
         # Si oui -> désactivation du compte
-        if ($confirmation -eq "Oui") 
+        if ($confirmation -eq "O") 
         {
             try 
             {     
                 Invoke-Command -ComputerName $IpDistante -ScriptBlock { Disable-LocalUser -Name $using:UserLock } -Credential $Credentials
-                Write-Host "L'utilisateur $userLock est désactivé." -ForegroundColor Green
+                Write-Host "Le compte utilisateur $userLock a été désactivé " -ForegroundColor Green
                 Start-Sleep -Seconds 2
             }
             catch 
             {
                 Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red
-                Read-Host "Appuyer sur Entrée pour continuer ..."
+                Read-Host "Appuyez sur Entrée pour continuer ... "
             }
         }
         else
         {
             # Si non -> sortie du script
-            Write-Host "Désactivation annulée." -ForegroundColor Red
+            Write-Host "Désactivation annulée" -ForegroundColor Red
             Start-Sleep -Seconds 2
         }
     }
     else 
     {
         # Si l'utilisateur n'existe pas
-        Write-Host "L'utilisateur $userLock n'existe pas." -ForegroundColor Red
+        Write-Host "Le compte utilisateur $userLock n'existe pas" -ForegroundColor Red
         Start-Sleep -Seconds 2
     }
 }
@@ -901,30 +891,30 @@ function PasswordUser
 {
     # Modification d'un mot de passe
     # Demande changement du mot de passe -> pour quel utilisateur ?
-    $userMdp = Read-Host "Pour quel compte utilisateur souhaitez-vous modifier le mot de passe ?"
+    $userMdp = Read-Host "Indiquez le compte utilisateur pour lequel vous souhaitez modifier le mot de passe "
 
     # Vérifie si le nom d'utilisateur existe sur le système distant
     $userExist = Invoke-Command -ComputerName $IpDistante -ScriptBlock { Get-LocalUser -Name $using:UserMdp } -Credential $Credentials
     if ($userExist) 
     {
         # Si oui -> demander de taper le nouveau mdp
-        $newMdp = Read-Host "Entrer le nouveu mot de passe :"
+        $newMdp = Read-Host "Entrez le nouveu mot de passe "
         try 
         {
             Invoke-Command -ComputerName $IpDistante -ScriptBlock { Set-LocalUser -Name $using:userMdp -Password (ConvertTo-SecureString -AsPlainText $using:newMdp -Force) } -Credential $Credentials
-            Write-Host "Le mot de passe est bien modifié." -ForegroundColor Green
+            Write-Host "Le mot de passe du compte utilisateur $userMdp a été modifié" -ForegroundColor Green
             Start-Sleep -Seconds 2
         }
         catch 
         {
             Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red
-            Read-Host "Appuyer sur Entrée pour continuer ..."
+            Read-Host "Appuyez sur Entrée pour continuer ... "
         }
     }
     else 
     {
         # Si non -> sortie du script
-        Write-Host "L'utilisateur $userMdp n'existe pas." -ForegroundColor Red
+        Write-Host "Le compte utilisateur $userMdp n'existe pas." -ForegroundColor Red
         Start-Sleep -Seconds 2
     }
 }
@@ -933,7 +923,7 @@ function PasswordUser
 function UserAddAdminGroup 
 {
     # Demande quel compte utilisateur à ajouter
-    $userAdm = Read-Host "Quel compte utilisateur souhaitez-vous ajouter au groupe d'administration?"
+    $userAdm = Read-Host "Indiquez le compte utilisateur à ajouter au groupe d'administration "
 
     # Vérification si l'utilisateur existe
     $userExists = Invoke-Command -ComputerName $IpDistante -ScriptBlock { Get-LocalUser -Name $using:UserAdm } -Credential $Credentials
@@ -943,19 +933,19 @@ function UserAddAdminGroup
         try
         {
             Invoke-Command -ComputerName $IpDistante -ScriptBlock { Add-LocalGroupMember -Group Administrateurs -Member $using:userAdm } -Credential $Credentials
-            Write-Host "Le compte $userAdm est ajouté au groupe Administrateurs." -ForegroundColor Green
+            Write-Host "Le compte utilisateur $userAdm a été ajouté au groupe d'administration" -ForegroundColor Green
             Start-Sleep -Seconds 2
         }
         catch  
         {
             Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red
-            Read-Host "Appuyer sur Entrée pour continuer ..."
+            Read-Host "Appuyez sur Entrée pour continuer ... "
         }
     }
     else
     {
         # Si non sortie du script
-        Write-Host "Le compte utilisateur n'existe pas." -ForegroundColor Red
+        Write-Host "Le compte utilisateur $userAdm n'existe pas" -ForegroundColor Red
         Start-Sleep -Seconds 2
     }
 }
@@ -963,45 +953,45 @@ function UserAddAdminGroup
 Function UserAddGroup
 {
     # Demande quel compte à ajouter au groupe local
-    $userAddG = Read-Host "Quel compte utilisateur souhaitez-vous ajouter à un groupe local?"
+    $userAddG = Read-Host "Indiquez le compte utilisateur à ajouter à un groupe local "
     
     # Vérification si l'utilisateur existe
     $userExists = Invoke-Command -ComputerName $IpDistante -ScriptBlock { Get-LocalUser -Name $using:UserAddG } -Credential $Credentials
     if ($userExists)
     {
         # Si l'utilisateur existe -> demande quel groupe?
-        $choixAddGroup = Read-Host "À quel groupe souhaitez-vous ajouter l'utilisateur $userAddG?"
+        $choixAddGroup = Read-Host "Indiquez le groupe auquel ajouter l'utilisateur $userAddG "
     
         $groupExists = Invoke-Command -ComputerName $IpDistante -ScriptBlock { Get-LocalGroup -Name $using:choixAddGroup } -Credential $Credentials
             
         if ($groupExists) 
         {
-            Write-Host "Ajout du compte en cours..." -ForegroundColor Green
+            Write-Host "Traitement en cours ..." -ForegroundColor DarkYellow
             Start-Sleep -Seconds 2
             try 
             {
                 Invoke-Command -ComputerName $IpDistante -ScriptBlock { Add-LocalGroupMember -Group $using:choixAddGroup -Member $using:userAddG } -Credential $Credentials
-                Write-Host "Le compte $userAddG est ajouté au groupe $choixAddGroup." -ForegroundColor Green
+                Write-Host "Le compte utilisateur $userAddG a été ajouté au groupe $choixAddGroup." -ForegroundColor Green
             }
             catch 
             {
                 Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red
-                Read-Host "Appuyer sur Entrée pour continuer ..."
+                Read-Host "Appuyez sur Entrée pour continuer ... "
             }
             # Affichage des utilisateurs du groupe pour vérification
-            Write-Host "Vous trouverez ci-dessous la liste des utilisateurs du groupe $choixAddGroup ." -ForegroundColor Green
+            Write-Host "Vous trouverez ci-dessous la liste des comptes utilisateurs du groupe $choixAddGroup ." -ForegroundColor Green
             Invoke-Command -ComputerName $IpDistante -ScriptBlock { Get-LocalGroupMember -Group $using:choixAddGroup } -Credential $Credentials
             Start-Sleep -Seconds 2
         }
         else 
         {
-            Write-Host "Le groupe n'existe pas." -ForegroundColor Red
+            Write-Host "Le groupe n'existe pas" -ForegroundColor Red
         }
     }
     else 
     {
         # Si non, sortie du script
-        Write-Host "Le compte utilisateur n'existe pas." -ForegroundColor Red
+        Write-Host "Le compte utilisateur n'existe pas" -ForegroundColor Red
     }
 }
 
@@ -1009,31 +999,31 @@ Function UserAddGroup
 Function UserDelGroup
 {
     # Suppression utilisateur d'un groupe local
-    $userDel = Read-Host "Quel compte utilisateur souhaitez-vous supprimer d'un groupe local?"
+    $userDel = Read-Host "Indiquez le compte utilisateur à supprimer d'un groupe local?"
         
     # Vérification si l'utilisateur existe
     $userExists = Invoke-Command -ComputerName $IpDistante -ScriptBlock { Get-LocalUser -Name $using:UserDel } -Credential $Credentials
     if ($userExists) 
     {
         # Si l'utilisateur existe -> demande quel groupe?
-        $choixDelGroup = Read-Host "De quel groupe souhaitez-vous supprimer l'utilisateur $userDel?"
+        $choixDelGroup = Read-Host "Indiquez le groupe auquel supprimer l'utilisateur $userDel "
         
         $groupExists = Invoke-Command -ComputerName $IpDistante -ScriptBlock { Get-LocalGroup -Name $using:choixDelGroup } -Credential $Credentials
                 
         if ($groupExists) 
         {
             # Si le groupe existe -> suppression de l'utilisateur du groupe
-            Write-Host "Traitement en cours..." -ForegroundColor Green
+            Write-Host "Traitement en cours ..." -ForegroundColor DarkYellow
             Start-Sleep -Seconds 2
             try 
             {
                 Invoke-Command -ComputerName $IpDistante -ScriptBlock { Remove-LocalGroupMember -Group $using:choixDelGroup -Member $using:userDel } -Credential $Credentials
-                Write-Host "Le compte $userDel est supprimé du groupe $choixDelGroup." -ForegroundColor Green
+                Write-Host "Le compte utilisateur $userDel a été supprimé du groupe $choixDelGroup" -ForegroundColor Green
             }
             catch 
             {
                 Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red
-                Read-Host "Appuyer sur Entrée pour continuer ..."
+                Read-Host "Appuyez sur Entrée pour continuer ... "
             }
             # Affichage des utilisateurs du groupe pour vérification
             Write-Host "Vous trouverez ci-dessous la liste des utilisateurs du groupe $choixDelGroup ." -ForegroundColor Green
@@ -1042,13 +1032,13 @@ Function UserDelGroup
         }       
         else 
         {
-            Write-Host "Le groupe n'existe pas." -ForegroundColor Red
+            Write-Host "Le groupe n'existe pas" -ForegroundColor Red
         }
     }
     else 
     {
         # Si non, sortie du script
-        Write-Host "Le compte utilisateur n'existe pas." -ForegroundColor Red
+        Write-Host "Le compte utilisateur n'existe pas" -ForegroundColor Red
     }
 }
 
@@ -1113,9 +1103,9 @@ function Shutdown
                 {
                     Write-Host "Arrêt planifié du poste distant avec message d'avertissement en cours" -ForegroundColor DarkYellow
                     Write-Host ""
-                    $Timer_S1 = Read-Host "Indiquer le compte à rebours (en secondes) "
+                    $Timer_S1 = Read-Host "Indiquez le compte à rebours (en secondes) "
                     Write-Host ""
-                    $MessageTimer_S1 = Read-Host "Indiquer le message à envoyer au poste distant "
+                    $MessageTimer_S1 = Read-Host "Indiquez le message à envoyer au poste distant "
                     Write-Host ""
                         try 
                         {
@@ -1139,7 +1129,7 @@ function Shutdown
                 {
                     Write-Host "Arrêt planifié du poste distant en cours" -ForegroundColor DarkYellow
                     Write-Host ""
-                    $Timer_S2 = Read-Host "Indiquer le compte à rebours (en secondes) : "
+                    $Timer_S2 = Read-Host "Indiquez le compte à rebours (en secondes) : "
                     Write-Host ""
                         try {
                         Invoke-Command -ComputerName $IpDistante -Credential $Credentials -ScriptBlock {
@@ -1229,9 +1219,9 @@ function Reboot
                 {
                     Write-Host "Redémarrage planifié du poste distant avec message d'avertissement en cours" -ForegroundColor DarkYellow
                     Write-Host ""
-                    $Timer_R1 = Read-Host "Indiquer le compte à rebours (en secondes) : "
+                    $Timer_R1 = Read-Host "Indiquez le compte à rebours (en secondes) : "
                     Write-Host ""
-                    $MessageTimer_R1 = Read-Host "Indiquer le message à envoyer au poste distant : "
+                    $MessageTimer_R1 = Read-Host "Indiquez le message à envoyer au poste distant : "
                     Write-Host ""
                         try {
                         Invoke-Command -ComputerName $IpDistante -Credential $Credentials -ScriptBlock {
@@ -1253,7 +1243,7 @@ function Reboot
                 {
                     Write-Host "Redémarrage planifié du poste distant en cours" -ForegroundColor DarkYellow
                     Write-Host ""
-                    $Timer_R2 = Read-Host "Indiquer le compte à rebours (en secondes) : "
+                    $Timer_R2 = Read-Host "Indiquez le compte à rebours (en secondes) : "
                     Write-Host ""
                         try {
                         Invoke-Command -ComputerName $IpDistante -Credential $Credentials -ScriptBlock {
@@ -1441,7 +1431,7 @@ function FirewallRules
                     Write-Host "Ouverture d'un port TCP sur tous les profils" -ForegroundColor DarkYellow
                     Start-Sleep -Seconds 1
                     Write-Host ""
-                    $OpenTCP = Read-Host "Indiquer le n° du port à ouvrir "
+                    $OpenTCP = Read-Host "Indiquez le n° du port à ouvrir "
                     Write-Host ""
 					$NomdeRegleTCP = Read-Host "Spécifier le nom de la règle "
 					$CommandFW= {
@@ -1470,7 +1460,7 @@ function FirewallRules
                     Write-Host "Ouverture d'un port UDP sur tous les profils" -ForegroundColor DarkYellow
                     Start-Sleep -Seconds 1
                     Write-Host ""
-                    $OpenUDP = Read-Host "Indiquer le n° du port à ouvrir "
+                    $OpenUDP = Read-Host "Indiquez le n° du port à ouvrir "
                     Write-Host ""
 					$NomdeRegleUDP = Read-Host "Spécifier le nom de la règle "
 					$CommandFW2= {
@@ -1499,7 +1489,7 @@ function FirewallRules
                     Write-Host "Suppression d'une règle"
                     Start-Sleep -Seconds 1
                     Write-Host ""
-                    $RegleSuppr = Read-Host "Indiquer la règle à supprimer : "
+                    $RegleSuppr = Read-Host "Indiquez la règle à supprimer : "
                     Write-Host ""
 					$CommandFW3 = {
                         param($RulesNames)
@@ -1579,7 +1569,7 @@ function CreateDirectory {
     # Si confirmation OK, exécution de la commande "Création Dossier"
     if ($ConfCreateDirectory -eq "O") {
         # Demande du nom du dossier à créer        
-        $NameDirectory = Read-Host "Indiquer le nom du dossier "
+        $NameDirectory = Read-Host "Indiquez le nom du dossier "
         Write-Host ""
         # Si aucun nom rentré, sortie de la fonction "Création Dossier"
         if ([string]::IsNullOrEmpty($NameDirectory)) {
@@ -1588,7 +1578,7 @@ function CreateDirectory {
             return
         }			
         # Demande du chemin de destination du dossier à créer
-        [String]$PathDirectory = Read-Host "Indiquer le chemin de destination de votre dossier (Pensez à mettre les séparateurs '\' ) " 
+        [String]$PathDirectory = Read-Host "Indiquez le chemin de destination de votre dossier (Pensez à mettre les séparateurs '\' ) " 
         Write-Host ""
         # Si le chemin n'est pas spécifié, utilisation du chemin courant
         if ([string]::IsNullOrEmpty($PathDirectory)) 
@@ -1742,7 +1732,7 @@ function Applications
             
             If ($ConfAppInstall -eq "O")
             {
-                $AppInstall = Read-Host "Indiquer le nom de l'application "
+                $AppInstall = Read-Host "Indiquez le nom de l'application "
                 Write-Host ""
                 try {
                     Invoke-Command -ComputerName $IpDistante -Credential $Credentials -ScriptBlock { param($AppInstall) choco install $AppInstall -y --force } -ArgumentList $AppInstall
@@ -1758,7 +1748,7 @@ function Applications
             else 
             {
                 Write-Host "Opération annulée - Retour au menu de selection" -ForegroundColor Cyan -BackgroundColor Black
-                Start-Sleep -Seconds 1 
+                Start-Sleep -Seconds 1
             }
             }
 
@@ -1769,7 +1759,7 @@ function Applications
         
             If ($ConfAppUnInstall -eq "O")
             {
-                $AppUnInstall = Read-Host "Indiquer le nom de l'application "
+                $AppUnInstall = Read-Host "Indiquez le nom de l'application "
                 Write-Host ""
                 try {
                     Invoke-Command -ComputerName $IpDistante -Credential $Credentials -ScriptBlock { param($AppUnInstall) choco uninstall $AppUnInstall -y --force} -ArgumentList $AppUnInstall
@@ -1798,7 +1788,7 @@ function Applications
                 
             If ($ConfSearchAppChoco -eq "O")
             {
-                $AppSearchChoco = Read-Host "Indiquer le nom de l'application à rechercher sur ChocolaTey "
+                $AppSearchChoco = Read-Host "Indiquez le nom de l'application à rechercher sur ChocolaTey "
                 Write-Host ""
                 try {
                     Invoke-Command -ComputerName $IpDistante -Credential $Credentials -ScriptBlock { param($AppSearchChoco) choco search --by-id-only $AppSearchChoco } -ArgumentList $AppSearchChoco
@@ -1885,7 +1875,7 @@ function Applications
                 
             If ($ConfMajApp -eq "O")
             {
-                $AppMaj = Read-Host "Indiquer le nom de l'application à mettre à jour "
+                $AppMaj = Read-Host "Indiquez le nom de l'application à mettre à jour "
                 Write-Host ""
                 try {
                     Invoke-Command -ComputerName $IpDistante -Credential $Credentials -ScriptBlock { param($AppMaj) choco upgrade $AppMaj -y } -ArgumentList $AppMaj
@@ -2034,9 +2024,9 @@ function RemoteScript
     Write-Host ""
     if ($ConfRS -eq "O")
     {
-        $NameScript = Read-Host "Indiquer le nom du script (Sans l'extension .ps1) "
+        $NameScript = Read-Host "Indiquez le nom du script (Sans l'extension .ps1) "
         Write-Host ""
-		$PathScript = Read-Host "Indiquer le chemin du script "
+		$PathScript = Read-Host "Indiquez le chemin du script "
         Write-Host ""
         $PathNameScript = "$PathScript\$NameScript.ps1"
         try 
@@ -2084,18 +2074,18 @@ function RemoteScript
 # Fonction dernière connexion
 function InfoConnexion { 
     Clear-Host
-    $InfoCo = Read-Host "Voulez-vous voir la date de dernière de connexion d'un utilsiateur ? [O pour valider]"
+    $InfoCo = Read-Host "Appuyez sur [O] pour confirmer la visualisation de la date de dernière de connexion d'un utilisateur "
     if ($InfoCo -eq "O") 
     {
         Write-Host ""
         # si oui -> demande quel utilisateur ciblé
-        $userInf = Read-Host "Quel compte utilisateur souhaitez-vous vérifier?"
+        $userInf = Read-Host "Indiquez le nom du compte utilisateur que vous souhaitez vérifier "
         $PathInfoUser = "C:\Users\Administrator\Documents\Info_${UserInf}_$(Get-Date -Format "yyyyMMdd").txt"    
         # Vérification si l'utilisateur existe
         $userExists = Invoke-Command -ComputerName $IpDistante -ScriptBlock { Get-LocalUser -Name $using:UserInf } -Credential $Credentials 
         if ($userExists) {
             # Si oui -> affichage date de dernière connexion
-            Write-Host "Date de dernière connexion de l'utilisateur $userInf."
+            Write-Host "Date de dernière connexion de l'utilisateur $userInf : " -ForegroundColor DarkYellow
             $CmdInfoCo = Invoke-Command -ComputerName $IpDistante -ScriptBlock { Get-WinEvent -FilterHashtable @{
                     LogName = 'Security'
                     ID      = 4624
@@ -2103,74 +2093,74 @@ function InfoConnexion {
             $CmdInfoCo
             Start-Sleep -Seconds 2
             # Enregistrement des données
-            Write-Host "Les données sont enregistrées dans le fichier" $PathInfoUser
+            Write-Host "Les données sont enregistrées dans le fichier" $PathInfoUser -ForegroundColor DarkYellow
             "Date de dernière connexion de l'utilisateur $userInf : " | Out-File -Append -FilePath $PathInfoUser
             $CmdInfoCo | Out-File -Append -FilePath $PathInfoUser    
-            Read-Host "Appuyez sur Entrée pour continuer ..."
+            Read-Host "Appuyez sur Entrée pour continuer ... "
 
         }
         else {
             # Si non, sortie du script
-            Write-Host "Le compte utilisateur n'existe pas." -ForegroundColor Red
-            Read-Host "Appuyez sur Entrée pour continuer ..."
+            Write-Host "Le compte utilisateur n'existe pas" -ForegroundColor Red
+            Read-Host "Appuyez sur Entrée pour continuer ... "
         }
     }
     else 
     {
         # Si non, sortie du script
-        Write-Host "Mauvais choix - Retour au menu précédent" -ForegroundColor Red
-        Read-Host "Appuyez sur Entrée pour continuer ..."
+        Write-Host "Mauvais choix - Retour au menu précédent" -ForegroundColor Cyan
+        Read-Host "Appuyez sur Entrée pour continuer ... "
     }
 }
 
 # Fonction dernière modification mot de passe
 function InfoModificationMdp { 
     Clear-Host
-    $InfoMdp = Read-Host "Voulez-vous voir la date de dernière modification du mot de passe d'un utilisateur ? [O pour valider]"
+    $InfoMdp = Read-Host "Appuyez sur [O] pour confirmer la visualisation de la date de la dernière modification du mot de passe d'un utilisateur "
     if ($InfoMdp -eq "O") 
     {
         Write-Host ""
         # si oui -> demande quel utilisateur ciblé
-        $userInf = Read-Host "Tapez le nom d'utilisateur souhaité "
+        $userInf = Read-Host "Indiquez le nom du compte utilisateur que vous souhaitez vérifier "
         $PathInfoUser = "C:\Users\Administrator\Documents\Info_${UserInf}_$(Get-Date -Format "yyyyMMdd").txt"    
         # Vérification si l'utilisateur existe
         $userExists = Invoke-Command -ComputerName $IpDistante -ScriptBlock { Get-LocalUser -Name $using:UserInf } -Credential $Credentials 
         if ($userExists) {
             # Si oui -> affichage date de dernière connexion
-            Write-Host "Date de dernière modification du mot de passe l'utilisateur $userInf."
+            Write-Host "Date de dernière modification du mot de passe l'utilisateur $userInf : " -ForegroundColor DarkYellow
             $CmdInfoMdp=Invoke-Command -ComputerName $IpDistante -ScriptBlock { (Get-LocalUser -Name $using:userInf).PasswordLastSet } -Credential $Credentials 
             $CmdInfoMdp
             Start-Sleep -Seconds 2
             # Enregistrement des données
-            Write-Host "Les données sont enregistrées dans le fichier" $PathInfoUser
+            Write-Host "Les données sont enregistrées dans le fichier" $PathInfoUser -ForegroundColor DarkYellow
             "Date de dernière modification de mot de passe de l'utilisateur $userInf : " | Out-File -Append -FilePath $PathInfoUser
             $CmdInfoMdp | Out-File -Append -FilePath $PathInfoUser    
-            Read-Host "Appuyez sur Entrée pour continuer ..."
+            Read-Host "Appuyez sur Entrée pour continuer ... "
         }
         else {
             # Si non, sortie du script
             Write-Host "Le compte utilisateur n'existe pas." -ForegroundColor Red
-            Read-Host "Appuyez sur Entrée pour continuer ..."
+            Read-Host "Appuyez sur Entrée pour continuer ... "
         }
     }
     else 
     {
         # Si non, sortie du script
-        Write-Host "Mauvais choix - Retour au menu précédent" -ForegroundColor Red
-        Read-Host "Appuyez sur Entrée pour continuer ..."
+        Write-Host "Mauvais choix - Retour au menu précédent" -ForegroundColor Cyan
+        Read-Host "Appuyez sur Entrée pour continuer ... "
     }
 }
 
 # Fonction dernière sessions ouvertesr
 function InfoLogSession { 
     Clear-Host
-    $InfLog = Read-Host "Voulez-vous voir les sessions actives sur le poste distant? [O pour valider]"
+    $InfLog = Read-Host "Appuyez sur [O] pour confirmer la visualisation des sessions actives sur le poste distant "
     if ($Inflog -eq "O") {
         Write-Host ""
         # Si oui -> affichage liste sessions ouvertes
-        $userInf = Read-Host "Tapez le nom d'utilisateur souhaité "
+        $userInf = Read-Host "Indiquez le nom du compte utilisateur que vous souhaitez vérifier "
         $PathInfoUser = "C:\Users\Administrator\Documents\Info_${UserInf}_$(Get-Date -Format "yyyyMMdd").txt"    
-        Write-Host "Session ouverte(s) sur le poste distant."
+        Write-Host "Session ouverte(s) sur le poste distant : " -ForegroundColor DarkYellow
         $CmdInfoSession=Invoke-Command -ComputerName $IpDistante -ScriptBlock { (Get-WmiObject -class win32_ComputerSystem | select username).username } -Credential $Credentials 
         $CmdInfoSession
         Start-Sleep -Seconds 2
@@ -2178,13 +2168,13 @@ function InfoLogSession {
         Write-Host "Les données sont enregistrées dans le fichier" $PathInfoUser
         "Session ouverte(s) sur le poste distant pour l'utilisateur $userInf : " | Out-File -Append -FilePath $PathInfoUser
         $CmdInfoMdp | Out-File -Append -FilePath $PathInfoUser    
-        Read-Host "Appuyez sur Entrée pour continuer ..."
+        Read-Host "Appuyez sur Entrée pour continuer ... "
     }
     else 
     {
         # Si non, sortie du script
-        Write-Host "Mauvais choix - Retour au menu précédent" -ForegroundColor Red
-        Read-Host "Appuyez sur Entrée pour continuer ..."
+        Write-Host "Mauvais choix - Retour au menu précédent" -ForegroundColor Cyan
+        Read-Host "Appuyez sur Entrée pour continuer ... "
     }
 }
 
@@ -2192,19 +2182,19 @@ function InfoLogSession {
 function droitsDossier 
 {
     Clear-Host
-    $InfoDossier = Read-Host "Voulez-vous voir les droits sur un fichier d'un utilisateur ? [O pour valider]"
+    $InfoDossier = Read-Host "Appuyez sur [O] pour confirmer la visualisation des droits sur un dossier d'un utilisateur "
     if ($InfoDossier -eq "O") 
     {
         Write-Host ""
         # si oui -> affichage des droits sur le dossier
-        $User = Read-Host "Tapez le nom d'utilisateur souhaité "
+        $User = Read-Host "Indiquez le nom du compte utilisateur que vous souhaitez vérifier "
         $PathInfoUser = "C:\Users\Administrator\Documents\Info_${User}_$(Get-Date -Format "yyyyMMdd").txt"
         # Vérifie si l'utilisateur existe sur le serveur distant
         $userExists = Invoke-Command -ComputerName $IpDistante -ScriptBlock {param($UserName ) Get-LocalUser -Name $UserName  } -ArgumentList $User -Credential $Credentials
         if ( $userExists)
         {
             # si oui -> demande quel dossier à vérifier
-            $Dossier = Read-Host "Sur quel dossier souhaitez-vous vérifier les droits ? (spécifiez le chemin du dossier)"
+            $Dossier = Read-Host "Indiquez le chemin du dossier sur lequel vous souhaitez vérifier les droits de l'utilisateur $User "
             $TestDossier = Invoke-Command -ComputerName $IpDistante -ScriptBlock {  param($Path) Test-Path -Path $Path} -ArgumentList $Dossier -Credential $Credentials
             # Vérifie si le dossier existe sur le serveur distant
             if ($TestDossier -eq $true) 
@@ -2212,81 +2202,81 @@ function droitsDossier
                 # affichage des droits et sauvegarde dans fichier
                 $CmdInoFolder=Invoke-Command -ComputerName $IpDistante -Credential $Credentials -ScriptBlock { param($FolderPath) Get-Acl -Path $FolderPath | Format-Table -AutoSize} -ArgumentList $Dossier
                 $CmdInoFolder
-                Write-Host "Les données sont enregistrées dans le fichier" $PathInfoUser
+                Write-Host "Les données sont enregistrées dans le fichier" $PathInfoUser -ForegroundColor DarkYellow
                 "Voici la liste des droits sur le dossier $Dossier  : " | Out-File -Append -FilePath $PathInfoUser
                 $CmdInoFolder| Out-File -Append -FilePath $PathInfoUser
-                Read-Host "Appuyez sur Entrée pour continuer ..."
+                Read-Host "Appuyez sur Entrée pour continuer ... "
             }
             else
             {
                 # si non -> sortie du script
-                Write-Host "Le dossier $Dossier n'existe pas"
+                Write-Host "Le dossier $Dossier n'existe pas" -ForegroundColor Red
                 Start-Sleep -Seconds 2
-                Read-Host "Appuyez sur Entrée pour continuer ..."
+                Read-Host "Appuyez sur Entrée pour continuer ... "
             }
         }
         else 
         {
             # si non -> sortie du script
-            Write-Host "L'utilisateur $User n'existe pas"
+            Write-Host "L'utilisateur $User n'existe pas" -ForegroundColor Red
             Start-Sleep -Seconds 2
-            Read-Host "Appuyez sur Entrée pour continuer ..."
+            Read-Host "Appuyez sur Entrée pour continuer ... "
         }
     }
     else 
     {
         # Si non, sortie du script
-        Write-Host "Mauvais choix - Retour au menu précédent" -ForegroundColor Red
-        Read-Host "Appuyez sur Entrée pour continuer ..."
+        Write-Host "Mauvais choix - Retour au menu précédent" -ForegroundColor Cyan
+        Read-Host "Appuyez sur Entrée pour continuer ... "
     }
 }
 
 # Fonction droit fichier
 function droitsFichier {
     Clear-Host
-    $InfoFichier = Read-Host "Voulez-vous voir les droits sur un fichier d'un utilisateur ? [O pour valider]"
+    $InfoFichier = Read-Host "Appuyez sur [O] pour confirmer la visualisation des droits d'un utilisateur sur un fichier "
     if ($InfoFichier -eq "O") 
     {
         # si oui -> affichage des droits sur le fichier
         # Demande quel utilisateur
         Write-Host ""
-        $UserInf = Read-Host "Tapez le nom d'utilisateur souhaité "
+        $UserInf = Read-Host "Indiquez le nom de l'utilisateur "
         $PathInfoUser = "C:\Users\Administrator\Documents\Info_${UserInf}_$(Get-Date -Format "yyyyMMdd").txt"    
         # Vérifie si l'utilisateur existe sur le serveur distant
         $userExists = Invoke-Command -ComputerName $IpDistante -ScriptBlock { Get-LocalUser -Name $using:UserInf } -Credential $Credentials 
         if ($userExists) {
             # si oui -> demande quel fichier à vérifier
-            $Fichier = Read-Host "Sur quel fichier souhaitez-vous vérifier les droits ? (spécifiez le chemin du fichier)"
+            $Fichier = Read-Host "Indiquez le chemin du fichier sur lequel vous souhaitez vérifier les droits de l'utilisateur $UserInf "
             # Vérifie si le fichier existe sur le serveur distant
             if ($Fichier) {
                 # affichage des droits
                 $CmdInoFile = Invoke-Command -ComputerName $IpDistante -Credential $Credentials -ScriptBlock {param($FilePath) Get-Acl -Path $FilePath | Format-Table -AutoSize} -ArgumentList $Fichier
                 $CmdInoFile
                 # Enregistrement des données
-                Write-Host "Les données sont enregistrées dans le fichier" $PathInfoUser
+                Write-Host "Les données sont enregistrées dans le fichier" $PathInfoUser -ForegroundColor DarkYellow
                 "Voici les droits sur le fichier spécifié $Fichier : " | Out-File -Append -FilePath $PathInfoUser
                 $CmdInoFile | Out-File -Append -FilePath $PathInfoUser
-                Read-Host "Appuyez sur Entrée pour continuer ..."
+                Read-Host "Appuyez sur Entrée pour continuer ... "
             }
             else {
                 # si non -> sortie du script
-                Write-Host "Le fichier $Fichier n'existe pas"
+                Write-Host "Le fichier $Fichier n'existe pas" -ForegroundColor Red
                 Start-Sleep -Seconds 2
-                Read-Host "Appuyez sur Entrée pour continuer ..."
+                Read-Host "Appuyez sur Entrée pour continuer ... "
             }
         }
         else {
             # si non -> sortie du script
-            Write-Host "L'utilisateur $UserInf n'existe pas"
+            Write-Host "L'utilisateur $UserInf n'existe pas" -ForegroundColor Red
             Start-Sleep -Seconds 2
-            Read-Host "Appuyez sur Entrée pour continuer ..."
+            Read-Host "Appuyez sur Entrée pour continuer ... "
         }
     }
     else 
     {
         # Si non, sortie du script
-        Write-Host "Mauvais choix - Retour au menu précédent" -ForegroundColor Red
-        Read-Host "Appuyez sur Entrée pour continuer ..."
+        Write-Host "Mauvais choix - Retour au menu précédent" -ForegroundColor Cyan
+        Read-Host "Appuyez sur Entrée pour continuer ... "
     }
 
 }
@@ -2304,10 +2294,10 @@ function droitsFichier {
 function GetOS 
 {
     Clear-Host
-    $GetOSConf = Read-Host "Voulez-vous voir la version de l'OS du poste distant ? [O pour valider]"
+    $GetOSConf = Read-Host "Appuyez sur [O] pour confirmer la visualisation de la version de l'OS du poste distant "
     Write-Host ""
     Clear-Host
-    Write-Host "Voici la version de l'OS du poste distant : "
+    Write-Host "Voici la version de l'OS du poste distant : " -ForegroundColor DarkYellow
     Write-Host ""
 
     if ($GetOSConf -eq "O") 
@@ -2318,25 +2308,25 @@ function GetOS
             $GetOSCMD
             Write-Host ""
             Start-Sleep -Seconds 1
-            Write-Host "Les données sont enregistrées dans le fichier" $PathInfoPoste
+            Write-Host "Les données sont enregistrées dans le fichier" $PathInfoPoste -ForegroundColor DarkYellow
             Write-Host ""
-            "Voici la version de l'OS du poste distant : " | Out-File -Append -FilePath $PathInfoPoste
+            "Voici la version de l'OS du poste distant : " | Out-File -Append -FilePath $PathInfoPoste -ForegroundColor DarkYellow
             $GetOSCMD | Out-File -Append -FilePath $PathInfoPoste
             Write-Host ""
-            Read-Host "Appuyez sur Entrée pour continuer ..."
+            Read-Host "Appuyez sur Entrée pour continuer ... "
             #return
         }
         catch 
         {
             Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red
             Write-Host ""
-            Read-Host "Appuyer sur Entrée pour continuer ..."
+            Read-Host "Appuyez sur Entrée pour continuer ... "
         }
     }
     else 
     {
         Clear-Host
-        Write-Host "Mauvais choix - Retour au menu précédent"
+        Write-Host "Mauvais choix - Retour au menu précédent" -ForegroundColor Cyan
         Start-Sleep -Seconds 2
         return
     }
@@ -2346,13 +2336,13 @@ function GetOS
 function NbrCarte 
 {
     Clear-Host
-    $NbrCarteConf = Read-Host "Voulez-vous voir le nombre d'interfaces présentes sur le poste distant ? [O pour valider]"
+    $NbrCarteConf = Read-Host "Appuyez sur [O] pour confirmer la visualisation du nombre d'interfaces présentes sur le poste distant "
     Write-Host ""
     
     if ($NbrCarteConf -eq "O") 
     {
         Clear-Host
-        Write-Host "Voici la liste des interfaces présentes sur le poste distant : "
+        Write-Host "Voici la liste des interfaces présentes sur le poste distant : " -ForegroundColor DarkYellow
         Write-Host ""
         
         #Invoke-Command -ComputerName $IPDistante -Credential $Credentials -ScriptBlock { Get-NetAdapter }#| Where-Object { $_.Status -eq 'Up'  } a rajouter si on veux uniquement ceux qui sont actif 
@@ -2362,26 +2352,26 @@ function NbrCarte
             $NbrCarteCMD
             Write-Host ""
             Start-Sleep -Seconds 1
-            Write-Host "Les données sont enregistrées dans le fichier" $PathInfoPoste
+            Write-Host "Les données sont enregistrées dans le fichier" $PathInfoPoste -ForegroundColor DarkYellow
             Write-Host ""
             "Voici la liste des interfaces présentes sur le poste distant : " | Out-File -Append -FilePath $PathInfoPoste
             $NbrCarteCMD | Out-File -Append -FilePath $PathInfoPoste
             Write-Host ""
         
-            Read-Host "Appuyez sur Entrée pour continuer ..."
+            Read-Host "Appuyez sur Entrée pour continuer ... "
         }
         catch 
         {
             Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red
             Write-Host ""
-            Read-Host "Appuyer sur Entrée pour continuer ..."
+            Read-Host "Appuyez sur Entrée pour continuer ... "
             Write-Host ""
         }
     }
     else 
     {
         Clear-Host
-        Write-Host "Mauvais choix - Retour au menu précédent"
+        Write-Host "Mauvais choix - Retour au menu précédent" -ForegroundColor Cyan
         Start-Sleep -Seconds 2
         return
     }   
@@ -2391,12 +2381,12 @@ function NbrCarte
 function IPInterface 
 {
     Clear-Host
-    $IPInterfaceConf = Read-Host "Voulez-vous voir les adresses IP de chaque interface (IPv4 / IPv6) du poste distant ? [O pour valider]"
+    $IPInterfaceConf = Read-Host "Appuyez sur [O] pour confirmer la visualisation des adresses IP de chaque interface (IPv4 / IPv6) du poste distant "
     
     if ($IPInterfaceConf -eq "O") 
     {
         Clear-Host
-        Write-Host "Voici les adresses IP de chaque interface (IPv4 / IPv6) du poste distant : "
+        Write-Host "Voici les adresses IP de chaque interface (IPv4 / IPv6) du poste distant : " -ForegroundColor DarkYellow
         Write-Host ""
         
         try
@@ -2405,24 +2395,24 @@ function IPInterface
             $IPInterfaceCMD
             Write-Host ""    
             Start-Sleep -Seconds 1
-            Write-Host "Les données sont enregistrées dans le fichier" $PathInfoPoste
+            Write-Host "Les données sont enregistrées dans le fichier" $PathInfoPoste -ForegroundColor DarkYellow
             Write-Host ""
             "Voici les adresses IP de chaque interface (IPv4 / IPv6) du poste distant : " | Out-File -Append -FilePath $PathInfoPoste
             $IPInterfaceCMD | Out-File -Append -FilePath $PathInfoPoste
             Write-Host ""
-            Read-Host "Appuyez sur Entrée pour continuer ..."
+            Read-Host "Appuyez sur Entrée pour continuer ... "
         }
         catch 
         {
             Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red
             Write-Host ""
-            Read-Host "Appuyer sur Entrée pour continuer ..."
+            Read-Host "Appuyez sur Entrée pour continuer ... "
         }
     }    
     else 
     {
         Clear-Host
-        Write-Host "Mauvais choix - Retour au menu précédent"
+        Write-Host "Mauvais choix - Retour au menu précédent" -ForegroundColor Cyan
         Start-Sleep -Seconds 2
         return
     }   
@@ -2433,35 +2423,35 @@ function IPInterface
 function MACDemande 
 {
     Clear-Host
-    $MACDemandeConf = Read-Host "Voulez-vous voir la liste des adresses MAC de chaque interface du poste distant ? [O pour valider]"
+    $MACDemandeConf = Read-Host "Appuyez sur [O] pour confirmer la visualisation de la liste des adresses MAC de chaque interface du poste distant "
 
     if ($MACDemandeConf -eq "O") 
     {
         clear-Host
-        Write-Host "Voici la liste des adresses MAC de chaque interface du poste distant : "
+        Write-Host "Voici la liste des adresses MAC de chaque interface du poste distant : " -ForegroundColor DarkYellow
         try
         {
             $MACDemande = Invoke-Command -ComputerName $IPDistante -Credential $Credentials -ScriptBlock {Get-NetAdapter | Format-Table Name, MacAddress, Status} 
             $MACDemande
             Write-Host ""
             Start-Sleep -Seconds 1
-            Write-Host "Les données sont enregistrées dans le fichier" $PathInfoPoste
+            Write-Host "Les données sont enregistrées dans le fichier" $PathInfoPoste -ForegroundColor DarkYellow
             "Voici la liste des adresses MAC de chaque interface du poste distant : " | Out-File -Append -FilePath $PathInfoPoste
             $IPInterfaceCMD | Out-File -Append -FilePath $PathInfoPoste
             Write-Host ""
-            Read-Host "Appuyez sur Entrée pour continuer ..."
+            Read-Host "Appuyez sur Entrée pour continuer ... "
         }
         catch 
         {
             Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red
             Write-Host ""
-            Read-Host "Appuyer sur Entrée pour continuer ..."
+            Read-Host "Appuyez sur Entrée pour continuer ... "
         }
     }
     else 
     {
         Clear-Host
-        Write-Host "Mauvais choix - Retour au menu précédent"
+        Write-Host "Mauvais choix - Retour au menu précédent" -ForegroundColor Cyan
         Start-Sleep -Seconds 2
         return
     }   
@@ -2471,13 +2461,13 @@ function MACDemande
 function ApplicationList 
 {
     clear-host
-    $ApplicationListConf = Read-Host "Voulez-vous la liste des applications/paquets installés sur le poste distant ? [O pour valider]"
+    $ApplicationListConf = Read-Host "Appuyez sur [O] pour confirmer la visualisation de la liste des applications/paquets installés sur le poste distant "
     Write-Host ""
 
     if ($ApplicationListConf -eq "O") 
     {
         clear-host
-        Write-Host "Voici la liste des applications/paquets installés sur le poste distant : "
+        Write-Host "Voici la liste des applications/paquets installés sur le poste distant : " -ForegroundColor DarkYellow
         try
         {
             $ApplicationListCMD = Invoke-Command -ComputerName $IPDistante -Credential $Credentials -ScriptBlock {
@@ -2488,23 +2478,23 @@ function ApplicationList
             Write-Host ""
             Start-Sleep -Seconds 1
 
-            Write-Host "Les données sont enregistrées dans le fichier" $PathInfoPoste
+            Write-Host "Les données sont enregistrées dans le fichier" $PathInfoPoste -ForegroundColor DarkYellow
             "Voici la liste des applications/paquets installés sur le poste distant : " | Out-File -Append -FilePath $PathInfoPoste
             $ApplicationListCMD | Out-File -Append -FilePath $PathInfoPoste
             Write-Host ""
-            Read-Host "Appuyez sur Entrée pour continuer ..."
+            Read-Host "Appuyez sur Entrée pour continuer ... "
         }
         catch 
         {
             Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red
             Write-Host ""
-            Read-Host "Appuyer sur Entrée pour continuer ..."
+            Read-Host "Appuyez sur Entrée pour continuer ... "
         }
     }
     else 
     {
         clear-host
-        Write-Host "Mauvais choix - Retour au menu précédent"
+        Write-Host "Mauvais choix - Retour au menu précédent" -ForegroundColor Cyan
         Start-Sleep -Seconds 2
     }
 }
@@ -2513,37 +2503,37 @@ function ApplicationList
 function UserList 
 {
     clear-host
-    $UserListConf = read-host "Voulez-vous voir la liste des utilisateurs locaux du poste distant ? [O pour valider]"
+    $UserListConf = read-host "Appuyez sur [O] pour confirmer la visualisation de la liste des utilisateurs locaux du poste distant "
     Write-Host ""
 
     if ($UserListConf -eq "O") 
     {
         clear-host
-        $UserListCMD = Write-Host "Voici la liste des utilisateurs locaux du poste distant : "
+        $UserListCMD = Read-Host "Voici la liste des utilisateurs locaux du poste distant : " 
         try
         {
             Invoke-Command -ComputerName $IPDistante -Credential $Credentials -ScriptBlock {Get-LocalUser | Format-Table Name}
             $UserListCMD
             Write-Host ""
             Start-Sleep -Seconds 1
-            Write-Host "Les données sont enregistrées dans le fichier" $PathInfoPoste
+            Write-Host "Les données sont enregistrées dans le fichier" $PathInfoPoste -ForegroundColor DarkYellow
             Write-Host ""
             "Voici la liste des utilisateurs locaux du poste distant : " | Out-File -Append -FilePath $PathInfoPoste
             $UserListCMD | Out-File -Append -FilePath $PathInfoPoste
             Write-Host ""
-            Read-Host "Appuyez sur Entrée pour continuer ..."
+            Read-Host "Appuyez sur Entrée pour continuer ... "
         }
         catch 
         {
             Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red
             Write-Host ""
-            Read-Host "Appuyer sur Entrée pour continuer ..."
+            Read-Host "Appuyez sur Entrée pour continuer ... "
         }
     }
     else 
     {
         clear-host
-        Write-Host "Mauvais choix - Retour au menu précédent"
+        Write-Host "Mauvais choix - Retour au menu précédent" -ForegroundColor Cyan
         Start-Sleep -Seconds 2
     }
 }
@@ -2552,12 +2542,12 @@ function UserList
 function GetCPU 
 {
     clear-host
-    $GetCPUConf = Read-Host "Voulez-vous voir les détails du CPU du poste distant ? [O pour valider]"
+    $GetCPUConf = Read-Host "Appuyez sur [O] pour confirmer la visualisation des détails du CPU du poste distant "
 
     if ($GetCPUConf -eq "O") 
     {
         clear-host
-        Write-Host "Voici les détails du CPU du poste distant : "
+        Write-Host "Voici les détails du CPU du poste distant : " -ForegroundColor DarkYellow
         Write-Host ""
         try
         {
@@ -2565,24 +2555,24 @@ function GetCPU
             $GetCPUCMD
             Write-Host ""
             Start-Sleep -Seconds 1
-            Write-Host "Les données sont enregistrées dans le fichier" $PathInfoPoste
+            Write-Host "Les données sont enregistrées dans le fichier" $PathInfoPoste -ForegroundColor DarkYellow
             Write-Host ""
             "Voici les détails du CPU du poste distant : " | Out-File -Append -FilePath $PathInfoPoste
             $GetCPUCMD | Out-File -Append -FilePath $PathInfoPoste
             Write-Host ""
-            Read-Host "Appuyez sur Entrée pour continuer ..."
+            Read-Host "Appuyez sur Entrée pour continuer ... "
         }
         catch 
         {
             Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red
             Write-Host ""
-            Read-Host "Appuyer sur Entrée pour continuer ..."
+            Read-Host "Appuyez sur Entrée pour continuer ... "
         }
     }
     else 
     {
         clear-host
-        Write-Host "Mauvais choix - Retour au menu précédent"
+        Write-Host "Mauvais choix - Retour au menu précédent" -ForegroundColor Cyan
         Start-Sleep -Seconds 2
     }
 }
@@ -2591,12 +2581,12 @@ function GetCPU
 function RAMInfo 
 {
     clear-host
-    $RAMInfoConf = Read-Host "Voulez-vous voir les détails de la RAM du poste distant ? [O pour valider]"
+    $RAMInfoConf = Read-Host "Appuyez sur [O] pour confirmer la visualisation des détails de la RAM du poste distant "
 
     if ($RAMInfoConf -eq "O") 
     {
         clear-host
-        Write-Host "Voici les détails de la RAM du poste distant : "
+        Write-Host "Voici les détails de la RAM du poste distant : " -ForegroundColor DarkYellow
         Write-Host ""
         try
         {
@@ -2604,24 +2594,24 @@ function RAMInfo
             $RAMInfoCMD
             Write-Host ""
             Start-Sleep -Seconds 1
-            Write-Host "Les données sont enregistrées dans le fichier" $PathInfoPoste
+            Write-Host "Les données sont enregistrées dans le fichier" $PathInfoPoste -ForegroundColor DarkYellow
             Write-Host ""
             "Voici les détails de la RAM du poste distant : " | Out-File -Append -FilePath $PathInfoPoste
             $RAMInfoCMD | Out-File -Append -FilePath $PathInfoPoste
             Write-Host ""
-            Read-Host "Appuyez sur Entrée pour continuer ..."
+            Read-Host "Appuyez sur Entrée pour continuer ... "
         }
         catch 
         {
             Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red
             Write-Host ""
-            Read-Host "Appuyer sur Entrée pour continuer ..."
+            Read-Host "Appuyez sur Entrée pour continuer ... "
         }
     }
     else 
     {
         clear-host
-        Write-Host "Mauvais choix - Retour au menu précédent"
+        Write-Host "Mauvais choix - Retour au menu précédent" -ForegroundColor Cyan
         Start-Sleep -Seconds 2
     }
 }
@@ -2630,12 +2620,12 @@ function RAMInfo
 function DiskInfo 
 {
     clear-host
-    $DiskInfoConf = Read-Host "Voulez-vous voir les détails du/des disques du poste distant ? [O pour valider]"
+    $DiskInfoConf = Read-Host "Appuyez sur [O] pour confirmer la visualisation des détails du/des disque(s) du poste distant "
 
     if ($DiskInfoConf -eq "O") 
     {
         clear-host
-        Write-Host "Voici les détails du/des disques du poste distant : "
+        Write-Host "Voici les détails du/des disque(s) du poste distant : " -ForegroundColor DarkYellow
         Write-Host ""
         try
         {   
@@ -2643,24 +2633,24 @@ function DiskInfo
             $DiskInfoCMD
             Write-Host ""
             Start-Sleep -Seconds 1
-            Write-Host "Les données sont enregistrées dans le fichier" $PathInfoPoste
+            Write-Host "Les données sont enregistrées dans le fichier" $PathInfoPoste -ForegroundColor DarkYellow
             Write-Host ""
-            "Voici les détails du/des disques du poste distant : " | Out-File -Append -FilePath $PathInfoPoste
+            "Voici les détails du/des disque(s) du poste distant : " | Out-File -Append -FilePath $PathInfoPoste
             $DiskInfoCMD | Out-File -Append -FilePath $PathInfoPoste
             Write-Host ""
-            Read-Host "Appuyez sur Entrée pour continuer ..."
+            Read-Host "Appuyez sur Entrée pour continuer ... "
         }
         catch 
         {
             Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red
             Write-Host ""
-            Read-Host "Appuyer sur Entrée pour continuer ..."
+            Read-Host "Appuyez sur Entrée pour continuer ... "
         }
     }
     else 
     {
         clear-host
-        Write-Host "Mauvais choix - Retour au menu précédent"
+        Write-Host "Mauvais choix - Retour au menu précédent" -ForegroundColor Cyan
         Start-Sleep -Seconds 2
     }
 }
@@ -2668,35 +2658,35 @@ function DiskInfo
 #Foncion utilisation du processeur
 function ProcesseurInfo {
     clear-host
-    $ProcesseurInfoConf = Read-Host "Voulez-vous voir les détails de l'utilisation du processeur du poste distant ? [O pour valider]"
+    $ProcesseurInfoConf = Read-Host "Appuyez sur [O] pour confirmer la visualisation des détails de l'utilisation du processeur du poste distant "
     Write-Host ""
 
     if ($ProcesseurInfoConf -eq "O") 
     {
         clear-host
-        Write-Host "Voici les details de l'utilisation du processeur du poste distant : "
+        Write-Host "Voici les details de l'utilisation du processeur du poste distant : " -ForegroundColor DarkYellow
         try
         {       
             $ProcesseurInfoCMD = Invoke-Command -ComputerName $IPDistante -Credential $Credentials -ScriptBlock {Get-Counter "\Processeur(_Total)\% temps processeur"}
             $ProcesseurInfoCMD
             Start-Sleep -Seconds 1
-            Write-Host "Les données sont enregistrées dans le fichier" $PathInfoPoste
+            Write-Host "Les données sont enregistrées dans le fichier" $PathInfoPoste -ForegroundColor DarkYellow
             "Voici les details de l'utilisation du processeur du poste distant : " | Out-File -Append -FilePath $PathInfoPoste
             $ProcesseurInfoCMD | Out-File -Append -FilePath $PathInfoPoste
             Write-Host ""
-            Read-Host "Appuyez sur Entrée pour continuer ..."
+            Read-Host "Appuyez sur Entrée pour continuer ... "
         }
         catch 
         {
             Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red
             Write-Host ""
-            Read-Host "Appuyer sur Entrée pour continuer ..."
+            Read-Host "Appuyez sur Entrée pour continuer ... "
         }
     }
     else 
     {
         clear-host
-        Write-Host "Mauvais choix - Retour au menu précédent"
+        Write-Host "Mauvais choix - Retour au menu précédent" -ForegroundColor Cyan
         Start-Sleep -Seconds 2
     }
 }
@@ -2705,11 +2695,11 @@ function ProcesseurInfo {
 function StatutParefeu 
 {
     clear-host
-    $StatutParefeuConf = Read-Host "Voulez-vous voir le statut du pare-feu du poste distant ? [O pour valider]"
+    $StatutParefeuConf = Read-Host "Appuyez sur [O] pour confirmer la visualisation du pare-feu du poste distant ? [O pour valider]"
     if ($StatutParefeuConf -eq "O") 
     {
         clear-host
-        Write-Host "Voici le statut du pare-feu du poste distant : "
+        Write-Host "Voici le statut du pare-feu du poste distant : " -ForegroundColor DarkYellow
         Write-Host ""
         try
         {
@@ -2717,22 +2707,22 @@ function StatutParefeu
             $StatutPareFeuCMD
             Write-Host ""
             Start-Sleep -Seconds 1
-            Write-Host "Les données sont enregistrées dans le fichier" $PathInfoPoste
+            Write-Host "Les données sont enregistrées dans le fichier" $PathInfoPoste -ForegroundColor DarkYellow
             "Voici le statut du pare-feu du poste distant : " | Out-File -Append -FilePath $PathInfoPoste
             $StatutPareFeuCMD | Out-File -Append -FilePath $PathInfoPoste
             Write-Host ""
-            Read-Host "Appuyez sur Entrée pour continuer ..."
+            Read-Host "Appuyez sur Entrée pour continuer ... "
         }
         catch 
         {
             Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red
             Write-Host ""
-            Read-Host "Appuyer sur Entrée pour continuer ..."
+            Read-Host "Appuyez sur Entrée pour continuer ... "
         }
     }
     else {
         clear-host
-        Write-Host "Mauvais choix - Retour au menu précédent"
+        Write-Host "Mauvais choix - Retour au menu précédent" -ForegroundColor Cyan
         Start-Sleep -Seconds 2
     }
 }
@@ -2741,35 +2731,35 @@ function StatutParefeu
 function StatutPort 
 {
     clear-host
-    $StatutPortConf = Read-Host "Voulez-vous voir la liste des ports ouverts du poste distant ? [O pour valider]"
+    $StatutPortConf = Read-Host "Appuyez sur [O] pour confirmer la visualisation de la liste des ports ouverts du poste distant "
     Write-Host ""
     if ($StatutPortConf -eq "O") 
     {
         clear-host
-        Write-Host "Voici la liste des ports ouverts du poste distant : "
+        Write-Host "Voici la liste des ports ouverts du poste distant : " -ForegroundColor DarkYellow
         try
         {       
             $StatutPortCMD = Invoke-Command -ComputerName $IPDistante -Credential $Credentials -ScriptBlock {Get-NetTCPConnection | Select-Object LocalPort, State | Sort-Object LocalPort -Descending | Format-Table -AutoSize }
             $StatutPortCMD
             Write-Host ""
             Start-Sleep -Seconds 1
-            Write-Host "Les données sont enregistrées dans le fichier" $PathInfoPoste
+            Write-Host "Les données sont enregistrées dans le fichier" $PathInfoPoste -ForegroundColor DarkYellow
             "Voici la liste des ports ouverts du poste distant : " | Out-File -Append -FilePath $PathInfoPoste
             $StatutPortCMD | Out-File -Append -FilePath $PathInfoPoste
             Write-Host ""
-            Read-Host "Appuyez sur Entrée pour continuer ..."
+            Read-Host "Appuyez sur Entrée pour continuer ... "
         }
         catch 
         {
             Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red
             Write-Host ""
-            Read-Host "Appuyer sur Entrée pour continuer ..."
+            Read-Host "Appuyez sur Entrée pour continuer ... "
         } 
     }
     else 
     {
         clear-host
-        Write-Host "Mauvais choix - Retour au menu précédent"
+        Write-Host "Mauvais choix - Retour au menu précédent" -ForegroundColor Cyan
         Start-Sleep -Seconds 2
     }
 }
@@ -2783,13 +2773,13 @@ function StatutPort
 
 #Demande d'infos sur le Poste Distante
 clear-Host
-Write-Host "=================================================="
-Write-Host        "Initialisation script pour connexion"
-Write-Host "=================================================="
+Write-Host "===================================================================" -ForegroundColor DarkYellow
+Write-Host "|                        INITIALISATION                           |" -ForegroundColor DarkYellow
+Write-Host "===================================================================" -ForegroundColor DarkYellow
 Write-Host ""
 # Demande d'identification
-$NomDistant = Read-Host "Veuillez entrer le nom d'utilisateur du Poste Distante "
-$IpDistante = Read-Host "Veuillez entrer l'adresse IP du Poste Distante "
+$NomDistant = Read-Host "Veuillez entrer le nom d'utilisateur du poste distant "
+$IpDistante = Read-Host "Veuillez entrer l'adresse IP du poste distant "
 $Credentials = Get-Credential -Credential $NomDistant
 $Operateur = Read-Host "Veuillez vous identifiez "
 
