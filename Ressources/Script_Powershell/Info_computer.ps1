@@ -1,3 +1,7 @@
+$NomDistant = Read-Host "Veuillez entrer le nom d'utilisateur du Poste Distante "
+$IpDistante = Read-Host "Veuillez entrer l'adresse IP du Poste Distante "
+$Credentials = Get-Credential -Credential $NomDistant
+
 function ShowMenuInfoPoste {
     While ($true) {
     # Effacer l'écran
