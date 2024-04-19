@@ -2000,7 +2000,7 @@ function MACDemande {
         Start-Sleep -Seconds 1
         Write-Host "Les données sont enregistrées dans le fichier" $PathInfoPoste
         "Voici la liste des adresses MAC de chaque interface du poste distant : " | Out-File -Append -FilePath $PathInfoPoste
-        $IPInterfaceCMD | Out-File -Append -FilePath $PathInfoPoste
+        $MACDemande | Out-File -Append -FilePath $PathInfoPoste
         Write-Host ""
         Read-Host "Appuyez sur Entrée pour continuer ..."
     }
@@ -2048,8 +2048,8 @@ function UserList {
 
     if ($UserListConf -eq "O") {
         clear-host
-        $UserListCMD = Write-Host "Voici la liste des utilisateurs locaux du poste distant : "
-        Invoke-Command -ComputerName $IPDistante -Credential $Credentials -ScriptBlock {Get-LocalUser | Format-Table Name}
+        Write-Host "Voici la liste des utilisateurs locaux du poste distant : "
+        $UserListCMD = Invoke-Command -ComputerName $IPDistante -Credential $Credentials -ScriptBlock {Get-LocalUser | Format-Table Name}
         $UserListCMD
         Write-Host ""
         Start-Sleep -Seconds 1
