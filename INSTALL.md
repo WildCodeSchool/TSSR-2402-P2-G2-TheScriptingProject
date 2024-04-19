@@ -20,6 +20,11 @@ Ouvrir une console PowerShell en administrateur
 Set-NetFirewallProfile -Profile Domain,Public,Private -Enabled False
 ```
 
+* Installer le logiciel Chocolatey :
+```powershell
+Set-ExecutionPolicy AllSigned -Scope Process -Force; iwr https://community.chocolatey.org/install.ps1 -UseBasicParsing | iex
+```
+
 * Configuration de démarrage automatique et démarrage du service **Registre Distant**
 ![registre](https://github.com/WildCodeSchool/TSSR-2402-P2-G2-TheScriptingProject/blob/Dev/Ressources/Image_Greg/registre.PNG?raw=true)
 
