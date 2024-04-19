@@ -1,10 +1,11 @@
 ###############################################################################################################################################################################################################
 ################################################################################################################################################################################################################
 # Script Powershell pour maintenance et information sur Poste Distant Windows
-# Version 0.85
+# Version 0.9
 # Réalisé en collaboration par Anais Lenglet, Bruno Serna, Grégory Dubois, Patrick Baggiolini et Thomas Scotti
-# Dernière mise à jour le  18 / 04 / 2024
+# Dernière mise à jour le  1 / 04 / 2024
 # Historique version
+# V0.9 -- 19 / 04 / 2024 mise à jour fonction info user
 # V0.85 -- 18 / 04 / 2024 mise à jour fonction actions 
 # V0.8 -- 17 / 04 / 2024 Ajout fonction info user / computer
 # V0.7 -- 17 / 04 / 2024 Ajout fonction action computer
@@ -783,7 +784,7 @@ function CreateUser
     $newUser = Read-Host "Quel compte utilisateur souhaitez-vous créer?"
 
     # Vérification si l'utilisateur existe
-    $userExists = Invoke-Command -ComputerName $IpDistante -Credential $Credentials -ScriptBlock { Get-LocalUser -Name $using:newUser } 
+    $userExists = Invoke-Command -ComputerName $IpDistante -ScriptBlock { Get-LocalUser -Name $using:newUser } -Credential wilder
     if ($userExists) {
         # Si oui -> sortie du script
         Write-Host "L'utilisateur existe déjà." -ForegroundColor Red
@@ -793,7 +794,7 @@ function CreateUser
         Write-Host "Le compte $newUser n'existe pas et va être créé."
         $Mdp = Read-Host "Taper le mot de passe"
         # Création de l'utilisateur
-        Invoke-Command -ComputerName $IpDistante -Credential $Credentials -ScriptBlock { New-LocalUser -Name $using:newUser -Password (ConvertTo-SecureString -AsPlainText $using:Mdp -Force) } 
+        Invoke-Command -ComputerName $IpDistante -ScriptBlock { New-LocalUser -Name $using:newUser -Password (ConvertTo-SecureString -AsPlainText $using:Mdp -Force) } -Credential wilder
         # Confirmation de la création
         Write-Host "Compte $newUser créé." -ForegroundColor Green
         Start-Sleep -Seconds 2
@@ -808,13 +809,13 @@ function DelUser
     $userDel = Read-Host "Quel compte utilisateur souhaitez-vous supprimer ?"
 
     # Vérification si l'utilisateur existe
-    $userExists = Invoke-Command -ComputerName $IpDistante -Credential $Credentials -ScriptBlock { Get-LocalUser -Name $using:UserDel } 
+    $userExists = Invoke-Command -ComputerName $IpDistante -ScriptBlock { Get-LocalUser -Name $using:UserDel } -Credential wilder
     if ($userExists) {
         # Si il exsite -> demande de confirmation
         $confirmation = Read-Host "Voulez-vous vraiment supprimer le compte $userDel ? (Oui/Non)"
         # Si oui -> suppression du compte
         if ($confirmation -eq "Oui") {
-            Invoke-Command -ComputerName $IpDistante -Credential $Credentials -ScriptBlock { Remove-LocalUser -Name $using:UserDel } 
+            Invoke-Command -ComputerName $IpDistante -ScriptBlock { Remove-LocalUser -Name $using:UserDel } -Credential wilder
             Write-Host "Le compte $userDel est supprimé." -ForegroundColor Green
             Start-Sleep -Seconds 2
         }
@@ -839,13 +840,13 @@ function DisableUser
     $userLock = Read-Host "Quel compte utilisateur souhaitez-vous désactiver ?"
 
     # Vérification si l'utilisateur existe
-    $userExists = Invoke-Command -ComputerName $IpDistante -Credential $Credentials -ScriptBlock { Get-LocalUser -Name $using:UserLock } 
+    $userExists = Invoke-Command -ComputerName $IpDistante -ScriptBlock { Get-LocalUser -Name $using:UserLock } -Credential wilder
     if ($userExists) {
         # Si l'utilisateur existe -> demande de confirmation
         $confirmation = Read-Host "Voulez-vous vraiment désactiver le compte $userLock ? (Oui/Non)"
         # Si oui -> désactivation du compte
         if ($confirmation -eq "Oui") {
-            Invoke-Command -ComputerName $IpDistante -Credential $Credentials -ScriptBlock { Disable-LocalUser -Name $using:UserLock } 
+            Invoke-Command -ComputerName $IpDistante -ScriptBlock { Disable-LocalUser -Name $using:UserLock } -Credential wilder
             Write-Host "L'utilisateur $userLock est désactivé." -ForegroundColor Green
             Start-Sleep -Seconds 2
         }
@@ -870,11 +871,11 @@ function PasswordUser
     $userMdp = Read-Host "Pour quel compte utilisateur souhaitez-vous modifier le mot de passe ?"
 
     # Vérifie si le nom d'utilisateur existe sur le système distant
-    $userExist = Invoke-Command -ComputerName $IpDistante -Credential $Credentials -ScriptBlock { Get-LocalUser -Name $using:UserMdp } 
+    $userExist = Invoke-Command -ComputerName $IpDistante -ScriptBlock { Get-LocalUser -Name $using:UserMdp } -Credential wilder
     if ($userExist) {
         # Si oui -> demander de taper le nouveau mdp
         $newMdp = Read-Host "Entrer le nouveu mot de passe :"
-        Invoke-Command -ComputerName $IpDistante -Credential $Credentials -ScriptBlock { Set-LocalUser -Name $using:userMdp -Password (ConvertTo-SecureString -AsPlainText $using:newMdp -Force) } 
+        Invoke-Command -ComputerName $IpDistante -ScriptBlock { Set-LocalUser -Name $using:userMdp -Password (ConvertTo-SecureString -AsPlainText $using:newMdp -Force) } -Credential wilder
         Write-Host "Le mot de passe est bien modifié." -ForegroundColor Green
         Start-Sleep -Seconds 2
     }
@@ -892,10 +893,10 @@ function UserAddAdminGroup
     $userAdm = Read-Host "Quel compte utilisateur souhaitez-vous ajouter au groupe d'administration?"
 
     # Vérification si l'utilisateur existe
-    $userExists = Invoke-Command -ComputerName $IpDistante -Credential $Credentials -ScriptBlock { Get-LocalUser -Name $using:UserAdm } 
+    $userExists = Invoke-Command -ComputerName $IpDistante -ScriptBlock { Get-LocalUser -Name $using:UserAdm } -Credential wilder
     if ($userExists) {
         # Si l'utilisateur existe -> ajout au groupe Administrators
-        Invoke-Command -ComputerName $IpDistante -Credential $Credentials -ScriptBlock { Add-LocalGroupMember -Group Administrateurs -Member $using:userAdm } 
+        Invoke-Command -ComputerName $ip_distante -ScriptBlock { Add-LocalGroupMember -Group Administrateurs -Member $using:userAdm } -Credential wilder
         Write-Host "Le compte $userAdm est ajouté au groupe Administrateurs." -ForegroundColor Green
         Start-Sleep -Seconds 2
     }
@@ -913,24 +914,22 @@ Function UserAddGroup
     $userAddG = Read-Host "Quel compte utilisateur souhaitez-vous ajouter à un groupe local?"
     
     # Vérification si l'utilisateur existe
-    $userExists = Invoke-Command -ComputerName $IpDistante -Credential $Credentials -ScriptBlock { Get-LocalUser -Name $using:UserAddG } 
+    $userExists = Invoke-Command -ComputerName $IpDistante -ScriptBlock { Get-LocalUser -Name $using:UserAddG } -Credential wilder
     if ($userExists) {
         # Si l'utilisateur existe -> demande quel groupe?
         $choixAddGroup = Read-Host "À quel groupe souhaitez-vous ajouter l'utilisateur $userAddG?"
     
-        $groupExists = Invoke-Command -ComputerName $IpDistante -Credential $Credentials -ScriptBlock { Get-LocalGroup -Name $using:choixAddGroup } 
+        $groupExists = Invoke-Command -ComputerName $ip_distante -ScriptBlock { Get-LocalGroup -Name $using:choixAddGroup } -Credential wilder
             
         if ($groupExists) {
             Write-Host "Ajout du compte en cours..." -ForegroundColor Green
             Start-Sleep -Seconds 2
-            Invoke-Command -ComputerName $IpDistante -Credential $Credentials -ScriptBlock { Add-LocalGroupMember -Group $using:choixAddGroup -Member $using:userAddG } 
+            Invoke-Command -ComputerName $ip_distante -ScriptBlock { Add-LocalGroupMember -Group $using:choixAddGroup -Member $using:userAddG } -Credential wilder
             Write-Host "Le compte $userAddG est ajouté au groupe $choixAddGroup." -ForegroundColor Green
-	    Start-Sleep -Seconds 2
-	
+
             # Affichage des utilisateurs du groupe pour vérification
             Write-Host "Vous trouverez ci-dessous la liste des utilisateurs du groupe $choixAddGroup ." -ForegroundColor Green
-            Invoke-Command -ComputerName $IpDistante -Credential $Credentials -ScriptBlock { Get-LocalGroupMember -Group $using:choixAddGroup } 
-	    Start-Sleep -Seconds 2
+            Invoke-Command -ComputerName $ip_distante -ScriptBlock { Get-LocalGroupMember -Group $using:choixAddGroup } -Credential wilder
         }
         else {
             Write-Host "Le groupe n'existe pas." -ForegroundColor Red
@@ -949,25 +948,23 @@ Function UserDelGroup
     $userDel = Read-Host "Quel compte utilisateur souhaitez-vous supprimer d'un groupe local?"
         
     # Vérification si l'utilisateur existe
-    $userExists = Invoke-Command -ComputerName $IpDistante -Credential $Credentials -ScriptBlock { Get-LocalUser -Name $using:UserDel } 
+    $userExists = Invoke-Command -ComputerName $IpDistante -ScriptBlock { Get-LocalUser -Name $using:UserDel } -Credential wilder
     if ($userExists) {
         # Si l'utilisateur existe -> demande quel groupe?
         $choixDelGroup = Read-Host "De quel groupe souhaitez-vous supprimer l'utilisateur $userDel?"
         
-        $groupExists = Invoke-Command -ComputerName $IpDistante -Credential $Credentials -ScriptBlock { Get-LocalGroup -Name $using:choixDelGroup } 
+        $groupExists = Invoke-Command -ComputerName $ip_distante -ScriptBlock { Get-LocalGroup -Name $using:choixDelGroup } -Credential wilder
                 
         if ($groupExists) {
             # Si le groupe existe -> suppression de l'utilisateur du groupe
             Write-Host "Traitement en cours..." -ForegroundColor Green
             Start-Sleep -Seconds 2
-            Invoke-Command -ComputerName $IpDistante -Credential $Credentials -ScriptBlock { Remove-LocalGroupMember -Group $using:choixDelGroup -Member $using:userDel } 
+            Invoke-Command -ComputerName $ip_distante -ScriptBlock { Remove-LocalGroupMember -Group $using:choixDelGroup -Member $using:userDel } -Credential wilder
             Write-Host "Le compte $userDel est supprimé du groupe $choixDelGroup." -ForegroundColor Green
-	    Start-Sleep -Seconds 2
 
             # Affichage des utilisateurs du groupe pour vérification
             Write-Host "Vous trouverez ci-dessous la liste des utilisateurs du groupe $choixDelGroup ." -ForegroundColor Green
-            Invoke-Command -ComputerName $IpDistante -Credential $Credentials -ScriptBlock { Get-LocalGroupMember -Group $using:choixDelGroup } 
-	    Start-Sleep -Seconds 2
+            Invoke-Command -ComputerName $ip_distante -ScriptBlock { Get-LocalGroupMember -Group $using:choixDelGroup } -Credential wilder
         }
         else {
             Write-Host "Le groupe n'existe pas." -ForegroundColor Red
@@ -1689,56 +1686,81 @@ function RemoteScript
 
 # Fonction dernière connexion
 function InfoConnexion { 
-    # Demande quel utilisateur?
-    $userInf = Read-Host "Quel compte utilisateur souhaitez-vous vérifier?"
-    $PathInfoUser = "C:\Users\Administrator\Documents\Info_${UserInf}_$(Get-Date -Format "yyyyMMdd").txt"    
-    # Vérification si l'utilisateur existe
-    $userExists = Invoke-Command -ComputerName $IpDistante -ScriptBlock { Get-LocalUser -Name $using:UserInf } -Credential $Credentials 
-    if ($userExists) {
-        # Si oui -> affichage date de dernière connexion
-        Write-Host "Date de dernière connexion de l'utilisateur $userInf."
-        $CmdInfoCo = Invoke-Command -ComputerName $IpDistante -ScriptBlock { Get-WinEvent -FilterHashtable @{
-                LogName = 'Security'
-                ID      = 4624
-            } | Where-Object { $_.Properties[5].Value -eq $using:userInf } | Select-Object -ExpandProperty TimeCreated -First 1  } -Credential $Credentials 
-        $CmdInfoCo
-        Start-Sleep -Seconds 2
-        # Enregistrement des données
-        Write-Host "Les données sont enregistrées dans le fichier" $PathInfoUser
-        "Date de dernière connexion de l'utilisateur $userInf : " | Out-File -Append -FilePath $PathInfoUser
-        $CmdInfoCo | Out-File -Append -FilePath $PathInfoUser    
-        Read-Host "Appuyez sur Entrée pour continuer ..."
+    Clear-Host
+    $InfoCo = Read-Host "Voulez-vous voir la date de dernière de connexion d'un utilsiateur ? [O pour valider]"
+    if ($InfoCo -eq "O") 
+    {
+        Write-Host ""
+        # si oui -> demande quel utilisateur ciblé
+        $userInf = Read-Host "Quel compte utilisateur souhaitez-vous vérifier?"
+        $PathInfoUser = "C:\Users\Administrator\Documents\Info_${UserInf}_$(Get-Date -Format "yyyyMMdd").txt"    
+        # Vérification si l'utilisateur existe
+        $userExists = Invoke-Command -ComputerName $IpDistante -ScriptBlock { Get-LocalUser -Name $using:UserInf } -Credential $Credentials 
+        if ($userExists) {
+            # Si oui -> affichage date de dernière connexion
+            Write-Host "Date de dernière connexion de l'utilisateur $userInf."
+            $CmdInfoCo = Invoke-Command -ComputerName $IpDistante -ScriptBlock { Get-WinEvent -FilterHashtable @{
+                    LogName = 'Security'
+                    ID      = 4624
+                } | Where-Object { $_.Properties[5].Value -eq $using:userInf } | Select-Object -ExpandProperty TimeCreated -First 1  } -Credential $Credentials 
+            $CmdInfoCo
+            Start-Sleep -Seconds 2
+            # Enregistrement des données
+            Write-Host "Les données sont enregistrées dans le fichier" $PathInfoUser
+            "Date de dernière connexion de l'utilisateur $userInf : " | Out-File -Append -FilePath $PathInfoUser
+            $CmdInfoCo | Out-File -Append -FilePath $PathInfoUser    
+            Read-Host "Appuyez sur Entrée pour continuer ..."
 
+        }
+        else {
+            # Si non, sortie du script
+            Write-Host "Le compte utilisateur n'existe pas." -ForegroundColor Red
+            Read-Host "Appuyez sur Entrée pour continuer ..."
+        }
     }
-    else {
+    else 
+    {
         # Si non, sortie du script
-        Write-Host "Le compte utilisateur n'existe pas." -ForegroundColor Red
+        Write-Host "Mauvais choix - Retour au menu précédent" -ForegroundColor Red
+        Read-Host "Appuyez sur Entrée pour continuer ..."
     }
 }
 
 # Fonction dernière modification mot de passe
 function InfoModificationMdp { 
-    # Demande quel utilisateur?
-    Write-Host "Date de dernière modification du mdp"
-    $userInf = Read-Host "Tapez le nom d'utilisateur souhaité "
-    $PathInfoUser = "C:\Users\Administrator\Documents\Info_${UserInf}_$(Get-Date -Format "yyyyMMdd").txt"    
-    # Vérification si l'utilisateur existe
-    $userExists = Invoke-Command -ComputerName $IpDistante -ScriptBlock { Get-LocalUser -Name $using:UserInf } -Credential $Credentials 
-    if ($userExists) {
-        # Si oui -> affichage date de dernière connexion
-        $CmdInfoMdp = Write-Host "Date de dernière modification du mot de passe l'utilisateur $userInf."
-        Invoke-Command -ComputerName $IpDistante -ScriptBlock { (Get-LocalUser -Name $using:userInf).PasswordLastSet } -Credential $Credentials 
-        $CmdInfoMdp
-        Start-Sleep -Seconds 2
-        # Enregistrement des données
-        Write-Host "Les données sont enregistrées dans le fichier" $PathInfoUser
-        "Date de dernière modification de mot de passe de l'utilisateur $userInf : " | Out-File -Append -FilePath $PathInfoUser
-        $CmdInfoMdp | Out-File -Append -FilePath $PathInfoUser    
-        Read-Host "Appuyez sur Entrée pour continuer ..."
+    Clear-Host
+    $InfoMdp = Read-Host "Voulez-vous voir la date de dernière modification du mot de passe d'un utilisateur ? [O pour valider]"
+    if ($InfoMdp -eq "O") 
+    {
+        Write-Host ""
+        # si oui -> demande quel utilisateur ciblé
+        $userInf = Read-Host "Tapez le nom d'utilisateur souhaité "
+        $PathInfoUser = "C:\Users\Administrator\Documents\Info_${UserInf}_$(Get-Date -Format "yyyyMMdd").txt"    
+        # Vérification si l'utilisateur existe
+        $userExists = Invoke-Command -ComputerName $IpDistante -ScriptBlock { Get-LocalUser -Name $using:UserInf } -Credential $Credentials 
+        if ($userExists) {
+            # Si oui -> affichage date de dernière connexion
+            Write-Host "Date de dernière modification du mot de passe l'utilisateur $userInf."
+            $CmdInfoMdp=Invoke-Command -ComputerName $IpDistante -ScriptBlock { (Get-LocalUser -Name $using:userInf).PasswordLastSet } -Credential $Credentials 
+            $CmdInfoMdp
+            Start-Sleep -Seconds 2
+            # Enregistrement des données
+            Write-Host "Les données sont enregistrées dans le fichier" $PathInfoUser
+            "Date de dernière modification de mot de passe de l'utilisateur $userInf : " | Out-File -Append -FilePath $PathInfoUser
+            $CmdInfoMdp | Out-File -Append -FilePath $PathInfoUser    
+            Read-Host "Appuyez sur Entrée pour continuer ..."
+        }
+        else {
+            # Si non, sortie du script
+            Write-Host "Le compte utilisateur n'existe pas." -ForegroundColor Red
+            Read-Host "Appuyez sur Entrée pour continuer ..."
+        }
     }
-    else {
+    else 
+    {
         # Si non, sortie du script
-        Write-Host "Le compte utilisateur n'existe pas." -ForegroundColor Red
+        Write-Host "Mauvais choix - Retour au menu précédent" -ForegroundColor Red
+        Read-Host "Appuyez sur Entrée pour continuer ..."
     }
 }
 
@@ -1746,104 +1768,130 @@ function InfoModificationMdp {
 function InfoLogSession { 
     Clear-Host
     $InfLog = Read-Host "Voulez-vous voir les sessions actives sur le poste distant? [O pour valider]"
-    $PathInfoUser = "C:\Users\Administrator\Documents\Info_${UserInf}_$(Get-Date -Format "yyyyMMdd").txt"    
     if ($Inflog -eq "O") {
+        Write-Host ""
         # Si oui -> affichage liste sessions ouvertes
+        $userInf = Read-Host "Tapez le nom d'utilisateur souhaité "
+        $PathInfoUser = "C:\Users\Administrator\Documents\Info_${UserInf}_$(Get-Date -Format "yyyyMMdd").txt"    
         Write-Host "Session ouverte(s) sur le poste distant."
-        Invoke-Command -ComputerName $IpDistante -ScriptBlock { (Get-WmiObject -class win32_ComputerSystem | select username).username } -Credential $Credentials 
+        $CmdInfoSession=Invoke-Command -ComputerName $IpDistante -ScriptBlock { (Get-WmiObject -class win32_ComputerSystem | select username).username } -Credential $Credentials 
+        $CmdInfoSession
         Start-Sleep -Seconds 2
+        # Enregistrement des données
+        Write-Host "Les données sont enregistrées dans le fichier" $PathInfoUser
+        "Session ouverte(s) sur le poste distant pour l'utilisateur $userInf : " | Out-File -Append -FilePath $PathInfoUser
+        $CmdInfoMdp | Out-File -Append -FilePath $PathInfoUser    
+        Read-Host "Appuyez sur Entrée pour continuer ..."
     }
-    else {
+    else 
+    {
         # Si non, sortie du script
         Write-Host "Mauvais choix - Retour au menu précédent" -ForegroundColor Red
+        Read-Host "Appuyez sur Entrée pour continuer ..."
     }
 }
 
 # Fonction droit dossier
 function droitsDossier 
 {
-    # Demande quel utilisateur
-    Write-Host ""
-    Write-Host "Visualisation des droits sur un dossier"
-    Write-Host ""
-    $User = Read-Host "Tapez le nom d'utilisateur souhaité "
-    $PathInfoUser = "C:\Users\Administrator\Documents\Info_${User}_$(Get-Date -Format "yyyyMMdd").txt"
-
-    # Vérifie si l'utilisateur existe sur le serveur distant
-    $userExists = Invoke-Command -ComputerName $IpDistante -ScriptBlock {param($UserName ) Get-LocalUser -Name $UserName  } -ArgumentList $User -Credential $Credentials
-    if ( $userExists)
+    Clear-Host
+    $InfoDossier = Read-Host "Voulez-vous voir les droits sur un fichier d'un utilisateur ? [O pour valider]"
+    if ($InfoDossier -eq "O") 
     {
-        # si oui -> demande quel dossier à vérifier
-        $Dossier = Read-Host "Sur quel dossier souhaitez-vous vérifier les droits ? (spécifiez le chemin du dossier)"
-        $TestDossier = Invoke-Command -ComputerName $IpDistante -ScriptBlock {  param($Path) Test-Path -Path $Path} -ArgumentList $Dossier -Credential $Credentials
-        # Vérifie si le dossier existe sur le serveur distant
-        if ($TestDossier -eq $true) 
+        Write-Host ""
+        # si oui -> affichage des droits sur le dossier
+        $User = Read-Host "Tapez le nom d'utilisateur souhaité "
+        $PathInfoUser = "C:\Users\Administrator\Documents\Info_${User}_$(Get-Date -Format "yyyyMMdd").txt"
+        # Vérifie si l'utilisateur existe sur le serveur distant
+        $userExists = Invoke-Command -ComputerName $IpDistante -ScriptBlock {param($UserName ) Get-LocalUser -Name $UserName  } -ArgumentList $User -Credential $Credentials
+        if ( $userExists)
         {
-            # affichage des droits et sauvegarde dans fichier
-            $CmdInoFolder=Invoke-Command -ComputerName $IpDistante -Credential $Credentials -ScriptBlock { param($FolderPath) Get-Acl -Path $FolderPath } -ArgumentList $Dossier
-            $CmdInoFolder
-            Write-Host "Les données sont enregistrées dans le fichier" $PathInfoUser
-            "Voici la liste des droits sur le dossier $Dossier  : " | Out-File -Append -FilePath $PathInfoUser
-            $CmdInoFolder| Out-File -Append -FilePath $PathInfoUser
-            Read-Host "Appuyez sur Entrée pour continuer ..."
+            # si oui -> demande quel dossier à vérifier
+            $Dossier = Read-Host "Sur quel dossier souhaitez-vous vérifier les droits ? (spécifiez le chemin du dossier)"
+            $TestDossier = Invoke-Command -ComputerName $IpDistante -ScriptBlock {  param($Path) Test-Path -Path $Path} -ArgumentList $Dossier -Credential $Credentials
+            # Vérifie si le dossier existe sur le serveur distant
+            if ($TestDossier -eq $true) 
+            {
+                # affichage des droits et sauvegarde dans fichier
+                $CmdInoFolder=Invoke-Command -ComputerName $IpDistante -Credential $Credentials -ScriptBlock { param($FolderPath) Get-Acl -Path $FolderPath | Format-Table -AutoSize} -ArgumentList $Dossier
+                $CmdInoFolder
+                Write-Host "Les données sont enregistrées dans le fichier" $PathInfoUser
+                "Voici la liste des droits sur le dossier $Dossier  : " | Out-File -Append -FilePath $PathInfoUser
+                $CmdInoFolder| Out-File -Append -FilePath $PathInfoUser
+                Read-Host "Appuyez sur Entrée pour continuer ..."
+            }
+            else
+            {
+                # si non -> sortie du script
+                Write-Host "Le dossier $Dossier n'existe pas"
+                Start-Sleep -Seconds 2
+                Read-Host "Appuyez sur Entrée pour continuer ..."
+            }
         }
-        else
+        else 
         {
             # si non -> sortie du script
-            Write-Host "Le dossier $Dossier n'existe pas"
+            Write-Host "L'utilisateur $User n'existe pas"
             Start-Sleep -Seconds 2
+            Read-Host "Appuyez sur Entrée pour continuer ..."
         }
     }
     else 
     {
-        # si non -> sortie du script
-        Write-Host "L'utilisateur $User n'existe pas"
-        Start-Sleep -Seconds 2
+        # Si non, sortie du script
+        Write-Host "Mauvais choix - Retour au menu précédent" -ForegroundColor Red
+        Read-Host "Appuyez sur Entrée pour continuer ..."
     }
-    Start-Sleep -Seconds 2
-    Read-Host "Appuyez sur Entrée pour continuer ..."
 }
 
 # Fonction droit fichier
 function droitsFichier {
-    # Demande quel utilisateur
-    Write-Host ""
-    Write-Host "Visualisation des droits sur un fichier"
-    Write-Host ""
-    $UserInf = Read-Host "Tapez le nom d'utilisateur souhaité "
-    $PathInfoUser = "C:\Users\Administrator\Documents\Info_${UserInf}_$(Get-Date -Format "yyyyMMdd").txt"    
-    # Vérifie si l'utilisateur existe sur le serveur distant
-    $userExists = Invoke-Command -ComputerName $IpDistante -ScriptBlock { Get-LocalUser -Name $using:UserInf } -Credential $Credentials 
-    if ($userExists) {
-        # si oui -> demande quel fichier à vérifier
-        $Fichier = Read-Host "Sur quel fichier souhaitez-vous vérifier les droits ? (spécifiez le chemin du fichier)"
-
-        # Vérifie si le fichier existe sur le serveur distant
-        if ($Fichier) {
-            # affichage des droits
-            $CmdInoFile = Invoke-Command -ComputerName $IpDistante -Credential $Credentials -ScriptBlock {
-                param($FilePath)
-                Get-Acl -Path $FilePath } -ArgumentList $Fichier
-            $CmdInoFile
-            # Enregistrement des données
-            Write-Host "Les données sont enregistrées dans le fichier" $PathInfoUser
-            "Voici les droits sur le fichier spécifié $Fichier : " | Out-File -Append -FilePath $PathInfoUser
-            $CmdInoFile | Out-File -Append -FilePath $PathInfoUser
-            Read-Host "Appuyez sur Entrée pour continuer ..."
+    Clear-Host
+    $InfoFichier = Read-Host "Voulez-vous voir les droits sur un fichier d'un utilisateur ? [O pour valider]"
+    if ($InfoFichier -eq "O") 
+    {
+        # si oui -> affichage des droits sur le fichier
+        # Demande quel utilisateur
+        Write-Host ""
+        $UserInf = Read-Host "Tapez le nom d'utilisateur souhaité "
+        $PathInfoUser = "C:\Users\Administrator\Documents\Info_${UserInf}_$(Get-Date -Format "yyyyMMdd").txt"    
+        # Vérifie si l'utilisateur existe sur le serveur distant
+        $userExists = Invoke-Command -ComputerName $IpDistante -ScriptBlock { Get-LocalUser -Name $using:UserInf } -Credential $Credentials 
+        if ($userExists) {
+            # si oui -> demande quel fichier à vérifier
+            $Fichier = Read-Host "Sur quel fichier souhaitez-vous vérifier les droits ? (spécifiez le chemin du fichier)"
+            # Vérifie si le fichier existe sur le serveur distant
+            if ($Fichier) {
+                # affichage des droits
+                $CmdInoFile = Invoke-Command -ComputerName $IpDistante -Credential $Credentials -ScriptBlock {param($FilePath) Get-Acl -Path $FilePath | Format-Table -AutoSize} -ArgumentList $Fichier
+                $CmdInoFile
+                # Enregistrement des données
+                Write-Host "Les données sont enregistrées dans le fichier" $PathInfoUser
+                "Voici les droits sur le fichier spécifié $Fichier : " | Out-File -Append -FilePath $PathInfoUser
+                $CmdInoFile | Out-File -Append -FilePath $PathInfoUser
+                Read-Host "Appuyez sur Entrée pour continuer ..."
+            }
+            else {
+                # si non -> sortie du script
+                Write-Host "Le fichier $Fichier n'existe pas"
+                Start-Sleep -Seconds 2
+                Read-Host "Appuyez sur Entrée pour continuer ..."
+            }
         }
         else {
             # si non -> sortie du script
-            Write-Host "Le fichier $Fichier n'existe pas"
+            Write-Host "L'utilisateur $UserInf n'existe pas"
             Start-Sleep -Seconds 2
+            Read-Host "Appuyez sur Entrée pour continuer ..."
         }
     }
-    else {
-        # si non -> sortie du script
-        Write-Host "L'utilisateur $UserInf n'existe pas"
-        Start-Sleep -Seconds 2
+    else 
+    {
+        # Si non, sortie du script
+        Write-Host "Mauvais choix - Retour au menu précédent" -ForegroundColor Red
+        Read-Host "Appuyez sur Entrée pour continuer ..."
     }
-    Start-Sleep -Seconds 2
-    Read-Host "Appuyez sur Entrée pour continuer ..."
+
 }
 
 
