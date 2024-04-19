@@ -4,7 +4,7 @@
 
 ## Configuration des VM (Important)
 
-## 1. VM Windows Client
+## 1. VM Windows 10 Client
 
 ### Prérequis : 
  - Nom de Machine : CLIWIN01
@@ -104,7 +104,7 @@ Vous trouverez Powershell 7.4.1 dans les applications.
 
 ![find](https://github.com/WildCodeSchool/TSSR-2402-P2-G2-TheScriptingProject/blob/Dev/Ressources/Image_Greg/find.PNG?raw=true)
 
-## 3. VM Ubuntu Client
+## 3. VM Ubuntu Client 22.04 LTS
 
 #### Prérequis : 
  - Nom de Machine : CLILIN01
@@ -150,3 +150,21 @@ Lors du message : **`Souhaitez-vous continuer ? [O/n]`**-> Taper **`O`**
   sudo apt install sysstat
   ```
   ![](https://www.cjoint.com/doc/24_04/NDrpmkMXM2n_Bash-proceseru.png)
+
+## 4. VM Debian Server 12.2
+
+- Nom de Machine : SRVLX01
+- Utilisateur : root
+- Mot de passe : Azerty1*
+- IP adresse : 172.16.10.10/24
+
+Installer SSH :
+```bash
+sudo apt-get install openssh-server
+```
+
+- Une fois le SSH installé, il faut l'activer :
+```bash
+ sudo systemctl enable ssh
+```
+
