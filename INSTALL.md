@@ -4,15 +4,15 @@
 
 ## Configuration des VM (Important)
 
-### 1. VM Windows Client
+## 1. VM Windows Client
 
-#### Prérequis : 
+### Prérequis : 
  - Nom de Machine : CLIWIN01
  - Utilisateur : wilder (dans le groupe des admins locaux)
  - Mot de passe : Azerty1*
  - IP adresse : 172.16.10.20/24
 
-#### Configuration obligatoire :
+### Configuration obligatoire :
 
 * Désactivation du pare-feu,
 Ouvrir une console PowerShell en administrateur 
@@ -60,16 +60,16 @@ winrm quickconfig
 
 Après ces étapes, le service WinRM devrait démarrer automatiquement à chaque redémarrage de la machine.
 
-### 2. VM Windows Server 2022
+## 2. VM Windows Server 2022
 
-#### Prérequis : 
+### Prérequis : 
 
 - Nom de Machine : SRVWIN01
 - Utilisateur : Administrator (dans le groupe des admins locaux)
 - Mot de passe : Azerty1* 
 - IP adresse : 172.16.10.05/24
 
-#### Configuration obligatoire :
+### Configuration obligatoire :
 
 **Ajouter le PC client à la liste des hôte de confiance avec la commande :**
 ```powershell
@@ -99,7 +99,7 @@ Vous trouverez Powershell 7.4.1 dans les applications.
 
 ![find](https://github.com/WildCodeSchool/TSSR-2402-P2-G2-TheScriptingProject/blob/Dev/Ressources/Image_Greg/find.PNG?raw=true)
 
-### 3. VM Ubuntu Client
+## 3. VM Ubuntu Client
 
 #### Prérequis : 
  - Nom de Machine : CLILIN01
