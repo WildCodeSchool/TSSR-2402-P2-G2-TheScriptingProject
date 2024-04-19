@@ -20,18 +20,23 @@ function InfoConnexion {
         if ($userExists) {
             # Si oui -> affichage date de dernière connexion
             Write-Host "Date de dernière connexion de l'utilisateur $userInf."
-            $CmdInfoCo = Invoke-Command -ComputerName $IpDistante -ScriptBlock { Get-WinEvent -FilterHashtable @{
+            try {
+                    $CmdInfoCo = Invoke-Command -ComputerName $IpDistante -ScriptBlock { Get-WinEvent -FilterHashtable @{
                     LogName = 'Security'
                     ID      = 4624
-                } | Where-Object { $_.Properties[5].Value -eq $using:userInf } | Select-Object -ExpandProperty TimeCreated -First 1  } -Credential $Credentials 
-            $CmdInfoCo
-            Start-Sleep -Seconds 2
-            # Enregistrement des données
-            Write-Host "Les données sont enregistrées dans le fichier" $PathInfoUser
-            "Date de dernière connexion de l'utilisateur $userInf : " | Out-File -Append -FilePath $PathInfoUser
-            $CmdInfoCo | Out-File -Append -FilePath $PathInfoUser    
-            Read-Host "Appuyez sur Entrée pour continuer ..."
-
+                    } | Where-Object { $_.Properties[5].Value -eq $using:userInf } | Select-Object -ExpandProperty TimeCreated -First 1  } -Credential $Credentials 
+                    $CmdInfoCo
+                    Start-Sleep -Seconds 2
+                    # Enregistrement des données
+                    Write-Host "Les données sont enregistrées dans le fichier" $PathInfoUser
+                    "Date de dernière connexion de l'utilisateur $userInf : " | Out-File -Append -FilePath $PathInfoUser
+                    $CmdInfoCo | Out-File -Append -FilePath $PathInfoUser    
+                    Read-Host "Appuyez sur Entrée pour continuer ..."
+            }
+            catch {
+                    Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red
+                    Read-Host "Appuyer sur Entrée pour continuer ..."
+            }
         }
         else {
             # Si non, sortie du script
@@ -62,14 +67,19 @@ function InfoModificationMdp {
         if ($userExists) {
             # Si oui -> affichage date de dernière connexion
             Write-Host "Date de dernière modification du mot de passe l'utilisateur $userInf."
-            $CmdInfoMdp=Invoke-Command -ComputerName $IpDistante -ScriptBlock { (Get-LocalUser -Name $using:userInf).PasswordLastSet } -Credential $Credentials 
-            $CmdInfoMdp
-            Start-Sleep -Seconds 2
-            # Enregistrement des données
-            Write-Host "Les données sont enregistrées dans le fichier" $PathInfoUser
-            "Date de dernière modification de mot de passe de l'utilisateur $userInf : " | Out-File -Append -FilePath $PathInfoUser
-            $CmdInfoMdp | Out-File -Append -FilePath $PathInfoUser    
-            Read-Host "Appuyez sur Entrée pour continuer ..."
+         try {
+                $CmdInfoMdp=Invoke-Command -ComputerName $IpDistante -ScriptBlock { (Get-LocalUser -Name $using:userInf).PasswordLastSet } -Credential $Credentials 
+                $CmdInfoMdp
+                Start-Sleep -Seconds 2
+                # Enregistrement des données
+                Write-Host "Les données sont enregistrées dans le fichier" $PathInfoUser
+                "Date de dernière modification de mot de passe de l'utilisateur $userInf : " | Out-File -Append -FilePath $PathInfoUser
+                $CmdInfoMdp | Out-File -Append -FilePath $PathInfoUser    
+                Read-Host "Appuyez sur Entrée pour continuer ..."
+        }
+         catch {
+                 Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red
+                 Read-Host "Appuyer sur Entrée pour continuer ..."
         }
         else {
             # Si non, sortie du script
@@ -95,15 +105,20 @@ function InfoLogSession {
         $userInf = Read-Host "Tapez le nom d'utilisateur souhaité "
         $PathInfoUser = "C:\Users\Administrator\Documents\Info_${UserInf}_$(Get-Date -Format "yyyyMMdd").txt"    
         Write-Host "Session ouverte(s) sur le poste distant."
-        $CmdInfoSession=Invoke-Command -ComputerName $IpDistante -ScriptBlock { (Get-WmiObject -class win32_ComputerSystem | select username).username } -Credential $Credentials 
-        $CmdInfoSession
-        Start-Sleep -Seconds 2
-        # Enregistrement des données
-        Write-Host "Les données sont enregistrées dans le fichier" $PathInfoUser
-        "Session ouverte(s) sur le poste distant pour l'utilisateur $userInf : " | Out-File -Append -FilePath $PathInfoUser
-        $CmdInfoMdp | Out-File -Append -FilePath $PathInfoUser    
-        Read-Host "Appuyez sur Entrée pour continuer ..."
+    try {
+            $CmdInfoSession=Invoke-Command -ComputerName $IpDistante -ScriptBlock { (Get-WmiObject -class win32_ComputerSystem | select username).username } -Credential $Credentials 
+            $CmdInfoSession
+            Start-Sleep -Seconds 2
+            # Enregistrement des données
+            Write-Host "Les données sont enregistrées dans le fichier" $PathInfoUser
+            "Session ouverte(s) sur le poste distant pour l'utilisateur $userInf : " | Out-File -Append -FilePath $PathInfoUser
+            $CmdInfoMdp | Out-File -Append -FilePath $PathInfoUser    
+            Read-Host "Appuyez sur Entrée pour continuer ..."
     }
+    catch {
+            Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red
+            Read-Host "Appuyer sur Entrée pour continuer ..."
+        }
     else 
     {
         # Si non, sortie du script
@@ -133,6 +148,7 @@ function droitsDossier
             # Vérifie si le dossier existe sur le serveur distant
             if ($TestDossier -eq $true) 
             {
+            try {
                 # affichage des droits et sauvegarde dans fichier
                 $CmdInoFolder=Invoke-Command -ComputerName $IpDistante -Credential $Credentials -ScriptBlock { param($FolderPath) Get-Acl -Path $FolderPath | Format-Table -AutoSize} -ArgumentList $Dossier
                 $CmdInoFolder
@@ -140,6 +156,10 @@ function droitsDossier
                 "Voici la liste des droits sur le dossier $Dossier  : " | Out-File -Append -FilePath $PathInfoUser
                 $CmdInoFolder| Out-File -Append -FilePath $PathInfoUser
                 Read-Host "Appuyez sur Entrée pour continuer ..."
+            }
+            catch {
+                Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red
+                Read-Host "Appuyer sur Entrée pour continuer ..."
             }
             else
             {
@@ -183,6 +203,7 @@ function droitsFichier {
             $Fichier = Read-Host "Sur quel fichier souhaitez-vous vérifier les droits ? (spécifiez le chemin du fichier)"
             # Vérifie si le fichier existe sur le serveur distant
             if ($Fichier) {
+            try {   
                 # affichage des droits
                 $CmdInoFile = Invoke-Command -ComputerName $IpDistante -Credential $Credentials -ScriptBlock {param($FilePath) Get-Acl -Path $FilePath | Format-Table -AutoSize} -ArgumentList $Fichier
                 $CmdInoFile
@@ -191,6 +212,10 @@ function droitsFichier {
                 "Voici les droits sur le fichier spécifié $Fichier : " | Out-File -Append -FilePath $PathInfoUser
                 $CmdInoFile | Out-File -Append -FilePath $PathInfoUser
                 Read-Host "Appuyez sur Entrée pour continuer ..."
+            }
+            catch {
+                Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red
+                Read-Host "Appuyer sur Entrée pour continuer ..."
             }
             else {
                 # si non -> sortie du script
