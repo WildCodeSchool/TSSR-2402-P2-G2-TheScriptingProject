@@ -15,7 +15,7 @@ function CreateUser
     $newUser = Read-Host "Quel compte utilisateur souhaitez-vous créer?"
 
     # Vérification si l'utilisateur existe
-    $userExists = Invoke-Command -ComputerName $IpDistante -ScriptBlock { Get-LocalUser -Name $using:newUser } -Credential wilder
+    $userExists = Invoke-Command -ComputerName $IpDistante -ScriptBlock { Get-LocalUser -Name $using:newUser } -Credential $Credentials
     if ($userExists) {
         # Si oui -> sortie du script
         Write-Host "L'utilisateur existe déjà." -ForegroundColor Red
@@ -25,7 +25,7 @@ function CreateUser
         Write-Host "Le compte $newUser n'existe pas et va être créé."
         $Mdp = Read-Host "Taper le mot de passe"
         # Création de l'utilisateur
-        Invoke-Command -ComputerName $IpDistante -ScriptBlock { New-LocalUser -Name $using:newUser -Password (ConvertTo-SecureString -AsPlainText $using:Mdp -Force) } -Credential wilder
+        Invoke-Command -ComputerName $IpDistante -ScriptBlock { New-LocalUser -Name $using:newUser -Password (ConvertTo-SecureString -AsPlainText $using:Mdp -Force) } -Credential $Credentials
         # Confirmation de la création
         Write-Host "Compte $newUser créé." -ForegroundColor Green
         Start-Sleep -Seconds 2
@@ -40,13 +40,13 @@ function DelUser
     $userDel = Read-Host "Quel compte utilisateur souhaitez-vous supprimer ?"
 
     # Vérification si l'utilisateur existe
-    $userExists = Invoke-Command -ComputerName $IpDistante -ScriptBlock { Get-LocalUser -Name $using:UserDel } -Credential wilder
+    $userExists = Invoke-Command -ComputerName $IpDistante -ScriptBlock { Get-LocalUser -Name $using:UserDel } -Credential $Credentials
     if ($userExists) {
         # Si il exsite -> demande de confirmation
         $confirmation = Read-Host "Voulez-vous vraiment supprimer le compte $userDel ? (Oui/Non)"
         # Si oui -> suppression du compte
         if ($confirmation -eq "Oui") {
-            Invoke-Command -ComputerName $IpDistante -ScriptBlock { Remove-LocalUser -Name $using:UserDel } -Credential wilder
+            Invoke-Command -ComputerName $IpDistante -ScriptBlock { Remove-LocalUser -Name $using:UserDel } -Credential $Credentials
             Write-Host "Le compte $userDel est supprimé." -ForegroundColor Green
             Start-Sleep -Seconds 2
         }
@@ -71,13 +71,13 @@ function DisableUser
     $userLock = Read-Host "Quel compte utilisateur souhaitez-vous désactiver ?"
 
     # Vérification si l'utilisateur existe
-    $userExists = Invoke-Command -ComputerName $IpDistante -ScriptBlock { Get-LocalUser -Name $using:UserLock } -Credential wilder
+    $userExists = Invoke-Command -ComputerName $IpDistante -ScriptBlock { Get-LocalUser -Name $using:UserLock } -Credential $Credentials
     if ($userExists) {
         # Si l'utilisateur existe -> demande de confirmation
         $confirmation = Read-Host "Voulez-vous vraiment désactiver le compte $userLock ? (Oui/Non)"
         # Si oui -> désactivation du compte
         if ($confirmation -eq "Oui") {
-            Invoke-Command -ComputerName $IpDistante -ScriptBlock { Disable-LocalUser -Name $using:UserLock } -Credential wilder
+            Invoke-Command -ComputerName $IpDistante -ScriptBlock { Disable-LocalUser -Name $using:UserLock } -Credential $Credentials
             Write-Host "L'utilisateur $userLock est désactivé." -ForegroundColor Green
             Start-Sleep -Seconds 2
         }
@@ -102,11 +102,11 @@ function PasswordUser
     $userMdp = Read-Host "Pour quel compte utilisateur souhaitez-vous modifier le mot de passe ?"
 
     # Vérifie si le nom d'utilisateur existe sur le système distant
-    $userExist = Invoke-Command -ComputerName $IpDistante -ScriptBlock { Get-LocalUser -Name $using:UserMdp } -Credential wilder
+    $userExist = Invoke-Command -ComputerName $IpDistante -ScriptBlock { Get-LocalUser -Name $using:UserMdp } -Credential $Credentials
     if ($userExist) {
         # Si oui -> demander de taper le nouveau mdp
         $newMdp = Read-Host "Entrer le nouveu mot de passe :"
-        Invoke-Command -ComputerName $IpDistante -ScriptBlock { Set-LocalUser -Name $using:userMdp -Password (ConvertTo-SecureString -AsPlainText $using:newMdp -Force) } -Credential wilder
+        Invoke-Command -ComputerName $IpDistante -ScriptBlock { Set-LocalUser -Name $using:userMdp -Password (ConvertTo-SecureString -AsPlainText $using:newMdp -Force) } -Credential $Credentials
         Write-Host "Le mot de passe est bien modifié." -ForegroundColor Green
         Start-Sleep -Seconds 2
     }
@@ -124,10 +124,10 @@ function UserAddAdminGroup
     $userAdm = Read-Host "Quel compte utilisateur souhaitez-vous ajouter au groupe d'administration?"
 
     # Vérification si l'utilisateur existe
-    $userExists = Invoke-Command -ComputerName $IpDistante -ScriptBlock { Get-LocalUser -Name $using:UserAdm } -Credential wilder
+    $userExists = Invoke-Command -ComputerName $IpDistante -ScriptBlock { Get-LocalUser -Name $using:UserAdm } -Credential $Credentials
     if ($userExists) {
         # Si l'utilisateur existe -> ajout au groupe Administrators
-        Invoke-Command -ComputerName $ip_distante -ScriptBlock { Add-LocalGroupMember -Group Administrateurs -Member $using:userAdm } -Credential wilder
+        Invoke-Command -ComputerName $ip_distante -ScriptBlock { Add-LocalGroupMember -Group Administrateurs -Member $using:userAdm } -Credential $Credentials
         Write-Host "Le compte $userAdm est ajouté au groupe Administrateurs." -ForegroundColor Green
         Start-Sleep -Seconds 2
     }
@@ -145,22 +145,23 @@ Function UserAddGroup
     $userAddG = Read-Host "Quel compte utilisateur souhaitez-vous ajouter à un groupe local?"
     
     # Vérification si l'utilisateur existe
-    $userExists = Invoke-Command -ComputerName $IpDistante -ScriptBlock { Get-LocalUser -Name $using:UserAddG } -Credential wilder
+    $userExists = Invoke-Command -ComputerName $IpDistante -ScriptBlock { Get-LocalUser -Name $using:UserAddG } -Credential $Credentials
     if ($userExists) {
         # Si l'utilisateur existe -> demande quel groupe?
         $choixAddGroup = Read-Host "À quel groupe souhaitez-vous ajouter l'utilisateur $userAddG?"
     
-        $groupExists = Invoke-Command -ComputerName $ip_distante -ScriptBlock { Get-LocalGroup -Name $using:choixAddGroup } -Credential wilder
+        $groupExists = Invoke-Command -ComputerName $ip_distante -ScriptBlock { Get-LocalGroup -Name $using:choixAddGroup } -Credential $Credentials
             
         if ($groupExists) {
             Write-Host "Ajout du compte en cours..." -ForegroundColor Green
             Start-Sleep -Seconds 2
-            Invoke-Command -ComputerName $ip_distante -ScriptBlock { Add-LocalGroupMember -Group $using:choixAddGroup -Member $using:userAddG } -Credential wilder
+            Invoke-Command -ComputerName $ip_distante -ScriptBlock { Add-LocalGroupMember -Group $using:choixAddGroup -Member $using:userAddG } -Credential $Credentials
             Write-Host "Le compte $userAddG est ajouté au groupe $choixAddGroup." -ForegroundColor Green
 
             # Affichage des utilisateurs du groupe pour vérification
             Write-Host "Vous trouverez ci-dessous la liste des utilisateurs du groupe $choixAddGroup ." -ForegroundColor Green
-            Invoke-Command -ComputerName $ip_distante -ScriptBlock { Get-LocalGroupMember -Group $using:choixAddGroup } -Credential wilder
+            Invoke-Command -ComputerName $ip_distante -ScriptBlock { Get-LocalGroupMember -Group $using:choixAddGroup } -Credential $Credentials
+            Start-Sleep -Seconds 2
         }
         else {
             Write-Host "Le groupe n'existe pas." -ForegroundColor Red
@@ -179,23 +180,24 @@ Function UserDelGroup
     $userDel = Read-Host "Quel compte utilisateur souhaitez-vous supprimer d'un groupe local?"
         
     # Vérification si l'utilisateur existe
-    $userExists = Invoke-Command -ComputerName $IpDistante -ScriptBlock { Get-LocalUser -Name $using:UserDel } -Credential wilder
+    $userExists = Invoke-Command -ComputerName $IpDistante -ScriptBlock { Get-LocalUser -Name $using:UserDel } -Credential $Credentials
     if ($userExists) {
         # Si l'utilisateur existe -> demande quel groupe?
         $choixDelGroup = Read-Host "De quel groupe souhaitez-vous supprimer l'utilisateur $userDel?"
         
-        $groupExists = Invoke-Command -ComputerName $ip_distante -ScriptBlock { Get-LocalGroup -Name $using:choixDelGroup } -Credential wilder
+        $groupExists = Invoke-Command -ComputerName $ip_distante -ScriptBlock { Get-LocalGroup -Name $using:choixDelGroup } -Credential $Credentials
                 
         if ($groupExists) {
             # Si le groupe existe -> suppression de l'utilisateur du groupe
             Write-Host "Traitement en cours..." -ForegroundColor Green
             Start-Sleep -Seconds 2
-            Invoke-Command -ComputerName $ip_distante -ScriptBlock { Remove-LocalGroupMember -Group $using:choixDelGroup -Member $using:userDel } -Credential wilder
+            Invoke-Command -ComputerName $ip_distante -ScriptBlock { Remove-LocalGroupMember -Group $using:choixDelGroup -Member $using:userDel } -Credential $Credentials
             Write-Host "Le compte $userDel est supprimé du groupe $choixDelGroup." -ForegroundColor Green
 
             # Affichage des utilisateurs du groupe pour vérification
             Write-Host "Vous trouverez ci-dessous la liste des utilisateurs du groupe $choixDelGroup ." -ForegroundColor Green
-            Invoke-Command -ComputerName $ip_distante -ScriptBlock { Get-LocalGroupMember -Group $using:choixDelGroup } -Credential wilder
+            Invoke-Command -ComputerName $ip_distante -ScriptBlock { Get-LocalGroupMember -Group $using:choixDelGroup } -Credential $Credentials
+            Start-Sleep -Seconds 2
         }
         else {
             Write-Host "Le groupe n'existe pas." -ForegroundColor Red
