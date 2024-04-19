@@ -152,8 +152,10 @@ function droitsDossier
                 # affichage des droits et sauvegarde dans fichier
                 $CmdInoFolder=Invoke-Command -ComputerName $IpDistante -Credential $Credentials -ScriptBlock { param($FolderPath) Get-Acl -Path $FolderPath | Format-Table -AutoSize} -ArgumentList $Dossier
                 $CmdInoFolder
+                Start-Sleep -Seconds 2
                 Write-Host "Les données sont enregistrées dans le fichier" $PathInfoUser
                 "Voici la liste des droits sur le dossier $Dossier  : " | Out-File -Append -FilePath $PathInfoUser
+                Start-Sleep -Seconds 2
                 $CmdInoFolder| Out-File -Append -FilePath $PathInfoUser
                 Read-Host "Appuyez sur Entrée pour continuer ..."
             }
@@ -207,10 +209,12 @@ function droitsFichier {
                 # affichage des droits
                 $CmdInoFile = Invoke-Command -ComputerName $IpDistante -Credential $Credentials -ScriptBlock {param($FilePath) Get-Acl -Path $FilePath | Format-Table -AutoSize} -ArgumentList $Fichier
                 $CmdInoFile
+                Start-Sleep -Seconds 2
                 # Enregistrement des données
                 Write-Host "Les données sont enregistrées dans le fichier" $PathInfoUser
                 "Voici les droits sur le fichier spécifié $Fichier : " | Out-File -Append -FilePath $PathInfoUser
                 $CmdInoFile | Out-File -Append -FilePath $PathInfoUser
+                Start-Sleep -Seconds 2
                 Read-Host "Appuyez sur Entrée pour continuer ..."
             }
             catch {
