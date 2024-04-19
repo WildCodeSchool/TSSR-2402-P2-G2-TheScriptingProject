@@ -4,159 +4,215 @@
 $NomDistant = "wilder"
 $IpDistante = "172.16.10.20"
 $Credentials = Get-Credential -Credential $NomDistant
-$PathInfoUser = "C:\Users\Administrator\Documents\Info_$UserInf_$(Get-Date -Format "yyyyMMdd").txt"
 
+# Fonction dernière connexion
 function InfoConnexion { 
-    # Demande quel utilisateur?
-    $userInf = Read-Host "Quel compte utilisateur souhaitez-vous vérifier?"
-    
-    # Vérification si l'utilisateur existe
-    $userExists = Invoke-Command -ComputerName $IpDistante -ScriptBlock { Get-LocalUser -Name $using:UserInf } -Credential wilder
-    if ($userExists) {
-        # Si oui -> affichage date de dernière connexion
-        Write-Host "Date de dernière connexion de l'utilisateur $userInf."
-        $Call = Invoke-Command -ComputerName $IpDistante -ScriptBlock { Get-WinEvent -FilterHashtable @{
-                LogName = 'Security'
-                ID      = 4624
-            } | Where-Object { $_.Properties[5].Value -eq $using:userInf } | Select-Object -ExpandProperty TimeCreated -First 1 
-        } -Credential wilder
-        $Call
-        Start-Sleep -Seconds 2
-        # Enregistrement des données
-        Write-Host "Les données sont enregistrées dans le fichier" $PathInfoUser
-        "Voici les droits sur le dossier spécifié : " | Out-File -Append -FilePath $PathInfoUser
-        $Call | Out-File -Append -FilePath $PathInfoUser
-    
-        Read-Host "Appuyez sur Entrée pour continuer ..."
-
-    }
-    else {
-        # Si non, sortie du script
-        Write-Host "Le compte utilisateur n'existe pas." -ForegroundColor Red
-    }
-}
-
-function InfoModificationMdp { 
-    # Demande quel utilisateur?
-    Write-Host "Date de dernière modification du mdp"
-    $userInf = Read-Host "Tapez le nom d'utilisateur souhaité "
-
-    # Vérification si l'utilisateur existe
-    $userExists = Invoke-Command -ComputerName $IpDistante -ScriptBlock { Get-LocalUser -Name $using:UserInf } -Credential wilder
-    if ($userExists) {
-        # Si oui -> affichage date de dernière connexion
-        $Call = Write-Host "Date de dernière modification du mot de passe l'utilisateur $userInf."
-        Invoke-Command -ComputerName $IpDistante -ScriptBlock { (Get-LocalUser -Name $using:userInf).PasswordLastSet
-        } -Credential wilder
-        $Call
-        Start-Sleep -Seconds 2
-        # Enregistrement des données
-        Write-Host "Les données sont enregistrées dans le fichier" $PathInfoUser
-        "Voici les droits sur le dossier spécifié : " | Out-File -Append -FilePath $PathInfoUser
-        $Call | Out-File -Append -FilePath $PathInfoUser
-    
-        Read-Host "Appuyez sur Entrée pour continuer ..."
-    }
-    else {
-        # Si non, sortie du script
-        Write-Host "Le compte utilisateur n'existe pas." -ForegroundColor Red
-    }
-}
-
-function InfoLogSession { 
     Clear-Host
-    $InfLog = Read-Host "Voulez-vous voir les sessions actives sur le poste distant? [O pour valider]"
-
-   
-    if ($Inflog -eq "O") {
-        # Si oui -> affichage liste sessions ouvertes
-        Write-Host "Session ouverte(s) sur le poste distant."
-        Invoke-Command -ComputerName $IpDistante -ScriptBlock { (Get-WmiObject -class win32_ComputerSystem | select username).username } -Credential wilder
-        Start-Sleep -Seconds 2
-    }
-    else {
-        # Si non, sortie du script
-        Write-Host "Mauvais choix - Retour au menu précédent" -ForegroundColor Red
-    }
-}
-
-function droitsDossier {
-    # Demande quel utilisateur
-    Write-Host ""
-    Write-Host "Visualisation des droits sur un dossier"
-    Write-Host ""
-    $UserInf = Read-Host "Tapez le nom d'utilisateur souhaité "
-
-    # Vérifie si l'utilisateur existe sur le serveur distant
-    $userExists = Invoke-Command -ComputerName $IpDistante -ScriptBlock { Get-LocalUser -Name $using:UserInf } -Credential wilder
-    if ($userExists) {
-        # si oui -> demande quel dossier à vérifier
-        $Dossier = Read-Host "Sur quel dossier souhaitez-vous vérifier les droits ? (spécifiez le chemin du dossier)"
-
-        # Vérifie si le dossier existe sur le serveur distant
-        if ($Dossier) {
-            # affichage des droits
-            $Call = Invoke-Command -ComputerName $IpDistante -Credential $NomDistant -ScriptBlock {
-                param($FolderPath)
-                Get-Acl -Path $FolderPath } -ArgumentList $Dossier
-            $Call
-            Start-Sleep -Seconds 2     
+    $InfoCo = Read-Host "Voulez-vous voir la date de dernière de connexion d'un utilsiateur ? [O pour valider]"
+    if ($InfoCo -eq "O") 
+    {
+        Write-Host ""
+        # si oui -> demande quel utilisateur ciblé
+        $userInf = Read-Host "Quel compte utilisateur souhaitez-vous vérifier?"
+        $PathInfoUser = "C:\Users\Administrator\Documents\Info_${UserInf}_$(Get-Date -Format "yyyyMMdd").txt"    
+        # Vérification si l'utilisateur existe
+        $userExists = Invoke-Command -ComputerName $IpDistante -ScriptBlock { Get-LocalUser -Name $using:UserInf } -Credential $Credentials 
+        if ($userExists) {
+            # Si oui -> affichage date de dernière connexion
+            Write-Host "Date de dernière connexion de l'utilisateur $userInf."
+            $CmdInfoCo = Invoke-Command -ComputerName $IpDistante -ScriptBlock { Get-WinEvent -FilterHashtable @{
+                    LogName = 'Security'
+                    ID      = 4624
+                } | Where-Object { $_.Properties[5].Value -eq $using:userInf } | Select-Object -ExpandProperty TimeCreated -First 1  } -Credential $Credentials 
+            $CmdInfoCo
+            Start-Sleep -Seconds 2
             # Enregistrement des données
             Write-Host "Les données sont enregistrées dans le fichier" $PathInfoUser
-            "Voici les droits sur le dossier spécifié : " | Out-File -Append -FilePath $PathInfoUser
-            $Call | Out-File -Append -FilePath $PathInfoUser
-    
+            "Date de dernière connexion de l'utilisateur $userInf : " | Out-File -Append -FilePath $PathInfoUser
+            $CmdInfoCo | Out-File -Append -FilePath $PathInfoUser    
+            Read-Host "Appuyez sur Entrée pour continuer ..."
+
+        }
+        else {
+            # Si non, sortie du script
+            Write-Host "Le compte utilisateur n'existe pas." -ForegroundColor Red
+            Read-Host "Appuyez sur Entrée pour continuer ..."
+        }
+    }
+    else 
+    {
+        # Si non, sortie du script
+        Write-Host "Mauvais choix - Retour au menu précédent" -ForegroundColor Red
+        Read-Host "Appuyez sur Entrée pour continuer ..."
+    }
+}
+
+# Fonction dernière modification mot de passe
+function InfoModificationMdp { 
+    Clear-Host
+    $InfoMdp = Read-Host "Voulez-vous voir la date de dernière modification du mot de passe d'un utilisateur ? [O pour valider]"
+    if ($InfoMdp -eq "O") 
+    {
+        Write-Host ""
+        # si oui -> demande quel utilisateur ciblé
+        $userInf = Read-Host "Tapez le nom d'utilisateur souhaité "
+        $PathInfoUser = "C:\Users\Administrator\Documents\Info_${UserInf}_$(Get-Date -Format "yyyyMMdd").txt"    
+        # Vérification si l'utilisateur existe
+        $userExists = Invoke-Command -ComputerName $IpDistante -ScriptBlock { Get-LocalUser -Name $using:UserInf } -Credential $Credentials 
+        if ($userExists) {
+            # Si oui -> affichage date de dernière connexion
+            Write-Host "Date de dernière modification du mot de passe l'utilisateur $userInf."
+            $CmdInfoMdp=Invoke-Command -ComputerName $IpDistante -ScriptBlock { (Get-LocalUser -Name $using:userInf).PasswordLastSet } -Credential $Credentials 
+            $CmdInfoMdp
+            Start-Sleep -Seconds 2
+            # Enregistrement des données
+            Write-Host "Les données sont enregistrées dans le fichier" $PathInfoUser
+            "Date de dernière modification de mot de passe de l'utilisateur $userInf : " | Out-File -Append -FilePath $PathInfoUser
+            $CmdInfoMdp | Out-File -Append -FilePath $PathInfoUser    
             Read-Host "Appuyez sur Entrée pour continuer ..."
         }
         else {
-            # si non -> sortie du script
-            Write-Host "Le dossier $Dossier n'existe pas"
-            Start-Sleep -Seconds 2
+            # Si non, sortie du script
+            Write-Host "Le compte utilisateur n'existe pas." -ForegroundColor Red
+            Read-Host "Appuyez sur Entrée pour continuer ..."
         }
     }
-    else {
-        # si non -> sortie du script
-        Write-Host "L'utilisateur $UserInf n'existe pas"
-        Start-Sleep -Seconds 2
+    else 
+    {
+        # Si non, sortie du script
+        Write-Host "Mauvais choix - Retour au menu précédent" -ForegroundColor Red
+        Read-Host "Appuyez sur Entrée pour continuer ..."
     }
 }
 
+# Fonction dernière sessions ouvertesr
+function InfoLogSession { 
+    Clear-Host
+    $InfLog = Read-Host "Voulez-vous voir les sessions actives sur le poste distant? [O pour valider]"
+    if ($Inflog -eq "O") {
+        Write-Host ""
+        # Si oui -> affichage liste sessions ouvertes
+        $userInf = Read-Host "Tapez le nom d'utilisateur souhaité "
+        $PathInfoUser = "C:\Users\Administrator\Documents\Info_${UserInf}_$(Get-Date -Format "yyyyMMdd").txt"    
+        Write-Host "Session ouverte(s) sur le poste distant."
+        $CmdInfoSession=Invoke-Command -ComputerName $IpDistante -ScriptBlock { (Get-WmiObject -class win32_ComputerSystem | select username).username } -Credential $Credentials 
+        $CmdInfoSession
+        Start-Sleep -Seconds 2
+        # Enregistrement des données
+        Write-Host "Les données sont enregistrées dans le fichier" $PathInfoUser
+        "Session ouverte(s) sur le poste distant pour l'utilisateur $userInf : " | Out-File -Append -FilePath $PathInfoUser
+        $CmdInfoMdp | Out-File -Append -FilePath $PathInfoUser    
+        Read-Host "Appuyez sur Entrée pour continuer ..."
+    }
+    else 
+    {
+        # Si non, sortie du script
+        Write-Host "Mauvais choix - Retour au menu précédent" -ForegroundColor Red
+        Read-Host "Appuyez sur Entrée pour continuer ..."
+    }
+}
+
+# Fonction droit dossier
+function droitsDossier 
+{
+    Clear-Host
+    $InfoDossier = Read-Host "Voulez-vous voir les droits sur un fichier d'un utilisateur ? [O pour valider]"
+    if ($InfoDossier -eq "O") 
+    {
+        Write-Host ""
+        # si oui -> affichage des droits sur le dossier
+        $User = Read-Host "Tapez le nom d'utilisateur souhaité "
+        $PathInfoUser = "C:\Users\Administrator\Documents\Info_${User}_$(Get-Date -Format "yyyyMMdd").txt"
+        # Vérifie si l'utilisateur existe sur le serveur distant
+        $userExists = Invoke-Command -ComputerName $IpDistante -ScriptBlock {param($UserName ) Get-LocalUser -Name $UserName  } -ArgumentList $User -Credential $Credentials
+        if ( $userExists)
+        {
+            # si oui -> demande quel dossier à vérifier
+            $Dossier = Read-Host "Sur quel dossier souhaitez-vous vérifier les droits ? (spécifiez le chemin du dossier)"
+            $TestDossier = Invoke-Command -ComputerName $IpDistante -ScriptBlock {  param($Path) Test-Path -Path $Path} -ArgumentList $Dossier -Credential $Credentials
+            # Vérifie si le dossier existe sur le serveur distant
+            if ($TestDossier -eq $true) 
+            {
+                # affichage des droits et sauvegarde dans fichier
+                $CmdInoFolder=Invoke-Command -ComputerName $IpDistante -Credential $Credentials -ScriptBlock { param($FolderPath) Get-Acl -Path $FolderPath | Format-Table -AutoSize} -ArgumentList $Dossier
+                $CmdInoFolder
+                Write-Host "Les données sont enregistrées dans le fichier" $PathInfoUser
+                "Voici la liste des droits sur le dossier $Dossier  : " | Out-File -Append -FilePath $PathInfoUser
+                $CmdInoFolder| Out-File -Append -FilePath $PathInfoUser
+                Read-Host "Appuyez sur Entrée pour continuer ..."
+            }
+            else
+            {
+                # si non -> sortie du script
+                Write-Host "Le dossier $Dossier n'existe pas"
+                Start-Sleep -Seconds 2
+                Read-Host "Appuyez sur Entrée pour continuer ..."
+            }
+        }
+        else 
+        {
+            # si non -> sortie du script
+            Write-Host "L'utilisateur $User n'existe pas"
+            Start-Sleep -Seconds 2
+            Read-Host "Appuyez sur Entrée pour continuer ..."
+        }
+    }
+    else 
+    {
+        # Si non, sortie du script
+        Write-Host "Mauvais choix - Retour au menu précédent" -ForegroundColor Red
+        Read-Host "Appuyez sur Entrée pour continuer ..."
+    }
+}
+
+# Fonction droit fichier
 function droitsFichier {
-    # Demande quel utilisateur
-    Write-Host ""
-    Write-Host "Visualisation des droits sur un fichier"
-    Write-Host ""
-    $UserInf = Read-Host "Tapez le nom d'utilisateur souhaité "
-
-    # Vérifie si l'utilisateur existe sur le serveur distant
-    $userExists = Invoke-Command -ComputerName $IpDistante -ScriptBlock { Get-LocalUser -Name $using:UserInf } -Credential wilder
-    if ($userExists) {
-        # si oui -> demande quel fichier à vérifier
-        $Fichier = Read-Host "Sur quel fichier souhaitez-vous vérifier les droits ? (spécifiez le chemin du fichier)"
-
-        # Vérifie si le fichier existe sur le serveur distant
-        if ($Fichier) {
-            # affichage des droits
-            $Call = Invoke-Command -ComputerName $IpDistante -Credential $NomDistant -ScriptBlock {
-                param($FilePath)
-                Get-Acl -Path $FilePath } -ArgumentList $Fichier
-            $Call
-            Start-Sleep -Seconds 2     
-            # Enregistrement des données
-            Write-Host "Les données sont enregistrées dans le fichier" $PathInfoUser
-            "Voici les droits sur le dossier spécifié : " | Out-File -Append -FilePath $PathInfoUser
-            $Call | Out-File -Append -FilePath $PathInfoUser
+    Clear-Host
+    $InfoFichier = Read-Host "Voulez-vous voir les droits sur un fichier d'un utilisateur ? [O pour valider]"
+    if ($InfoFichier -eq "O") 
+    {
+        # si oui -> affichage des droits sur le fichier
+        # Demande quel utilisateur
+        Write-Host ""
+        $UserInf = Read-Host "Tapez le nom d'utilisateur souhaité "
+        $PathInfoUser = "C:\Users\Administrator\Documents\Info_${UserInf}_$(Get-Date -Format "yyyyMMdd").txt"    
+        # Vérifie si l'utilisateur existe sur le serveur distant
+        $userExists = Invoke-Command -ComputerName $IpDistante -ScriptBlock { Get-LocalUser -Name $using:UserInf } -Credential $Credentials 
+        if ($userExists) {
+            # si oui -> demande quel fichier à vérifier
+            $Fichier = Read-Host "Sur quel fichier souhaitez-vous vérifier les droits ? (spécifiez le chemin du fichier)"
+            # Vérifie si le fichier existe sur le serveur distant
+            if ($Fichier) {
+                # affichage des droits
+                $CmdInoFile = Invoke-Command -ComputerName $IpDistante -Credential $Credentials -ScriptBlock {param($FilePath) Get-Acl -Path $FilePath | Format-Table -AutoSize} -ArgumentList $Fichier
+                $CmdInoFile
+                # Enregistrement des données
+                Write-Host "Les données sont enregistrées dans le fichier" $PathInfoUser
+                "Voici les droits sur le fichier spécifié $Fichier : " | Out-File -Append -FilePath $PathInfoUser
+                $CmdInoFile | Out-File -Append -FilePath $PathInfoUser
+                Read-Host "Appuyez sur Entrée pour continuer ..."
+            }
+            else {
+                # si non -> sortie du script
+                Write-Host "Le fichier $Fichier n'existe pas"
+                Start-Sleep -Seconds 2
+                Read-Host "Appuyez sur Entrée pour continuer ..."
+            }
         }
         else {
             # si non -> sortie du script
-            Write-Host "Le fichier $Fichier n'existe pas"
+            Write-Host "L'utilisateur $UserInf n'existe pas"
             Start-Sleep -Seconds 2
+            Read-Host "Appuyez sur Entrée pour continuer ..."
         }
     }
-    else {
-        # si non -> sortie du script
-        Write-Host "L'utilisateur $UserInf n'existe pas"
-        Start-Sleep -Seconds 2
+    else 
+    {
+        # Si non, sortie du script
+        Write-Host "Mauvais choix - Retour au menu précédent" -ForegroundColor Red
+        Read-Host "Appuyez sur Entrée pour continuer ..."
     }
+
 }
+
 
