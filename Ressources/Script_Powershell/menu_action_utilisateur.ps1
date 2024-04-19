@@ -24,12 +24,17 @@ function CreateUser
     else {
         Write-Host "Le compte $newUser n'existe pas et va être créé."
         $Mdp = Read-Host "Taper le mot de passe"
-        # Création de l'utilisateur
-        Invoke-Command -ComputerName $IpDistante -ScriptBlock { New-LocalUser -Name $using:newUser -Password (ConvertTo-SecureString -AsPlainText $using:Mdp -Force) } -Credential $Credentials
-        # Confirmation de la création
-        Write-Host "Compte $newUser créé." -ForegroundColor Green
-        Start-Sleep -Seconds 2
-    }
+        try {
+            # Création de l'utilisateur
+            Invoke-Command -ComputerName $IpDistante -ScriptBlock { New-LocalUser -Name $using:newUser -Password (ConvertTo-SecureString -AsPlainText $using:Mdp -Force) } -Credential $Credentials
+            # Confirmation de la création
+            Write-Host "Compte $newUser créé." -ForegroundColor Green
+            Start-Sleep -Seconds 2
+        }
+        catch {
+            Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red
+            Read-Host "Appuyer sur Entrée pour continuer ..."
+        }
 }
 
 
@@ -46,9 +51,14 @@ function DelUser
         $confirmation = Read-Host "Voulez-vous vraiment supprimer le compte $userDel ? (Oui/Non)"
         # Si oui -> suppression du compte
         if ($confirmation -eq "Oui") {
+        try {   
             Invoke-Command -ComputerName $IpDistante -ScriptBlock { Remove-LocalUser -Name $using:UserDel } -Credential $Credentials
             Write-Host "Le compte $userDel est supprimé." -ForegroundColor Green
             Start-Sleep -Seconds 2
+        }
+        catch {
+            Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red
+            Read-Host "Appuyer sur Entrée pour continuer ..."
         }
         else {
             # Si non -> sortie du script
@@ -77,9 +87,14 @@ function DisableUser
         $confirmation = Read-Host "Voulez-vous vraiment désactiver le compte $userLock ? (Oui/Non)"
         # Si oui -> désactivation du compte
         if ($confirmation -eq "Oui") {
+        try {     
             Invoke-Command -ComputerName $IpDistante -ScriptBlock { Disable-LocalUser -Name $using:UserLock } -Credential $Credentials
             Write-Host "L'utilisateur $userLock est désactivé." -ForegroundColor Green
             Start-Sleep -Seconds 2
+        }
+        catch {
+            Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red
+            Read-Host "Appuyer sur Entrée pour continuer ..."
         }
         else {
             # Si non -> sortie du script
@@ -106,9 +121,14 @@ function PasswordUser
     if ($userExist) {
         # Si oui -> demander de taper le nouveau mdp
         $newMdp = Read-Host "Entrer le nouveu mot de passe :"
+    try {
         Invoke-Command -ComputerName $IpDistante -ScriptBlock { Set-LocalUser -Name $using:userMdp -Password (ConvertTo-SecureString -AsPlainText $using:newMdp -Force) } -Credential $Credentials
         Write-Host "Le mot de passe est bien modifié." -ForegroundColor Green
         Start-Sleep -Seconds 2
+    }
+    catch {
+         Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red
+         Read-Host "Appuyer sur Entrée pour continuer ..."
     }
     else {
         # Si non -> sortie du script
@@ -125,11 +145,16 @@ function UserAddAdminGroup
 
     # Vérification si l'utilisateur existe
     $userExists = Invoke-Command -ComputerName $IpDistante -ScriptBlock { Get-LocalUser -Name $using:UserAdm } -Credential $Credentials
-    if ($userExists) {
+    if ($userExists) {  
         # Si l'utilisateur existe -> ajout au groupe Administrators
+    try {
         Invoke-Command -ComputerName $ip_distante -ScriptBlock { Add-LocalGroupMember -Group Administrateurs -Member $using:userAdm } -Credential $Credentials
         Write-Host "Le compte $userAdm est ajouté au groupe Administrateurs." -ForegroundColor Green
         Start-Sleep -Seconds 2
+    }
+    catch {
+         Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red
+         Read-Host "Appuyer sur Entrée pour continuer ..."
     }
     else {
         # Si non sortie du script
@@ -155,14 +180,19 @@ Function UserAddGroup
         if ($groupExists) {
             Write-Host "Ajout du compte en cours..." -ForegroundColor Green
             Start-Sleep -Seconds 2
+        try {
             Invoke-Command -ComputerName $ip_distante -ScriptBlock { Add-LocalGroupMember -Group $using:choixAddGroup -Member $using:userAddG } -Credential $Credentials
             Write-Host "Le compte $userAddG est ajouté au groupe $choixAddGroup." -ForegroundColor Green
-
+        }
+        catch {
+             Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red
+             Read-Host "Appuyer sur Entrée pour continuer ..."
+        }
             # Affichage des utilisateurs du groupe pour vérification
             Write-Host "Vous trouverez ci-dessous la liste des utilisateurs du groupe $choixAddGroup ." -ForegroundColor Green
             Invoke-Command -ComputerName $ip_distante -ScriptBlock { Get-LocalGroupMember -Group $using:choixAddGroup } -Credential $Credentials
             Start-Sleep -Seconds 2
-        }
+        
         else {
             Write-Host "Le groupe n'existe pas." -ForegroundColor Red
         }
@@ -191,14 +221,19 @@ Function UserDelGroup
             # Si le groupe existe -> suppression de l'utilisateur du groupe
             Write-Host "Traitement en cours..." -ForegroundColor Green
             Start-Sleep -Seconds 2
+        try {
             Invoke-Command -ComputerName $ip_distante -ScriptBlock { Remove-LocalGroupMember -Group $using:choixDelGroup -Member $using:userDel } -Credential $Credentials
             Write-Host "Le compte $userDel est supprimé du groupe $choixDelGroup." -ForegroundColor Green
-
+         }
+        catch {
+             Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red
+             Read-Host "Appuyer sur Entrée pour continuer ..."
+        }
             # Affichage des utilisateurs du groupe pour vérification
             Write-Host "Vous trouverez ci-dessous la liste des utilisateurs du groupe $choixDelGroup ." -ForegroundColor Green
             Invoke-Command -ComputerName $ip_distante -ScriptBlock { Get-LocalGroupMember -Group $using:choixDelGroup } -Credential $Credentials
             Start-Sleep -Seconds 2
-        }
+       
         else {
             Write-Host "Le groupe n'existe pas." -ForegroundColor Red
         }
