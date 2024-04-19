@@ -5,7 +5,7 @@
 # Réalisé en collaboration par Anais Lenglet, Bruno Serna, Grégory Dubois, Patrick Baggiolini et Thomas Scotti
 # Dernière mise à jour le  1 / 04 / 2024
 # Historique version
-# V0.9 -- 19 / 04 / 2024 mise à jour fonction info user
+# V0.9 -- 19 / 04 / 2024 mise à jour fonction ACTION ET INFO et ajout Try/Catch
 # V0.85 -- 18 / 04 / 2024 mise à jour fonction actions 
 # V0.8 -- 17 / 04 / 2024 Ajout fonction info user / computer
 # V0.7 -- 17 / 04 / 2024 Ajout fonction action computer
@@ -776,6 +776,7 @@ function Menu_Information_Utilisateur
 
 ############## DEBUT FONCTION ######################
 
+#
 # Fonction Création de compte utilisateur local
 function CreateUser 
 {
@@ -784,20 +785,31 @@ function CreateUser
     $newUser = Read-Host "Quel compte utilisateur souhaitez-vous créer?"
 
     # Vérification si l'utilisateur existe
-    $userExists = Invoke-Command -ComputerName $IpDistante -ScriptBlock { Get-LocalUser -Name $using:newUser } -Credential wilder
-    if ($userExists) {
+    $userExists = Invoke-Command -ComputerName $IpDistante -ScriptBlock { Get-LocalUser -Name $using:newUser } -Credential $Credentials
+    if ($userExists) 
+    {
         # Si oui -> sortie du script
         Write-Host "L'utilisateur existe déjà." -ForegroundColor Red
         Start-Sleep -Seconds 2
+        Read-Host "Appuyer sur Entrée pour continuer ..."
     }
-    else {
+    else 
+    {
         Write-Host "Le compte $newUser n'existe pas et va être créé."
         $Mdp = Read-Host "Taper le mot de passe"
-        # Création de l'utilisateur
-        Invoke-Command -ComputerName $IpDistante -ScriptBlock { New-LocalUser -Name $using:newUser -Password (ConvertTo-SecureString -AsPlainText $using:Mdp -Force) } -Credential wilder
-        # Confirmation de la création
-        Write-Host "Compte $newUser créé." -ForegroundColor Green
-        Start-Sleep -Seconds 2
+        try 
+        {
+            # Création de l'utilisateur
+            Invoke-Command -ComputerName $IpDistante -ScriptBlock { New-LocalUser -Name $using:newUser -Password (ConvertTo-SecureString -AsPlainText $using:Mdp -Force) } -Credential $Credentials
+            # Confirmation de la création
+            Write-Host "Compte $newUser créé." -ForegroundColor Green
+            Start-Sleep -Seconds 2
+        }
+        catch 
+        {
+            Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red
+            Read-Host "Appuyer sur Entrée pour continuer ..."
+        }
     }
 }
 
@@ -809,28 +821,40 @@ function DelUser
     $userDel = Read-Host "Quel compte utilisateur souhaitez-vous supprimer ?"
 
     # Vérification si l'utilisateur existe
-    $userExists = Invoke-Command -ComputerName $IpDistante -ScriptBlock { Get-LocalUser -Name $using:UserDel } -Credential wilder
-    if ($userExists) {
+    $userExists = Invoke-Command -ComputerName $IpDistante -ScriptBlock { Get-LocalUser -Name $using:UserDel } -Credential $Credentials
+    if ($userExists)
+    {
         # Si il exsite -> demande de confirmation
         $confirmation = Read-Host "Voulez-vous vraiment supprimer le compte $userDel ? (Oui/Non)"
         # Si oui -> suppression du compte
-        if ($confirmation -eq "Oui") {
-            Invoke-Command -ComputerName $IpDistante -ScriptBlock { Remove-LocalUser -Name $using:UserDel } -Credential wilder
-            Write-Host "Le compte $userDel est supprimé." -ForegroundColor Green
-            Start-Sleep -Seconds 2
+        if ($confirmation -eq "Oui") 
+        {
+            try 
+            {   
+                Invoke-Command -ComputerName $IpDistante -ScriptBlock { Remove-LocalUser -Name $using:UserDel } -Credential $Credentials
+                Write-Host "Le compte $userDel est supprimé." -ForegroundColor Green
+                Start-Sleep -Seconds 2
+            }
+            catch 
+            {
+                Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red
+                Read-Host "Appuyer sur Entrée pour continuer ..."
+            }
         }
-        else {
+        else 
+        {
             # Si non -> sortie du script
             Write-Host "Suppression annulée." -ForegroundColor Red
             Start-Sleep -Seconds 2
         }
     }
-    else {
+    else 
+    {
         # Si le compte n'existe pas
         Write-Host "Le compte utilisateur n'existe pas." -ForegroundColor Red
         Start-Sleep -Seconds 2
     }
-}
+    }
 
 
 # Fonction Désactivation de compte utilisateur local
@@ -840,23 +864,35 @@ function DisableUser
     $userLock = Read-Host "Quel compte utilisateur souhaitez-vous désactiver ?"
 
     # Vérification si l'utilisateur existe
-    $userExists = Invoke-Command -ComputerName $IpDistante -ScriptBlock { Get-LocalUser -Name $using:UserLock } -Credential wilder
-    if ($userExists) {
+    $userExists = Invoke-Command -ComputerName $IpDistante -ScriptBlock { Get-LocalUser -Name $using:UserLock } -Credential $Credentials
+    if ($userExists) 
+    {
         # Si l'utilisateur existe -> demande de confirmation
         $confirmation = Read-Host "Voulez-vous vraiment désactiver le compte $userLock ? (Oui/Non)"
         # Si oui -> désactivation du compte
-        if ($confirmation -eq "Oui") {
-            Invoke-Command -ComputerName $IpDistante -ScriptBlock { Disable-LocalUser -Name $using:UserLock } -Credential wilder
-            Write-Host "L'utilisateur $userLock est désactivé." -ForegroundColor Green
-            Start-Sleep -Seconds 2
+        if ($confirmation -eq "Oui") 
+        {
+            try 
+            {     
+                Invoke-Command -ComputerName $IpDistante -ScriptBlock { Disable-LocalUser -Name $using:UserLock } -Credential $Credentials
+                Write-Host "L'utilisateur $userLock est désactivé." -ForegroundColor Green
+                Start-Sleep -Seconds 2
+            }
+            catch 
+            {
+                Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red
+                Read-Host "Appuyer sur Entrée pour continuer ..."
+            }
         }
-        else {
+        else
+        {
             # Si non -> sortie du script
             Write-Host "Désactivation annulée." -ForegroundColor Red
             Start-Sleep -Seconds 2
         }
     }
-    else {
+    else 
+    {
         # Si l'utilisateur n'existe pas
         Write-Host "L'utilisateur $userLock n'existe pas." -ForegroundColor Red
         Start-Sleep -Seconds 2
@@ -871,15 +907,25 @@ function PasswordUser
     $userMdp = Read-Host "Pour quel compte utilisateur souhaitez-vous modifier le mot de passe ?"
 
     # Vérifie si le nom d'utilisateur existe sur le système distant
-    $userExist = Invoke-Command -ComputerName $IpDistante -ScriptBlock { Get-LocalUser -Name $using:UserMdp } -Credential wilder
-    if ($userExist) {
+    $userExist = Invoke-Command -ComputerName $IpDistante -ScriptBlock { Get-LocalUser -Name $using:UserMdp } -Credential $Credentials
+    if ($userExist) 
+    {
         # Si oui -> demander de taper le nouveau mdp
         $newMdp = Read-Host "Entrer le nouveu mot de passe :"
-        Invoke-Command -ComputerName $IpDistante -ScriptBlock { Set-LocalUser -Name $using:userMdp -Password (ConvertTo-SecureString -AsPlainText $using:newMdp -Force) } -Credential wilder
-        Write-Host "Le mot de passe est bien modifié." -ForegroundColor Green
-        Start-Sleep -Seconds 2
+        try 
+        {
+            Invoke-Command -ComputerName $IpDistante -ScriptBlock { Set-LocalUser -Name $using:userMdp -Password (ConvertTo-SecureString -AsPlainText $using:newMdp -Force) } -Credential $Credentials
+            Write-Host "Le mot de passe est bien modifié." -ForegroundColor Green
+            Start-Sleep -Seconds 2
+        }
+        catch 
+        {
+            Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red
+            Read-Host "Appuyer sur Entrée pour continuer ..."
+        }
     }
-    else {
+    else 
+    {
         # Si non -> sortie du script
         Write-Host "L'utilisateur $userMdp n'existe pas." -ForegroundColor Red
         Start-Sleep -Seconds 2
@@ -893,20 +939,29 @@ function UserAddAdminGroup
     $userAdm = Read-Host "Quel compte utilisateur souhaitez-vous ajouter au groupe d'administration?"
 
     # Vérification si l'utilisateur existe
-    $userExists = Invoke-Command -ComputerName $IpDistante -ScriptBlock { Get-LocalUser -Name $using:UserAdm } -Credential wilder
-    if ($userExists) {
+    $userExists = Invoke-Command -ComputerName $IpDistante -ScriptBlock { Get-LocalUser -Name $using:UserAdm } -Credential $Credentials
+    if ($userExists) 
+    {  
         # Si l'utilisateur existe -> ajout au groupe Administrators
-        Invoke-Command -ComputerName $ip_distante -ScriptBlock { Add-LocalGroupMember -Group Administrateurs -Member $using:userAdm } -Credential wilder
-        Write-Host "Le compte $userAdm est ajouté au groupe Administrateurs." -ForegroundColor Green
-        Start-Sleep -Seconds 2
+        try
+        {
+            Invoke-Command -ComputerName $IpDistante -ScriptBlock { Add-LocalGroupMember -Group Administrateurs -Member $using:userAdm } -Credential $Credentials
+            Write-Host "Le compte $userAdm est ajouté au groupe Administrateurs." -ForegroundColor Green
+            Start-Sleep -Seconds 2
+        }
+        catch  
+        {
+            Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red
+            Read-Host "Appuyer sur Entrée pour continuer ..."
+        }
     }
-    else {
+    else
+    {
         # Si non sortie du script
         Write-Host "Le compte utilisateur n'existe pas." -ForegroundColor Red
         Start-Sleep -Seconds 2
     }
 }
-
 # Fonction ajout utilisateur à un groupe local
 Function UserAddGroup
 {
@@ -914,28 +969,40 @@ Function UserAddGroup
     $userAddG = Read-Host "Quel compte utilisateur souhaitez-vous ajouter à un groupe local?"
     
     # Vérification si l'utilisateur existe
-    $userExists = Invoke-Command -ComputerName $IpDistante -ScriptBlock { Get-LocalUser -Name $using:UserAddG } -Credential wilder
-    if ($userExists) {
+    $userExists = Invoke-Command -ComputerName $IpDistante -ScriptBlock { Get-LocalUser -Name $using:UserAddG } -Credential $Credentials
+    if ($userExists)
+    {
         # Si l'utilisateur existe -> demande quel groupe?
         $choixAddGroup = Read-Host "À quel groupe souhaitez-vous ajouter l'utilisateur $userAddG?"
     
-        $groupExists = Invoke-Command -ComputerName $ip_distante -ScriptBlock { Get-LocalGroup -Name $using:choixAddGroup } -Credential wilder
+        $groupExists = Invoke-Command -ComputerName $IpDistante -ScriptBlock { Get-LocalGroup -Name $using:choixAddGroup } -Credential $Credentials
             
-        if ($groupExists) {
+        if ($groupExists) 
+        {
             Write-Host "Ajout du compte en cours..." -ForegroundColor Green
             Start-Sleep -Seconds 2
-            Invoke-Command -ComputerName $ip_distante -ScriptBlock { Add-LocalGroupMember -Group $using:choixAddGroup -Member $using:userAddG } -Credential wilder
-            Write-Host "Le compte $userAddG est ajouté au groupe $choixAddGroup." -ForegroundColor Green
-
+            try 
+            {
+                Invoke-Command -ComputerName $IpDistante -ScriptBlock { Add-LocalGroupMember -Group $using:choixAddGroup -Member $using:userAddG } -Credential $Credentials
+                Write-Host "Le compte $userAddG est ajouté au groupe $choixAddGroup." -ForegroundColor Green
+            }
+            catch 
+            {
+                Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red
+                Read-Host "Appuyer sur Entrée pour continuer ..."
+            }
             # Affichage des utilisateurs du groupe pour vérification
             Write-Host "Vous trouverez ci-dessous la liste des utilisateurs du groupe $choixAddGroup ." -ForegroundColor Green
-            Invoke-Command -ComputerName $ip_distante -ScriptBlock { Get-LocalGroupMember -Group $using:choixAddGroup } -Credential wilder
+            Invoke-Command -ComputerName $IpDistante -ScriptBlock { Get-LocalGroupMember -Group $using:choixAddGroup } -Credential $Credentials
+            Start-Sleep -Seconds 2
         }
-        else {
+        else 
+        {
             Write-Host "Le groupe n'existe pas." -ForegroundColor Red
         }
     }
-    else {
+    else 
+    {
         # Si non, sortie du script
         Write-Host "Le compte utilisateur n'existe pas." -ForegroundColor Red
     }
@@ -948,29 +1015,41 @@ Function UserDelGroup
     $userDel = Read-Host "Quel compte utilisateur souhaitez-vous supprimer d'un groupe local?"
         
     # Vérification si l'utilisateur existe
-    $userExists = Invoke-Command -ComputerName $IpDistante -ScriptBlock { Get-LocalUser -Name $using:UserDel } -Credential wilder
-    if ($userExists) {
+    $userExists = Invoke-Command -ComputerName $IpDistante -ScriptBlock { Get-LocalUser -Name $using:UserDel } -Credential $Credentials
+    if ($userExists) 
+    {
         # Si l'utilisateur existe -> demande quel groupe?
         $choixDelGroup = Read-Host "De quel groupe souhaitez-vous supprimer l'utilisateur $userDel?"
         
-        $groupExists = Invoke-Command -ComputerName $ip_distante -ScriptBlock { Get-LocalGroup -Name $using:choixDelGroup } -Credential wilder
+        $groupExists = Invoke-Command -ComputerName $IpDistante -ScriptBlock { Get-LocalGroup -Name $using:choixDelGroup } -Credential $Credentials
                 
-        if ($groupExists) {
+        if ($groupExists) 
+        {
             # Si le groupe existe -> suppression de l'utilisateur du groupe
             Write-Host "Traitement en cours..." -ForegroundColor Green
             Start-Sleep -Seconds 2
-            Invoke-Command -ComputerName $ip_distante -ScriptBlock { Remove-LocalGroupMember -Group $using:choixDelGroup -Member $using:userDel } -Credential wilder
-            Write-Host "Le compte $userDel est supprimé du groupe $choixDelGroup." -ForegroundColor Green
-
+            try 
+            {
+                Invoke-Command -ComputerName $IpDistante -ScriptBlock { Remove-LocalGroupMember -Group $using:choixDelGroup -Member $using:userDel } -Credential $Credentials
+                Write-Host "Le compte $userDel est supprimé du groupe $choixDelGroup." -ForegroundColor Green
+            }
+            catch 
+            {
+                Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red
+                Read-Host "Appuyer sur Entrée pour continuer ..."
+            }
             # Affichage des utilisateurs du groupe pour vérification
             Write-Host "Vous trouverez ci-dessous la liste des utilisateurs du groupe $choixDelGroup ." -ForegroundColor Green
-            Invoke-Command -ComputerName $ip_distante -ScriptBlock { Get-LocalGroupMember -Group $using:choixDelGroup } -Credential wilder
-        }
-        else {
+            Invoke-Command -ComputerName $IpDistante -ScriptBlock { Get-LocalGroupMember -Group $using:choixDelGroup } -Credential $Credentials
+            Start-Sleep -Seconds 2
+        }       
+        else 
+        {
             Write-Host "Le groupe n'existe pas." -ForegroundColor Red
         }
     }
-    else {
+    else 
+    {
         # Si non, sortie du script
         Write-Host "Le compte utilisateur n'existe pas." -ForegroundColor Red
     }
@@ -1903,27 +1982,39 @@ function droitsFichier {
 
 ############## DEBUT FONCTION ######################
 
+
 #Fonction pour avoir la version de l'os
-function GetOS {
+function GetOS 
+{
     Clear-Host
     $GetOSConf = Read-Host "Voulez-vous voir la version de l'OS du poste distant ? [O pour valider]"
     Clear-Host
     Write-Host "Voici la version de l'OS du poste distant : "
     Write-Host ""
 
-    if ($GetOSConf -eq "O") {
-        $GetOSCMD = Invoke-Command -ComputerName $IPDistante -Credential $Credentials -ScriptBlock {(systeminfo)[2,3]}
-        $GetOSCMD
-        Write-Host ""
-        Start-Sleep -Seconds 1
-        Write-Host "Les données sont enregistrées dans le fichier" $PathInfoPoste
-        "Voici la version de l'OS du poste distant : " | Out-File -Append -FilePath $PathInfoPoste
-        $GetOSCMD | Out-File -Append -FilePath $PathInfoPoste
-        Write-Host ""
-        Read-Host "Appuyez sur Entrée pour continuer ..."
-        return
+    if ($GetOSConf -eq "O") 
+    {
+        try 
+        {
+            $GetOSCMD = Invoke-Command -ComputerName $IPDistante -Credential $Credentials -ScriptBlock {(systeminfo)[2,3]}
+            $GetOSCMD
+            Write-Host ""
+            Start-Sleep -Seconds 1
+            Write-Host "Les données sont enregistrées dans le fichier" $PathInfoPoste
+            "Voici la version de l'OS du poste distant : " | Out-File -Append -FilePath $PathInfoPoste
+            $GetOSCMD | Out-File -Append -FilePath $PathInfoPoste
+            Write-Host ""
+            Read-Host "Appuyez sur Entrée pour continuer ..."
+            #return
+        }
+        catch 
+        {
+            Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red
+            Read-Host "Appuyer sur Entrée pour continuer ..."
+        }
     }
-    else {
+    else 
+    {
         Clear-Host
         Write-Host "Mauvais choix - Retour au menu précédent"
         Start-Sleep -Seconds 2
@@ -1931,27 +2022,39 @@ function GetOS {
     }
 }
 
-#Fonction pour avoir les cartes reseaux presente sur le poste.
-function NbrCarte {
+#Fonction pour avoir les cartes reseaux presente sur la machine.
+function NbrCarte 
+{
     Clear-Host
     $NbrCarteConf = Read-Host "Voulez-vous voir le nombre d'interfaces présentes sur le poste distant ? [O pour valider]"
     
-    if ($NbrCarteConf -eq "O") {
+    if ($NbrCarteConf -eq "O") 
+    {
         Clear-Host
         Write-Host "Voici la liste des interfaces présentes sur le poste distant : "
         
         #Invoke-Command -ComputerName $IPDistante -Credential $Credentials -ScriptBlock { Get-NetAdapter }#| Where-Object { $_.Status -eq 'Up'  } a rajouter si on veux uniquement ceux qui sont actif 
-        $NbrCarteCMD = Invoke-Command -ComputerName $IPDistante -Credential $Credentials -ScriptBlock { ipconfig /all }
-        $NbrCarteCMD
-        Write-Host ""
-        Start-Sleep -Seconds 1
-        Write-Host "Les données sont enregistrées dans le fichier" $PathInfoPoste
-        "Voici la liste des interfaces présentes sur le poste distant : " | Out-File -Append -FilePath $PathInfoPoste
-        $NbrCarteCMD | Out-File -Append -FilePath $PathInfoPoste
-        Write-Host ""
-        Read-Host "Appuyez sur Entrée pour continuer ..."
+        try
+        {
+            $NbrCarteCMD = Invoke-Command -ComputerName $IPDistante -Credential $Credentials -ScriptBlock { ipconfig /all }
+            $NbrCarteCMD
+            Write-Host ""
+            Start-Sleep -Seconds 1
+            Write-Host "Les données sont enregistrées dans le fichier" $PathInfoPoste
+            "Voici la liste des interfaces présentes sur le poste distant : " | Out-File -Append -FilePath $PathInfoPoste
+            $NbrCarteCMD | Out-File -Append -FilePath $PathInfoPoste
+            Write-Host ""
+        
+            Read-Host "Appuyez sur Entrée pour continuer ..."
+        }
+        catch 
+        {
+            Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red
+            Read-Host "Appuyer sur Entrée pour continuer ..."
+        }
     }
-    else {
+    else 
+    {
         Clear-Host
         Write-Host "Mauvais choix - Retour au menu précédent"
         Start-Sleep -Seconds 2
@@ -1960,25 +2063,36 @@ function NbrCarte {
 }
 
 #Fonction pour demander l'address IP
-function IPInterface {
+function IPInterface 
+{
     Clear-Host
     $IPInterfaceConf = Read-Host "Voulez-vous voir les adresses IP de chaque interface (IPv4 / IPv6) du poste distant ? [O pour valider]"
     
-    if ($IPInterfaceConf -eq "O") {
+    if ($IPInterfaceConf -eq "O") 
+    {
         Clear-Host
         Write-Host "Voici les adresses IP de chaque interface (IPv4 / IPv6) du poste distant : "
         
-        $IPInterfaceCMD = Invoke-Command -ComputerName $IPDistante -Credential $Credentials -ScriptBlock {Get-NetIPAddress | Format-Table InterfaceAlias, AddressFamily, IPAddress }
-        $IPInterfaceCMD
-        Write-Host ""    
-        Start-Sleep -Seconds 1
-        Write-Host "Les données sont enregistrées dans le fichier" $PathInfoPoste
-        "Voici les adresses IP de chaque interface (IPv4 / IPv6) du poste distant : " | Out-File -Append -FilePath $PathInfoPoste
-        $IPInterfaceCMD | Out-File -Append -FilePath $PathInfoPoste
-        Write-Host ""
-        Read-Host "Appuyez sur Entrée pour continuer ..."
-    }
-    else {
+        try
+        {
+            $IPInterfaceCMD = Invoke-Command -ComputerName $IPDistante -Credential $Credentials -ScriptBlock {Get-NetIPAddress | Format-Table InterfaceAlias, AddressFamily, IPAddress }
+            $IPInterfaceCMD
+            Write-Host ""    
+            Start-Sleep -Seconds 1
+            Write-Host "Les données sont enregistrées dans le fichier" $PathInfoPoste
+            "Voici les adresses IP de chaque interface (IPv4 / IPv6) du poste distant : " | Out-File -Append -FilePath $PathInfoPoste
+            $IPInterfaceCMD | Out-File -Append -FilePath $PathInfoPoste
+            Write-Host ""
+            Read-Host "Appuyez sur Entrée pour continuer ..."
+        }
+        catch 
+        {
+            Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red
+            Read-Host "Appuyer sur Entrée pour continuer ..."
+        }
+    }    
+    else 
+    {
         Clear-Host
         Write-Host "Mauvais choix - Retour au menu précédent"
         Start-Sleep -Seconds 2
@@ -1986,25 +2100,37 @@ function IPInterface {
     }   
 }
 
+
 #Fonction pour avoir les addresses MAC
-function MACDemande {
+function MACDemande 
+{
     Clear-Host
     $MACDemandeConf = Read-Host "Voulez-vous voir la liste des adresses MAC de chaque interface du poste distant ? [O pour valider]"
 
-    if ($MACDemandeConf -eq "O") {
+    if ($MACDemandeConf -eq "O") 
+    {
         clear-Host
         Write-Host "Voici la liste des adresses MAC de chaque interface du poste distant : "
-        $MACDemande = Invoke-Command -ComputerName $IPDistante -Credential $Credentials -ScriptBlock {Get-NetAdapter | Format-Table Name, MacAddress, Status} 
-        $MACDemande
-        Write-Host ""
-        Start-Sleep -Seconds 1
-        Write-Host "Les données sont enregistrées dans le fichier" $PathInfoPoste
-        "Voici la liste des adresses MAC de chaque interface du poste distant : " | Out-File -Append -FilePath $PathInfoPoste
-        $MACDemande | Out-File -Append -FilePath $PathInfoPoste
-        Write-Host ""
-        Read-Host "Appuyez sur Entrée pour continuer ..."
+        try
+        {
+            $MACDemande = Invoke-Command -ComputerName $IPDistante -Credential $Credentials -ScriptBlock {Get-NetAdapter | Format-Table Name, MacAddress, Status} 
+            $MACDemande
+            Write-Host ""
+            Start-Sleep -Seconds 1
+            Write-Host "Les données sont enregistrées dans le fichier" $PathInfoPoste
+            "Voici la liste des adresses MAC de chaque interface du poste distant : " | Out-File -Append -FilePath $PathInfoPoste
+            $IPInterfaceCMD | Out-File -Append -FilePath $PathInfoPoste
+            Write-Host ""
+            Read-Host "Appuyez sur Entrée pour continuer ..."
+        }
+        catch 
+        {
+            Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red
+            Read-Host "Appuyer sur Entrée pour continuer ..."
+        }
     }
-    else {
+    else 
+    {
         Clear-Host
         Write-Host "Mauvais choix - Retour au menu précédent"
         Start-Sleep -Seconds 2
@@ -2012,29 +2138,40 @@ function MACDemande {
     }   
 }
 
-#Fonction pour avoir la liste des application et paquet installer sur le poste
-function ApplicationList {
+#Fonction pour avoir la liste des application et paquet installer sur la machine
+function ApplicationList 
+{
     clear-host
     $ApplicationListConf = Read-Host "Voulez-vous la liste des applications/paquets installés sur le poste distant ? [O pour valider]"
 
-    if ($ApplicationListConf -eq "O") {
+    if ($ApplicationListConf -eq "O") 
+    {
         clear-host
         Write-Host "Voici la liste des applications/paquets installés sur le poste distant : "
-        $ApplicationListCMD = Invoke-Command -ComputerName $IPDistante -Credential $Credentials -ScriptBlock {
-            $INSTALLED = Get-ItemProperty HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall\* |  Select-Object DisplayName, DisplayVersion
-            $INSTALLED += Get-ItemProperty HKLM:\Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\* | Select-Object DisplayName, DisplayVersion
-            $INSTALLED | sort-object -Property DisplayName -Unique | Format-Table -AutoSize }
-            $ApplicationListCMD
-        Write-Host ""
-        Start-Sleep -Seconds 1
+        try
+        {
+            $ApplicationListCMD = Invoke-Command -ComputerName $IPDistante -Credential $Credentials -ScriptBlock {
+                $INSTALLED = Get-ItemProperty HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall\* |  Select-Object DisplayName, DisplayVersion
+                $INSTALLED += Get-ItemProperty HKLM:\Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\* | Select-Object DisplayName, DisplayVersion
+                $INSTALLED | sort-object -Property DisplayName -Unique | Format-Table -AutoSize }
+                $ApplicationListCMD
+            Write-Host ""
+            Start-Sleep -Seconds 1
 
-        Write-Host "Les données sont enregistrées dans le fichier" $PathInfoPoste
-        "Voici la liste des applications/paquets installés sur le poste distant : " | Out-File -Append -FilePath $PathInfoPoste
-        $ApplicationListCMD | Out-File -Append -FilePath $PathInfoPoste
-        Write-Host ""
-        Read-Host "Appuyez sur Entrée pour continuer ..."
+            Write-Host "Les données sont enregistrées dans le fichier" $PathInfoPoste
+            "Voici la liste des applications/paquets installés sur le poste distant : " | Out-File -Append -FilePath $PathInfoPoste
+            $ApplicationListCMD | Out-File -Append -FilePath $PathInfoPoste
+            Write-Host ""
+            Read-Host "Appuyez sur Entrée pour continuer ..."
+        }
+        catch 
+        {
+            Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red
+            Read-Host "Appuyer sur Entrée pour continuer ..."
+        }
     }
-    else {
+    else 
+    {
         clear-host
         Write-Host "Mauvais choix - Retour au menu précédent"
         Start-Sleep -Seconds 2
@@ -2042,24 +2179,35 @@ function ApplicationList {
 }
 
 # Fonction liste des utilisateurs locaux
-function UserList {
+function UserList 
+{
     clear-host
     $UserListConf = read-host "Voulez-vous voir la liste des utilisateurs locaux du poste distant ? [O pour valider]"
 
-    if ($UserListConf -eq "O") {
+    if ($UserListConf -eq "O") 
+    {
         clear-host
-        Write-Host "Voici la liste des utilisateurs locaux du poste distant : "
-        $UserListCMD = Invoke-Command -ComputerName $IPDistante -Credential $Credentials -ScriptBlock {Get-LocalUser | Format-Table Name}
-        $UserListCMD
-        Write-Host ""
-        Start-Sleep -Seconds 1
-        Write-Host "Les données sont enregistrées dans le fichier" $PathInfoPoste
-        "Voici la liste des utilisateurs locaux du poste distant : " | Out-File -Append -FilePath $PathInfoPoste
-        $UserListCMD | Out-File -Append -FilePath $PathInfoPoste
-        Write-Host ""
-        Read-Host "Appuyez sur Entrée pour continuer ..."
+        $UserListCMD = Write-Host "Voici la liste des utilisateurs locaux du poste distant : "
+        try
+        {
+            Invoke-Command -ComputerName $IPDistante -Credential $Credentials -ScriptBlock {Get-LocalUser | Format-Table Name}
+            $UserListCMD
+            Write-Host ""
+            Start-Sleep -Seconds 1
+            Write-Host "Les données sont enregistrées dans le fichier" $PathInfoPoste
+            "Voici la liste des utilisateurs locaux du poste distant : " | Out-File -Append -FilePath $PathInfoPoste
+            $UserListCMD | Out-File -Append -FilePath $PathInfoPoste
+            Write-Host ""
+            Read-Host "Appuyez sur Entrée pour continuer ..."
+        }
+        catch 
+        {
+            Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red
+            Read-Host "Appuyer sur Entrée pour continuer ..."
+        }
     }
-    else {
+    else 
+    {
         clear-host
         Write-Host "Mauvais choix - Retour au menu précédent"
         Start-Sleep -Seconds 2
@@ -2067,24 +2215,35 @@ function UserList {
 }
 
 #Fonction Type de CPU, nombre de coeurs, etc
-function GetCPU {
+function GetCPU 
+{
     clear-host
     $GetCPUConf = Read-Host "Voulez-vous voir les détails du CPU du poste distant ? [O pour valider]"
 
-    if ($GetCPUConf -eq "O") {
+    if ($GetCPUConf -eq "O") 
+    {
         clear-host
         Write-Host "Voici les détails du CPU du poste distant : "
-        $GetCPUCMD = Invoke-Command -ComputerName $IPDistante -Credential $Credentials -ScriptBlock {Get-WmiObject -Class Win32_Processor | Format-Table Name, NumberOfCores}
-        $GetCPUCMD
-        Write-Host ""
-        Start-Sleep -Seconds 1
-        Write-Host "Les données sont enregistrées dans le fichier" $PathInfoPoste
-        "Voici les détails du CPU du poste distant : " | Out-File -Append -FilePath $PathInfoPoste
-        $GetCPUCMD | Out-File -Append -FilePath $PathInfoPoste
-        Write-Host ""
-        Read-Host "Appuyez sur Entrée pour continuer ..."
+        try
+        {
+            $GetCPUCMD = Invoke-Command -ComputerName $IPDistante -Credential $Credentials -ScriptBlock {Get-WmiObject -Class Win32_Processor | Format-Table Name, NumberOfCores}
+            $GetCPUCMD
+            Write-Host ""
+            Start-Sleep -Seconds 1
+            Write-Host "Les données sont enregistrées dans le fichier" $PathInfoPoste
+            "Voici les détails du CPU du poste distant : " | Out-File -Append -FilePath $PathInfoPoste
+            $GetCPUCMD | Out-File -Append -FilePath $PathInfoPoste
+            Write-Host ""
+            Read-Host "Appuyez sur Entrée pour continuer ..."
+        }
+        catch 
+        {
+            Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red
+            Read-Host "Appuyer sur Entrée pour continuer ..."
+        }
     }
-    else {
+    else 
+    {
         clear-host
         Write-Host "Mauvais choix - Retour au menu précédent"
         Start-Sleep -Seconds 2
@@ -2092,24 +2251,35 @@ function GetCPU {
 }
 
 #Fonction detail de la ram
-function RAMInfo {
+function RAMInfo 
+{
     clear-host
     $RAMInfoConf = Read-Host "Voulez-vous voir les détails de la RAM du poste distant ? [O pour valider]"
 
-    if ($RAMInfoConf -eq "O") {
+    if ($RAMInfoConf -eq "O") 
+    {
         clear-host
         Write-Host "Voici les détails de la RAM du poste distant : "
-        $RAMInfoCMD = Invoke-Command -ComputerName $IPDistante -Credential $Credentials -ScriptBlock {(systeminfo)[24,25]}
-        $RAMInfoCMD
-        Write-Host ""
-        Start-Sleep -Seconds 1
-        Write-Host "Les données sont enregistrées dans le fichier" $PathInfoPoste
-        "Voici les détails de la RAM du poste distant : " | Out-File -Append -FilePath $PathInfoPoste
-        $RAMInfoCMD | Out-File -Append -FilePath $PathInfoPoste
-        Write-Host ""
-        Read-Host "Appuyez sur Entrée pour continuer ..."
+        try
+        {
+            $RAMInfoCMD = Invoke-Command -ComputerName $IPDistante -Credential $Credentials -ScriptBlock {(systeminfo)[24,25]}
+            $RAMInfoCMD
+            Write-Host ""
+            Start-Sleep -Seconds 1
+            Write-Host "Les données sont enregistrées dans le fichier" $PathInfoPoste
+            "Voici les détails de la RAM du poste distant : " | Out-File -Append -FilePath $PathInfoPoste
+            $RAMInfoCMD | Out-File -Append -FilePath $PathInfoPoste
+            Write-Host ""
+            Read-Host "Appuyez sur Entrée pour continuer ..."
+        }
+        catch 
+        {
+            Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red
+            Read-Host "Appuyer sur Entrée pour continuer ..."
+        }
     }
-    else {
+    else 
+    {
         clear-host
         Write-Host "Mauvais choix - Retour au menu précédent"
         Start-Sleep -Seconds 2
@@ -2117,24 +2287,35 @@ function RAMInfo {
 }
 
 #Fonction utilisation du disque
-function DiskInfo {
+function DiskInfo 
+{
     clear-host
     $DiskInfoConf = Read-Host "Voulez-vous voir les détails du/des disques du poste distant ? [O pour valider]"
 
-    if ($DiskInfoConf -eq "O") {
+    if ($DiskInfoConf -eq "O") 
+    {
         clear-host
         Write-Host "Voici les détails du/des disques du poste distant : "
-        $DiskInfoCMD = Invoke-Command -ComputerName $IPDistante -Credential $Credentials -ScriptBlock {get-wmiObject Win32_LogicalDisk | Format-Table DeviceID,Size, Freespace}
-        $DiskInfoCMD
-        Write-Host ""
-        Start-Sleep -Seconds 1
-        Write-Host "Les données sont enregistrées dans le fichier" $PathInfoPoste
-        "Voici les détails du/des disques du poste distant : " | Out-File -Append -FilePath $PathInfoPoste
-        $DiskInfoCMD | Out-File -Append -FilePath $PathInfoPoste
-        Write-Host ""
-        Read-Host "Appuyez sur Entrée pour continuer ..."
+        try
+        {   
+            $DiskInfoCMD = Invoke-Command -ComputerName $IPDistante -Credential $Credentials -ScriptBlock {get-wmiObject Win32_LogicalDisk | Format-Table DeviceID,Size, Freespace}
+            $DiskInfoCMD
+            Write-Host ""
+            Start-Sleep -Seconds 1
+            Write-Host "Les données sont enregistrées dans le fichier" $PathInfoPoste
+            "Voici les détails du/des disques du poste distant : " | Out-File -Append -FilePath $PathInfoPoste
+            $DiskInfoCMD | Out-File -Append -FilePath $PathInfoPoste
+            Write-Host ""
+            Read-Host "Appuyez sur Entrée pour continuer ..."
+        }
+        catch 
+        {
+            Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red
+            Read-Host "Appuyer sur Entrée pour continuer ..."
+        }
     }
-    else {
+    else 
+    {
         clear-host
         Write-Host "Mauvais choix - Retour au menu précédent"
         Start-Sleep -Seconds 2
@@ -2146,19 +2327,29 @@ function ProcesseurInfo {
     clear-host
     $ProcesseurInfoConf = Read-Host "Voulez-vous voir les détails de l'utilisation du processeur du poste distant ? [O pour valider]"
 
-    if ($ProcesseurInfoConf -eq "O") {
+    if ($ProcesseurInfoConf -eq "O") 
+    {
         clear-host
         Write-Host "Voici les details de l'utilisation du processeur du poste distant : "
-        $ProcesseurInfoCMD = Invoke-Command -ComputerName $IPDistante -Credential $Credentials -ScriptBlock {Get-Counter "\Processeur(_Total)\% temps processeur"}
-        $ProcesseurInfoCMD
-        Start-Sleep -Seconds 1
-        Write-Host "Les données sont enregistrées dans le fichier" $PathInfoPoste
-        "Voici les details de l'utilisation du processeur du poste distant : " | Out-File -Append -FilePath $PathInfoPoste
-        $ProcesseurInfoCMD | Out-File -Append -FilePath $PathInfoPoste
-        Write-Host ""
-        Read-Host "Appuyez sur Entrée pour continuer ..."
+        try
+        {       
+            $ProcesseurInfoCMD = Invoke-Command -ComputerName $IPDistante -Credential $Credentials -ScriptBlock {Get-Counter "\Processeur(_Total)\% temps processeur"}
+            $ProcesseurInfoCMD
+            Start-Sleep -Seconds 1
+            Write-Host "Les données sont enregistrées dans le fichier" $PathInfoPoste
+            "Voici les details de l'utilisation du processeur du poste distant : " | Out-File -Append -FilePath $PathInfoPoste
+            $ProcesseurInfoCMD | Out-File -Append -FilePath $PathInfoPoste
+            Write-Host ""
+            Read-Host "Appuyez sur Entrée pour continuer ..."
+        }
+        catch 
+        {
+            Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red
+            Read-Host "Appuyer sur Entrée pour continuer ..."
+        }
     }
-    else {
+    else 
+    {
         clear-host
         Write-Host "Mauvais choix - Retour au menu précédent"
         Start-Sleep -Seconds 2
@@ -2166,21 +2357,31 @@ function ProcesseurInfo {
 }
 
 #Fonction status du parefeu
-function StatutParefeu {
+function StatutParefeu 
+{
     clear-host
     $StatutParefeuConf = Read-Host "Voulez-vous voir le statut du pare-feu du poste distant ? [O pour valider]"
-    if ($StatutParefeuConf -eq "O") {
+    if ($StatutParefeuConf -eq "O") 
+    {
         clear-host
         Write-Host "Voici le statut du pare-feu du poste distant : "
-        $StatutPareFeuCMD = Invoke-Command -ComputerName $IPDistante -Credential $Credentials -ScriptBlock {Get-NetFirewallProfile | Format-Table Name, Enabled}
-        $StatutPareFeuCMD
-        Write-Host ""
-        Start-Sleep -Seconds 1
-        Write-Host "Les données sont enregistrées dans le fichier" $PathInfoPoste
-        "Voici le statut du pare-feu du poste distant : " | Out-File -Append -FilePath $PathInfoPoste
-        $StatutPareFeuCMD | Out-File -Append -FilePath $PathInfoPoste
-        Write-Host ""
-        Read-Host "Appuyez sur Entrée pour continuer ..."
+        try
+        {
+            $StatutPareFeuCMD = Invoke-Command -ComputerName $IPDistante -Credential $Credentials -ScriptBlock {Get-NetFirewallProfile | Format-Table Name, Enabled}
+            $StatutPareFeuCMD
+            Write-Host ""
+            Start-Sleep -Seconds 1
+            Write-Host "Les données sont enregistrées dans le fichier" $PathInfoPoste
+            "Voici le statut du pare-feu du poste distant : " | Out-File -Append -FilePath $PathInfoPoste
+            $StatutPareFeuCMD | Out-File -Append -FilePath $PathInfoPoste
+            Write-Host ""
+            Read-Host "Appuyez sur Entrée pour continuer ..."
+        }
+        catch 
+        {
+            Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red
+            Read-Host "Appuyer sur Entrée pour continuer ..."
+        }
     }
     else {
         clear-host
@@ -2190,23 +2391,34 @@ function StatutParefeu {
 }
 
 #Status des ports
-function StatutPort {
+function StatutPort 
+{
     clear-host
     $StatutPortConf = Read-Host "Voulez-vous voir la liste des ports ouverts du poste distant ? [O pour valider]"
-    if ($StatutPortConf -eq "O") {
+    if ($StatutPortConf -eq "O") 
+    {
         clear-host
         Write-Host "Voici la liste des ports ouverts du poste distant : "
-        $StatutPortCMD = Invoke-Command -ComputerName $IPDistante -Credential $Credentials -ScriptBlock {Get-NetTCPConnection | Select-Object LocalPort, State | Sort-Object LocalPort -Descending | Format-Table -AutoSize }
-        $StatutPortCMD
-        Write-Host ""
-        Start-Sleep -Seconds 1
-        Write-Host "Les données sont enregistrées dans le fichier" $PathInfoPoste
-        "Voici la liste des ports ouverts du poste distant : " | Out-File -Append -FilePath $PathInfoPoste
-        $StatutPortCMD | Out-File -Append -FilePath $PathInfoPoste
-        Write-Host ""
-        Read-Host "Appuyez sur Entrée pour continuer ..."
+        try
+        {       
+            $StatutPortCMD = Invoke-Command -ComputerName $IPDistante -Credential $Credentials -ScriptBlock {Get-NetTCPConnection | Select-Object LocalPort, State | Sort-Object LocalPort -Descending | Format-Table -AutoSize }
+            $StatutPortCMD
+            Write-Host ""
+            Start-Sleep -Seconds 1
+            Write-Host "Les données sont enregistrées dans le fichier" $PathInfoPoste
+            "Voici la liste des ports ouverts du poste distant : " | Out-File -Append -FilePath $PathInfoPoste
+            $StatutPortCMD | Out-File -Append -FilePath $PathInfoPoste
+            Write-Host ""
+            Read-Host "Appuyez sur Entrée pour continuer ..."
+        }
+        catch 
+        {
+            Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red
+            Read-Host "Appuyer sur Entrée pour continuer ..."
+        } 
     }
-    else {
+    else 
+    {
         clear-host
         Write-Host "Mauvais choix - Retour au menu précédent"
         Start-Sleep -Seconds 2
