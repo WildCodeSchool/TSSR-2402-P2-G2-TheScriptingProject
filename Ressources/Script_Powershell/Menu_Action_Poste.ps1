@@ -120,13 +120,13 @@ function Shutdown
                             }
                     Write-Host "Commande d'arrêt instantané envoyée avec succès à $IpDistante"
                     Write-Host ""
-                    Read-Host "Appuyez sur une touche pour continuer ... " 
+                    Read-Host "Appuyez sur Entrée pour continuer ... " 
                     }
                     catch 
                     {
                         Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red
                         Write-Host ""
-                        Read-Host "Appuyez sur une touche pour continuer ... " 
+                        Read-Host "Appuyez sur Entrée pour continuer ... " 
                     }
                 }
 
@@ -146,13 +146,13 @@ function Shutdown
                             } -ArgumentList $Timer_S1, $MessageTimer_S1
                         Write-Host "Commande d'arrêt planifié avec message d'avertissement envoyée avec succès à $IpDistante"
                         Write-Host ""
-                        Read-Host "Appuyez sur une touche pour continuer ... " 
+                        Read-Host "Appuyez sur Entrée pour continuer ... " 
                         }
                         catch 
                         {
                         Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red
                         Write-Host ""
-                        Read-Host "Appuyez sur une touche pour continuer ... " 
+                        Read-Host "Appuyez sur Entrée pour continuer ... " 
                         }
                 }
 
@@ -169,12 +169,12 @@ function Shutdown
                             } -ArgumentList $Timer_S2
                         Write-Host "Commande d'arrêt planifié envoyée avec succès à $IpDistante"
                         Write-Host ""
-                        Read-Host "Appuyez sur une touche pour continuer ... " 
+                        Read-Host "Appuyez sur Entrée pour continuer ... " 
                         }
                         catch {
                         Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red
                         Write-Host ""
-                        Read-Host "Appuyez sur une touche pour continuer ... " 
+                        Read-Host "Appuyez sur Entrée pour continuer ... " 
                         }
                 }
                 
@@ -242,7 +242,7 @@ function Reboot
                         catch {
                         Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red
                         Write-Host ""
-                        Read-Host "Appuyez sur une touche pour continuer ... " 
+                        Read-Host "Appuyez sur Entrée pour continuer ... " 
                     }
                 }
 
@@ -261,12 +261,12 @@ function Reboot
                             } -ArgumentList $Timer_R1, $MessageTimer_R1
                         Write-Host "Commande de redémarrage du poste distant avec message d'avertissement envoyée avec succès à $IpDistante" -ForegroundColor Green
                         Write-Host ""
-                        Read-Host "Appuyez sur une touche pour continuer ... " 
+                        Read-Host "Appuyez sur Entrée pour continuer ... " 
                         }
                         catch {
                         Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red
                         Write-Host ""
-                        Read-Host "Appuyez sur une touche pour continuer ... " 
+                        Read-Host "Appuyez sur Entrée pour continuer ... " 
                     }
                 }
 
@@ -284,12 +284,12 @@ function Reboot
                             } -ArgumentList $Timer_R2
                         Write-Host "Commande de redémarrage du poste distant envoyée avec succès à $IpDistante" -ForegroundColor Green
                         Write-Host ""
-                        Read-Host "Appuyez sur une touche pour continuer ... " 
+                        Read-Host "Appuyez sur Entrée pour continuer ... " 
                         }
                         catch {
                             Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red
                             Write-Host ""
-                            Read-Host "Appuyez sur une touche pour continuer ... " 
+                            Read-Host "Appuyez sur Entrée pour continuer ... " 
                         }
                 }
                 
@@ -331,12 +331,12 @@ function Lock
                     }
                 Write-Host "Commande de vérouillage de la session du poste distant envoyée avec succès à $IpDistante" -ForegroundColor Green
                 Write-Host ""
-                Read-Host "Appuyez sur une touche pour continuer ... " 
+                Read-Host "Appuyez sur Entrée pour continuer ... " 
             }
             catch {
                 Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red
                 Write-Host ""
-                Read-Host "Appuyez sur une touche pour continuer ... " 
+                Read-Host "Appuyez sur Entrée pour continuer ... " 
             }
     }
 
@@ -364,12 +364,12 @@ function FirewallOn
             Write-Host "Le pare-feu du poste distant a bien été activé" -ForegroundColor Green
             Start-Sleep -Seconds 1
             Write-Host ""
-            Read-Host "Appuyez sur une touche pour continuer ... " 
+            Read-Host "Appuyez sur Entrée pour continuer ... " 
         }
         catch {
             Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red
             Write-Host ""
-            Read-Host "Appuyez sur une touche pour continuer ... " 
+            Read-Host "Appuyez sur Entrée pour continuer ... " 
         }
     }
 # Si confirmation NOK, sortie de la fonction "Activation du pare-feu"
@@ -397,12 +397,12 @@ function FirewallOff
             Write-Host "Le pare-feu du poste distant a bien été désactivé" -ForegroundColor Green
             Start-Sleep -Seconds 1
             Write-Host ""
-            Read-Host "Appuyez sur une touche pour continuer ... " 
+            Read-Host "Appuyez sur Entrée pour continuer ... " 
         }
         catch {
             Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red
             Write-Host ""
-            Read-Host "Appuyez sur une touche pour continuer ... " 
+            Read-Host "Appuyez sur Entrée pour continuer ... " 
         }
 	}
 # Si confirmation NOK, sortie de la fonction "Activation du pare-feu"
@@ -449,12 +449,12 @@ function FirewallRules
                     try {
                         Invoke-Command -ComputerName $IpDistante -ScriptBlock { Get-NetFirewallRule } -Credential $Credentials
                         Start-Sleep -Seconds 1
-                        Read-Host "Appuyez sur une touche pour continuer ... "
+                        Read-Host "Appuyez sur Entrée pour continuer ... "
                     }
                     catch {
                         Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red
                         Write-Host ""
-                        Read-Host "Appuyez sur une touche pour continuer ... " 
+                        Read-Host "Appuyez sur Entrée pour continuer ... " 
                     }
                 }
                 # Exécution de la commande d'ouverture de port TCP
@@ -478,12 +478,12 @@ function FirewallRules
                         Write-Host "Port TCP $OpenTCP ouvert" -ForegroundColor Green
                         Start-Sleep -Seconds 1
                         Write-Host ""
-                        Read-Host "Appuyez sur une touche pour continuer ... "
+                        Read-Host "Appuyez sur Entrée pour continuer ... "
                     }
                     catch {
                         Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red
                         Write-Host ""
-                        Read-Host "Appuyez sur une touche pour continuer ... " 
+                        Read-Host "Appuyez sur Entrée pour continuer ... " 
                     }
                 }
                 # Exécution de la commande d'ouverture de port UDP
@@ -507,12 +507,12 @@ function FirewallRules
                         Write-Host "Port UDP $OpenUDP ouvert" -ForegroundColor Green
                         Start-Sleep -Seconds 1
                         Write-Host ""
-                        Read-Host "Appuyez sur une touche pour continuer ... "
+                        Read-Host "Appuyez sur Entrée pour continuer ... "
                     }
                     catch {
                         Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red
                         Write-Host ""
-                        Read-Host "Appuyez sur une touche pour continuer ... " 
+                        Read-Host "Appuyez sur Entrée pour continuer ... " 
                     }
                 }
 				# Exécution de la commande de fermeture de port
@@ -534,12 +534,12 @@ function FirewallRules
                         Write-Host "Règle $RegleSuppr supprimée" -ForegroundColor Green
                         Start-Sleep -Seconds 1
                         Write-Host ""
-                        Read-Host "Appuyez sur une touche pour continuer ... "
+                        Read-Host "Appuyez sur Entrée pour continuer ... "
                     }
                     catch {
                         Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red
                         Write-Host ""
-                        Read-Host "Appuyez sur une touche pour continuer ... " 
+                        Read-Host "Appuyez sur Entrée pour continuer ... " 
                     }
                 }	
                 # Exécution de la commande de réinitialisation du pare-feu + Avertissement
@@ -558,12 +558,12 @@ function FirewallRules
                         Write-Host "Le pare-feu a été réinitialisé" -ForegroundColor Green
                         Start-Sleep -Seconds 1
                         Write-Host ""
-                        Read-Host "Appuyez sur une touche pour continuer ... "
+                        Read-Host "Appuyez sur Entrée pour continuer ... "
                         }
                         catch {
                             Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red
                             Write-Host ""
-                            Read-Host "Appuyez sur une touche pour continuer ... " 
+                            Read-Host "Appuyez sur Entrée pour continuer ... " 
                         }
                     }
                     # Si confirmation NOK, sortie de la fonction "Règles du pare-feu"
@@ -631,7 +631,7 @@ function CreateDirectory {
             catch {
             Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red
             Write-Host ""
-            Read-Host "Appuyez sur une touche pour continuer ... " 
+            Read-Host "Appuyez sur Entrée pour continuer ... " 
         }
         if ($TestPath -eq "True") 
 		{
@@ -653,12 +653,12 @@ function CreateDirectory {
                 Write-Host "Le dossier $NameDirectory a été créé à l'emplacement $PathDirectory sur le poste." -ForegroundColor Green
                 Write-Host ""
                 Start-Sleep -Seconds 1
-                Read-Host "Appuyez sur une touche pour continuer ... "
+                Read-Host "Appuyez sur Entrée pour continuer ... "
             }
             catch {
                 Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red
                 Write-Host ""
-                Read-Host "Appuyez sur une touche pour continuer ... " 
+                Read-Host "Appuyez sur Entrée pour continuer ... " 
             }
         }
     }
@@ -712,12 +712,12 @@ function RemoveDirectory {
                 Write-Host "Le dossier $NameDirectory2 a été supprimé" -ForegroundColor Green
                 Write-Host ""
                 Start-Sleep -Seconds 1
-                Read-Host "Appuyez sur une touche pour continuer ... "
+                Read-Host "Appuyez sur Entrée pour continuer ... "
             }
             catch {
                 Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red
                 Write-Host ""
-                Read-Host "Appuyez sur une touche pour continuer ... " 
+                Read-Host "Appuyez sur Entrée pour continuer ... " 
             }
         }
     }
@@ -768,12 +768,12 @@ function Applications
                 try {
                     Invoke-Command -ComputerName $IpDistante -Credential $Credentials -ScriptBlock { param($AppInstall) choco install $AppInstall -y --force } -ArgumentList $AppInstall
                     Start-Sleep -Seconds 1
-                    Read-Host "Appuyez sur une touche pour continuer ... "
+                    Read-Host "Appuyez sur Entrée pour continuer ... "
                 }
                 catch {
                     Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red
                     Write-Host ""
-                    Read-Host "Appuyez sur une touche pour continuer ... " 
+                    Read-Host "Appuyez sur Entrée pour continuer ... " 
                 }
             }
             else 
@@ -796,12 +796,12 @@ function Applications
                     Invoke-Command -ComputerName $IpDistante -Credential $Credentials -ScriptBlock { param($AppUnInstall) choco uninstall $AppUnInstall -y --force} -ArgumentList $AppUnInstall
                     Start-Sleep -Seconds 1
                     Write-Host ""
-                    Read-Host "Appuyez sur une touche pour continuer ... "
+                    Read-Host "Appuyez sur Entrée pour continuer ... "
                 }
                 catch {
                     Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red
                     Write-Host ""
-                    Read-Host "Appuyez sur une touche pour continuer ... " 
+                    Read-Host "Appuyez sur Entrée pour continuer ... " 
                 }
             }
             else 
@@ -825,12 +825,12 @@ function Applications
                     Invoke-Command -ComputerName $IpDistante -Credential $Credentials -ScriptBlock { param($AppSearchChoco) choco search --by-id-only $AppSearchChoco } -ArgumentList $AppSearchChoco
                     Start-Sleep -Seconds 1
                     Write-Host ""
-                    Read-Host "Appuyez sur une touche pour continuer ... "
+                    Read-Host "Appuyez sur Entrée pour continuer ... "
                 }
                 catch {
                     Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red
                     Write-Host ""
-                    Read-Host "Appuyez sur une touche pour continuer ... " 
+                    Read-Host "Appuyez sur Entrée pour continuer ... " 
                 }
             }
             else 
@@ -854,12 +854,12 @@ function Applications
                     Invoke-Command -ComputerName $IpDistante -Credential $Credentials -ScriptBlock { choco list }
                     Start-Sleep -Seconds 1
                     Write-Host ""
-                    Read-Host "Appuyez sur une touche pour continuer ... "
+                    Read-Host "Appuyez sur Entrée pour continuer ... "
                 }
                 catch {
                     Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red
                     Write-Host ""
-                    Read-Host "Appuyez sur une touche pour continuer ... " 
+                    Read-Host "Appuyez sur Entrée pour continuer ... " 
                 }
             }
             else 
@@ -883,12 +883,12 @@ function Applications
                     Invoke-Command -ComputerName $IpDistante -Credential $Credentials -ScriptBlock {choco outdated}
                     Start-Sleep -Seconds 1
                     Write-Host ""
-                    Read-Host "Appuyez sur une touche pour continuer ... "
+                    Read-Host "Appuyez sur Entrée pour continuer ... "
                 }
                 catch {
                     Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red
                     Write-Host ""
-                    Read-Host "Appuyez sur une touche pour continuer ... " 
+                    Read-Host "Appuyez sur Entrée pour continuer ... " 
                 }
             }
             else 
@@ -912,12 +912,12 @@ function Applications
                     Invoke-Command -ComputerName $IpDistante -Credential $Credentials -ScriptBlock { param($AppMaj) choco upgrade $AppMaj -y } -ArgumentList $AppMaj
                     Start-Sleep -Seconds 1
                     Write-Host ""
-                    Read-Host "Appuyez sur une touche pour continuer ... "
+                    Read-Host "Appuyez sur Entrée pour continuer ... "
                 }
                 catch {
                     Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red
                     Write-Host ""
-                    Read-Host "Appuyez sur une touche pour continuer ... " 
+                    Read-Host "Appuyez sur Entrée pour continuer ... " 
                 }
             }
             else 
@@ -941,12 +941,12 @@ function Applications
                     Invoke-Command -ComputerName $IpDistante -Credential $Credentials -ScriptBlock {choco upgrade all -y}
                     Start-Sleep -Seconds 1
                     Write-Host ""
-                    Read-Host "Appuyez sur une touche pour continuer ... "
+                    Read-Host "Appuyez sur Entrée pour continuer ... "
                 }
                 catch {
                     Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red
                     Write-Host ""
-                    Read-Host "Appuyez sur une touche pour continuer ... " 
+                    Read-Host "Appuyez sur Entrée pour continuer ... " 
                 }
             }
             else 
@@ -1010,7 +1010,7 @@ function RemoteControl
                     Write-Host "Contrôle par interface graphique (GUI)" -ForegroundColor DarkYellow
                     mstsc -v $IpDistante
                     Start-Sleep -Seconds 1
-                    Read-Host "Appuyez sur une touche pour continuer ... "
+                    Read-Host "Appuyez sur Entrée pour continuer ... "
                 }
 
                 2
@@ -1023,7 +1023,7 @@ function RemoteControl
                     catch {
                         Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red
                         Write-Host ""
-                        Read-Host "Appuyez sur une touche pour continuer ... " 
+                        Read-Host "Appuyez sur Entrée pour continuer ... " 
                     }
                 }
 
@@ -1075,7 +1075,7 @@ function RemoteScript
             catch {
                 Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red
                 Write-Host ""
-                Read-Host "Appuyez sur une touche pour continuer ... " 
+                Read-Host "Appuyez sur Entrée pour continuer ... " 
             }
         }
         }   
@@ -1083,7 +1083,7 @@ function RemoteScript
         {
             Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red
             Write-Host ""
-            Read-Host "Appuyez sur une touche pour continuer ... " 
+            Read-Host "Appuyez sur Entrée pour continuer ... " 
         }
         }
     else 
@@ -1093,3 +1093,4 @@ function RemoteScript
     } 
         
 }
+
