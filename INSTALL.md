@@ -168,3 +168,12 @@ sudo apt-get install openssh-server
  sudo systemctl enable ssh
 ```
 
+## 5. F.A.Q 
+
+**Q. Une fonctionnalité du script ne semble pas fonctionner ?**
+*R. Vérifiez les pre-requis d'installation, vérifiez que la connexion est bonne et bien configuré (SSH pour Linux , configuration WinRM pour Windows)
+Vérifiez que si la commande necissite un utilisateur ou fichier/dossier qu'il a bien été renseigné.*
+
+**Q. Les deux scripts sont-ils identiques**
+*R. Les systèmes d'exploitaiton étant différents, les deux scripts le sont aussi. De plus la mise à jour de l'OS via le script powershell ne fonctionne pas.
+Nous travaillons toujours sur un paliatif à ce problème.*
