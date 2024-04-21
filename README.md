@@ -66,8 +66,8 @@ Concernant le script Bash (environnement Linux) nous n'avons pas rencontré de p
 En revanche sur la partie Windows, les principaux problèmes ont été observés essentiellement sur l'écriture du script Powershell (liés à certaines fonctions) :
 
 - Mise à jour du système (Windows Update) :
-Impossible de faire les mise à jour via le module PSWindowsUpdate nous rencontrons une erreur que nous pouvons résoudre
-Impossible de les faire via KBUpdate, comme avec PSWindowsUpdate, cela ne fonctionne pas.
+  - Impossible de faire les mise à jour via le module PSWindowsUpdate nous rencontrons une erreur que nous pouvons résoudre 
+  - Impossible de les faire via KBUpdate, comme avec PSWindowsUpdate, cela ne fonctionne pas.
 - Fonction "Liste des sessions ouvertes par l'utilisateur" (N'affiche pas le même résultat que le script Bash)
 - Installation de logiciels tiers
 
