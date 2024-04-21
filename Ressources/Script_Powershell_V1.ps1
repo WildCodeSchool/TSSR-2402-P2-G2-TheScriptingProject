@@ -356,7 +356,7 @@ function Menu_Action_Poste
     Write-Host "[1]  Arrêt" -ForegroundColor DarkYellow
     Write-Host "[2]  Redémarrage" -ForegroundColor DarkYellow
     Write-Host "[3]  Vérouillage" -ForegroundColor DarkYellow
-    Write-Host "[4]  MàJ du système" -ForegroundColor DarkYellow
+    Write-Host "[4]  MàJ du système (Veuillez utiliser la prise de main à distance pour cette fonctionnalité)" -ForegroundColor DarkYellow
     Write-Host "[5]  Création de repertoire" -ForegroundColor DarkYellow
     Write-Host "[6]  Suppression de repertoire" -ForegroundColor DarkYellow
     Write-Host "[7]  Prise de main à distance" -ForegroundColor DarkYellow
