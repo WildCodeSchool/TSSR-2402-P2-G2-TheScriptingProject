@@ -65,7 +65,9 @@ Concernant le script Bash (environnement Linux) nous n'avons pas rencontré de p
 
 En revanche sur la partie Windows, les principaux problèmes ont été observés essentiellement sur l'écriture du script Powershell (liés à certaines fonctions) :
 
-- Mise à jour du système (Windows Update)
+- Mise à jour du système (Windows Update) :
+Impossible de faire les mise à jour via le module PSWindowsUpdate nous rencontrons une erreur que nous pouvons résoudre
+Impossible de les faire via KBUpdate, comme avec PSWindowsUpdate, cela ne fonctionne pas.
 - Fonction "Liste des sessions ouvertes par l'utilisateur" (N'affiche pas le même résultat que le script Bash)
 - Installation de logiciels tiers
 
@@ -86,12 +88,12 @@ Invoke-Command -ComputerName "<NomDuPcClient>" Credential -ScriptBlock { Get-Pro
 
 Les deux scripts sont fonctionnels, cependant il subsiste des améliorations possibles :
 
-**1. Connexion réseau**
-- Il est envisagé d'utiliser la solution Active Directory pour remplacer les protocoles SSH et WinRM.
-
+**1. Mise à jour Windows via Script**
+- Il est envisagé d'utiliser la solution Active Directory pour pouvoir faire les mises à jour Windows.
 
 **2. Ergonomie/Utilisation**
 - Ajout de couleurs
 - Gestion des erreurs
 - Traitement des fichiers de journalisation (Pour optimiser la consultation)
+- Script Bash ajouter Rappel des interface réseaux disponnible lors de la consultation des adresses IP ou adresses MAC.
 
