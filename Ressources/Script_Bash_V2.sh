@@ -1,15 +1,16 @@
 ################################################################################################################################################################################################################
 ################################################################################################################################################################################################################
-# Script Bash pour maintenance et information sur Poste Distant Linux
+# Script Bash pour Maintenance et Information sur Poste Distant Linux
 # Version 0.8
 # Réalisé en collaboration par Anais Lenglet, Bruno Serna, Grégory Dubois, Patrick Baggiolini et Thomas Scotti
 # Dernière mise à jour le  08 / 04 / 2024
 # Historique version
-# V0.8 -- 08 / 04 / 2024 finalisation chemin pour enregistrement fichier information utilisateur/computeur
-# V0.75 -- 05 / 04 / 2024 création répertoire "Documents" et création var pour chemin enregistrement info utilisateur/computeur
-# V0.7 -- 04 / 04 / 2024 Ajout Fonction information ordinateur
-# V0.6 -- 04 / 04 / 2024 Ajout log event / Fonction action ordinateur / Fonction action utilisateur Et  Fonction information utilisateur
-# V0.5 -- 03 / 04 / 2024 Création script
+# V0.9 -- 21 / 04 / 2024 : Correction syntaxique
+# V0.8 -- 08 / 04 / 2024 : Finalisation chemin pour enregistrement fichier information utilisateur/computeur
+# V0.75 -- 05 / 04 / 2024 : Création répertoire "Documents" et création var pour chemin enregistrement info utilisateur/computeur
+# V0.7 -- 04 / 04 / 2024 : Ajout Fonction information ordinateur
+# V0.6 -- 04 / 04 / 2024 : Ajout log event / Fonction action ordinateur / Fonction action utilisateur Et  Fonction information utilisateur
+# V0.5 -- 03 / 04 / 2024 : Création script
 ################################################################################################################################################################################################################
 ################################################################################################################################################################################################################
 
@@ -37,38 +38,38 @@ Menu_Principal() {
         clear
         # Demande de premier choix ACTION / INFORMATION ou QUITTER
         echo "==================================================="
-        echo -e "${BG_BLUE}                      Menu Principal               ${NC}"
+        echo -e "${BG_BLUE}                      MENU PRINCIPAL               ${NC}"
         echo "==================================================="
         echo " "
-        echo "Machine distante : $nom_distant@$ip_distante"
+        echo "Poste distant : $nom_distant@$ip_distante"
         echo " "
-        echo "Bonjour, voici les choix possibles : "
+        echo "Bonjour, voici les différents choix possibles à effectuer sur le poste distant :"
         echo " "
-        echo "[1] Menu ACTION sur Utilisateur ou POSTE DISTANT"
-        echo "[2] Menu INFORMATION sur Utilisateur ou POSTE DISTANT"
+        echo "[1] Menu ACTION"
+        echo "[2] Menu INFORMATION"
         echo " "
         echo "[X] Arreter le script "
         echo " "
-        read -p "Veuillez faire un choix en donnant le numéro souhaité : " choixMenuPrincipal
+        read -p "Faites votre choix parmi la sélection ci-dessus : " choixMenuPrincipal
         case $choixMenuPrincipal in
         1)
             # Envoie vers MENU ACTION
             echo " "
             echo "Vous avez choisi ACTION" && sleep 2s
-            echo $(date +%Y%m%d-%H%M%S)"-$Operateur-ACTION a été choisi" >>/var/log/log_evt.log
+            echo $(date +%Y%m%d-%H%M%S)"-$Operateur-ACTION choisi" >>/var/log/log_evt.log
             Menu_Action
             ;;
         2)
             # Envoie vers MENU INFORMATION
             echo " "
             echo "Vous avez choisi INFORMATION" && sleep 2s
-            echo $(date +%Y%m%d-%H%M%S)"-$Operateur-INFORMATION a été choisi" >>/var/log/log_evt.log
+            echo $(date +%Y%m%d-%H%M%S)"-$Operateur-INFORMATION choisi" >>/var/log/log_evt.log
             Menu_Information
             ;;
         X)
             # Arrêt script
             echo " "
-            echo "J'espère que j'ai pu vous aider, à bientôt" && sleep 2s
+            echo "Arrêt du script" && sleep 2s
             echo $(date +%Y%m%d-%H%M%S)"-$Operateur-Sortie de Script" >>/var/log/log_evt.log
             echo $(date +%Y%m%d-%H%M%S)"-$Operateur-********EndScript********" >>/var/log/log_evt.log
             exit 0
@@ -76,9 +77,9 @@ Menu_Principal() {
         *)
             # Erreur de commande
             echo " "
-            echo "Commande inconnu, Veuillez recommencer"
+            echo "Choix incorrect - Veuillez recommencer"
             echo " "
-            read -p "Appuyez sur Entrée pour continuer..." && sleep 2s
+            read -p "Appuyez sur Entrée pour continuer ..." && sleep 2s
             echo $(date +%Y%m%d-%H%M%S)"-$Operateur-erreur de commande" >>/var/log/log_evt.log
             ;;
         esac
@@ -92,30 +93,28 @@ Menu_Action() {
         clear
         # Demande choix ACTION UTILISATEUR / ACTION POSTE DISTANT / retour menu principal
         echo "=============================================="
-        echo -e "${BG_BLUE}                  Menu "Action"                 ${NC}"
+        echo -e "${BG_BLUE}                  ACTION                 ${NC}"
         echo "=============================================="
         echo " "
-        echo "Machine distante : $nom_distant@$ip_distante"
+        echo "Poste distant : $nom_distant@$ip_distante"
         echo " "
-        echo "Voici les choix possibles : "
-        echo " "
-        echo "[1] ACTION sur UTILISATEUR "
-        echo "[2] ACTION POSTE DISTANT "
+        echo "[1] ACTION sur UTILISATEUR"
+        echo "[2] ACTION sur POSTE"
         echo " "
         echo "[X] Retour menu principal "
         echo " "
-        read -p "Veuillez faire un choix en donnant le numéro souhaité : " choixMenuAction
+        read -p "Faites votre choix parmi la sélection ci-dessus : " choixMenuAction
         case $choixMenuAction in
         1)
             echo " "
-            echo "Vous avez choisi ACTION UTILISATEUR" && sleep 2s
-            echo $(date +%Y%m%d-%H%M%S)"-$Operateur-ACTION Utilisateur choisi" >>/var/log/log_evt.log
+            echo "Vous avez choisi ACTION sur UTILISATEUR" && sleep 2s
+            echo $(date +%Y%m%d-%H%M%S)"-$Operateur-ACTION sur UTILISATEUR choisi" >>/var/log/log_evt.log
             Menu_Action_Utilisateur
             ;;
         2)
             echo " "
-            echo "Vous avez choisi ACTION POSTE DISTANT" && sleep 2s
-            echo $(date +%Y%m%d-%H%M%S)"-$Operateur-ACTION Poste distant choisi" >>/var/log/log_evt.log
+            echo "Vous avez choisi ACTION sur POSTE" && sleep 2s
+            echo $(date +%Y%m%d-%H%M%S)"-$Operateur-ACTION sur POSTE choisi" >>/var/log/log_evt.log
             Menu_Action_Ordinateur
             ;;
         X)
@@ -126,9 +125,9 @@ Menu_Action() {
             ;;
         *)
             echo " "
-            echo "Commande inconnu, Veuillez recommencer"
+            echo "Choix incorrect - Veuillez recommencer"
             echo " "
-            read -p "Appuyez sur Entrée pour continuer..." && sleep 2s
+            read -p "Appuyez sur Entrée pour continuer ..." && sleep 2s
             echo $(date +%Y%m%d-%H%M%S)"-$Operateur-erreur de commande" >>/var/log/log_evt.log
             ;;
         esac
@@ -142,30 +141,28 @@ Menu_Information() {
         clear
         # Demande choix INFORMATION UTILISATEUR / ACTION POSTE DISTANT / retour menu principal
         echo "==============================================="
-        echo -e "${BG_BLUE}              Menu "INFORMATION"                 ${NC}"
+        echo -e "${BG_BLUE}              INFORMATION                 ${NC}"
         echo "==============================================="
         echo " "
-        echo "Machine distante : $nom_distant@$ip_distante"
-        echo " "
-        echo "Voici les choix possibles : "
+        echo "Poste distant : $nom_distant@$ip_distante"
         echo " "
         echo "[1] INFORMATION sur UTILISATEUR"
-        echo "[2] INFORMATION POSTE DISTANT"
+        echo "[2] INFORMATION sur POSTE"
         echo " "
-        echo "[X] Retour menu principal "
+        echo "[X] Retour menu principal"
         echo " "
-        read -p "Veuillez faire un choix en donnant le numéro souhaité: " choixMenuInformation
+        read -p "Faites votre choix parmi la sélection ci-dessus : " choixMenuInformation
         case $choixMenuInformation in
         1)
             echo " "
-            echo "Vous avez choisi INFORMATION utilisateur" && sleep 2s
-            echo $(date +%Y%m%d-%H%M%S)"-$Operateur-ACTION Information utlisateur choisi" >>/var/log/log_evt.log
+            echo "Vous avez choisi INFORMATION sur UTILISATEUR" && sleep 2s
+            echo $(date +%Y%m%d-%H%M%S)"-$Operateur-INFORMATION sur UTILISATEUR choisi" >>/var/log/log_evt.log
             Menu_Information_Utilsateur
             ;;
         2)
             echo " "
-            echo "Vous avez choisi INFORMATION POSTE DISTANT" && sleep 2s
-            echo $(date +%Y%m%d-%H%M%S)"-$Operateur-ACTION INFORMATION poste distant choisi" >>/var/log/log_evt.log
+            echo "Vous avez choisi INFORMATION sur POSTE" && sleep 2s
+            echo $(date +%Y%m%d-%H%M%S)"-$Operateur-INFORMATION sur POSTE choisi" >>/var/log/log_evt.log
             Menu_Information_Ordinateur
             ;;
         X)
@@ -176,9 +173,9 @@ Menu_Information() {
             ;;
         *)
             echo " "
-            echo "Commande inconnu, Veuillez recommencer"
+            echo "Choix incorrect - Veuillez recommencer"
             echo " "
-            read -p "Appuyez sur Entrée pour continuer..." && sleep 2s
+            read -p "Appuyez sur Entrée pour continuer ..." && sleep 2s
             echo $(date +%Y%m%d-%H%M%S)"-$Operateur-erreur de commande" >>/var/log/log_evt.log
             ;;
         esac
@@ -200,68 +197,66 @@ Menu_Action_Utilisateur() {
         clear
         #Demande choix ACTION UTILISATEUR / retour menu précédent / retour menu principal
         echo "=================================================="
-        echo -e "${BG_BLUE}             Menu "Action utilisateur"         ${NC}"
+        echo -e "${BG_BLUE}             ACTION UTILISATEUR DISTANT         ${NC}"
         echo "=================================================="
         echo " "
-        echo "Machine distante : $nom_distant@$ip_distante"
-        echo " "
-        echo "Voici les choix possibles : "
+        echo "Poste distant : $nom_distant@$ip_distante"
         echo ""
-        echo "[1] Création de compte utilisateur local"
-        echo "[2] Changement de mot de passe"
-        echo "[3] Suppression de compte utilisateur local"
-        echo "[4] Désactivation de compte utilisateur local"
-        echo "[5] Ajout à un groupe d'administration"
-        echo "[6] Ajout à un groupe local"
-        echo "[7] Sortie d'un groupe local"
+        echo "[1] Création d'un compte utilisateur local"
+        echo "[2] Suppresion d'un compte utilisateur local"
+        echo "[3] Désactivation d'un compte utilisateur local"
+        echo "[4] Modification d'un mot de passe"
+        echo "[5] Ajout d'un compte à un groupe d'administration"
+        echo "[6] Ajout d'un compte à un groupe local"
+        echo "[7] Sortie d'un compte à un groupe local"
         echo ""
         echo "[0]. Retour au menu précédent"
         echo "[X]. Retour au menu principal"
         echo ""
         # Demande du choix action
-        read -p "Veuillez faire votre choix action en donnant le numéro souhaité: " choixMenuActionUser
+        read -p "Faites votre choix parmi la sélection ci-dessus : " choixMenuActionUser
         # Traitement de l'action choisie
         case $choixMenuActionUser in
         1)
-            echo " "
-            echo "Vous avez choisi création de compte utilsiateur" && sleep 2s
-            echo $(date +%Y%m%d-%H%M%S)"-$Operateur-Création utilisateur choisi" >>/var/log/log_evt.log
+            echo ""
+            echo "Vous avez choisi de créer un compte utilisateur local" && sleep 2s
+            echo $(date +%Y%m%d-%H%M%S)"-$Operateur-Création d'un compte utilisateur local choisi" >>/var/log/log_evt.log
             créer_utilisateur
             ;;
         2)
             echo " "
-            echo "Vous avez choisi changement de mot de passe" && sleep 2s
-            echo $(date +%Y%m%d-%H%M%S)"-$Operateur-changement de mot de passe choisi" >>/var/log/log_evt.log
-            changer_mdp
+            echo "Vous avez choisi de supprimer un compte utilisateur local" && sleep 2s
+            echo $(date +%Y%m%d-%H%M%S)"-$Operateur-Suppression d'un compte utilisateur local choisi" >>/var/log/log_evt.log
+            supprimer_utilisateur
             ;;
         3)
             echo " "
-            echo "Vous avez choisi suppression de compte utilisateur" && sleep 2s
-            echo $(date +%Y%m%d-%H%M%S)"-$Operateur-Suppression de compte utilisateur choisi" >>/var/log/log_evt.log
-            supprimer_utilisateur
+            echo "Vous avez choisi de désactiver un compte utilisateur local" && sleep 2s
+            echo $(date +%Y%m%d-%H%M%S)"-$Operateur-Désactivation d'un compte utilisateur choisi" >>/var/log/log_evt.log
+            désactiver_utilisateur
             ;;
         4)
             echo " "
-            echo "Vous avez choisi désactivation de compte utilisateur" && sleep 2s
-            echo $(date +%Y%m%d-%H%M%S)"-$Operateur-Désactivation de compte utilisateur choisi" >>/var/log/log_evt.log
-            désactiver_utilisateur
+            echo "Vous avez choisi de modifier un mot de passe" && sleep 2s
+            echo $(date +%Y%m%d-%H%M%S)"-$Operateur-Modification de mot de passe choisi" >>/var/log/log_evt.log
+            changer_mdp
             ;;
         5)
             echo " "
-            echo "Vous avez choisi ajjout à groupe d'administration" && sleep 2s
-            echo $(date +%Y%m%d-%H%M%S)"-$Operateur-Ajjout à groupe d'administration choisi" >>/var/log/log_evt.log
+            echo "Vous avez choisi d'ajouter un compte utilisateur à un groupe d'administration" && sleep 2s
+            echo $(date +%Y%m%d-%H%M%S)"-$Operateur-Ajout d'un compte à un groupe d'administration choisi" >>/var/log/log_evt.log
             ajouter_groupe_admin
             ;;
         6)
             echo " "
-            echo "Vous avez choisi ajjout à groupe local" && sleep 2s
-            echo $(date +%Y%m%d-%H%M%S)"-$Operateur-Ajjout à groupe loScal choisi" >>/var/log/log_evt.log
+            echo "Vous avez choisi d'ajouter un compte utilisateur à un groupe local" && sleep 2s
+            echo $(date +%Y%m%d-%H%M%S)"-$Operateur-Ajout d'un compte à un groupe local choisi" >>/var/log/log_evt.log
             ajout_utilisateur_groupe
             ;;
         7)
             echo " "
-            echo "Vous avez choisi Sortie d'un groupe local" && sleep 2s
-            echo $(date +%Y%m%d-%H%M%S)"-$Operateur-Sortie d'un groupe local choisi" >>/var/log/log_evt.log
+            echo "Vous avez choisi de retirer un compte utilisateur d'un groupe local" && sleep 2s
+            echo $(date +%Y%m%d-%H%M%S)"-$Operateur-Retrait d'un compte à un groupe local choisi" >>/var/log/log_evt.log
             supprimer_utilisateur_groupe
             ;;
         0)
@@ -278,9 +273,9 @@ Menu_Action_Utilisateur() {
             ;;
         *)
             echo " "
-            echo "Commande inconnu, Veuillez recommencer"
+            echo "Choix incorrect - Veuillez recommencer"
             echo " "
-            read -p "Appuyez sur Entrée pour continuer..." && sleep 2s
+            read -p "Appuyez sur Entrée pour continuer ..." && sleep 2s
             echo $(date +%Y%m%d-%H%M%S)"-$Operateur-erreur de commande" >>/var/log/log_evt.log
             ;;
         esac
@@ -294,13 +289,11 @@ Menu_Action_Ordinateur() {
         clear
         # Demande choix INFORMATION UTILISATEUR / ACTION POSTE DISTANT / retour menu principal
         echo "==================================================="
-        echo -e "${BG_BLUE}        Menu "Action Machine Distante"               ${NC}"
+        echo -e "${BG_BLUE}        ACTION POSTE DISTANT                ${NC}"
         echo "==================================================="
         echo " "
-        echo "Machine distante : $nom_distant@$ip_distante"
+        echo "Poste distant : $nom_distant@$ip_distante"
         echo " "
-        echo "Voici les choix possibles : "
-        echo ""
         echo "[1]  Arrêt"
         echo "[2]  Redémarrage"
         echo "[3]  Vérouillage"
@@ -319,97 +312,97 @@ Menu_Action_Ordinateur() {
         echo "[X]  Retour au menu principal"
         echo ""
         # Demande du choix action
-        read -p "Veuillez faire votre choix action en donnant le numéro souhaité: " choixMenuActionOrdinateur
+        read -p "Faites votre choix parmi la sélection ci-dessus : " choixMenuActionOrdinateur
         # Traitement de l'action choisie
         case $choixMenuActionOrdinateur in
         1)
             echo " "
-            echo "Vous avez choisi l'arrêt de la machine distante" && sleep 2s
-            echo $(date +%Y%m%d-%H%M%S)"-$Operateur-Arrêt choisi" >>/var/log/log_evt.log
+            echo "Vous avez choisi d'arrêter le poste" && sleep 2s
+            echo $(date +%Y%m%d-%H%M%S)"-$Operateur-Arrêt du poste choisi" >>/var/log/log_evt.log
             shutdown
             ;;
 
         2)
             echo " "
-            echo "Vous avez choisi le rédemarrage de la machine distante" && sleep 2s
-            echo $(date +%Y%m%d-%H%M%S)"-$Operateur-Redémarrage choisi" >>/var/log/log_evt.log
+            echo "Vous avez choisi de redémarrer le poste" && sleep 2s
+            echo $(date +%Y%m%d-%H%M%S)"-$Operateur-Redémarrage du poste choisi" >>/var/log/log_evt.log
             reboot
             ;;
 
         3)
             echo " "
-            echo "Vous avez choisi le vérrouillage de la machine distante" && sleep 2s
-            echo $(date +%Y%m%d-%H%M%S)"-$Operateur-Vérrouillage machine distante choisi" >>/var/log/log_evt.log
+            echo "Vous avez choisi de vérouiller le poste" && sleep 2s
+            echo $(date +%Y%m%d-%H%M%S)"-$Operateur-Vérouillage du poste choisi" >>/var/log/log_evt.log
             lock
             ;;
 
         4)
             echo " "
-            echo "Vous avez choisi la mise à jour de la machine distante" && sleep 2s
-            echo $(date +%Y%m%d-%H%M%S)"-$Operateur-Mise à jour choisi" >>/var/log/log_evt.log
+            echo "Vous avez choisi de mettre à jour le poste" && sleep 2s
+            echo $(date +%Y%m%d-%H%M%S)"-$Operateur-Mise à jour du poste choisi" >>/var/log/log_evt.log
             update
             ;;
 
         5)
             echo " "
-            echo "Vous avez choisi de créér un répertoire sur la machine distante" && sleep 2s
-            echo $(date +%Y%m%d-%H%M%S)"-$Operateur-Création de répertoire choisi" >>/var/log/log_evt.log
+            echo "Vous avez choisi de créer un dossier sur le poste" && sleep 2s
+            echo $(date +%Y%m%d-%H%M%S)"-$Operateur-Création d'un dossier sur le poste choisi" >>/var/log/log_evt.log
             create_directory
             ;;
 
         6)
             echo " "
-            echo "Vous avez choisi de supprimer un répertoire sur la machine distante" && sleep 2s
-            echo $(date +%Y%m%d-%H%M%S)"-$Operateur-Suppression de répertoire choisi" >>/var/log/log_evt.log
+            echo "Vous avez choisi de supprimer un dossier sur le poste" && sleep 2s
+            echo $(date +%Y%m%d-%H%M%S)"-$Operateur-Suppression d'un dossier sur le poste choisi" >>/var/log/log_evt.log
             remove_directory
             ;;
 
         7)
             echo " "
-            echo "Vous avez choisi Prise de main à distance sur la machine distante" && sleep 2s
-            echo $(date +%Y%m%d-%H%M%S)"-$Operateur-Prise de main à distance choisi" >>/var/log/log_evt.log
+            echo "Vous avez choisi de prendre la main sur le poste" && sleep 2s
+            echo $(date +%Y%m%d-%H%M%S)"-$Operateur-Prise de main à distance sur poste choisi" >>/var/log/log_evt.log
             remote_control
             ;;
 
         8)
             echo " "
-            echo "Vous avez choisi Activation du pare-feu sur la machine distante" && sleep 2s
-            echo $(date +%Y%m%d-%H%M%S)"-$Operateur-Activation du pare-feu choisi" >>/var/log/log_evt.log
+            echo "Vous avez choisi d'activer le pare-feu sur le poste" && sleep 2s
+            echo $(date +%Y%m%d-%H%M%S)"-$Operateur-Activation du pare-feu du poste choisi" >>/var/log/log_evt.log
             firewall_on
             ;;
 
         9)
             echo " "
-            echo "Vous avez choisi Désactivation du pare-feu sur la machine distante" && sleep 2s
-            echo $(date +%Y%m%d-%H%M%S)"-$Operateur-Désactivation du pare-feu choisi" >>/var/log/log_evt.log
+            echo "Vous avez choisi de désactiver le pare-feu sur le poste" && sleep 2s
+            echo $(date +%Y%m%d-%H%M%S)"-$Operateur-Désactivation du pare-feu du poste choisi" >>/var/log/log_evt.log
             firewall_off
             ;;
 
         10)
             echo " "
-            echo "Vous avez choisi Règles du parefeu sur la machine distante" && sleep 2s
-            echo $(date +%Y%m%d-%H%M%S)"-$Operateur-Modificaiton règles du parefeu choisi" >>/var/log/log_evt.log
+            echo "Vous avez choisi de modifier les règles du pare-feu sur le poste" && sleep 2s
+            echo $(date +%Y%m%d-%H%M%S)"-$Operateur-Modification de règle du pare-feu du poste choisi" >>/var/log/log_evt.log
             firewall_rules
             ;;
 
         11)
             echo " "
-            echo "Vous avez choisi Installation d'un logiciel sur la machine distante" && sleep 2s
-            echo $(date +%Y%m%d-%H%M%S)"-$Operateur-Installation d'un logiciel choisi" >>/var/log/log_evt.log
+            echo "Vous avez choisi d'installer d'un logiciel sur le poste" && sleep 2s
+            echo $(date +%Y%m%d-%H%M%S)"-$Operateur-Installation d'un logiciel choisi sur le poste choisi" >>/var/log/log_evt.log
             install_app
             ;;
 
         12)
             echo " "
-            echo "Vous avez choisi Désinstallation d'un logiciel sur la machine distante" && sleep 2s
-            echo $(date +%Y%m%d-%H%M%S)"-$Operateur-Désinstallation d'un logiciel choisi" >>/var/log/log_evt.log
+            echo "Vous avez choisi de désinstaller d'un logiciel sur le poste" && sleep 2s
+            echo $(date +%Y%m%d-%H%M%S)"-$Operateur-Désinstallation d'un logiciel sur le poste choisi" >>/var/log/log_evt.log
             uninstall_app
             ;;
 
         13)
             echo " "
-            echo "Vous avez choisi Lancement d'un script depuis machine distante" && sleep 2s
-            echo $(date +%Y%m%d-%H%M%S)"-$Operateur-Lancement d'un script choisi" >>/var/log/log_evt.log
+            echo "Vous avez choisi d'éxécuter un script sur le poste" && sleep 2s
+            echo $(date +%Y%m%d-%H%M%S)"-$Operateur-Exécution d'un script sur le poste choisi" >>/var/log/log_evt.log
             remote_script
             ;;
         0)
@@ -426,9 +419,9 @@ Menu_Action_Ordinateur() {
             ;;
         *)
             echo " "
-            echo "Commande inconnu, Veuillez recommencer"
+            echo "Choix incorrect - Veuillez recommencer"
             echo " "
-            read -p "Appuyez sur Entrée pour continuer..." && sleep 2s
+            read -p "Appuyez sur Entrée pour continuer ..." && sleep 2s
             echo $(date +%Y%m%d-%H%M%S)"-$Operateur-erreur de commande" >>/var/log/log_evt.log
             ;;
         esac
@@ -450,53 +443,51 @@ Menu_Information_Utilsateur() {
         clear
         #Demande choix INFOMRATION UTILISATEUR / retour menu précédent / retour menu principal
         echo "============================================="
-        echo -e "${BG_BLUE}         Menu "Information utilisateur"        ${NC}"
+        echo -e "${BG_BLUE}         INFORMATION UTILISATEUR DISTANT        ${NC}"
         echo "============================================="
-        echo " "
-        echo "Machine distante : $nom_distant@$ip_distante"
-        echo " "
-        echo "Voici les choix possibles : "
         echo ""
-        echo "[1] Date dernière connexion utilisateur"
-        echo "[2] Date dernière modificaiton mot de passe utilisateur"
+        echo "Poste distant : $nom_distant@$ip_distante"
+        echo ""
+        echo "[1] Date de la dernière connexion de l'utilisateur"
+        echo "[2] Date de la dernière modification du mot de passe de l'utilisateur"
         echo "[3] Liste des session utilisateurs ouvertes"
-        echo "[4] Droits/permission sur un dossier"
-        echo "[5] Droits/permission sur un fichier"
+        echo "[4] Droits/permissions sur un dossier"
+        echo "[5] Droits/permissions sur un fichier"
         echo ""
         echo "[0]. Retour au menu précédent"
         echo "[X]. Retour au menu principal"
         echo ""
         # Demande du choix action
-        read -p "Veuillez faire votre choix action en donnant le numéro souhaité: " choixMenuInformationUser
+        read -p "Faites votre choix parmi la sélection ci-dessus : " choixMenuInformationUser
         # Traitement de l'action choisie
         case $choixMenuInformationUser in
         1)
             echo " "
-            echo "Vous avez choisi Date dernière connexion utilisateur" && sleep 2s
+            echo "Vous avez choisi de consulter la date de la dernière connexion de l'utilisateur" && sleep 2s
             echo $(date +%Y%m%d-%H%M%S)"-$Operateur-Date dernière connexion utilisateur choisi" >>/var/log/log_evt.log
             info_connexion
             ;;
         2)
             echo " "
-            echo "Vous avez choisi Date dernière modificaiton mot de passe utilisateur" && sleep 2s
+            echo "Vous avez choisi de consulter la date de la dernière modification du mot de passe de l'utilisateur" && sleep 2s
             echo $(date +%Y%m%d-%H%M%S)"-$Operateur-Date dernière modificaiton mot de passe utilisateur choisi" >>/var/log/log_evt.log
             info_modification
             ;;
         3)
             echo " "
-            echo "Vous avez choisi Liste des session utilisateurs ouvertes" && sleep 2s
+            echo "Vous avez choisi de consulter la liste des sessions utilisateurs ouvertes" && sleep 2s
             echo $(date +%Y%m%d-%H%M%S)"-$Operateur-Liste des session utilisateurs ouvertes choisi" >>/var/log/log_evt.log
             liste_sessions
             ;;
         4)
             echo " "
-            echo "Vous avez choisi Droits/permission sur un dossier" && sleep 2s
+            echo "Vous avez choisi de consulter les droits et permissions sur un dossier" && sleep 2s
             echo $(date +%Y%m%d-%H%M%S)"-$Operateur-Droits/permission sur un dossier choisi" >>/var/log/log_evt.log
             droits_dossier
             ;;
         5)
             echo " "
-            echo "Vous avez choisi Droits/permission sur un fichier" && sleep 2s
+            echo "Vous avez choisi de consulter les droits et permissions sur un fichier" && sleep 2s
             echo $(date +%Y%m%d-%H%M%S)"-$Operateur-Droits/permission sur un fichier choisi" >>/var/log/log_evt.log
             droits_fichier
             ;;
@@ -514,9 +505,9 @@ Menu_Information_Utilsateur() {
             ;;
         *)
             echo " "
-            echo "Commande inconnu, Veuillez recommencer"
+            echo "Choix incorrect - Veuillez recommencer"
             echo " "
-            read -p "Appuyez sur Entrée pour continuer..." && sleep 2s
+            read -p "Appuyez sur Entrée pour continuer ..." && sleep 2s
             echo $(date +%Y%m%d-%H%M%S)"-$Operateur-erreur de commande" >>/var/log/log_evt.log
             ;;
         esac
@@ -531,97 +522,95 @@ Menu_Information_Ordinateur() {
         clear
         #Demande choix INFOMRATION UTILISATEUR / retour menu précédent / retour menu principal
         echo "============================================="
-        echo -e "${BG_BLUE}         Menu "Information ordinateur"        ${NC}"
+        echo -e "${BG_BLUE}         INFORMATION POSTE DISTANT        ${NC}"
         echo "============================================="
-        echo " "
-        echo "Machine distante : $nom_distant@$ip_distante"
-        echo " "
-        echo "Voici les choix possibles : "
         echo ""
-        echo "[1] Version de l'OS"
-        echo "[2] Nombre d'interface"
-        echo "[3] Adresse IP de chaque interface"
-        echo "[4] Adresse MAC de chaque interface"
-        echo "[5] Liste des application/paquets installées"
-        echo "[6] Liste des utilisateurs locaux"
-        echo "[7] Information CPU"
-        echo "[8] Mémoire RAM totale et utilisation"
-        echo "[9] Utilisation du disque"
+        echo "Poste distant : $nom_distant@$ip_distante"
+        echo ""
+        echo "[1]  Version de l'OS"
+        echo "[2]  Nombre d'interfaces réseaux"
+        echo "[3]  Adresse IP de chaque interface réseau"
+        echo "[4]  Adresse MAC de chaque interface réseau"
+        echo "[5]  Liste des applications / paquets installés"
+        echo "[6]  Liste des utilisateurs locaux"
+        echo "[7]  Informations CPU"
+        echo "[8]  Mémoire RAM totale & Utilisation"
+        echo "[9]  Utilisation du/des disque(s)"
         echo "[10] Utilisation du processeur"
-        echo "[11] Statut du pare-feu et liste des ports ouverts"
+        echo "[11] Statut du pare-feu & Liste des ports ouverts"
         echo ""
         echo "[0]. Retour au menu précédent"
         echo "[X]. Retour au menu principal"
         echo ""
         # Demande du choix action
-        read -p "Veuillez faire votre choix action en donnant le numéro souhaité: " choixMenuInformationOrdinateur
+        read -p "Faites votre choix parmi la sélection ci-dessus : " choixMenuInformationOrdinateur
         # Traitement de l'action choisie
         case $choixMenuInformationOrdinateur in
         1)
             echo " "
-            echo "Vous avez choisi version de l'OS" && sleep 2s
-            echo $(date +%Y%m%d-%H%M%S)"-$Operateur-Information version de l'OS choisi" >>/var/log/log_evt.log
+            echo "Vous avez choisi de consulter la version de l'OS" && sleep 2s
+            echo $(date +%Y%m%d-%H%M%S)"-$Operateur-Information Version de l'OS choisi" >>/var/log/log_evt.log
             GetOs
             ;;
         2)
             echo " "
-            echo "Vous avez choisi Nombre d'interface" && sleep 2s
-            echo $(date +%Y%m%d-%H%M%S)"-$Operateur-Information Nombre d'interface choisi" >>/var/log/log_evt.log
+            echo "Vous avez choisi de consulter le nombre d'interfaces réseaux" && sleep 2s
+            echo $(date +%Y%m%d-%H%M%S)"-$Operateur-Information Interfaces réseaux choisi" >>/var/log/log_evt.log
             NbrCarte
             ;;
         3)
             echo " "
-            echo "Vous avez choisi Adresse IP de chaque interface" && sleep 2s
+            echo "Vous avez choisi de consulter l'adresse IP de chaque interface réseau" && sleep 2s
             echo $(date +%Y%m%d-%H%M%S)"-$Operateur-Information Adresse IP de chaque interface choisi" >>/var/log/log_evt.log
             IPdemande
             ;;
         4)
             echo " "
-            echo "Vous avez choisi Adresse MAC de chaque interface" && sleep 2s
+            echo "Vous avez choisi de consulter l'adresse MAC de chaque interface réseau" && sleep 2s
             echo $(date +%Y%m%d-%H%M%S)"-$Operateur-Information Adresse MAC de chaque interface choisi" >>/var/log/log_evt.log
             MACdemande
             ;;
         5)
             echo " "
-            echo "Vous avez choisi Liste des application/paquets installées" && sleep 2s
-            echo $(date +%Y%m%d-%H%M%S)"-$Operateur-Information Liste des application/paquets installées choisi" >>/var/log/log_evt.log
+            echo "Vous avez choisi de consulter la liste des applications/paquets installés" && sleep 2s
+            echo $(date +%Y%m%d-%H%M%S)"-$Operateur-Information Liste applicattions/paquets choisi" >>/var/log/log_evt.log
             Application
             ;;
         6)
             echo " "
-            echo "Vous avez choisi liste des utilsiateur locaux" && sleep 2s
-            echo $(date +%Y%m%d-%H%M%S)"-$Operateur-Information liste utilsiateur choisi" >>/var/log/log_evt.log
+            echo "Vous avez choisi de consulter la liste des utilisateurs locaux" && sleep 2s
+            echo $(date +%Y%m%d-%H%M%S)"-$Operateur-Information Liste utilisateurs locaux choisi" >>/var/log/log_evt.log
             Userlist
             ;;
         7)
             echo " "
-            echo "Vous avez choisi Information CPU" && sleep 2s
+            echo "Vous avez choisi de consulter la liste des informations CPU" && sleep 2s
             echo $(date +%Y%m%d-%H%M%S)"-$Operateur-Information CPU choisi" >>/var/log/log_evt.log
             GetCpu
             ;;
         8)
             echo " "
-            echo "Vous avez choisi Mémoire RAM totale et utilisation" && sleep 2s
-            echo $(date +%Y%m%d-%H%M%S)"-$Operateur-Information Mémoire RAM totale et utilisation choisi" >>/var/log/log_evt.log
+            echo "Vous avez choisi de consulter la mémoire RAM totale et son 'utilisation" && sleep 2s
+            echo $(date +%Y%m%d-%H%M%S)"-$Operateur-Information RAM totale et utilisation choisi" >>/var/log/log_evt.log
             RamInfo
             ;;
         9)
             echo " "
-            echo "Vous avez choisi Utilisation du disque" && sleep 2s
-            echo $(date +%Y%m%d-%H%M%S)"-$Operateur-Information Utilisation du disque choisi" >>/var/log/log_evt.log
+            echo "Vous avez choisi de consulter l'utilisation du/des disque(s)" && sleep 2s
+            echo $(date +%Y%m%d-%H%M%S)"-$Operateur-Information Utilisation du/des disque(s) choisi" >>/var/log/log_evt.log
             DiskInfo
             ;;
         10)
             echo " "
-            echo "Vous avez choisi Utilisation du processeur" && sleep 2s
-            echo $(date +%Y%m%d-%H%M%S)"-$Operateur-Information Utilisation du processeur" >>/var/log/log_evt.log
+            echo "Vous avez choisi de consulter l'utilisation du processeur" && sleep 2s
+            echo $(date +%Y%m%d-%H%M%S)"-$Operateur-Information Utilisation du processeur choisi" >>/var/log/log_evt.log
             ProcesseurInfo
             ;;
 
         11)
             echo " "
-            echo "Vous avez choisi Statut du pare-feu et liste des ports ouverts" && sleep 2s
-            echo $(date +%Y%m%d-%H%M%S)"-$Operateur-Information Statut du pare-feu et liste des ports ouverts" >>/var/log/log_evt.log
+            echo "Vous avez choisi de consulter le statut du pare-feu et la liste des ports ouverts" && sleep 2s
+            echo $(date +%Y%m%d-%H%M%S)"-$Operateur-Information Statut du pare-feu et Liste des ports ouverts choisi" >>/var/log/log_evt.log
             StatusPare_feu
             ;;
         0)
@@ -638,9 +627,9 @@ Menu_Information_Ordinateur() {
             ;;
         *)
             echo " "
-            echo "Commande inconnu, Veuillez recommencer"
+            echo "Choix incorrect - Veuillez recommencer"
             echo " "
-            read -p "Appuyez sur Entrée pour continuer..." && sleep 2s
+            read -p "Appuyez sur Entrée pour continuer ..." && sleep 2s
             echo $(date +%Y%m%d-%H%M%S)"-$Operateur-erreur de commande" >>/var/log/log_evt.log
             ;;
         esac
@@ -659,16 +648,16 @@ Menu_Information_Ordinateur() {
 créer_utilisateur() {
     clear
     # Demande quel utilisateur à créer
-    read -p "Quel compte utilisateur souhaitez-vous céer?" newUser
+    read -p "Quel compte utilisateur souhaitez-vous créer ? " newUser
     # Vérification si l'utilisateur existe
     if ssh $nom_distant@$ip_distante cat /etc/passwd | grep $newUser >/dev/null; then
         #Si oui -> sortie du script
-        echo -e "${RED}L'utilisateur existe déjà.${NC}" && sleep 2s
+        echo -e "${RED}L'utilisateur existe déjà${NC}" && sleep 2s
     else
         #Création de l'utilsateur
         ssh $nom_distant@$ip_distante sudo -S useradd $newUser >/dev/null
         #Confirmation de la création
-        echo -e "${GREEN}Compte $newUser créé.${NC}" && sleep 2s
+        echo -e "${GREEN}Compte $newUser créé${NC}" && sleep 2s
     fi
 }
 
@@ -676,16 +665,16 @@ créer_utilisateur() {
 changer_mdp() {
     clear
     # Demande changment mot de passe -> pour quel utilisateur?
-    read -p "Pour quel compte utilisateur souhaitez-vous modifier le mot de passe? " user_mdp
+    read -p "Pour quel compte utilisateur souhaitez-vous modifier le mot de passe ? " user_mdp
 
     # Est-ce que le nom existe sur le systeme ?
     if ssh $nom_distant@$ip_distante cat /etc/passwd | grep $user_mdp >/dev/null; then
         # si oui -> modifier le mot de passe
         ssh $nom_distant@$ip_distante sudo -S passwd $user_mdp
-        echo -e "${GREEN}Le mot de passe est bien modifié.${NC}" && sleep 2s
+        echo -e "${GREEN}Le mot de passe a bien été bien modifié${NC}" && sleep 2s
     else
         # si non -> sortie du script
-        echo -e "${RED}L'utilisateur $user_mpd n'existe pas.${NC}" && sleep 2s
+        echo -e "${RED}L'utilisateur $user_mpd n'existe pas${NC}" && sleep 2s
     fi
 }
 
@@ -693,7 +682,7 @@ changer_mdp() {
 supprimer_utilisateur() {
     clear
     # Demande quel compte utilisateur à supprimer
-    read -p "Quel compte utilisateur souhaitez-vous supprimer?" user_del
+    read -p "Quel compte utilisateur souhaitez-vous supprimer ? " user_del
     # Vérification si l'utilisateur existe
     if ssh $nom_distant@$ip_distante cat /etc/passwd | grep $user_del >/dev/null; then
         # Si oui -> demande de confirmation
@@ -702,14 +691,14 @@ supprimer_utilisateur() {
         #Si oui -> suppresion du compte
         if [ "$confirmation" == "Oui" ]; then
             ssh $nom_distant@$ip_distante sudo -S deluser $user_del
-            echo -e "${GREEN}Le compte $user_del est supprimé.${NC}" && sleep 2s
+            echo -e "${GREEN}Le compte $user_del a été supprimé${NC}" && sleep 2s
         else
             # Si non -> sortie du script
-            echo -e "${RED}Supression annulée.${NC}" && sleep 2s
+            echo -e "${RED}Supression annulée${NC}" && sleep 2s
         fi
     else
         # Si le compte n'existe pas
-        echo "${RED}Le compte utilisateur n'existe pas.${NC}" && sleep 2s
+        echo "${RED}Le compte utilisateur n'existe pas${NC}" && sleep 2s
     fi
 }
 
@@ -717,7 +706,7 @@ supprimer_utilisateur() {
 désactiver_utilisateur() {
     clear
     # Demande quel compte utilisateur à désactiver
-    read -p "Quel compte utilisateur souhaitez-vous désactiver?" user_lock
+    read -p "Quel compte utilisateur souhaitez-vous désactiver ? " user_lock
 
     # Vérification si l'utilisateur existe
     if ssh $nom_distant@$ip_distante cat /etc/passwd | grep $user_lock >/dev/null; then
@@ -729,18 +718,18 @@ désactiver_utilisateur() {
             ssh $nom_distant@$ip_distante sudo -S usermod -L $user_lock
             # Vérification de la désactivation du compte
             if ssh $nom_distant@$ip_distante sudo -S cat /etc/shadow | grep $user_lock | grep ! >/dev/null; then
-                echo -e "${GREEN}L'utilisateur $user_lock est désactivé.${NC}" && sleep 2s
+                echo -e "${GREEN}L'utilisateur $user_lock a été désactivé${NC}" && sleep 2s
                 ssh $nom_distant@$ip_distante sudo -S sudo cat /etc/shadow | grep $user_lock | grep ! && sleep 2s
             else
-                echo -e "${RED}L'utilisateur est toujours activé.${NC}" && sleep 2s
+                echo -e "${RED}L'utilisateur est toujours activé${NC}" && sleep 2s
             fi
         else
             # Si non -> sortie du script
-            echo -e "${RED}Supression annulée.${NC}" && sleep 2s
+            echo -e "${RED}Supression annulée${NC}" && sleep 2s
         fi
     else
         # Si l'utilisateur n'existe pas
-        echo -e "${RED}L'utilisateur $user_mpd n'existe pas.${NC}" && sleep 2s
+        echo -e "${RED}L'utilisateur $user_mpd n'existe pas${NC}" && sleep 2s
     fi
 }
 
@@ -748,16 +737,16 @@ désactiver_utilisateur() {
 ajouter_groupe_admin() {
     clear
     # Demande quel compte utilisateur à ajouter
-    read -p "Quel compte utilisateur souhaitez-vous ajouter au groupe d'administration?" user_adm
+    read -p "Quel compte utilisateur souhaitez-vous ajouter au groupe d'administration ? " user_adm
 
     # Vérification si l'utilisateur existe
     if ssh $nom_distant@$ip_distante cat /etc/passwd | grep $user_adm >/dev/null; then
         # Si l'utilisateur existe -> ajout au compte sudo
         ssh $nom_distant@$ip_distante sudo -S usermod -aG sudo $user_adm
-        echo -e "${GREEN}Le compte $user_adm est ajouté au groupe d'administration sudo.${NC}" && sleep 2s
+        echo -e "${GREEN}Le compte $user_adm est ajouté au groupe d'administration sudo${NC}" && sleep 2s
     else
         # Si non sortie du script
-        echo -e "${RED}Le compte utilisateur n'existe pas.${NC}" && sleep 2s
+        echo -e "${RED}Le compte utilisateur n'existe pas${NC}" && sleep 2s
     fi
 }
 
@@ -765,19 +754,19 @@ ajouter_groupe_admin() {
 ajout_utilisateur_groupe() {
     clear
     # Demande quel compte à ajouter au groupe local
-    read -p "Quel compte utilisateur souhaitez-vous ajouter a un groupe local?" user_addgroup
+    read -p "Quel compte utilisateur souhaitez-vous ajouter à un groupe local ? " user_addgroup
     # Vérification si l'utilisateur existe
     if ssh $nom_distant@$ip_distante cat /etc/passwd | grep $user_addgroup >/dev/null; then
         # Si l'utilisateur existe -> demande quel groupe?
         read -p "A quel groupe souhaiter-vous ajouter l'utilisateur $user_addgroup?" choix_add_group
         if ssh $nom_distant@$ip_distante cat /etc/group | grep $choix_add_group >/dev/null; then
             ssh $nom_distant@$ip_distante sudo -S usermod -aG $choix_add_group $user_addgroup
-            echo -e "${GREEN}Le compte $user_addgroup est ajouté au groupe $choix_add_group.${NC}" && sleep 2s
+            echo -e "${GREEN}Le compte $user_addgroup a été ajouté au groupe $choix_add_group.${NC}" && sleep 2s
             # Affichage des groupes de cet utilisateur (pour vérification)
             echo "Affichage des groupes de l'utilisateur $user_addgroup : "
             ssh $nom_distant@$ip_distante groups $user_addgroup && sleep 2s
         else
-            echo -e "${RED}Le groupe n'existe pas.${NC}" && sleep 2s
+            echo -e "${RED}Le groupe n'existe pas${NC}" && sleep 2s
         fi
     else
         # Si non sortie du script
@@ -789,24 +778,24 @@ ajout_utilisateur_groupe() {
 supprimer_utilisateur_groupe() {
     clear
     # Demande quel compte à supprimer d'un compte local
-    read -p "Quel compte utilisateur souhaitez-vous supprimer d'un groupe local?" user_delgroup
+    read -p "Quel compte utilisateur souhaitez-vous supprimer d'un groupe local ? " user_delgroup
 
     # Vérification si l'utilisateur existe
     if ssh $nom_distant@$ip_distante cat /etc/passwd | grep $user_delgroup >/dev/null; then
         # Si l'utilisateur existe -> demande quel groupe?
-        read -p "De quel groupe souhaitez-vous supprimer l'utilisateur $user_delgroup?" choix_del_group
+        read -p "De quel groupe souhaitez-vous supprimer l'utilisateur $user_delgroup ? " choix_del_group
         if ssh $nom_distant@$ip_distante cat /etc/group | grep $choix_del_group >/dev/null; then
             ssh $nom_distant@$ip_distante sudo -S deluser $user_delgroup $choix_del_group
-            echo -e "${GREEN}L'utilisateur $user_delgroup est supprimé du groupe $choix_del_group.${NC}" && sleep 2s
+            echo -e "${GREEN}L'utilisateur $user_delgroup a été supprimé du groupe $choix_del_group.${NC}" && sleep 2s
             # Affichage des groupes de cet utilisateur (pour vérification)
             echo "Affichage des groupes de l'utilisateur $user_delgroup : "
             ssh $nom_distant@$ip_distante groups $user_delgroup && sleep 2s
         else
-            echo -e "${RED}Le groupe n'existe pas.${NC}" && sleep 2s
+            echo -e "${RED}Le groupe n'existe pas${NC}" && sleep 2s
         fi
     else
         # Si non sortie du script
-        echo -e "${RED}Le compte utilisateur n'existe pas.${NC}" && sleep 2s
+        echo -e "${RED}Le compte utilisateur n'existe pas${NC}" && sleep 2s
     fi
 }
 
@@ -1350,7 +1339,8 @@ info_connexion() {
     # Demande quel utilisateur
     echo ""
     echo "Date de dernière connexion"
-    read -p "Tapez le nom d'utilisateur souhaité : " user_inf
+    echo ""
+    read -p "Indiquez le nom de l'utilisateur souhaité : " user_inf
 
     # Est-ce que le nom existe sur le systeme ?
     if ssh $nom_distant@$ip_distante cat /etc/passwd | grep $user_inf >/dev/null; then
@@ -1362,7 +1352,7 @@ info_connexion() {
         echo -e "Les données sont enregistrées dans le fichier" "${GREEN}$path_info_file""Info_""$user_inf""_$(date +%Y-%m-%d).txt${NC}" && sleep 3s
     else
         # si non -> sortie du script
-        echo -e "${RED}L'utilisateur $user_mpd n'existe pas.${NC}" && sleep 2s
+        echo -e "${RED}L'utilisateur $user_mpd n'existe pas${NC}" && sleep 2s
     fi
 }
 
@@ -1371,8 +1361,9 @@ info_modification() {
     clear
     # Demande quel utilisateur
     echo ""
-    echo "Date de dernière modification du mdp"
-    read -p "Tapez le nom d'utilisateur souhaité : " user_inf
+    echo "Date de dernière modification du mot de passe"
+    echo ""
+    read -p "Indiquez le nom de l'utilisateur souhaité : " user_inf
 
     # Est-ce que le nom existe sur le systeme ?
     if ssh $nom_distant@$ip_distante cat /etc/passwd | grep $user_inf >/dev/null; then
@@ -1395,7 +1386,7 @@ liste_sessions() {
     echo ""
     echo "Liste des sessions ouvertes pour l'utilisateur"
     echo ""
-    read -p "Tapez le nom d'utilisateur souhaité : " user_inf
+    read -p "Indiquez le nom de l'utilisateur souhaité : " user_inf
 
     # Est-ce que le nom existe sur le systeme ?
     if ssh $nom_distant@$ip_distante cat /etc/passwd | grep $user_inf >/dev/null; then
@@ -1408,7 +1399,7 @@ liste_sessions() {
 
     else
         # si non -> sortie du script
-        echo -e "${RED}L'utilisateur $user_inf n'existe pas.${NC}" && sleep 2s
+        echo -e "${RED}L'utilisateur $user_inf n'existe pas${NC}" && sleep 2s
     fi
 
 }
@@ -1417,29 +1408,29 @@ droits_dossier() {
     clear
     # Demande quel utilisateur
     echo ""
-    echo "Visualisation des droits sur un dossier"
+    echo "Visualisation des droits/permissions sur un dossier"
     echo ""
-    read -p "Tapez le nom d'utilisateur souhaité : " user_inf
+    read -p "Indiquez le nom de l'utilisateur souhaité : " user_inf
 
     # Est-ce que le nom existe sur le systeme ?
     if ssh $nom_distant@$ip_distante cat /etc/passwd | grep $user_inf >/dev/null; then
         # si oui -> demande quel dossier à verifier
-        read -p "Sur quel dossier souhaitez-vous vérifier les droits ?
-(spécifier chemin du dossier)" dossier_a
+        read -p "Sur quel dossier souhaitez-vous vérifier les droits/permissions ?
+(Spécifier le chemin du dossier)" dossier_a
         if ssh $nom_distant@$ip_distante [ -d $dossier_a ]; then
             # affichage des droits
             ssh $nom_distant@$ip_distante ls -ld $dossier_a/ && sleep 2s
-            echo "Droits et permission sur le dossier $dossier_a/ : " >>"$path_info_file""Info_""$user_inf""_$(date +%Y-%m-%d).txt"
+            echo "Droits/permissions sur le dossier $dossier_a/ : " >>"$path_info_file""Info_""$user_inf""_$(date +%Y-%m-%d).txt"
             ssh $nom_distant@$ip_distante ls -ld $dossier_a/ >>"$path_info_file""Info_""$user_inf""_$(date +%Y-%m-%d).txt"
             echo ""
             echo -e "Les données sont enregistrées dans le fichier" "${GREEN}$path_info_file""Info_""$user_inf""_$(date +%Y-%m-%d).txt${NC}" && sleep 3s
         else
             # si non -> sortie du script
-            echo "${RED}Le dossier $dossier_a n'existe pas.${NC}" && sleep 2s
+            echo "${RED}Le dossier $dossier_a n'existe pas${NC}" && sleep 2s
         fi
     else
         # si non -> sortie du script
-        echo -e "${RED}L'utilisateur $user_inf n'existe pas.${NC}" && sleep 2s
+        echo -e "${RED}L'utilisateur $user_inf n'existe pas${NC}" && sleep 2s
     fi
 }
 
@@ -1447,29 +1438,29 @@ droits_fichier() {
     clear
     # Demande quel utilisateur
     echo ""
-    echo "Visualisation des droits sur un fichier"
+    echo "Visualisation des droits/permissions sur un fichier"
     echo ""
-    read -p "Tapez le nom d'utilisateur souhaité : " user_inf
+    read -p "Indiquez le nom de l'utilisateur souhaité : " user_inf
 
     # Est-ce que le nom existe sur le systeme ?
     if ssh $nom_distant@$ip_distante cat /etc/passwd | grep $user_inf >/dev/null; then
         # si oui -> demande quel dossier à verifier
-        read -p "Sur quel fichier souhaitez-vous vérifier les droits ?
-(spécifier chemin du fichier)" fichier_a
+        read -p "Sur quel fichier souhaitez-vous vérifier les droits/permissions ?
+(Spécifier le chemin du fichier)" fichier_a
         if ssh $nom_distant@$ip_distante [ -f $fichier_a ]; then
             # affichage des droits
             ssh $nom_distant@$ip_distante ls -l $fichier_a && sleep 2s
-            echo "Droits et permission sur le fichier $fichier_a/ : " >>"$path_info_file""Info_""$user_inf""_$(date +%Y-%m-%d).txt"
+            echo "Droits/permissions sur le fichier $fichier_a/ : " >>"$path_info_file""Info_""$user_inf""_$(date +%Y-%m-%d).txt"
             ssh $nom_distant@$ip_distante ls -l $fichier_a >>"$path_info_file""Info_""$user_inf""_$(date +%Y-%m-%d).txt"
             echo ""
             echo -e "Les données sont enregistrées dans le fichier" "${GREEN}$path_info_file""Info_""$user_inf""_$(date +%Y-%m-%d).txt${NC}" && sleep 3s
         else
             # si non -> sortie du script
-            echo -e "${RED}Le fichier $fichier_a n'existe pas.${NC}" && sleep 2s
+            echo -e "${RED}Le fichier $fichier_a n'existe pas${NC}" && sleep 2s
         fi
     else
         # si non -> sortie du script
-        echo -e "${RED}L'utilisateur $user_inf n'existe pas.${NC}" && sleep 2s
+        echo -e "${RED}L'utilisateur $user_inf n'existe pas${NC}" && sleep 2s
     fi
 
 }
@@ -1485,7 +1476,7 @@ droits_fichier() {
 # Fonction pour avoir la version de l'OS
 GetOs() {
     clear
-    read -p "Voulez-vous voir la version de l'OS? [O pour valider] " ConfOS
+    read -p "Voulez-vous voir la version de l'OS ? [O pour valider] " ConfOS
     if [ "$ConfOS" = "O" ]; then
         clear
         ssh $nom_distant@$ip_distante lsb_release -a
@@ -1504,12 +1495,12 @@ GetOs() {
 # Fonction pour avoir le nombre d'interfaces
 NbrCarte() {
     clear
-    read -p "Voulez-vous voir le nombre d'interfaces présentes sur cette machine? [O pour valider]" NbrI
+    read -p "Voulez-vous voir le nombre d'interfaces présentes sur cette machine ? [O pour valider]" NbrI
     if [ "$NbrI" = "O" ]; then
         clear
         echo "Voici la liste des interfaces présentes sur cette machine : "
         ssh $nom_distant@$ip_distante ifconfig -a | grep UP | cut -d : -f1
-        echo "liste des cartes" >>"$path_info_file""Info_""$ip_distante""_$(date +%Y-%m-%d).txt"
+        echo "Liste des cartes" >>"$path_info_file""Info_""$ip_distante""_$(date +%Y-%m-%d).txt"
         ssh $nom_distant@$ip_distante ifconfig -a | grep UP | cut -d : -f1 >>"$path_info_file""Info_""$ip_distante""_$(date +%Y-%m-%d).txt"
         echo ""
         echo -e "Les données sont enregistrées dans le fichier" "${GREEN}$path_info_file""Info_""$ip_distante""_$(date +%Y-%m-%d).txt${NC}" && sleep 5s
@@ -1521,7 +1512,7 @@ IPdemande() {
     clear
     read -p "Quelle carte choisissez-vous ? " CartIp
     ssh $nom_distant@$ip_distante echo "$CartIp" && ifconfig "$CartIp" | awk ' /inet /{print $2, $3 ,$4, $5, $6}'
-    echo "l'adresse ip de la carte "$CartIp" est : " >>"$path_info_file""Info_""$ip_distante""_$(date +%Y-%m-%d).txt"
+    echo "L'adresse ip de la carte "$CartIp" est : " >>"$path_info_file""Info_""$ip_distante""_$(date +%Y-%m-%d).txt"
     ssh $nom_distant@$ip_distanteifconfig "$CartIp" | awk ' /inet /{print $2, $3 ,$4, $5, $6}' >>"$path_info_file""Info_""$ip_distante""_$(date +%Y-%m-%d).txt"
     echo ""
     echo -e "Les données sont enregistrées dans le fichier" "${GREEN}$path_info_file""Info_""$ip_distante""_$(date +%Y-%m-%d).txt${NC}" && sleep 5s
@@ -1532,7 +1523,7 @@ MACdemande() {
     clear
     read -p "Quelle carte choisissez-vous ? " CartMac
     ssh $nom_distant@$ip_distante echo "$CartMac" && ifconfig "$CartMac" | awk '/ether / {print $2}'
-    ssh $nom_distant@$ip_distante echo "l'adresse mac de la carte "$CartMac" est: " >>"$path_info_file""Info_""$ip_distante""_$(date +%Y-%m-%d).txt"
+    ssh $nom_distant@$ip_distante echo "L'adresse mac de la carte "$CartMac" est: " >>"$path_info_file""Info_""$ip_distante""_$(date +%Y-%m-%d).txt"
     ifconfig "$CartMac" | awk '/ether / {print $2}' >>"$path_info_file""Info_""$ip_distante""_$(date +%Y-%m-%d).txt"
     echo ""
     echo -e "Les données sont enregistrées dans le fichier" "${GREEN}$path_info_file""Info_""$ip_distante""_$(date +%Y-%m-%d).txt${NC}" && sleep 5s
@@ -1541,12 +1532,12 @@ MACdemande() {
 # Fonction qu'est-ce qui est installé?
 Application() {
     clear
-    read -p "Voulez-vous la liste des applications et paquets installés? [O pour valider]" app
+    read -p "Voulez-vous la liste des applications et paquets installés ? [O pour valider]" app
     if [ "$app" = "O" ]; then
         clear
-        echo " Voici la liste des applications et paquets présents sur cette machine : "
+        echo "Voici la liste des applications et paquets présents sur cette machine : "
         ssh $nom_distant@$ip_distante ls /usr/share/applications | awk -F '.desktop' ' { print $1}'
-        echo "liste des applications : " >>"$path_info_file""Info_""$ip_distante""_$(date +%Y-%m-%d).txt"
+        echo "Liste des applications : " >>"$path_info_file""Info_""$ip_distante""_$(date +%Y-%m-%d).txt"
         ssh $nom_distant@$ip_distante ls /usr/share/applications | awk -F '.desktop' ' { print $1}' >>"$path_info_file""Info_""$ip_distante""_$(date +%Y-%m-%d).txt"
         echo ""
         echo -e "Les données sont enregistrées dans le fichier" "${GREEN}$path_info_file""Info_""$ip_distante""_$(date +%Y-%m-%d).txt${NC}" && sleep 5s
@@ -1565,9 +1556,9 @@ Userlist() {
     read -p "Voulez-vous voir la liste des utilisateurs locaux ? [O pour valider]" ListU
     if [ "$ListU" = "O" ]; then
         clear
-        echo " Voici la liste des utilisateurs locaux : "
+        echo "Voici la liste des utilisateurs locaux : "
         ssh $nom_distant@$ip_distante cut -d: -f1 /etc/passwd
-        echo "liste des utilisateurs : " >>"$path_info_file""Info_""$ip_distante""_$(date +%Y-%m-%d).txt"
+        echo "Liste des utilisateurs : " >>"$path_info_file""Info_""$ip_distante""_$(date +%Y-%m-%d).txt"
         ssh $nom_distant@$ip_distante cut -d: -f1 /etc/passwd >>"$path_info_file""Info_""$ip_distante""_$(date +%Y-%m-%d).txt"
         echo ""
         echo -e "Les données sont enregistrées dans le fichier" "${GREEN}$path_info_file""Info_""$ip_distante""_$(date +%Y-%m-%d).txt${NC}" && sleep 5s
@@ -1586,7 +1577,7 @@ GetCpu() {
     read -p "Voulez-vous voir les détails du CPU ? [O pour valider]" Gcpu
     if [ "$Gcpu" = "O" ]; then
         clear
-        echo " Voici les détails du CPU de la machine : "
+        echo "Voici les détails du CPU de la machine : "
         ssh $nom_distant@$ip_distante lscpu | head -n15
         echo "Détail du CPU : " >>"$path_info_file""Info_""$ip_distante""_$(date +%Y-%m-%d).txt"
         ssh $nom_distant@$ip_distante lscpu | head -n15 >>"$path_info_file""Info_""$ip_distante""_$(date +%Y-%m-%d).txt"
@@ -1607,7 +1598,7 @@ RamInfo() {
     read -p "Voulez-vous voir les détails de la RAM ? [O pour valider]" RamInf
     if [ "$RamInf" = "O" ]; then
         clear
-        echo " Voici les détails de la RAM sur cette machine : "
+        echo "Voici les détails de la RAM sur cette machine : "
         ssh $nom_distant@$ip_distante free -m | head -n2
         echo "Détail de la RAM : " >>"$path_info_file""Info_""$ip_distante""_$(date +%Y-%m-%d).txt"
         ssh $nom_distant@$ip_distante free -m | head -n2 >>"$path_info_file""Info_""$ip_distante""_$(date +%Y-%m-%d).txt"
@@ -1625,12 +1616,12 @@ RamInfo() {
 # Fonction Utilisation du disque
 DiskInfo() {
     clear
-    read -p "Voulez-vous voir les détails du/des disques ? [O pour valider]" DiskInf
+    read -p "Voulez-vous voir les détails du/des disque(s) ? [O pour valider]" DiskInf
     if [ "$DiskInf" = "O" ]; then
         clear
-        echo " Voici les détails du/des disques de cette machine : "
+        echo "Voici les détails du/des disque(s) de cette machine : "
         ssh $nom_distant@$ip_distante df -h
-        echo "Détail des disques : " >>"$path_info_file""Info_""$ip_distante""_$(date +%Y-%m-%d).txt"
+        echo "Détail du/des disque(s) : " >>"$path_info_file""Info_""$ip_distante""_$(date +%Y-%m-%d).txt"
         ssh $nom_distant@$ip_distante df -h >>"$path_info_file""Info_""$ip_distante""_$(date +%Y-%m-%d).txt"
         echo ""
         echo -e "Les données sont enregistrées dans le fichier" "${GREEN}$path_info_file""Info_""$ip_distante""_$(date +%Y-%m-%d).txt${NC}" && sleep 5s
@@ -1649,9 +1640,9 @@ ProcesseurInfo() {
     read -p "Voulez-vous voir les détails du processeur ? [O pour valider]" ProcesseurInf
     if [ "$ProcesseurInf" = "O" ]; then
         clear
-        echo " Voici les détails du processeur de cette machine : "
+        echo "Voici les détails du processeur de cette machine : "
         ssh $nom_distant@$ip_distante mpstat
-        echo "les détails du processeur : " >>"$path_info_file""Info_""$ip_distante""_$(date +%Y-%m-%d).txt"
+        echo "Les détails du processeur : " >>"$path_info_file""Info_""$ip_distante""_$(date +%Y-%m-%d).txt"
         ssh $nom_distant@$ip_distante mpstat >>"$path_info_file""Info_""$ip_distante""_$(date +%Y-%m-%d).txt"
         echo ""
         echo -e "Les données sont enregistrées dans le fichier" "${GREEN}$path_info_file""Info_""$ip_distante""_$(date +%Y-%m-%d).txt${NC}" && sleep 5s
@@ -1670,7 +1661,7 @@ StatusPare_feu() {
     read -p "Voulez-vous voir les informations liées au pare-feu ? [O pour valider]" FireW
     if [ "$FireW" = "O" ]; then
         clear
-        echo " Voici les détails du pare-feu de cette machine : "
+        echo "Voici les détails du pare-feu de cette machine : "
         ssh $nom_distant@$ip_distante sudo -S ufw status
         ssh $nom_distant@$ip_distante sudo -S ufw status >>"$path_info_file""Info_""$ip_distante""_$(date +%Y-%m-%d).txt"
         echo ""
