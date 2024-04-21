@@ -180,4 +180,7 @@ Vérifiez également que la commande, necessitant un utilisateur ou un fichier/d
 *R. Les systèmes d'exploitation étant différents, les deux scripts le sont également.
 De plus, la mise à jour de l'OS via le script PowerShell n'etant pas encore fonctionnelle, nos équipes travaillent actuellement sur une solution alternative.*
 
+**Q. Le script PowerShell ne veut pas se lancer, j'ai un message évoquant un problème de droit  ?**
 
+*R. Vérifiez que le script est bien lancé en mode administrateur et vérfiez bien la stratégie d'exécution du poste Serveur. 
+Via la commande `Get-ExecutionPolicy -list` sous PowerShell vérifiez que pour **CurrentUser** vous être bien **Unrestricted**, le cas contraire veuillez rentrez la commande suivante `set-executionPolicy -Scope CurrentUser -ExecutionPolicy Unrestricted`
