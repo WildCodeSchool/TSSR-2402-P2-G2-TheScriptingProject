@@ -1638,7 +1638,7 @@ IPdemande() {
     ssh $nom_distant@$ip_distante echo "$CartIp" 
     ssh $nom_distant@$ip_distante  ifconfig "$CartIp" | awk ' /inet /{print $2, $3 ,$4, $5, $6}'
     echo "L'adresse ip de la carte "$CartIp" est : " >>"$path_info_file""Info_""$ip_distante""_$(date +%Y-%m-%d).txt"
-    ssh $nom_distant@$ip_distanteifconfig "$CartIp" | awk ' /inet /{print $2, $3 ,$4, $5, $6}' >>"$path_info_file""Info_""$ip_distante""_$(date +%Y-%m-%d).txt"
+    ssh $nom_distant@$ip_distante ifconfig "$CartIp" | awk ' /inet /{print $2, $3 ,$4, $5, $6}' >>"$path_info_file""Info_""$ip_distante""_$(date +%Y-%m-%d).txt"
     echo ""
     echo -e "Les données sont enregistrées dans le fichier" "${GREEN}$path_info_file""Info_""$ip_distante""_$(date +%Y-%m-%d).txt${NC}" && sleep 5s
 }
@@ -1649,9 +1649,9 @@ MACdemande() {
     read -p "Quelle carte choisissez-vous ? " CartMac
     echo ""
     ssh $nom_distant@$ip_distante echo "$CartMac" 
-    ssh $nom_distant@$ip_distante ifconfig "$CartMac" | awk '/ether / {print $2}'
-    ssh $nom_distant@$ip_distante echo "L'adresse mac de la carte "$CartMac" est: " >>"$path_info_file""Info_""$ip_distante""_$(date +%Y-%m-%d).txt"
-    ifconfig "$CartMac" | awk '/ether / {print $2}' >>"$path_info_file""Info_""$ip_distante""_$(date +%Y-%m-%d).txt"
+    ssh $nom_distant@$ip_distante ifconfig "$CartMac" | awk ' /ether /{print $2}'
+    echo "L'adresse mac de la carte "$CartMac" est: " >>"$path_info_file""Info_""$ip_distante""_$(date +%Y-%m-%d).txt"
+    ssh $nom_distant@$ip_distante ifconfig "$CartMac" | awk ' /ether /{print $2}' >>"$path_info_file""Info_""$ip_distante""_$(date +%Y-%m-%d).txt"
     echo ""
     echo -e "Les données sont enregistrées dans le fichier" "${GREEN}$path_info_file""Info_""$ip_distante""_$(date +%Y-%m-%d).txt${NC}" && sleep 5s
 }
