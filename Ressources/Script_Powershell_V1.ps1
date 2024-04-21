@@ -3049,7 +3049,7 @@ Write-Host ""
 $IpDistante = Read-Host "Veuillez entrer l'adresse IP du poste distant "
 Write-Host ""
 $Credentials = Get-Credential -Credential $NomDistant
-$Operateur = Read-Host "Veuillez vous identifiez "
+$Operateur = Read-Host "Veuillez vous identifier "
 Write-Host ""
 
 $PathInfoPoste="C:\Users\Administrator\Documents\Info_${IPDistante}_$(Get-Date -Format "yyyyMMdd").txt"
