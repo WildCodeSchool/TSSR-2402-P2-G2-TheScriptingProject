@@ -182,5 +182,5 @@ De plus, la mise à jour de l'OS via le script PowerShell n'etant pas encore fon
 
 **Q. Le script PowerShell ne veut pas se lancer, j'ai un message évoquant un problème de droit  ?**
 
-*R. Vérifiez que le script est bien lancé en mode administrateur et vérfiez bien la stratégie d'exécution du poste Serveur. 
+*R. Vérifiez que le script est bien lancé en mode administrateur et vérfiez bien la stratégie d'exécution du poste Serveur.   
 Via la commande `Get-ExecutionPolicy -list` sous PowerShell vérifiez que pour **CurrentUser** vous être bien **Unrestricted**, le cas contraire veuillez rentrez la commande suivante `Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy Unrestricted`
