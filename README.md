@@ -39,7 +39,7 @@ Pour la communication entre VM Serveur et VM Client nous avons opté pour :
 
 ### **VM Serveur**
 
-| | Windows Server 2022 | Debian Server 14 |
+| | Windows Server 2022 | Debian Server 12 |
 |   :---------: |  :-------: | :-------: |
 | Nom | `SRVWIN01` | `SRVLX01` |
 | Utilisateur | `Administrator` | `root` |
