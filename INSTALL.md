@@ -171,9 +171,13 @@ sudo apt-get install openssh-server
 ## 5. F.A.Q 
 
 **Q. Une fonctionnalité du script ne semble pas fonctionner ?**
-*R. Vérifiez les pre-requis d'installation, vérifiez que la connexion est bonne et bien configuré (SSH pour Linux , configuration WinRM pour Windows)
-Vérifiez que si la commande necissite un utilisateur ou fichier/dossier qu'il a bien été renseigné.*
 
-**Q. Les deux scripts sont-ils identiques**
-*R. Les systèmes d'exploitaiton étant différents, les deux scripts le sont aussi. De plus la mise à jour de l'OS via le script powershell ne fonctionne pas.
-Nous travaillons toujours sur un paliatif à ce problème.*
+*R. Vérifiez les pre-requis d'installation, vérifiez que la connexion est bonne et bien configurée (SSH pour Linux , configuration WinRM pour Windows)
+Vérifiez également que la commande, necessitant un utilisateur ou un fichier/dossier, ait bien été renseignée.*
+
+**Q. Les deux scripts sont-ils identiques ?**
+
+*R. Les systèmes d'exploitation étant différents, les deux scripts le sont également.
+De plus, la mise à jour de l'OS via le script PowerShell n'etant pas encore fonctionnelle, nos équipes travaillent actuellement sur une solution alternative.*
+
+
