@@ -95,5 +95,5 @@ Les deux scripts sont fonctionnels, cependant il subsiste des améliorations pos
 - Ajout de couleurs
 - Gestion des erreurs
 - Traitement des fichiers de journalisation (Pour optimiser la consultation)
-- Script Bash : Ajouter un rappel des interfaces réseaux disponnibles lors de la consultation des adresses IP et/ou adresses MAC.
+- Script Bash : Ajouter un rappel des interfaces réseaux disponibles lors de la consultation des adresses IP et/ou adresses MAC.
 
