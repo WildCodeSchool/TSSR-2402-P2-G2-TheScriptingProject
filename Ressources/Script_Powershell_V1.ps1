@@ -5,6 +5,7 @@
 # Réalisé en collaboration par Anais Lenglet, Bruno Serna, Grégory Dubois, Patrick Baggiolini et Thomas Scotti
 # Dernière mise à jour le  20 / 04 / 2024
 # Historique version
+# V0.965 -- 20 / 04 / 2024 : Corrections & Optimisation_2
 # V0.961 -- 20 / 04 / 2024 : Corrections & Optimisation
 # V0.96 -- 19 / 04 / 2024 : Mise en forme du script -> rajout sauts de ligne / appuie touche entrée / ...
 # V0.95 -- 19 / 04 / 2024 : Mise en forme du script (Couleurs / Correction syntaxique)
@@ -55,7 +56,7 @@ function Menu_Principal
                 Write-Host "Vous avez choisi ACTION" -ForegroundColor DarkYellow
                 Write-Host ""
                 Start-Sleep -Seconds 1
-                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Menu Action a été choisi" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log        
+                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-ACTION a été choisi" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log        
                 Menu_Action
                 
             }
@@ -65,7 +66,7 @@ function Menu_Principal
                 Write-Host "Vous avez choisi INFORMATION" -ForegroundColor DarkYellow
                 Write-Host ""
                 Start-Sleep -Seconds 1
-                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Menu Information a été choisi" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
+                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-INFORMATION a été choisi" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
                 Menu_Information
                 
             }
@@ -122,7 +123,7 @@ function Menu_Principal
                 Write-Host "Vous avez choisi ACTION sur UTILISATEUR" -ForegroundColor DarkYellow
                 Write-Host ""
                 Start-Sleep -Seconds 1
-                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Menu Action sur Uutilisateur a été choisi" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
+                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-ACTION sur UTILISATEUR choisi" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
                 Menu_Action_Utilisateur
             }
             "2" 
@@ -130,7 +131,7 @@ function Menu_Principal
                 Write-Host "Vous avez choisi ACTION sur POSTE" -ForegroundColor DarkYellow
                 Write-Host ""
                 Start-Sleep -Seconds 1
-                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Menu Action sur Poste a été choisi" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
+                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-ACTION sur POSTE choisi" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
                 Menu_Action_Poste
             }
             "*" 
@@ -138,7 +139,7 @@ function Menu_Principal
                 Write-Host "Retour au menu principal" -ForegroundColor Cyan
                 Write-Host ""
                 Start-Sleep -Seconds 1
-                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Retour au menu principal" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
+                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Retour au menu principal choisi" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
                 Menu_Principal 
             }
             Default 
@@ -182,7 +183,7 @@ function Menu_Information
                 Write-Host "Vous avez choisi INFORMATION sur UTILISATEUR" -ForegroundColor DarkYellow
                 Write-Host ""
                 Start-Sleep -Seconds 1
-                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Menu Information sur Utilsiateur choisit" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
+                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-INFORMATION sur UTILISATEUR choisi" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
                 Menu_Information_Utilisateur
             }
             "2"
@@ -190,7 +191,7 @@ function Menu_Information
                 Write-Host "Vous avez choisi INFORMATION sur POSTE" -ForegroundColor DarkYellow
                 Write-Host ""
                 Start-Sleep -Seconds 1
-                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Menu Information sur Poste choisit" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
+                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-INFORMATION sur POSTE choisi" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
                 Menu_Information_Poste 
             }
             "*" 
@@ -198,7 +199,7 @@ function Menu_Information
                 Write-Host "Retour au menu principal" -ForegroundColor Cyan
                 Write-Host ""
                 Start-Sleep -Seconds 1
-                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Retour au menu principal" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
+                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Retour au menu principal choisi" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
                 Menu_Principal 
             }
             Default 
@@ -258,7 +259,7 @@ function Menu_Action_Utilisateur
                 Write-Host "Vous avez choisi de créer un compte utilisateur local" -ForegroundColor DarkYellow
                 Write-Host ""
                 Start-Sleep -Seconds 1
-                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Création de compte utilisateur chosit" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
+                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Création d'un compte utilisateur local choisi" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
                 CreateUser               
                 
             }
@@ -267,7 +268,7 @@ function Menu_Action_Utilisateur
                 Write-Host "Vous avez choisi de supprimer un compte utilisateur local" -ForegroundColor DarkYellow
                 Write-Host ""
                 Start-Sleep -Seconds 1
-                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Suppression de compte utilisateur chosit" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
+                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Suppression d'un compte utilisateur local choisi" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
                 DelUser              
             }
             "3" 
@@ -275,7 +276,7 @@ function Menu_Action_Utilisateur
                 Write-Host "Vous avez choisi de désactiver un compte utilisateur local" -ForegroundColor DarkYellow
                 Write-Host ""
                 Start-Sleep -Seconds 1
-                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Désactivation de compte utilisateur choisit" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log  
+                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Désactivation d'un compte utilisateur choisi" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log  
                 DisableUser             
             }
             "4" 
@@ -283,7 +284,7 @@ function Menu_Action_Utilisateur
                 Write-Host "Vous avez choisi de modifier un mot de passe" -ForegroundColor DarkYellow
                 Write-Host ""
                 Start-Sleep -Seconds 1
-                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Changement de mot de passe choisit" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log   
+                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Modification de mot de passe choisi" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log   
                 PasswordUser      
             }
             "5" 
@@ -291,7 +292,7 @@ function Menu_Action_Utilisateur
                 Write-Host "Vous avez choisi d'ajouter un compte utilisateur à un groupe d'administration" -ForegroundColor DarkYellow
                 Write-Host ""
                 Start-Sleep -Seconds 1
-                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Ajout d'un compte à un groupe d'administration choisit" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log 
+                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Ajout d'un compte à un groupe d'administration choisi" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log 
                 UserAddAdminGroup
             }
             "6" 
@@ -299,7 +300,7 @@ function Menu_Action_Utilisateur
                 Write-Host "Vous avez choisi d'ajouter un compte utilisateur à un groupe local" -ForegroundColor DarkYellow
                 Write-Host ""
                 Start-Sleep -Seconds 1
-                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Ajout d'un compte à un groupe local choisit" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log    
+                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Ajout d'un compte à un groupe local choisi" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log    
                 UserAddGroup 
             }
             "7"
@@ -307,7 +308,7 @@ function Menu_Action_Utilisateur
                 Write-Host "Vous avez choisi de retirer un compte utilisateur d'un groupe local" -ForegroundColor DarkYellow
                 Write-Host ""
                 Start-Sleep -Seconds 1
-                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Suppression d'un compte à un groupe local choisit" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log     
+                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Retrait d'un compte à un groupe local choisi" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log     
                 UserDelGroup
             }
             "0" 
@@ -315,7 +316,7 @@ function Menu_Action_Utilisateur
                 Write-Host "Retour au menu précédent" 
                 Write-Host ""
                 Start-Sleep -Seconds 1
-                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Retour au menu précédent" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
+                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Retour au menu précédent choisi" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
                 Menu_Action    
             }
             "*" 
@@ -323,7 +324,7 @@ function Menu_Action_Utilisateur
                 Write-Host "Retour au menu principal" -ForegroundColor Cyan
                 Write-Host ""
                 Start-Sleep -Seconds 1
-                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Retour au menu principal" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
+                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Retour au menu principal choisi" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
                 Menu_Principal 
             }
             Default 
@@ -376,7 +377,7 @@ function Menu_Action_Poste
             {
                 Write-Host "Vous avez choisi d'arrêter le poste" -ForegroundColor DarkYellow
                 Write-Host ""
-                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Arrêt poste choisit" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
+                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Arrêt du poste choisi" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
                 Start-Sleep -Seconds 1    
                 Shutdown
             }
@@ -384,7 +385,7 @@ function Menu_Action_Poste
             {
                 Write-Host "Vous avez choisi de redémarrer le poste" -ForegroundColor DarkYellow
                 Write-Host ""
-                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Redémarrage poste choisit" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
+                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Redémarrage du poste choisi" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
                 Start-Sleep -Seconds 1        
                 Reboot
             }
@@ -392,7 +393,7 @@ function Menu_Action_Poste
             {
                 Write-Host "Vous avez choisi de vérouiller le poste" -ForegroundColor DarkYellow
                 Write-Host ""
-                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Vérouillage du poste choisit" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
+                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Vérouillage du poste choisi" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
                 Start-Sleep -Seconds 1         
                 Lock
             }
@@ -400,22 +401,22 @@ function Menu_Action_Poste
             {
                 Write-Host "Vous avez choisi de mettre à jour le poste" -ForegroundColor DarkYellow
                 Write-Host ""
-                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Mise à jour du poste choisit" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
+                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Mise à jour du poste choisi" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
                 Start-Sleep -Seconds 1    
             }
             "5" 
             {
-                Write-Host "Vous avez choisi de créer un dossier" -ForegroundColor DarkYellow
+                Write-Host "Vous avez choisi de créer un dossier sur le poste" -ForegroundColor DarkYellow
                 Write-Host ""
-                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Création d'un dossier sur poste choisit" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
+                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Création d'un dossier sur le poste choisi" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
                 Start-Sleep -Seconds 1    
                 CreateDirectory
             }
             "6"
             {
-                Write-Host "Vous avez choisi de supprimer un dossier" -ForegroundColor DarkYellow
+                Write-Host "Vous avez choisi de supprimer un dossier sur le poste" -ForegroundColor DarkYellow
                 Write-Host ""
-                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Suppresision d'un dossier sur poste choisit" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
+                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Suppression d'un dossier sur le poste choisi" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
                 Start-Sleep -Seconds 1    
                 RemoveDirectory
             }
@@ -423,7 +424,7 @@ function Menu_Action_Poste
             {
                 Write-Host "Vous avez choisi de prendre la main sur le poste" -ForegroundColor DarkYellow
                 Write-Host ""
-                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Prise en main sur poste choisit" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
+                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Prise de main à distance sur poste choisi" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
                 Start-Sleep -Seconds 1    
                 RemoteControl
             }
@@ -431,7 +432,7 @@ function Menu_Action_Poste
             {
                 Write-Host "Vous avez choisi d'activer le pare-feu sur le poste" -ForegroundColor DarkYellow
                 Write-Host ""
-                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Activation du pare-feu du poste choisit" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
+                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Activation du pare-feu du poste choisi" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
                 Start-Sleep -Seconds 1    
                 FirewallOn
             }
@@ -439,7 +440,7 @@ function Menu_Action_Poste
             {
                 Write-Host "Vous avez choisi de désactiver le pare-feu sur le poste" -ForegroundColor DarkYellow
                 Write-Host ""
-                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Désactivation du pare-feu du poste choisit" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
+                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Désactivation du pare-feu du poste choisi" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
                 Start-Sleep -Seconds 1    
                 FirewallOff
             }
@@ -447,7 +448,7 @@ function Menu_Action_Poste
             {
                 Write-Host "Vous avez choisi de modifier les règles du pare-feu sur le poste" -ForegroundColor DarkYellow
                 Write-Host ""
-                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Modification de règle du pare-feu du poste choisit" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
+                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Modification de règle du pare-feu du poste choisi" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
                 Start-Sleep -Seconds 1    
                 FirewallRules
             }
@@ -455,7 +456,7 @@ function Menu_Action_Poste
             {
                 Write-Host "Vous avez choisi d'installer/désinstaller un logiciel sur le poste" -ForegroundColor DarkYellow
                 Write-Host ""
-                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Installation/Désinstallation de logiciel sur le poste choisit" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
+                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Installation/Désinstallation de logiciel(s) sur le poste choisi" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
                 Start-Sleep -Seconds 1    
                 Applications
             }
@@ -463,7 +464,7 @@ function Menu_Action_Poste
             {
                 Write-Host "Vous avez choisi d'éxécuter un script sur le poste" -ForegroundColor DarkYellow
                 Write-Host ""
-                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Exécution d'un script sur le poste distant" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
+                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Exécution d'un script sur le poste choisi" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
                 Start-Sleep -Seconds 1    
                 RemoteScript
             }
@@ -537,7 +538,7 @@ function Menu_Information_Utilisateur
             {
                 Write-Host "Vous avez choisi de consulter la date de la dernière connexion de l'utilisateur" -ForegroundColor DarkYellow
                 Write-Host ""
-                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Date dernière connexion utilisateur" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
+                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Date dernière connexion utilisateur choisi" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
                 Start-Sleep -Seconds 1    
                 InfoConnexion
             }
@@ -545,7 +546,7 @@ function Menu_Information_Utilisateur
             {
                 Write-Host "Vous avez choisi de consulter la date de la dernière modification du mot de passe de l'utilisateur" -ForegroundColor DarkYellow
                 Write-Host ""
-                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Date dernière modificaiton mot de passe utilisateur chosit" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
+                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Date dernière modification mot de passe utilisateur choisi" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
                 Start-Sleep -Seconds 1    
                 InfoModificationMdp
             }
@@ -553,7 +554,7 @@ function Menu_Information_Utilisateur
             {
                 Write-Host "Vous avez choisi de consulter la liste des sessions utilisateurs ouvertes" -ForegroundColor DarkYellow
                 Write-Host ""
-                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Liste des session utilisateurs ouvertes chosit" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
+                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Liste des session utilisateurs ouvertes choisi" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
                 Start-Sleep -Seconds 1    
                 InfoLogSession
             }
@@ -561,7 +562,7 @@ function Menu_Information_Utilisateur
             {
                 Write-Host "Vous avez choisi de consulter les droits et permissions sur un dossier" -ForegroundColor DarkYellow
                 Write-Host ""
-                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Droits/permission sur un dossier chosit" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
+                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Droits/permissions sur un dossier choisi" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
                 Start-Sleep -Seconds 1    
                 droitsDossier
             }
@@ -569,7 +570,7 @@ function Menu_Information_Utilisateur
             {
                 Write-Host "Vous avez choisi de consulter les droits et permissions sur un fichier" -ForegroundColor DarkYellow
                 Write-Host ""
-                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Droits/permission sur un fichier chosit" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
+                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Droits/permissions sur un fichier choisi" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
                 Start-Sleep -Seconds 1   
                 droitsFichier
             }
@@ -641,7 +642,7 @@ function Menu_Information_Utilisateur
             {
                 Write-Host "Vous avez choisi de consulter la version de l'OS" -ForegroundColor DarkYellow
                 Write-Host ""
-                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Information version de l'OS  chosit" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
+                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Information version de l'OS choisi" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
                 Start-Sleep -Seconds 1
                 GetOS
             }
@@ -649,7 +650,7 @@ function Menu_Information_Utilisateur
             {
                 Write-Host "Vous avez choisi de consulter le nombre d'interfaces réseaux" -ForegroundColor DarkYellow
                 Write-Host ""
-                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Information sur le nombre d'interfaces réseaux chosit" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
+                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Information Interfaces réseaux choisi" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
                 Start-Sleep -Seconds 1    
                 NbrCarte
             }
@@ -657,7 +658,7 @@ function Menu_Information_Utilisateur
             {
                 Write-Host "Vous avez choisi de consulter l'adresse IP de chaque interface réseau" -ForegroundColor DarkYellow
                 Write-Host ""
-                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Information adresse IP de chaque interface chosit" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
+                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Information Adresse IP de chaque interface choisi" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
                 Start-Sleep -Seconds 1    
                 IPInterface
             }
@@ -665,15 +666,15 @@ function Menu_Information_Utilisateur
             {
                 Write-Host "Vous avez choisi de consulter l'adresse MAC de chaque interface réseau" -ForegroundColor DarkYellow
                 Write-Host ""
-                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Information adresse MAC de chaque interface chosit" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
+                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Information Adresse MAC de chaque interface choisi" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
                 Start-Sleep -Seconds 1    
                 MACDemande
             }
             "5" 
             {
-                Write-Host "Vous avez choisi de consulter la liste des applications / paquets installés" -ForegroundColor DarkYellow
+                Write-Host "Vous avez choisi de consulter la liste des applications/paquets installés" -ForegroundColor DarkYellow
                 Write-Host ""
-                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Information Liste des applicattions/paquets chosit" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
+                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Information Liste applicattions/paquets choisi" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
                 Start-Sleep -Seconds 1    
                 ApplicationList
             }
@@ -681,7 +682,7 @@ function Menu_Information_Utilisateur
             {
                 Write-Host "Vous avez choisi de consulter la liste des utilisateurs locaux" -ForegroundColor DarkYellow
                 Write-Host ""
-                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Information Liste utilsiateurs locaux choisit " | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
+                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Information Liste utilisateurs locaux choisi" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
                 Start-Sleep -Seconds 1    
                 UserList
             }
@@ -689,15 +690,15 @@ function Menu_Information_Utilisateur
             {
                 Write-Host "Vous avez choisi de consulter la liste des informations CPU" -ForegroundColor DarkYellow
                 Write-Host ""
-                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Information sur le CPU chosit" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
+                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Information CPU choisi" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
                 Start-Sleep -Seconds 1    
                 GetCPU
             }
             "8" 
             {
-                Write-Host "Vous avez choisi de consulter la mémoire RAM totale et l'utilisation" -ForegroundColor DarkYellow
+                Write-Host "Vous avez choisi de consulter la mémoire RAM totale et son utilisation" -ForegroundColor DarkYellow
                 Write-Host ""
-                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Information RAM totale et utilisation chosit" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
+                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Information RAM totale et utilisation choisi" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
                 Start-Sleep -Seconds 1       
                 RAMInfo 
             }
@@ -705,7 +706,7 @@ function Menu_Information_Utilisateur
             {
                 Write-Host "Vous avez choisi de consulter l'utilisation du disque dur" -ForegroundColor DarkYellow
                 Write-Host ""
-                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur--Information Utilisation du disque dur chosit" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
+                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur--Information Utilisation du disque dur choisi" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
                 Start-Sleep -Seconds 1
                 DiskInfo
             }
@@ -713,15 +714,15 @@ function Menu_Information_Utilisateur
             {
                 Write-Host "Vous avez choisi de consulter l'utilisation du processeur" -ForegroundColor DarkYellow
                 Write-Host ""
-                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Information Utilisation du processeur chosit" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
+                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Information Utilisation du processeur choisi" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
                 Start-Sleep -Seconds 1
                 ProcesseurInfo
             }
             "11"
             {
-                Write-Host "Vous avez choisi de consulter le statut du pare-feu " -ForegroundColor DarkYellow
+                Write-Host "Vous avez choisi de consulter le statut du pare-feu" -ForegroundColor DarkYellow
                 Write-Host ""
-                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-statut du pare-feu chosit" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
+                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Information Statut du pare-feu choisi" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
                 Start-Sleep -Seconds 1    
                 StatutParefeu
             }
@@ -729,7 +730,7 @@ function Menu_Information_Utilisateur
             {
                 Write-Host "Vous avez choisi de consulter la liste des ports ouverts sur le pare-feu" -ForegroundColor DarkYellow
                 Write-Host ""
-                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Liste des ports ouverts sur le pare-feu choisit" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
+                $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-Information Liste des ports ouverts sur le pare-feu choisi" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
                 Start-Sleep -Seconds 1    
                 StatutPort
             }
@@ -790,6 +791,7 @@ function CreateUser
         Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red
         Write-Host ""
         Read-Host "Appuyez sur Entrée pour continuer ... "
+        return
     }
     
     if ($userExists) 
@@ -821,6 +823,7 @@ function CreateUser
             Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red
             Write-Host ""
             Read-Host "Appuyez sur Entrée pour continuer ... "
+            return
         }
     }
 }
@@ -3052,6 +3055,8 @@ Write-Host ""
 $PathInfoPoste="C:\Users\Administrator\Documents\Info_${IPDistante}_$(Get-Date -Format "yyyyMMdd").txt"
 # Début enregistrement evennement
 $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-********StartScript********" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
+
+$ErrorActionPreference = "stop"
 
 Menu_Principal   
 
