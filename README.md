@@ -15,7 +15,7 @@ Notre projet consistera à créer un script éxécutable sur une machine afin d'
 
 ## Introduction : Mise en contexte
 
-Imaginons un environnement informatique dans une entreprise où plusieurs machines sont connectées à un réseau local. Le but de notre projet est d'automatiser certaines tâches récurrentes ou à récupérer des informations sur ces machines à distance, sans nécessiter une intervention manuelle sur chaque machine.
+Imaginons un environnement informatique dans une entreprise où plusieurs machines sont connectées à un réseau local. Le but de notre projet est d'automatiser certaines tâches récurrentes, et de récupérer des informations sur ces machines à distance, sans nécessiter une intervention manuelle sur chacune d'entre elles.
 
 ## Membres du groupe de projet & Rôles par sprint
 
@@ -66,7 +66,7 @@ Concernant le script Bash (environnement Linux) nous n'avons pas rencontré de p
 En revanche sur la partie Windows, les principaux problèmes ont été observés essentiellement sur l'écriture du script Powershell (liés à certaines fonctions) :
 
 - Mise à jour du système (Windows Update) :
-  - Impossible de faire les mise à jour via le module PSWindowsUpdate nous rencontrons une erreur que nous pouvons résoudre 
+  - Impossible de faire les mise à jour via le module PSWindowsUpdate nous rencontrons une erreur que nous ne pouvons résoudre 
   - Impossible de les faire via KBUpdate, comme avec PSWindowsUpdate, cela ne fonctionne pas.
 - Fonction "Liste des sessions ouvertes par l'utilisateur" (N'affiche pas le même résultat que le script Bash)
 - Installation de logiciels tiers
@@ -95,5 +95,5 @@ Les deux scripts sont fonctionnels, cependant il subsiste des améliorations pos
 - Ajout de couleurs
 - Gestion des erreurs
 - Traitement des fichiers de journalisation (Pour optimiser la consultation)
-- Script Bash ajouter Rappel des interface réseaux disponnible lors de la consultation des adresses IP ou adresses MAC.
+- Script Bash : Ajouter un rappel des interfaces réseaux disponnibles lors de la consultation des adresses IP et/ou adresses MAC.
 
