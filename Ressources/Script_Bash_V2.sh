@@ -1825,13 +1825,13 @@ echo -e "${BG_YELLOW}        Initialisation script pour connexion      ${NC}"
 echo "=================================================="
 echo ""
 # Demande du nom d'utilisateur de la machine distante
-read -p "Veuillez entrer le nom d'utilisateur de la machine distante : " nom_distant
+read -p "Veuillez entrer le nom d'utilisateur du poste distant : " nom_distant
 echo ""
 # Demande de l'adresse IP de la machine distante
-read -p "Veuillez entrer l'adresse IP de la machine distante : " ip_distante
+read -p "Veuillez entrer l'adresse IP du poste distant : " ip_distante
 echo ""
 # Demande d'identification
-read -p "Veuillez vous identifiez : " Operateur
+read -p "Veuillez vous identifier : " Operateur
 
 # Début enregistrement evennement
 echo $(date +%Y%m%d-%H%M%S)"-$Operateur-********StartScript********" >>/var/log/log_evt.log
