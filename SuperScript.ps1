@@ -3091,7 +3091,7 @@ $PathInfoPoste="C:\Users\Administrator\Documents\Info_${IPDistante}_$(Get-Date -
 # Début enregistrement evennement
 $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-********StartScript********" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
 
-#$ErrorActionPreference = "stop"
+$ErrorActionPreference = "Inquire"
 
 Menu_Principal   
 
