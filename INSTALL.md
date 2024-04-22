@@ -182,12 +182,12 @@ De plus, la mise à jour de l'OS via le script PowerShell n'etant pas encore fon
 
 **Q. Le script PowerShell ne veut pas se lancer, j'ai un message évoquant un problème de droit  ?**
 
-*R. Vérifiez que le script est bien lancé en mode administrateur et vérfiez bien la stratégie d'exécution du poste Serveur.   
-Via la commande `Get-ExecutionPolicy -list` sous PowerShell vérifiez que pour **CurrentUser** vous êtes bien en **Unrestricted**, dans le cas contraire veuillez rentrez la commande suivante `Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy Unrestricted`
+*R. Vérifiez que le script est bien lancé en mode Administrateur et vérfiez bien la stratégie d'exécution du poste Serveur.*   
+*Via la commande* `Get-ExecutionPolicy -list` *sous PowerShell, vérifiez que pour* **CurrentUser** *vous êtes bien en* **Unrestricted**, *dans le cas contraire, veuillez rentrer la commande suivante* `Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy Unrestricted`
 
 **Q. Faut-il obligatoirement renseigner le mot de passe lors d'une connexion SSH sous Bash ?**
 
-*R. Il est possible de supprimer la demande de mot de passe, pou cela taper la commande ci-dessous sur le serveur Debian*
+*R. Il est possible de supprimer la demande de mot de passe : Pour cela, tapez la commande ci-dessous sur le serveur Debian*
 ```bash
 ssh-copy-id wilder@172.16.10.30
 ```
