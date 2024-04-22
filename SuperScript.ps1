@@ -2398,12 +2398,6 @@ function InfoLogSession
             $CmdInfoSession | Out-File -Append -FilePath $PathInfoUser    
             Write-Host ""
             Read-Host "Appuyez sur Entrée pour continuer ... "
-            catch 
-            {
-                Write-Host "Erreur lors de l'envoi de la commande : $_" -ForegroundColor Red
-                Write-Host ""
-                Read-Host "Appuyer sur Entrée pour continuer ..."
-            }
         }
         catch 
         {
