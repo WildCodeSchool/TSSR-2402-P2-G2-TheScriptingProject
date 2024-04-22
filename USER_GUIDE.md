@@ -43,7 +43,8 @@ Une fois lancé, quelques informations vous seront demandées avant d'accéder a
 **Q. J'ai une erreur, que faire ?**
 
 *R. Dans ce cas, vérifiez bien que les informations entrées au lancement du script soient bonnes, notament le nom de l'utilisateur distant et l'adresse IP du poste ciblé.
-Pensez à vérifier également que les pré-requis, disponibles dans la notice Administrateur [INSTALL.md](https://github.com/WildCodeSchool/TSSR-2402-P2-G2-TheScriptingProject/blob/main/INSTALL.md), aient bien été tous appliqués.
+Pensez à vérifier également que les pré-requis, disponibles dans la notice Administrateur [INSTALL.md](https://github.com/WildCodeSchool/TSSR-2402-P2-G2-TheScriptingProject/blob/main/INSTALL.md), aient bien été tous appliqués.  
+Vérifiez que pour Windows vous utilisez bien Powershell 7.  
 Si vous rencontrez toujours des erreurs après ces vérifications, contactez votre administrateur réseau.*
 
 **Q. Que puis-je faire avec le Super-Script ?**
