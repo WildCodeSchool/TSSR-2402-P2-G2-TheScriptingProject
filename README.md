@@ -97,5 +97,5 @@ Les deux scripts sont fonctionnels, cependant il subsiste des améliorations pos
 - Gestion des erreurs
 - Traitement des fichiers de journalisation (Pour optimiser la consultation)
 - Script Bash : Ajouter un rappel des interfaces réseaux disponibles lors de la consultation des adresses IP et/ou adresses MAC.
-- Script PowerShell : trouver une solution pour corriger l'affichage des caractères spéciaux.
+- Script PowerShell : Trouver une solution pour corriger l'affichage des caractères spéciaux.
 
