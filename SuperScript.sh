@@ -699,7 +699,7 @@ supprimer_utilisateur() {
         fi
     else
         # Si le compte n'existe pas
-        echo "${RED}Le compte utilisateur n'existe pas${NC}" && sleep 2s
+        echo -e "${RED}Le compte utilisateur n'existe pas${NC}" && sleep 2s
     fi
 }
 
