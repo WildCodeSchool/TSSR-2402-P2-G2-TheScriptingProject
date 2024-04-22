@@ -2602,7 +2602,7 @@ function GetOS
             Start-Sleep -Seconds 1
             Write-Host "Les données sont enregistrées dans le fichier" $PathInfoPoste -ForegroundColor DarkYellow
             Write-Host ""
-            "Voici la version de l'OS du poste distant : " | Out-File -Append -FilePath $PathInfoPoste -ForegroundColor DarkYellow
+            "Voici la version de l'OS du poste distant : " | Out-File -Append -FilePath $PathInfoPoste 
             $GetOSCMD | Out-File -Append -FilePath $PathInfoPoste
             Write-Host ""
             Read-Host "Appuyez sur Entrée pour continuer ... "
