@@ -1400,7 +1400,7 @@ supprimer_utilisateur() {
 
         # Si le compte n'existe pas
 
-        echo -e " ${RED}Le compte utilisateur n'existe pas${NC}" && sleep 2s
+        echo -e " ${RED}Le compte utilisateur $user_del n'existe pas${NC}" && sleep 2s
 
     fi
 
@@ -1454,7 +1454,7 @@ désactiver_utilisateur() {
 
             # Si non -> sortie du script
 
-            echo -e "${RED}Supression annulée${NC}" && sleep 2s
+            echo -e "${RED}Désactivation annulée${NC}" && sleep 2s
 
         fi
 
@@ -1462,7 +1462,7 @@ désactiver_utilisateur() {
 
         # Si l'utilisateur n'existe pas
 
-        echo -e "${RED}L'utilisateur $user_mpd n'existe pas${NC}" && sleep 2s
+        echo -e "${RED}L'utilisateur $user_lock n'existe pas${NC}" && sleep 2s
 
     fi
 
@@ -1496,7 +1496,7 @@ ajouter_groupe_admin() {
 
         # Si non sortie du script
 
-        echo -e "${RED}Le compte utilisateur n'existe pas${NC}" && sleep 2s
+        echo -e "${RED}Le compte utilisateur $user_adm n'existe pas${NC}" && sleep 2s
 
     fi
 
@@ -1544,7 +1544,7 @@ ajout_utilisateur_groupe() {
 
         # Si non sortie du script
 
-        echo -e "${RED}Le compte utilisateur n'existe pas.${NC}" && sleep 2s
+        echo -e "${RED}Le compte utilisateur $user_addgroup n'existe pas.${NC}" && sleep 2s
 
     fi
 
@@ -1594,7 +1594,7 @@ supprimer_utilisateur_groupe() {
 
         # Si non sortie du script
 
-        echo -e "${RED}Le compte utilisateur n'existe pas${NC}" && sleep 2s
+        echo -e "${RED}Le compte utilisateur $user_delgroup n'existe pas${NC}" && sleep 2s
 
     fi
 
