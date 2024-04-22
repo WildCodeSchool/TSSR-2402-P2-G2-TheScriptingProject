@@ -2279,7 +2279,7 @@ function InfoConnexion
                     } | Where-Object { $_.Properties[5].Value -eq $using:userInf } | Select-Object -ExpandProperty TimeCreated -First 1  } -Credential $Credentials 
                 $CmdInfoCo
                 Write-Host ""
-                Start-Sleep -Seconds 1
+                Start-Sleep -Seconds 3
                 # Enregistrement des données
                 Write-Host "Les données sont enregistrées dans le fichier" $PathInfoUser -ForegroundColor DarkYellow
                 "Date de dernière connexion de l'utilisateur $userInf : " | Out-File -Append -FilePath $PathInfoUser
@@ -2395,7 +2395,7 @@ function InfoLogSession
             Write-Host "Les données sont enregistrées dans le fichier" $PathInfoUser
             Write-Host ""
             "Session ouverte(s) sur le poste distant pour l'utilisateur $userInf : " | Out-File -Append -FilePath $PathInfoUser
-            $CmdInfoMdp | Out-File -Append -FilePath $PathInfoUser    
+            $CmdInfoSession | Out-File -Append -FilePath $PathInfoUser    
             Write-Host ""
             Read-Host "Appuyez sur Entrée pour continuer ... "
             catch 
@@ -2802,11 +2802,11 @@ function UserList
 
     if ($UserListConf -eq "O") 
     {
-        $UserListCMD = Read-Host "Voici la liste des utilisateurs locaux du poste distant : " 
+        Write-Host "Voici la liste des utilisateurs locaux du poste distant : " 
         Write-Host ""
         try
         {
-            Invoke-Command -ComputerName $IPDistante -Credential $Credentials -ScriptBlock {Get-LocalUser | Format-Table Name}
+            $UserListCMD=Invoke-Command -ComputerName $IPDistante -Credential $Credentials -ScriptBlock {Get-LocalUser | Format-Table Name}
             $UserListCMD
             Write-Host ""
             Start-Sleep -Seconds 1
@@ -3091,7 +3091,7 @@ $PathInfoPoste="C:\Users\Administrator\Documents\Info_${IPDistante}_$(Get-Date -
 # Début enregistrement evennement
 $(Get-Date -Format "yyyyMMdd-HHmmss")+"-$Operateur-********StartScript********" | Out-File -Append -FilePath C:\Windows\System32\LogFiles\log_evt.log
 
-$ErrorActionPreference = "stop"
+#$ErrorActionPreference = "stop"
 
 Menu_Principal   
 
