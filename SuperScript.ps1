@@ -776,6 +776,7 @@ function Menu_Information_Utilisateur
 # Fonction Création de compte utilisateur local
 function CreateUser 
 {
+    Clear-Host
     #Création d'un compte utilisateur local 
     # Demande quel utilisateur à créer
     $newUser = Read-Host "Indiquez le compte utilisateur à créer "
@@ -833,6 +834,7 @@ function CreateUser
 # Fonction Suppression de compte utilisateur local
 function DelUser 
 {
+    Clear-Host
     # Demande quel compte utilisateur à supprimer
     $userDel = Read-Host "Indiquez le compte utilisateur à supprimer "
     Write-Host ""
@@ -887,6 +889,7 @@ function DelUser
 # Fonction Désactivation de compte utilisateur local
 function DisableUser 
 {
+    Clear-Host
     # Demande quel compte utilisateur à désactiver
     $userLock = Read-Host "Indiquez le compte utilisateur à désactiver "
     Write-Host ""
@@ -938,6 +941,7 @@ function DisableUser
 # Fonction Changement de mot de passe de compte utilisateur local
 function PasswordUser
 {
+    Clear-Host
     # Modification d'un mot de passe
     # Demande changement du mot de passe -> pour quel utilisateur ?
     $userMdp = Read-Host "Indiquez le compte utilisateur pour lequel vous souhaitez modifier le mot de passe "
@@ -980,6 +984,7 @@ function PasswordUser
 # Fonction ajout utilisateur à un groupe d'administration
 function UserAddAdminGroup 
 {
+    Clear-Host
     # Demande quel compte utilisateur à ajouter
     $userAdm = Read-Host "Indiquez le compte utilisateur à ajouter au groupe d'administration "
     Write-Host ""
@@ -1018,6 +1023,7 @@ function UserAddAdminGroup
 # Fonction ajout utilisateur à un groupe local
 Function UserAddGroup
 {
+    Clear-Host
     # Demande quel compte à ajouter au groupe local
     $userAddG = Read-Host "Indiquez le compte utilisateur à ajouter à un groupe local "
     Write-Host ""
@@ -1080,6 +1086,7 @@ Function UserAddGroup
 # Fonction suppression utilisateur à un groupe local
 Function UserDelGroup
 {
+    Clear-Host
     # Suppression utilisateur d'un groupe local
     $userDel = Read-Host "Indiquez le compte utilisateur à supprimer d'un groupe local "
     Write-Host ""
@@ -1154,6 +1161,7 @@ Function UserDelGroup
 # Fonction "Arrêt"
 function Shutdown 
 {
+    Clear-Host
 # Demande de confrmation
 	$ConfShutdown = Read-Host "Appuyez sur [O] pour confirmer l'arrêt du poste distant "
     Write-Host ""
@@ -1281,6 +1289,7 @@ function Shutdown
 # Fonction "Redémarrage"
 function Reboot
 {
+    Clear-Host
 # Demande de confrmation
 	$ConfReboot = Read-Host "Appuyez sur [O] pour confirmer le redémarrage du poste distant "
     Write-Host ""
@@ -1402,6 +1411,7 @@ function Reboot
 
 function Lock
 {
+    Clear-Host
 # Demande de confirmation
 	$ConfLock = Read-Host "Appuyez sur [O] pour confirmer le vérouillage du poste distant "
     Write-Host ""
@@ -1438,6 +1448,7 @@ function Lock
 # Fonction "Activation du pare-feu"
 function FirewallOn
 {
+    Clear-Host
 # Demande de confirmation + Avertissement
 	Write-Host "ATTENTION : Cette commande peut impacter l'éxécution du script" -ForegroundColor DarkYellow
     Write-Host ""
@@ -1473,6 +1484,7 @@ function FirewallOn
 # Fonction "Désactivation du pare-feu"
 function FirewallOff
 {
+    Clear-Host
 # Demande de confirmation + Avertissement
 	Write-Host "ATTENTION : Cette commande peut impacter l'éxécution du script" -ForegroundColor DarkYellow
     Write-Host ""
@@ -1509,6 +1521,7 @@ function FirewallOff
 # Fonction "Règles du pare-feu"
 function FirewallRules
 {
+    Clear-Host
     # Demande de confirmation + Avertissement concernant la sortie du script dès l'éxécution de cette fonction
     Write-Host "ATTENTION : Les commandes suivantes sont réservées à un public averti" -ForegroundColor DarkYellow
     Write-Host ""
@@ -1690,6 +1703,7 @@ function FirewallRules
 # Fonction "Création Dossier"
 function CreateDirectory 
 {
+    Clear-Host
     # Demande de confirmation
     $ConfCreateDirectory = Read-Host "Appuyez sur [O] pour confirmer la création d'un dossier sur le poste distant "
     Write-Host ""
@@ -1772,6 +1786,7 @@ function CreateDirectory
 # Fonction "Suppression Dossier"
 function RemoveDirectory 
 {
+    Clear-Host
     # Demande de confirmation
     $ConfRemoveDirectory = Read-Host "Appuyez sur [O] pour confirmer la suppression d'un dossier sur le poste distant "
     Write-Host ""
@@ -1835,6 +1850,7 @@ function RemoveDirectory
 
 function Applications 
 {
+    Clear-Host
     $ConfApplications = Read-Host "Appuyez sur [O] pour confirmer l'accès à la gestion des applications du poste distant "
     Write-Host ""
     if ($ConfApplications -eq "O") {
@@ -2106,6 +2122,7 @@ function Applications
 
 function RemoteControl
 {
+    Clear-Host
 	Write-Host "ATTENTION : Cette commande vous sortira du script" -ForegroundColor DarkYellow
     Write-Host ""
 	$ConfRemote = Read-Host "Appuyez sur [O] pour confirmer la prise de main à distance sur le poste distant "
@@ -2181,6 +2198,7 @@ function RemoteControl
 
 function RemoteScript
 {
+    Clear-Host
     $ConfRS = Read-Host "Appuyez sur [O] pour confirmer l'éxécution d'un script sur le poste distant "
     Write-Host ""
     if ($ConfRS -eq "O")
@@ -2237,6 +2255,7 @@ function RemoteScript
 # Fonction dernière connexion
 function InfoConnexion 
 { 
+    Clear-Host
     $InfoCo = Read-Host "Appuyez sur [O] pour confirmer la visualisation de la date de dernière de connexion d'un utilisateur "
     Write-Host ""
     if ($InfoCo -eq "O") 
@@ -2297,6 +2316,7 @@ function InfoConnexion
 # Fonction dernière modification mot de passe
 function InfoModificationMdp 
 { 
+    Clear-Host
     $InfoMdp = Read-Host "Appuyez sur [O] pour confirmer la visualisation de la date de la dernière modification du mot de passe d'un utilisateur "
     Write-Host ""
     if ($InfoMdp -eq "O") 
@@ -2354,6 +2374,7 @@ function InfoModificationMdp
 # Fonction dernière sessions ouvertesr
 function InfoLogSession 
 { 
+    Clear-Host
     $InfLog = Read-Host "Appuyez sur [O] pour confirmer la visualisation des sessions actives sur le poste distant "
     Write-Host ""
     if ($Inflog -eq "O") 
@@ -2405,6 +2426,7 @@ function InfoLogSession
 # Fonction droit dossier
 function droitsDossier 
 {
+    Clear-Host
     $InfoDossier = Read-Host "Appuyez sur [O] pour confirmer la visualisation des droits sur un dossier d'un utilisateur "
     Write-Host ""
     if ($InfoDossier -eq "O") 
@@ -2479,6 +2501,7 @@ function droitsDossier
 # Fonction droit fichier
 function droitsFichier 
 {
+    Clear-Host
     $InfoFichier = Read-Host "Appuyez sur [O] pour confirmer la visualisation des droits d'un utilisateur sur un fichier "
     Write-Host ""
     if ($InfoFichier -eq "O") 
@@ -2563,6 +2586,7 @@ function droitsFichier
 #Fonction pour avoir la version de l'os
 function GetOS 
 {
+    Clear-Host
     $GetOSConf = Read-Host "Appuyez sur [O] pour confirmer la visualisation de la version de l'OS du poste distant "
     Write-Host ""
     Write-Host "Voici la version de l'OS du poste distant : " -ForegroundColor DarkYellow
@@ -2604,6 +2628,7 @@ function GetOS
 #Fonction pour avoir les cartes reseaux presente sur la machine.
 function NbrCarte 
 {
+    Clear-Host
     $NbrCarteConf = Read-Host "Appuyez sur [O] pour confirmer la visualisation du nombre d'interfaces présentes sur le poste distant "
     Write-Host ""
     
@@ -2646,6 +2671,7 @@ function NbrCarte
 #Fonction pour demander l'address IP
 function IPInterface 
 {
+    Clear-Host
     $IPInterfaceConf = Read-Host "Appuyez sur [O] pour confirmer la visualisation des adresses IP de chaque interface (IPv4 / IPv6) du poste distant "
     
     if ($IPInterfaceConf -eq "O") 
@@ -2687,6 +2713,7 @@ function IPInterface
 #Fonction pour avoir les addresses MAC
 function MACDemande 
 {
+    Clear-Host
     $MACDemandeConf = Read-Host "Appuyez sur [O] pour confirmer la visualisation de la liste des adresses MAC de chaque interface du poste distant "
     Write-Host ""
 
@@ -2727,6 +2754,7 @@ function MACDemande
 #Fonction pour avoir la liste des application et paquet installer sur la machine
 function ApplicationList 
 {
+    Clear-Host
     $ApplicationListConf = Read-Host "Appuyez sur [O] pour confirmer la visualisation de la liste des applications/paquets installés sur le poste distant "
     Write-Host ""
 
@@ -2768,6 +2796,7 @@ function ApplicationList
 # Fonction liste des utilisateurs locaux
 function UserList 
 {
+    Clear-Host
     $UserListConf = read-host "Appuyez sur [O] pour confirmer la visualisation de la liste des utilisateurs locaux du poste distant "
     Write-Host ""
 
@@ -2807,6 +2836,7 @@ function UserList
 #Fonction Type de CPU, nombre de coeurs, etc
 function GetCPU 
 {
+    Clear-Host
     $GetCPUConf = Read-Host "Appuyez sur [O] pour confirmer la visualisation des détails du CPU du poste distant "
     Write-Host ""
 
@@ -2846,7 +2876,7 @@ function GetCPU
 #Fonction detail de la ram
 function RAMInfo 
 {
-
+    Clear-Host
     $RAMInfoConf = Read-Host "Appuyez sur [O] pour confirmer la visualisation des détails de la RAM du poste distant "
     Write-Host ""
 
@@ -2886,6 +2916,7 @@ function RAMInfo
 #Fonction utilisation du disque
 function DiskInfo 
 {
+    Clear-Host
     $DiskInfoConf = Read-Host "Appuyez sur [O] pour confirmer la visualisation des détails du/des disque(s) du poste distant "
 
     if ($DiskInfoConf -eq "O") 
@@ -2924,6 +2955,7 @@ function DiskInfo
 #Foncion utilisation du processeur
 function ProcesseurInfo {
 
+    Clear-Host
     $ProcesseurInfoConf = Read-Host "Appuyez sur [O] pour confirmer la visualisation des détails de l'utilisation du processeur du poste distant "
     Write-Host ""
 
@@ -2962,6 +2994,7 @@ function ProcesseurInfo {
 #Fonction status du parefeu
 function StatutParefeu 
 {
+    Clear-Host
     $StatutParefeuConf = Read-Host "Appuyez sur [O] pour confirmer la visualisation du pare-feu du poste distant "
     if ($StatutParefeuConf -eq "O") 
     {
@@ -2997,6 +3030,7 @@ function StatutParefeu
 #Status des ports
 function StatutPort 
 {
+    Clear-Host
     $StatutPortConf = Read-Host "Appuyez sur [O] pour confirmer la visualisation de la liste des ports ouverts du poste distant "
     Write-Host ""
     if ($StatutPortConf -eq "O") 
