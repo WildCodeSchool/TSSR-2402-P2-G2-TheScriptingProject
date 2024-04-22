@@ -810,7 +810,7 @@ function CreateUser
         {
             Write-Host "Le compte utilisateur $newUser n'existe pas et va être créé" -ForegroundColor DarkYellow
             Write-Host ""
-            $Mdp = Read-Host "Indiquez le mot de passe "
+            $Mdp = Read-Host "Indiquez le mot de passe, sinon l'utilisateur ne sera pas créé"
             Write-Host ""
             # Création de l'utilisateur
             Invoke-Command -ComputerName $IpDistante -ScriptBlock { New-LocalUser -Name $using:newUser -Password (ConvertTo-SecureString -AsPlainText $using:Mdp -Force) } -Credential $Credentials
