@@ -70,6 +70,7 @@ En revanche sur la partie Windows, les principaux problèmes ont été observés
   - Impossible de les faire via KBUpdate, comme avec PSWindowsUpdate, cela ne fonctionne pas.
 - Fonction "Liste des sessions ouvertes par l'utilisateur" (N'affiche pas le même résultat que le script Bash)
 - Installation de logiciels tiers
+- Caratères spéciaux qui ne s'affichent pas correctement
 
 
 ## Solutions trouvées :
@@ -96,4 +97,5 @@ Les deux scripts sont fonctionnels, cependant il subsiste des améliorations pos
 - Gestion des erreurs
 - Traitement des fichiers de journalisation (Pour optimiser la consultation)
 - Script Bash : Ajouter un rappel des interfaces réseaux disponibles lors de la consultation des adresses IP et/ou adresses MAC.
+- Script PowerShell : trouvez la solution pour l'affichage correct des caractères spéciaux.
 
